@@ -311,7 +311,7 @@ export const brand = {
         cta: "Learn more",
         ctaAriaLabel: "Learn about the Governed Semantic Layer",
         imgClass: "pillar-img-1",
-        iconColor: "var(--brand-accent)",
+        iconColor: "var(--text-on-dark)",
         icon: "bar-chart",
       },
       {
@@ -320,7 +320,7 @@ export const brand = {
         cta: "Learn more",
         ctaAriaLabel: "Learn about Trusted AI Agents",
         imgClass: "pillar-img-2",
-        iconColor: "var(--success)",
+        iconColor: "var(--text-on-dark)",
         icon: "target",
       },
       {
@@ -329,7 +329,7 @@ export const brand = {
         cta: "Learn more",
         ctaAriaLabel: "Learn about Enterprise Security",
         imgClass: "pillar-img-3",
-        iconColor: "var(--warning)",
+        iconColor: "var(--text-on-dark)",
         icon: "analytics",
       },
     ] satisfies Pillar[],
