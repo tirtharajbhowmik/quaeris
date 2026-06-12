@@ -13,5 +13,5 @@ const inter = Inter({
   display: "swap",
 });
 
-/** className string applied to <body> — exposes the font CSS variables. */
+/** className string applied to <html> — :root token declarations need the variables there. */
 export const fontClasses = `${fraunces.variable} ${inter.variable}`;

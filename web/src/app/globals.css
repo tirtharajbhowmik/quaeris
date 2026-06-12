@@ -5,8 +5,6 @@
   --color-canvas: var(--bg-canvas);
   --color-surface: var(--bg-surface);
   --color-ink: var(--bg-ink);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
   --radius-lg: 20px;
 
   /* shadcn/ui design tokens — so shadcn components (Button, etc.) resolve under Tailwind v4. */

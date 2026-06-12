@@ -11,7 +11,7 @@ export default function MetricDashboardMock() {
             fontFamily: "var(--font-display)",
             fontSize: "16px",
             color: "var(--text-on-dark)",
-            fontWeight: 450,
+            fontWeight: "var(--weight-display)",
           }}
         >
           {dashboard.title}
