@@ -5,15 +5,12 @@ import "./globals.css";
 import "@/brand-active/tokens.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(brand.url),
   title: `${brand.name} — ${brand.tagline}`,
   description: brand.meta.description,
   openGraph: {
     title: `${brand.name} — ${brand.tagline}`,
     description: brand.meta.ogDescription,
     type: "website",
-    url: brand.url,
-    siteName: brand.name,
   },
 };
 
