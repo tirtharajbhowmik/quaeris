@@ -66,8 +66,18 @@ export default function SiteFooter() {
               className="logo-wordmark"
               style={{ marginBottom: "var(--space-5)", display: "inline-flex" }}
             >
-              <LogoMark />
-              {name}
+              {brand.logoSrc ? (
+                <img
+                  src={brand.logoSrc}
+                  alt={brand.name}
+                  style={{ height: 28, width: "auto", display: "block" }}
+                />
+              ) : (
+                <>
+                  <LogoMark />
+                  {name}
+                </>
+              )}
             </a>
             <p className="footer-thesis">{footer.thesis}</p>
             <p className="footer-brand-desc">{footer.brandDesc}</p>

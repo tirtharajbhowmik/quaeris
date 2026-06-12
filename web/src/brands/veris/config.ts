@@ -57,6 +57,7 @@ export const brand = {
     ogDescription:
       "Secure, governed analytics powered by trusted AI agents. Plain-language questions, certified metrics, zero hallucinations.",
   } satisfies BrandMeta,
+  logoSrc: null as string | null,
 
   // ── CTA labels ─────────────────────────────────────────────
   cta: {

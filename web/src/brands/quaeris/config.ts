@@ -57,6 +57,7 @@ export const brand = {
     ogDescription:
       "Secure, Governed Analytics. Powered by Trusted Agents.",
   } satisfies BrandMeta,
+  logoSrc: "/quaeris-logo.png" as string | null,
 
   // ── CTA labels ─────────────────────────────────────────────
   cta: {

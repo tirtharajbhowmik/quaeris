@@ -257,8 +257,18 @@ export default function SiteHeader() {
             className="logo-wordmark"
             aria-label={`${brand.name} — Home`}
           >
-            <LogoMark />
-            {brand.name}
+            {brand.logoSrc ? (
+              <img
+                src={brand.logoSrc}
+                alt={brand.name}
+                style={{ height: 28, width: "auto", display: "block" }}
+              />
+            ) : (
+              <>
+                <LogoMark />
+                {brand.name}
+              </>
+            )}
           </a>
 
           {/* Desktop nav */}
