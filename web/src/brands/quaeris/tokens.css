@@ -3,9 +3,9 @@
   /* Canvas & surfaces */
   --bg-canvas:        #FAF8FF;   /* page bg */
   --bg-surface:       #FFFFFF;
-  --bg-warm:          #F9F5FF;   /* "Section Bg Soft" / hero bg */
-  --bg-ink:           #200123;   /* Deep Dark Purple */
-  --bg-ink-elevated:  #2D0136;   /* derived — cards on dark (PDF silent) */
+  --bg-warm:          #F6F4F2;   /* alt sections — changed per Tirtharaj 2026-06-12 (was #F9F5FF) */
+  --bg-ink:           #0A0A12;   /* dark sections/footer — changed per Tirtharaj (was #200123) */
+  --bg-ink-elevated:  #14141F;   /* derived companion of the new neutral ink */
 
   /* Text */
   --text-primary:     #200123;
@@ -14,23 +14,23 @@
   --text-on-dark:     #FFFFFF;
   --text-on-dark-dim: rgba(255,255,255,0.75);
 
-  /* Brand accent */
-  --brand-accent:        #8C20A4;               /* Brand Purple */
-  --brand-accent-hover:  #7A1C8F;               /* derived */
-  --brand-accent-deep:   #4E0250;               /* Gradient Dark */
-  --brand-accent-soft:   rgba(140,32,164,0.10); /* category-pill bg */
-  --brand-accent-glow:   rgba(140,32,164,0.25); /* derived */
+  /* Brand accent — changed per Tirtharaj 2026-06-12 (was PDF Brand Purple #8C20A4 family) */
+  --brand-accent:        #9333EA;
+  --brand-accent-hover:  #7E22CE;               /* derived from new accent */
+  --brand-accent-deep:   #581C87;               /* derived from new accent */
+  --brand-accent-soft:   rgba(147,51,234,0.10); /* pill/tint bg */
+  --brand-accent-glow:   rgba(147,51,234,0.25); /* derived */
 
-  /* Borders */
-  --border-subtle:    #ECDCF0;
-  --border-strong:    #DCC8E4;   /* derived */
-  --border-on-dark:   rgba(236,220,240,0.15); /* derived */
+  /* Borders — subtle changed per Tirtharaj (was #ECDCF0); companions aligned */
+  --border-subtle:    rgba(11,14,30,0.08);
+  --border-strong:    rgba(11,14,30,0.16);  /* derived companion */
+  --border-on-dark:   rgba(255,255,255,0.12); /* derived companion for neutral ink */
 
-  /* CTA shape & fill — PDF: 10px radius, #4E0250 → #8C20A4 gradient */
+  /* CTA shape & fill — 10px radius (PDF); gradient endpoints follow the new accent */
   --radius-cta:    10px;
-  --cta-bg:        linear-gradient(90deg, #4E0250, #8C20A4);
-  --cta-bg-hover:  linear-gradient(90deg, #3D0140, #7A1C8F);
-  --cta-bg-hero:   linear-gradient(90deg, #4E0250, #8C20A4);
+  --cta-bg:        linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  --cta-bg-hover:  linear-gradient(90deg, #46166D, var(--brand-accent-hover));
+  --cta-bg-hero:   linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
 
   /* Display weight — PDF headings are Roboto Regular */
   --weight-display: 400;
