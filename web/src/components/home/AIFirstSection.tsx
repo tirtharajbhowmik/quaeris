@@ -1,5 +1,6 @@
 import { MessageSquare, ShieldCheck, GitBranch, Activity, Bell, Sparkles } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
+import { brand } from "@/config/brand.config";
 
 interface Capability {
   title: string;
@@ -53,7 +54,7 @@ export default function AIFirstSection() {
               <span className="ai-first-title-accent"> It&apos;s how every answer is made.</span>
             </h2>
             <p className="ai-first-sub">
-              Intelligence runs through every layer of Veris — from understanding your question to
+              Intelligence runs through every layer of {brand.name} — from understanding your question to
               citing the metric behind the answer. Agents don&apos;t just fetch data; they reason
               over your governed semantic layer to deliver answers your whole team can trust.
             </p>
@@ -77,7 +78,7 @@ export default function AIFirstSection() {
         <Reveal delay={120}>
           <div className="ai-first-cta-row">
             <a href="#cta-band" className="hero-cta ai-cta">
-              See Veris in action
+              See {brand.name} in action
               <span className="arrow" aria-hidden="true">
                 →
               </span>

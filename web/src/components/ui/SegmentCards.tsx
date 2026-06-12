@@ -1,5 +1,6 @@
 import { ShoppingBag, Server, Users, ShoppingCart, Building2 } from "lucide-react";
 import Reveal from "./Reveal";
+import { brand } from "@/config/brand.config";
 
 interface Segment {
   index: string;
@@ -65,7 +66,7 @@ export default function SegmentCards() {
               Built for every team that lives by data.
             </h2>
             <p className="body-lg subcopy" style={{ color: "var(--text-secondary)" }}>
-              Veris serves the whole organisation — from the data engineers who define the metrics to the executives who need answers right now.
+              {brand.name} serves the whole organisation — from the data engineers who define the metrics to the executives who need answers right now.
             </p>
           </div>
         </Reveal>

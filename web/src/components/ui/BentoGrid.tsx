@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import Reveal from "./Reveal";
 import Badge from "./Badge";
+import { brand } from "@/config/brand.config";
 
 function MiniChartSVG() {
   return (
@@ -53,10 +54,10 @@ export default function BentoGrid() {
         <Reveal>
           <div className="section-header center">
             <span className="eyebrow" style={{ color: "var(--text-tertiary)" }}>
-              Why teams choose Veris
+              Why teams choose {brand.name}
             </span>
             <h2 id="bento-heading" className="display-lg">
-              Why teams choose Veris.
+              Why teams choose {brand.name}.
             </h2>
             <p className="body-lg subcopy" style={{ color: "var(--text-secondary)" }}>
               A governed platform built around one principle: every analytics answer should be traceable, consistent, and secure.
@@ -64,7 +65,7 @@ export default function BentoGrid() {
           </div>
         </Reveal>
 
-        <div className="bento-grid" aria-label="Why Veris">
+        <div className="bento-grid" aria-label={`Why ${brand.name}`}>
           {/* Large hero card — col-span-2 */}
           <Reveal className="bento-card bento-large" style={{ gridColumn: "span 2" }}>
             <div className="bento-large-gradient" aria-hidden="true" />
@@ -74,13 +75,13 @@ export default function BentoGrid() {
                 One definition per metric. Every agent answer grounded in your certified semantic layer — not a model&apos;s best guess.
               </h3>
               <p className="body-md" style={{ color: "var(--text-secondary)", marginTop: "var(--space-3)", maxWidth: "52ch" }}>
-                Define revenue, churn, and activation once. Veris enforces those definitions on every query — so every team, every dashboard, and every agent answer reflects the same number.
+                Define revenue, churn, and activation once. {brand.name} enforces those definitions on every query — so every team, every dashboard, and every agent answer reflects the same number.
               </p>
             </div>
             <div className="bento-large-visual" aria-hidden="true">
               <div className="bento-mini-chart">
                 <div className="bento-chart-label body-sm" style={{ color: "var(--text-tertiary)", marginBottom: "var(--space-2)" }}>
-                  Time-to-insight — 90-day Veris deployment
+                  Time-to-insight — 90-day {brand.name} deployment
                 </div>
                 <MiniChartSVG />
                 <div style={{ display: "flex", justifyContent: "space-between", marginTop: "var(--space-1)" }}>

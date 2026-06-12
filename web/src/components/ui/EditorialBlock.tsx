@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import { brand } from "@/config/brand.config";
 
 export default function EditorialBlock() {
   return (
@@ -22,7 +23,7 @@ export default function EditorialBlock() {
               <div className="editorial-monogram" aria-hidden="true">AR</div>
               <div className="editorial-byline-text">
                 <span className="editorial-byline-name">A. Rowe</span>
-                <span className="editorial-byline-role">Founder &amp; CEO · Veris</span>
+                <span className="editorial-byline-role">Founder &amp; CEO · {brand.name}</span>
               </div>
               <time className="editorial-byline-date body-sm" dateTime="2025-06-01" style={{ color: "var(--text-tertiary)", marginLeft: "auto" }}>
                 June 2025
@@ -32,11 +33,11 @@ export default function EditorialBlock() {
             {/* Body prose */}
             <div className="editorial-prose">
               <p className="editorial-dropcap body-lg">
-                Most data teams come to us after a version of the same story: an AI pilot that looked impressive in the demo, then returned a number nobody could verify — and a business user who stopped trusting the analytics platform entirely. We built Veris to fix that problem at the architecture level, not the prompt level.
+                Most data teams come to us after a version of the same story: an AI pilot that looked impressive in the demo, then returned a number nobody could verify — and a business user who stopped trusting the analytics platform entirely. We built {brand.name} to fix that problem at the architecture level, not the prompt level.
               </p>
 
               <p className="body-lg" style={{ color: "var(--text-secondary)" }}>
-                The principle is simple. Every answer a Veris agent returns should be traceable to a certified metric definition your data team controls. Not a language model&apos;s statistical best guess — a governed number with a lineage trail. If the answer can&apos;t be grounded in your semantic layer, the agent says so and stops there.
+                The principle is simple. Every answer a {brand.name} agent returns should be traceable to a certified metric definition your data team controls. Not a language model&apos;s statistical best guess — a governed number with a lineage trail. If the answer can&apos;t be grounded in your semantic layer, the agent says so and stops there.
               </p>
 
               {/* Pull quote */}
