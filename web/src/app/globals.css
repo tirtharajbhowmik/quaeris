@@ -179,6 +179,7 @@ ul { list-style: none; }
   min-height: 44px;
   cursor: pointer;
 }
+/* Note: gradient backgrounds swap discretely on hover (no interpolation) — expected for gradient-CTA brands. */
 .btn-primary {
   background: var(--cta-bg);
   color: var(--text-on-dark);
@@ -1891,13 +1892,13 @@ ul { list-style: none; }
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  background: linear-gradient(135deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  background: var(--cta-bg-hero);
   color: #fff;
   font-family: var(--font-body);
   font-weight: 600;
   font-size: 1rem;
   padding: 0.9rem 1.65rem;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-cta);
   box-shadow: 0 10px 30px -8px var(--brand-accent-glow);
   text-decoration: none;
   transition: transform var(--dur-fast) var(--ease-out),
@@ -1990,4 +1991,4 @@ ul { list-style: none; }
 .ai-card-title { color: var(--text-on-dark); font-weight: 700; font-size: 1.0625rem; }
 .ai-card-desc { color: var(--text-on-dark-dim); font-size: 0.875rem; line-height: 1.6; }
 .ai-first-cta-row { display: flex; justify-content: center; margin-top: var(--space-8); }
-.ai-cta { border-radius: var(--radius-pill); }
+.ai-cta { border-radius: var(--radius-cta); }

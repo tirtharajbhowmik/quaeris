@@ -39,8 +39,8 @@ export default function MetricDashboardMock() {
         >
           <defs>
             <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#6754E9" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#6754E9" stopOpacity="0" />
+              <stop offset="0%" stopColor="var(--brand-accent)" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="var(--brand-accent)" stopOpacity="0" />
             </linearGradient>
           </defs>
           <path
@@ -50,12 +50,12 @@ export default function MetricDashboardMock() {
           <path
             d="M0,70 L30,58 L60,50 L90,42 L120,38 L150,30 L180,20 L210,25 L240,15 L280,10"
             fill="none"
-            stroke="#6754E9"
+            stroke="var(--brand-accent)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <circle cx="280" cy="10" r="4" fill="#6754E9" />
+          <circle cx="280" cy="10" r="4" fill="var(--brand-accent)" />
         </svg>
       </div>
       <p className="chart-caption">{dashboard.caption}</p>
