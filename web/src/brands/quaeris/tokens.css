@@ -1,0 +1,41 @@
+/* Quaeris — per QuaerisAI_Design_Guidelines_Final.pdf (June 2026) */
+:root {
+  /* Canvas & surfaces */
+  --bg-canvas:        #FAF8FF;   /* page bg */
+  --bg-surface:       #FFFFFF;
+  --bg-warm:          #F9F5FF;   /* "Section Bg Soft" / hero bg */
+  --bg-ink:           #200123;   /* Deep Dark Purple */
+  --bg-ink-elevated:  #2D0136;   /* derived — cards on dark (PDF silent) */
+
+  /* Text */
+  --text-primary:     #200123;
+  --text-secondary:   #6B4D72;   /* Body Purple */
+  --text-tertiary:    #9CA3AF;   /* copyright bar */
+  --text-on-dark:     #FFFFFF;
+  --text-on-dark-dim: rgba(255,255,255,0.75);
+
+  /* Brand accent */
+  --brand-accent:        #8C20A4;               /* Brand Purple */
+  --brand-accent-hover:  #7A1C8F;               /* derived */
+  --brand-accent-deep:   #4E0250;               /* Gradient Dark */
+  --brand-accent-soft:   rgba(140,32,164,0.10); /* category-pill bg */
+  --brand-accent-glow:   rgba(140,32,164,0.25); /* derived */
+
+  /* Borders */
+  --border-subtle:    #ECDCF0;
+  --border-strong:    #DCC8E4;   /* derived */
+  --border-on-dark:   rgba(236,220,240,0.15); /* derived */
+
+  /* CTA shape & fill — PDF: 10px radius, #4E0250 → #8C20A4 gradient */
+  --radius-cta:    10px;
+  --cta-bg:        linear-gradient(90deg, #4E0250, #8C20A4);
+  --cta-bg-hover:  linear-gradient(90deg, #3D0140, #7A1C8F);
+  --cta-bg-hero:   linear-gradient(90deg, #4E0250, #8C20A4);
+
+  /* Display weight — PDF headings are Roboto Regular */
+  --weight-display: 400;
+
+  /* Typography */
+  --font-display: var(--font-roboto), Arial, sans-serif;
+  --font-body:    var(--font-inter), system-ui, -apple-system, sans-serif;
+}

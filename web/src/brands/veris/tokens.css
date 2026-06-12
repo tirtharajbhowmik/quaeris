@@ -30,6 +30,7 @@
   --radius-cta:    var(--radius-pill);
   --cta-bg:        var(--brand-accent);
   --cta-bg-hover:  var(--brand-accent-hover);
+  --cta-bg-hero:   linear-gradient(135deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
 
   /* Display weight (Fraunces is variable; 450 is intentional) */
   --weight-display: 450;
