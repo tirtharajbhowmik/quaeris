@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated brand selection (scripts/select-brand.mjs)
+src/brand-active/

@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "node scripts/select-brand.mjs && next dev -p 3100",
+    "dev:veris": "BRAND=veris node scripts/select-brand.mjs && next dev -p 3100",
+    "dev:quaeris": "BRAND=quaeris node scripts/select-brand.mjs && next dev -p 3101",
+    "build": "node scripts/select-brand.mjs && next build",
+    "build:veris": "BRAND=veris node scripts/select-brand.mjs && next build",
+    "build:quaeris": "BRAND=quaeris node scripts/select-brand.mjs && next build",
+    "start": "next start",
+    "typecheck": "node scripts/select-brand.mjs && tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.13",
