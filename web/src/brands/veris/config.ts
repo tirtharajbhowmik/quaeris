@@ -18,6 +18,7 @@ import type {
   TopNavItem,
   FeatureRowItem,
   BrandMeta,
+  AiCapability,
 } from "@/config/types";
 
 // ── Image asset map ─────────────────────────────────────────
@@ -608,6 +609,40 @@ export const brand = {
       },
     ] satisfies Testimonial[],
   },
+
+  // ── AI-first capability cards ──────────────────────────────
+  aiCapabilities: [
+    {
+      title: "Natural-Language Queries",
+      desc: "Ask in plain English. Agents translate your question into governed queries against the semantic layer — no SQL, no waiting on the data team.",
+      icon: "message-square",
+    },
+    {
+      title: "Governed Answers",
+      desc: "Every answer maps to certified metrics and definitions, so the number you see is the number everyone else sees.",
+      icon: "shield-check",
+    },
+    {
+      title: "Source Citations & Lineage",
+      desc: "Each result cites the tables, metrics, and logic behind it. Trace any number back to its source in one click.",
+      icon: "git-branch",
+    },
+    {
+      title: "Anomaly Detection",
+      desc: "Agents watch your KPIs and flag unexpected shifts — churn risk, spend spikes, pipeline drops — before they surface in a report.",
+      icon: "activity",
+    },
+    {
+      title: "Proactive Insights",
+      desc: "Scheduled and triggered alerts surface what changed and why, delivered to your inbox or Slack without anyone asking.",
+      icon: "bell",
+    },
+    {
+      title: "AI Co-Pilot",
+      desc: "A conversational analyst that turns questions into answers, charts, and next steps across your entire warehouse.",
+      icon: "sparkles",
+    },
+  ] satisfies AiCapability[],
 
   // ── FAQ ────────────────────────────────────────────────────
   faq: {

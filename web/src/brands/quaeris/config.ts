@@ -18,6 +18,7 @@ import type {
   TopNavItem,
   FeatureRowItem,
   BrandMeta,
+  AiCapability,
 } from "@/config/types";
 
 // ── Image asset map ─────────────────────────────────────────
@@ -608,6 +609,55 @@ export const brand = {
       },
     ] satisfies Testimonial[],
   },
+
+  // ── AI-first capability cards ──────────────────────────────
+  aiCapabilities: [
+    {
+      title: "Natural-Language Queries",
+      desc: "Ask in plain English. Agents translate your question into governed queries against the semantic layer — no SQL, no waiting on the data team.",
+      icon: "message-square",
+    },
+    {
+      title: "Autonomous Multi-Step Workflows",
+      desc: "Think of our agents as your dedicated partner, handling the entire analysis for you so you can focus on your next big move.",
+      icon: "workflow",
+    },
+    {
+      title: "Predictive & Proactive Insights",
+      desc: "Agents forecast, flag anomalies, and diagnose root causes — sending proactive alerts to your inbox or Slack before issues impact your business.",
+      icon: "bell",
+    },
+    {
+      title: "Smart Semantic Layer",
+      desc: "Unlike traditional BI tools requiring months of modeling, Quaeris automatically learns your business definitions and data relationships as you interact.",
+      icon: "layers",
+    },
+    {
+      title: "BYOM (Bring Your Own Model)",
+      desc: "Your team picks the model. Connect OpenAI, Anthropic, Google, or Meta and switch as the landscape evolves.",
+      icon: "cpu",
+    },
+    {
+      title: "Data & Document Agents",
+      desc: "Instantly extract structured data from thousands of contracts, invoices, or resumes — then unify it with your warehouse data in one simple query.",
+      icon: "file-text",
+    },
+    {
+      title: "Governed Answers",
+      desc: "Every answer maps to certified metrics and definitions, so the number you see is the number everyone else sees.",
+      icon: "shield-check",
+    },
+    {
+      title: "Source Citations & Lineage",
+      desc: "Each result cites the tables, metrics, and logic behind it. Trace any number back to its source in one click.",
+      icon: "git-branch",
+    },
+    {
+      title: "AI Co-Pilot",
+      desc: "A conversational analyst that turns questions into answers, charts, and next steps across your entire warehouse.",
+      icon: "sparkles",
+    },
+  ] satisfies AiCapability[],
 
   // ── FAQ ────────────────────────────────────────────────────
   faq: {

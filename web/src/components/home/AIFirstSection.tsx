@@ -1,45 +1,30 @@
-import { MessageSquare, ShieldCheck, GitBranch, Activity, Bell, Sparkles } from "lucide-react";
+import {
+  Activity,
+  Bell,
+  Cpu,
+  FileText,
+  GitBranch,
+  Layers,
+  MessageSquare,
+  ShieldCheck,
+  Sparkles,
+  Workflow,
+} from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
-import { brand } from "@/config/brand.config";
+import { brand, AiCapabilityIcon } from "@/config/brand.config";
 
-interface Capability {
-  title: string;
-  desc: string;
-  icon: React.ReactNode;
-}
-
-const capabilities: Capability[] = [
-  {
-    title: "Natural-Language Queries",
-    desc: "Ask in plain English. Agents translate your question into governed queries against the semantic layer — no SQL, no waiting on the data team.",
-    icon: <MessageSquare aria-hidden="true" />,
-  },
-  {
-    title: "Governed Answers",
-    desc: "Every answer maps to certified metrics and definitions, so the number you see is the number everyone else sees.",
-    icon: <ShieldCheck aria-hidden="true" />,
-  },
-  {
-    title: "Source Citations & Lineage",
-    desc: "Each result cites the tables, metrics, and logic behind it. Trace any number back to its source in one click.",
-    icon: <GitBranch aria-hidden="true" />,
-  },
-  {
-    title: "Anomaly Detection",
-    desc: "Agents watch your KPIs and flag unexpected shifts — churn risk, spend spikes, pipeline drops — before they surface in a report.",
-    icon: <Activity aria-hidden="true" />,
-  },
-  {
-    title: "Proactive Insights",
-    desc: "Scheduled and triggered alerts surface what changed and why, delivered to your inbox or Slack without anyone asking.",
-    icon: <Bell aria-hidden="true" />,
-  },
-  {
-    title: "AI Co-Pilot",
-    desc: "A conversational analyst that turns questions into answers, charts, and next steps across your entire warehouse.",
-    icon: <Sparkles aria-hidden="true" />,
-  },
-];
+const capabilityIcons: Record<AiCapabilityIcon, React.ReactNode> = {
+  "message-square": <MessageSquare aria-hidden="true" />,
+  "shield-check": <ShieldCheck aria-hidden="true" />,
+  "git-branch": <GitBranch aria-hidden="true" />,
+  activity: <Activity aria-hidden="true" />,
+  bell: <Bell aria-hidden="true" />,
+  sparkles: <Sparkles aria-hidden="true" />,
+  workflow: <Workflow aria-hidden="true" />,
+  layers: <Layers aria-hidden="true" />,
+  cpu: <Cpu aria-hidden="true" />,
+  "file-text": <FileText aria-hidden="true" />,
+};
 
 export default function AIFirstSection() {
   return (
@@ -62,11 +47,11 @@ export default function AIFirstSection() {
         </Reveal>
 
         <div className="ai-grid" role="list">
-          {capabilities.map((c, i) => (
+          {brand.aiCapabilities.map((c, i) => (
             <Reveal key={c.title} delay={i * 70}>
               <article className="ai-card" role="listitem">
                 <span className="ai-icon" aria-hidden="true">
-                  {c.icon}
+                  {capabilityIcons[c.icon]}
                 </span>
                 <h3 className="ai-card-title">{c.title}</h3>
                 <p className="ai-card-desc">{c.desc}</p>

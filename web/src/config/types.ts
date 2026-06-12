@@ -151,3 +151,22 @@ export interface BrandMeta {
   description: string;
   ogDescription: string;
 }
+
+/** Icon keys the AIFirstSection maps to lucide-react components. */
+export type AiCapabilityIcon =
+  | "message-square"
+  | "shield-check"
+  | "git-branch"
+  | "activity"
+  | "bell"
+  | "sparkles"
+  | "workflow"
+  | "layers"
+  | "cpu"
+  | "file-text";
+
+export interface AiCapability {
+  title: string;
+  desc: string;
+  icon: AiCapabilityIcon;
+}
