@@ -317,6 +317,11 @@ git commit -m "refactor(brands): move brand tokens to veris package; add CTA sha
 
 ---
 
+> **AMENDMENTS (post-Task-3 quality review):**
+> 1. **Pre-existing font bug discovered:** the old wiring set next/font variable classes on `<body>` while `--font-display`/`--font-body` are declared on `:root` — custom properties substitute on the declaring element, so the fonts NEVER applied (whole site rendered system fonts). Fix in Task 4: apply `fontClasses` to `<html>`, not `<body>`. This makes Fraunces/Roboto actually render — a deliberate, spec-mandated visual change; the "Veris pixel-identical" check becomes "Veris matches its intended design (Fraunces headings)".
+> 2. Task 4 also removes the self-referential `--font-display`/`--font-body` lines from the `@theme inline` block (Tailwind emits `--font-display: var(--font-display)` which would shadow the brand value), and fixes the 12th display-weight site: `MetricDashboardMock.tsx:14` inline `fontWeight: 450` → `"var(--weight-display)"`.
+> 3. Task 5 adds a `--cta-bg-hero` token (veris: its existing hero gradient; quaeris: the PDF gradient). Task 6 routes `.hero-cta`/`.ai-cta` through `--radius-cta`/`--cta-bg-hero` and documents that gradient hovers swap discretely (no interpolation).
+
 ### Task 4: Wire layout.tsx to the active brand
 
 **Files:**
