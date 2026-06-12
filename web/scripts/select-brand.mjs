@@ -1,5 +1,7 @@
 // Writes src/brand-active/* as re-exports of the brand chosen by $BRAND.
 // Run before dev/build/typecheck: `BRAND=quaeris node scripts/select-brand.mjs`
+// NOTE: reads the shell env only (not .env.local). One brand per checkout at a
+// time — concurrent dev servers would share brand-active/ and .next/.
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

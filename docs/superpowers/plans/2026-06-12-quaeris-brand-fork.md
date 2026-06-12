@@ -492,6 +492,8 @@ Expected: both pass.
 - [ ] **Step 5: Run Quaeris and verify against the PDF**
 
 ```bash
+# IMPORTANT: stop any running veris dev server first — both brands share
+# src/brand-active/ and .next/, so concurrent servers cross-contaminate.
 npm run dev:quaeris &   # port 3101
 sleep 8
 curl -s http://localhost:3101/ | grep -oE "<title>[^<]*</title>"

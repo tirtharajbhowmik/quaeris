@@ -35,7 +35,8 @@ web/src/brands/
 - **Imports:** components use `import { brand } from "@brand/config"`. `layout.tsx` imports `@brand/tokens.css`, fonts from `@brand/fonts`, and derives metadata from `@brand/config`.
 - **Shared contract:** `src/config/types.ts` exports the `BrandConfig` interface; both brand configs are typed against it so a new brand cannot omit a field. The existing `src/config/brand.config.ts` dissolves into `brands/veris/config.ts` (a thin re-export may remain temporarily for migration safety, then is removed).
 - **globals.css** keeps the Tailwind `@theme` mapping that references semantic vars (`var(--bg-canvas)` etc.); only the `:root` value block moves into per-brand `tokens.css`.
-- **Scripts:** `dev:veris` (port 3100), `dev:quaeris` (port 3101), `build:veris`, `build:quaeris`. Plain `dev`/`build` honor `BRAND` from the environment / `.env.local`, defaulting to `veris`.
+- **Scripts:** `dev:veris` (port 3100), `dev:quaeris` (port 3101), `build:veris`, `build:quaeris`. Plain `dev`/`build` honor `BRAND` from the shell environment, defaulting to `veris`. *(Deviation, recorded post-review: the selector script does NOT read `.env.local` — that was a property of the abandoned next.config approach. Set `BRAND` in the shell or use the `:brand` script variants.)*
+- **One brand per checkout at a time:** both dev servers share `src/brand-active/` and `.next/`, so running `dev:veris` and `dev:quaeris` simultaneously from one checkout cross-contaminates. Stop one server before starting the other; for a true side-by-side demo, run the second brand from a `git worktree` of the same branch (own `node_modules`/`.next`).
 
 ## Quaeris tokens (PDF-sourced)
 
