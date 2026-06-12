@@ -123,7 +123,7 @@ export const brand = {
         featured: {
           image: images.megaMenuSolutions,
           imageAlt: "Analytics query panel showing a governed answer with cited metrics",
-          title: "See how Quaeris agents answer complex revenue questions in seconds — with sources cited",
+          title: "See how Veris agents answer complex revenue questions in seconds — with sources cited",
           href: "/platform",
         },
       } as MegaMenuItem,
@@ -176,7 +176,7 @@ export const brand = {
         featured: {
           image: images.megaMenuServices,
           imageAlt: "Team reviewing a governed analytics dashboard on a large screen",
-          title: "How Quaeris cut time-to-insight from days to minutes for a 400-person analytics org",
+          title: "How Veris cut time-to-insight from days to minutes for a 400-person analytics org",
           href: "/case-studies",
         },
       } as MegaMenuItem,
@@ -201,7 +201,7 @@ export const brand = {
               {
                 label: "Webinars",
                 href: "/resources/webinars",
-                description: "Live sessions with the Quaeris team",
+                description: "Live sessions with the Veris team",
               },
             ],
           },
@@ -216,10 +216,10 @@ export const brand = {
               {
                 label: "Customer Stories",
                 href: "/customers",
-                description: "How data leaders use Quaeris",
+                description: "How data leaders use Veris",
               },
               {
-                label: "About Quaeris",
+                label: "About Veris",
                 href: "/about",
                 description: "Our mission and how we work",
               },
@@ -264,7 +264,7 @@ export const brand = {
     eyebrow: "Agentic AI for enterprise analytics",
     headline: "Ask questions. Get trusted answers.",
     subcopy:
-      "Quaeris connects your data warehouse to a governed semantic layer and lets business users ask questions in plain language — returning accurate, source-cited answers your whole organisation can rely on.",
+      "Veris connects your data warehouse to a governed semantic layer and lets business users ask questions in plain language — returning accurate, source-cited answers your whole organisation can rely on.",
     trustLabel: "Trusted by data teams at",
     trustLogos: [
       { label: "Warehouse-native" },
@@ -298,10 +298,10 @@ export const brand = {
 
   // ── Three Pillars ──────────────────────────────────────────
   pillars: {
-    eyebrow: "What Quaeris does",
+    eyebrow: "What Veris does",
     headline: "Three layers that make analytics trustworthy.",
     subcopy:
-      "From raw warehouse data to a governed answer — Quaeris handles the semantic layer, the agent reasoning, and the security controls so your team gets answers they can act on.",
+      "From raw warehouse data to a governed answer — Veris handles the semantic layer, the agent reasoning, and the security controls so your team gets answers they can act on.",
     items: [
       {
         title: "Governed Semantic Layer",
@@ -323,7 +323,7 @@ export const brand = {
       },
       {
         title: "Enterprise Security",
-        body: "Role-based access controls enforce who sees what. Quaeris runs warehouse-native — your data never leaves your environment. Access is audited end-to-end.",
+        body: "Role-based access controls enforce who sees what. Veris runs warehouse-native — your data never leaves your environment. Access is audited end-to-end.",
         cta: "Learn more",
         ctaAriaLabel: "Learn about Enterprise Security",
         imgClass: "pillar-img-3",
@@ -373,14 +373,14 @@ export const brand = {
 
   // ── How we work ────────────────────────────────────────────
   howWeWork: {
-    eyebrow: "How Quaeris works",
+    eyebrow: "How Veris works",
     headline: "Governed answers in four steps.",
     subcopy:
       "A transparent pipeline from question to trusted answer — no black boxes, no unexplained numbers.",
     items: [
       {
         title: "Connect your warehouse",
-        body: "Quaeris connects to your existing data warehouse — Snowflake, BigQuery, Redshift, and more. No data copying, no pipelines to rebuild. Your data stays exactly where it is.",
+        body: "Veris connects to your existing data warehouse — Snowflake, BigQuery, Redshift, and more. No data copying, no pipelines to rebuild. Your data stays exactly where it is.",
         icon: "audit",
       },
       {
@@ -406,12 +406,12 @@ export const brand = {
     eyebrow: "How it works",
     headline: "From warehouse to trusted answer.",
     subcopy:
-      "A clear, four-step process — not a black box. Here is exactly how Quaeris delivers governed analytics.",
+      "A clear, four-step process — not a black box. Here is exactly how Veris delivers governed analytics.",
     items: [
       {
         eyebrow: "Step 01 — Connect",
         heading: "Connect your warehouse. No data ever moves.",
-        body: "Quaeris integrates directly with your existing data warehouse — Snowflake, BigQuery, Databricks, Redshift, and more. There are no pipelines to rebuild and no data copies to maintain. Your warehouse stays the system of record. Setup takes hours, not months, and your security posture stays intact from day one.",
+        body: "Veris integrates directly with your existing data warehouse — Snowflake, BigQuery, Databricks, Redshift, and more. There are no pipelines to rebuild and no data copies to maintain. Your warehouse stays the system of record. Setup takes hours, not months, and your security posture stays intact from day one.",
         cta: "See supported warehouses",
         ctaHref: "/platform/warehouse",
         image: images.featureRowStrategy,
@@ -424,12 +424,12 @@ export const brand = {
         cta: "Explore the semantic layer",
         ctaHref: "/platform/semantic-layer",
         image: images.featureRowData,
-        imageAlt: "Data analyst reviewing a semantic layer definition in the Quaeris platform",
+        imageAlt: "Data analyst reviewing a semantic layer definition in the Veris platform",
       },
       {
         eyebrow: "Step 03 — Ask & Trust",
         heading: "Ask anything. Every answer cites its source.",
-        body: "Business users ask questions in plain language. Quaeris agents reason over the semantic layer, generate a precise answer, and surface the exact metric definitions and data lineage behind it. Role-based access controls mean users only ever see what they're permitted to see. No hallucinations — every number is traceable.",
+        body: "Business users ask questions in plain language. Veris agents reason over the semantic layer, generate a precise answer, and surface the exact metric definitions and data lineage behind it. Role-based access controls mean users only ever see what they're permitted to see. No hallucinations — every number is traceable.",
         cta: "See a live demo",
         ctaHref: "/contact",
         image: "",
@@ -443,7 +443,7 @@ export const brand = {
     eyebrow: "Governed by design",
     headline: "Every answer is a source, not a guess.",
     subcopy:
-      "Quaeris agents don't generate numbers — they retrieve governed ones. Every answer is grounded in your certified semantic layer, with full lineage back to the source data.",
+      "Veris agents don't generate numbers — they retrieve governed ones. Every answer is grounded in your certified semantic layer, with full lineage back to the source data.",
     valueProps: [
       {
         num: "01",
@@ -479,7 +479,7 @@ export const brand = {
     eyebrow: "Customer proof",
     headline: "Real outcomes. Real data teams.",
     subcopy:
-      "Generic claims don't move data leaders. Here is what deploying Quaeris actually looks like after 90 days.",
+      "Generic claims don't move data leaders. Here is what deploying Veris actually looks like after 90 days.",
     items: [
       {
         industry: "Financial Services",
@@ -491,7 +491,7 @@ export const brand = {
           { num: "600+", label: "Self-serve users" },
           { num: "90", label: "Days to full rollout" },
         ],
-        how: "Connected Quaeris to their Snowflake warehouse, migrated 120 certified metric definitions into the semantic layer, and opened the agent interface to all business teams — with row-level security enforced automatically.",
+        how: "Connected Veris to their Snowflake warehouse, migrated 120 certified metric definitions into the semantic layer, and opened the agent interface to all business teams — with row-level security enforced automatically.",
         cta: "Read the story",
       },
       {
@@ -504,7 +504,7 @@ export const brand = {
           { num: "3×", label: "Faster than tickets" },
           { num: "0", label: "Hallucinated numbers" },
         ],
-        how: "Deployed the Quaeris semantic layer across their product, revenue, and marketing metrics. Agents now answer product-usage and pipeline questions directly — with sources cited in every response.",
+        how: "Deployed the Veris semantic layer across their product, revenue, and marketing metrics. Agents now answer product-usage and pipeline questions directly — with sources cited in every response.",
         cta: "Read the story",
       },
       {
@@ -517,7 +517,7 @@ export const brand = {
           { num: "1", label: "Metric definition per KPI" },
           { num: "11×", label: "ROI on analytics time" },
         ],
-        how: "Audited 300+ metric variants across legacy BI tools, consolidated to 80 certified definitions in the Quaeris semantic layer, and retired four dashboards that had been the source of conflicting board reports.",
+        how: "Audited 300+ metric variants across legacy BI tools, consolidated to 80 certified definitions in the Veris semantic layer, and retired four dashboards that had been the source of conflicting board reports.",
         cta: "Read the story",
       },
     ] satisfies CaseStudy[],
@@ -535,7 +535,7 @@ export const brand = {
     row1: [
       {
         quote:
-          "We'd been fighting over metric definitions for two years. Quaeris gave us a single place to certify them — and now every agent answer uses the same number. The board debates stopped.",
+          "We'd been fighting over metric definitions for two years. Veris gave us a single place to certify them — and now every agent answer uses the same number. The board debates stopped.",
         initials: "JK",
         name: "J.K.",
         role: "Head of Data · Kova Finance",
@@ -549,21 +549,21 @@ export const brand = {
       },
       {
         quote:
-          "Quaeris didn't just speed up our analysts — it let our ops team ask questions directly, without any training. The agents are careful: they cite metrics, not hunches.",
+          "Veris didn't just speed up our analysts — it let our ops team ask questions directly, without any training. The agents are careful: they cite metrics, not hunches.",
         initials: "MC",
         name: "M.C.",
         role: "Chief Data Officer · Halo Group",
       },
       {
         quote:
-          "I was nervous about giving executives direct query access. Quaeris's role-based controls meant I didn't have to be. They only see what they should — enforced at the agent level.",
+          "I was nervous about giving executives direct query access. Veris's role-based controls meant I didn't have to be. They only see what they should — enforced at the agent level.",
         initials: "AT",
         name: "A.T.",
         role: "Head of Data Platform · Vertex Health",
       },
       {
         quote:
-          "Our data team was drowning in ad-hoc requests. Within six weeks of deploying Quaeris, the queue dropped by 80%. Business users stopped waiting and started asking.",
+          "Our data team was drowning in ad-hoc requests. Within six weeks of deploying Veris, the queue dropped by 80%. Business users stopped waiting and started asking.",
         initials: "PL",
         name: "P.L.",
         role: "Director of Analytics · Northwind Co.",
@@ -572,14 +572,14 @@ export const brand = {
     row2: [
       {
         quote:
-          "Every other analytics AI we evaluated made up numbers when it didn't know the answer. Quaeris is architecturally different — it can't hallucinate because it queries governed metrics, not a language model's memory.",
+          "Every other analytics AI we evaluated made up numbers when it didn't know the answer. Veris is architecturally different — it can't hallucinate because it queries governed metrics, not a language model's memory.",
         initials: "DW",
         name: "D.W.",
         role: "CDO · Lumio Retail",
       },
       {
         quote:
-          "We have strict data residency requirements. Quaeris being warehouse-native was the only way we could deploy agentic AI without legal signing off a data transfer. That architecture decision matters.",
+          "We have strict data residency requirements. Veris being warehouse-native was the only way we could deploy agentic AI without legal signing off a data transfer. That architecture decision matters.",
         initials: "TM",
         name: "T.M.",
         role: "Head of Data Engineering · Prism Financial",
@@ -593,14 +593,14 @@ export const brand = {
       },
       {
         quote:
-          "Metric consistency across regions used to require a two-week reconciliation process before every board meeting. With Quaeris, everyone queries the same certified definitions — the reconciliation just doesn't happen anymore.",
+          "Metric consistency across regions used to require a two-week reconciliation process before every board meeting. With Veris, everyone queries the same certified definitions — the reconciliation just doesn't happen anymore.",
         initials: "RN",
         name: "R.N.",
         role: "Global Head of Analytics · Elara Tech",
       },
       {
         quote:
-          "What separates Quaeris is the governance-first design. It's not a chatbot bolted onto a dashboard — it's a governed data layer with an agent interface on top. That architectural difference shows in every answer.",
+          "What separates Veris is the governance-first design. It's not a chatbot bolted onto a dashboard — it's a governed data layer with an agent interface on top. That architectural difference shows in every answer.",
         initials: "CJ",
         name: "C.J.",
         role: "Chief Analytics Officer · Cedar Group",
@@ -615,21 +615,21 @@ export const brand = {
     subcopy: "If your question isn't here, there's a human on the other end.",
     miniCard: {
       title: "Still have questions?",
-      body: "Book a 30-minute demo with a Quaeris solutions engineer. We'll walk through your warehouse setup, your governance requirements, and show you a live governed answer — no slides.",
+      body: "Book a 30-minute demo with a Veris solutions engineer. We'll walk through your warehouse setup, your governance requirements, and show you a live governed answer — no slides.",
     },
     items: [
       {
         id: "faq-1",
-        question: "Does Quaeris hallucinate numbers?",
+        question: "Does Veris hallucinate numbers?",
         answer:
-          "No. Quaeris agents query your governed semantic layer — they don't generate numbers from a language model's training data. Every answer is grounded in certified metric definitions your data team controls. If a question can't be answered from the semantic layer, the agent says so rather than guessing.",
+          "No. Veris agents query your governed semantic layer — they don't generate numbers from a language model's training data. Every answer is grounded in certified metric definitions your data team controls. If a question can't be answered from the semantic layer, the agent says so rather than guessing.",
         defaultOpen: true,
       },
       {
         id: "faq-2",
         question: "Where does my data live?",
         answer:
-          "Your data never leaves your environment. Quaeris is warehouse-native — it connects directly to your existing Snowflake, BigQuery, Databricks, or Redshift instance and queries it in place. We don't copy, cache, or store your data on Quaeris infrastructure.",
+          "Your data never leaves your environment. Veris is warehouse-native — it connects directly to your existing Snowflake, BigQuery, Databricks, or Redshift instance and queries it in place. We don't copy, cache, or store your data on Veris infrastructure.",
       },
       {
         id: "faq-3",
@@ -639,9 +639,9 @@ export const brand = {
       },
       {
         id: "faq-4",
-        question: "Does Quaeris replace our BI tool?",
+        question: "Does Veris replace our BI tool?",
         answer:
-          "No — Quaeris complements your BI stack. It sits above your warehouse and semantic layer, giving business users a governed natural-language interface for exploratory questions. Your existing dashboards and reporting tools continue to serve structured, scheduled reporting. Quaeris handles the questions that don't fit a dashboard.",
+          "No — Veris complements your BI stack. It sits above your warehouse and semantic layer, giving business users a governed natural-language interface for exploratory questions. Your existing dashboards and reporting tools continue to serve structured, scheduled reporting. Veris handles the questions that don't fit a dashboard.",
       },
       {
         id: "faq-5",
@@ -651,9 +651,9 @@ export const brand = {
       },
       {
         id: "faq-6",
-        question: "What data warehouses does Quaeris support?",
+        question: "What data warehouses does Veris support?",
         answer:
-          "Quaeris supports Snowflake, Google BigQuery, AWS Redshift, Databricks, and Azure Synapse. Additional connectors are on the roadmap. If your warehouse isn't listed, contact us — we prioritise integrations based on customer demand.",
+          "Veris supports Snowflake, Google BigQuery, AWS Redshift, Databricks, and Azure Synapse. Additional connectors are on the roadmap. If your warehouse isn't listed, contact us — we prioritise integrations based on customer demand.",
       },
     ] satisfies FaqItem[],
   },
@@ -680,7 +680,7 @@ export const brand = {
   footer: {
     thesis: "Governed analytics your enterprise can trust.",
     brandDesc:
-      "Quaeris is agentic AI for analytics — a secure, governed platform where business users ask questions and AI agents return accurate, source-cited answers grounded in your semantic layer.",
+      "Veris is agentic AI for analytics — a secure, governed platform where business users ask questions and AI agents return accurate, source-cited answers grounded in your semantic layer.",
     columns: [
       {
         heading: "Company",
@@ -713,13 +713,13 @@ export const brand = {
         heading: "Contact",
         links: [
           { label: "Book a Demo", href: "#" },
-          { label: "seek@quaeris.ai", href: "#" },
+          { label: "hello@veris.ai", href: "#" },
           { label: "LinkedIn", href: "#" },
           { label: "Twitter/X", href: "#" },
         ],
       },
     ] satisfies FooterColumn[],
-    copyright: "© 2025 Quaeris. Placeholder brand.",
+    copyright: "© 2025 Veris. Placeholder brand.",
     legalLinks: [
       { label: "Privacy", href: "#" },
       { label: "Terms", href: "#" },
