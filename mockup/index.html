@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northstar Digital — Performance Marketing That Pays for Itself</title>
+<meta name="description" content="Northstar Digital runs paid media for growth-stage brands. Real spend. Real clients. Real numbers. See how we drive measurable ROI.">
+<meta property="og:title" content="Northstar Digital — Performance Marketing">
+<meta property="og:description" content="Real spend. Real clients. Real numbers.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,450;0,9..144,500;1,9..144,450&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — ALL values here, never hard-coded elsewhere
+   ============================================================ */
+:root {
+  /* Canvas & surfaces */
+  --bg-canvas:        #F7F7FA;
+  --bg-surface:       #FFFFFF;
+  --bg-warm:          #F6F4F2;
+  --bg-ink:           #0A0A12;
+  --bg-ink-elevated:  #14141F;
+
+  /* Text */
+  --text-primary:     #0B0E1E;
+  --text-secondary:   #51555F;
+  --text-tertiary:    #8A8E99;
+  --text-on-dark:     #FFFFFF;
+  --text-on-dark-dim: rgba(255,255,255,0.72);
+
+  /* Brand accent */
+  --brand-accent:        #6754E9;
+  --brand-accent-hover:  #5743D6;
+  --brand-accent-deep:   #2F05A2;
+  --brand-accent-soft:   rgba(103,84,233,0.10);
+  --brand-accent-glow:   rgba(103,84,233,0.25);
+
+  /* Borders */
+  --border-subtle:    rgba(11,14,30,0.08);
+  --border-strong:    rgba(11,14,30,0.16);
+  --border-on-dark:   rgba(255,255,255,0.12);
+
+  /* Semantic */
+  --success: #1A9E6C;
+  --warning: #D98E04;
+  --error:   #D43D51;
+
+  /* Typography */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body:    "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Spacing */
+  --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+  --space-5: 24px;  --space-6: 32px;  --space-7: 48px;  --space-8: 64px;
+  --space-9: 96px;  --space-10: 128px; --space-11: 160px;
+
+  --section-pad-y: clamp(72px, 10vw, 128px);
+
+  /* Radius */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card:       0 1px 2px rgba(11,14,30,0.04), 0 8px 24px rgba(34,22,119,0.06);
+  --shadow-card-hover: 0 2px 4px rgba(11,14,30,0.06), 0 16px 40px rgba(34,22,119,0.12);
+  --shadow-cta:        0 0 0 1px var(--brand-accent-glow), 0 8px 24px var(--brand-accent-glow);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 450ms;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  background: var(--bg-canvas);
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--font-body); cursor: pointer; border: none; background: none; }
+ul { list-style: none; }
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-5);
+  background: var(--brand-accent);
+  color: var(--text-on-dark);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 9999;
+  transition: top var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus { top: var(--space-5); }
+
+/* ============================================================
+   TYPOGRAPHY SCALE
+   ============================================================ */
+.display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 450;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+}
+.display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 450;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.display-md {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.heading-sm {
+  font-family: var(--font-body);
+  font-size: clamp(18px, 1.5vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+}
+.body-lg  { font-size: 18px; font-weight: 400; line-height: 1.6; }
+.body-md  { font-size: 16px; font-weight: 400; line-height: 1.65; }
+.body-sm  { font-size: 14px; font-weight: 400; line-height: 1.5; }
+.eyebrow  {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.stat-num {
+  font-family: var(--font-body);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+@media (max-width: 640px) {
+  .container { padding: 0 var(--space-4); }
+}
+.section-pad { padding: var(--section-pad-y) 0; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  font-family: var(--font-body);
+  transition: all var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+  min-height: 44px;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--brand-accent);
+  color: var(--text-on-dark);
+  padding: 12px 28px;
+  font-size: 16px;
+  box-shadow: var(--shadow-cta);
+  border: none;
+}
+.btn-primary:hover {
+  background: var(--brand-accent-hover);
+  transform: translateY(-1px);
+}
+.btn-primary:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 3px;
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  padding: 12px 28px;
+  font-size: 16px;
+  border: 1px solid var(--border-strong);
+}
+.btn-secondary:hover {
+  border-color: var(--text-primary);
+  background: rgba(11,14,30,0.03);
+}
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 3px;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--brand-accent);
+  padding: 8px 0;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+}
+.btn-ghost::after { content: " →"; transition: margin-left var(--dur-fast) var(--ease-out); }
+.btn-ghost:hover::after { margin-left: 4px; }
+.btn-on-dark {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 12px 28px;
+  font-size: 16px;
+  border: none;
+}
+.btn-on-dark:hover { background: var(--bg-canvas); transform: translateY(-1px); }
+.btn-secondary-dark {
+  background: transparent;
+  color: var(--text-on-dark);
+  padding: 12px 28px;
+  font-size: 16px;
+  border: 1px solid var(--border-on-dark);
+}
+.btn-secondary-dark:hover { border-color: rgba(255,255,255,0.5); }
+@media (max-width: 640px) {
+  .btn-stack { display: flex; flex-direction: column; width: 100%; }
+  .btn-stack .btn { width: 100%; justify-content: center; }
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+.card-dark {
+  background: var(--bg-ink-elevated);
+  border: 1px solid var(--border-on-dark);
+}
+
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+.section-header { max-width: 640px; }
+.section-header.center { max-width: 720px; margin-left: auto; margin-right: auto; text-align: center; }
+.section-header .eyebrow { color: var(--text-tertiary); margin-bottom: var(--space-3); display: block; }
+.section-header h2 { color: var(--text-primary); margin-bottom: var(--space-4); }
+.section-header .subcopy { color: var(--text-secondary); max-width: 68ch; }
+.section-header-dark .eyebrow { color: var(--brand-accent); }
+.section-header-dark h2 { color: var(--text-on-dark); }
+.section-header-dark .subcopy { color: var(--text-on-dark-dim); }
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ============================================================
+   SITE HEADER
+   ============================================================ */
+#site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+#site-header.scrolled { border-bottom-color: var(--border-subtle); }
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+.logo-wordmark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--brand-accent);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-mark svg { width: 16px; height: 16px; }
+.header-nav { display: flex; align-items: center; gap: var(--space-7); }
+.header-nav ul { display: flex; align-items: center; gap: var(--space-6); }
+.header-nav a {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast);
+}
+.header-nav a:hover { color: var(--text-primary); }
+.header-nav .has-dropdown { display: flex; align-items: center; gap: 4px; }
+.header-nav .has-dropdown svg { width: 14px; height: 14px; opacity: 0.5; }
+.header-actions { display: flex; align-items: center; gap: var(--space-5); }
+.header-actions .contact-link {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast);
+}
+.header-actions .contact-link:hover { color: var(--text-primary); }
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: var(--space-2);
+  min-height: 44px;
+  min-width: 44px;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all var(--dur-base) var(--ease-out);
+}
+@media (max-width: 1024px) {
+  .header-nav { display: none; }
+  .hamburger { display: flex; }
+  .header-actions .contact-link { display: none; }
+}
+/* Mobile nav overlay */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg-surface);
+  z-index: 99;
+  padding: var(--space-8) var(--space-5) var(--space-7);
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav ul { display: flex; flex-direction: column; gap: var(--space-5); }
+.mobile-nav a { font-size: 18px; font-weight: 500; color: var(--text-primary); }
+.mobile-nav-close {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  font-size: 28px;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+}
+.mobile-nav-cta { margin-top: auto; }
+
+/* ============================================================
+   SECTION 1: HERO
+   ============================================================ */
+#hero {
+  background: var(--bg-canvas);
+  position: relative;
+  overflow: hidden;
+  padding: clamp(80px, 12vw, 140px) 0 var(--section-pad-y);
+}
+.hero-glow {
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  max-width: 700px;
+  max-height: 700px;
+  background: radial-gradient(circle, var(--brand-accent) 0%, transparent 70%);
+  opacity: 0.12;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.hero-inner { position: relative; z-index: 1; max-width: 760px; }
+.hero-inner .eyebrow { color: var(--text-tertiary); margin-bottom: var(--space-5); display: block; }
+.hero-inner h1 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-5);
+  max-width: 16ch;
+}
+.hero-inner .subcopy {
+  color: var(--text-secondary);
+  max-width: 54ch;
+  margin-bottom: var(--space-7);
+}
+.hero-buttons { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-8); }
+.trust-strip { display: flex; align-items: center; gap: var(--space-5); flex-wrap: wrap; }
+.trust-strip-label { font-size: 12px; color: var(--text-tertiary); font-weight: 500; }
+.trust-logos { display: flex; align-items: center; gap: var(--space-4); }
+.trust-logo {
+  background: var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+@media (max-width: 640px) {
+  .hero-buttons { flex-direction: column; width: 100%; }
+  .hero-buttons .btn { width: 100%; justify-content: center; }
+}
+
+/* ============================================================
+   SECTION 2: LOGO MARQUEE
+   ============================================================ */
+#logo-marquee {
+  background: var(--bg-surface);
+  padding: var(--space-8) 0;
+  overflow: hidden;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.marquee-label {
+  text-align: center;
+  margin-bottom: var(--space-5);
+  color: var(--text-tertiary);
+}
+.marquee-track-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.marquee-track-wrap::before,
+.marquee-track-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+.marquee-track-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-surface), transparent);
+}
+.marquee-track-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-surface), transparent);
+}
+.marquee-track {
+  display: flex;
+  gap: var(--space-7);
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+.marquee-track-wrap:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+.marquee-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-canvas);
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  min-width: 120px;
+  height: 52px;
+  filter: grayscale(1);
+  opacity: 0.6;
+  transition: filter var(--dur-base), opacity var(--dur-base);
+  cursor: default;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.marquee-logo:hover { filter: grayscale(0); opacity: 1; }
+
+/* ============================================================
+   SECTION 3: THREE PILLARS
+   ============================================================ */
+#three-pillars { background: var(--bg-canvas); }
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .pillars-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .pillars-grid { grid-template-columns: 1fr; } }
+.pillar-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+  display: flex;
+  flex-direction: column;
+}
+.pillar-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+.pillar-img {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.pillar-img-1 { background: linear-gradient(135deg, var(--brand-accent-soft) 0%, rgba(103,84,233,0.2) 100%); }
+.pillar-img-2 { background: linear-gradient(135deg, rgba(26,158,108,0.1) 0%, rgba(26,158,108,0.2) 100%); }
+.pillar-img-3 { background: linear-gradient(135deg, rgba(217,142,4,0.1) 0%, rgba(217,142,4,0.2) 100%); }
+.pillar-img svg { width: 64px; height: 64px; opacity: 0.4; }
+.pillar-body { padding: var(--space-6); flex: 1; display: flex; flex-direction: column; }
+.pillar-body .display-md { color: var(--text-primary); margin-bottom: var(--space-3); }
+.pillar-body p { color: var(--text-secondary); flex: 1; margin-bottom: var(--space-5); }
+
+/* ============================================================
+   SECTION 4: STATS BAND
+   ============================================================ */
+#stats-band { background: var(--bg-surface); }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 400px) { .stats-grid { grid-template-columns: 1fr; } }
+.stat-block {
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  position: relative;
+}
+.stat-block + .stat-block::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+  background: var(--border-subtle);
+}
+@media (max-width: 768px) {
+  .stat-block:nth-child(2)::before { display: block; }
+  .stat-block:nth-child(3)::before { display: none; }
+  .stat-block:nth-child(4)::before { display: block; }
+}
+.stat-number {
+  display: block;
+  color: var(--brand-accent);
+  margin-bottom: var(--space-2);
+}
+.stat-label {
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+.stat-delta {
+  display: inline-block;
+  margin-top: var(--space-1);
+  padding: 2px 8px;
+  background: rgba(26,158,108,0.1);
+  color: var(--success);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   SECTION 5: HOW WE WORK — ICON FEATURE GRID
+   ============================================================ */
+#how-we-work { background: var(--bg-canvas); }
+.icon-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .icon-feature-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .icon-feature-grid { grid-template-columns: 1fr; gap: var(--space-6); } }
+.icon-feature { display: flex; flex-direction: column; gap: var(--space-4); }
+.icon-box {
+  width: 48px;
+  height: 48px;
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.icon-box svg { width: 24px; height: 24px; color: var(--brand-accent); }
+.icon-feature h3 { color: var(--text-primary); }
+.icon-feature p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+
+/* ============================================================
+   SECTION 6: DARK FEATURE SECTION
+   ============================================================ */
+#dark-feature {
+  background: var(--bg-ink);
+  position: relative;
+  overflow: hidden;
+}
+.dark-feature-glow {
+  position: absolute;
+  bottom: -30%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  max-width: 600px;
+  max-height: 600px;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 70%);
+  opacity: 0.15;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.dark-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-9);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  .dark-feature-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+.value-prop-list { display: flex; flex-direction: column; gap: 0; margin-top: var(--space-7); }
+.value-prop-row {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--border-on-dark);
+}
+.value-prop-row:first-child { border-top: 1px solid var(--border-on-dark); }
+.value-prop-num {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 450;
+  color: var(--brand-accent);
+  min-width: 24px;
+  padding-top: 2px;
+}
+.value-prop-text h4 { color: var(--text-on-dark); margin-bottom: var(--space-1); }
+.value-prop-text p { color: var(--text-on-dark-dim); font-size: 14px; line-height: 1.6; }
+
+/* Metric Dashboard Mock */
+.metric-dashboard {
+  background: var(--bg-ink-elevated);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+.metric-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+}
+.metric-dashboard-header span {
+  font-size: 13px;
+  color: var(--text-on-dark-dim);
+  font-weight: 500;
+}
+.metric-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+.metric-tile {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+.metric-tile:hover { background: rgba(255,255,255,0.08); }
+.metric-tile.active { border-color: var(--brand-accent); background: var(--brand-accent-soft); }
+.metric-tile-label {
+  font-size: 11px;
+  color: var(--text-on-dark-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-2);
+}
+.metric-tile-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  font-variant-numeric: tabular-nums;
+}
+.metric-tile-delta {
+  font-size: 11px;
+  color: var(--success);
+  margin-top: var(--space-1);
+  font-weight: 600;
+}
+.mini-chart { margin: var(--space-4) 0 var(--space-3); }
+.mini-chart svg { width: 100%; height: 80px; }
+.chart-caption {
+  font-size: 11px;
+  color: var(--text-on-dark-dim);
+  text-align: center;
+  opacity: 0.6;
+}
+
+/* ============================================================
+   SECTION 7: PROOF — CASE STUDIES
+   ============================================================ */
+#proof { background: var(--bg-canvas); }
+.case-study-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .case-study-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .case-study-grid { grid-template-columns: 1fr; } }
+.case-study-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.case-study-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+.industry-chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+}
+.cs-outcome { color: var(--text-secondary); font-size: 15px; line-height: 1.5; }
+.cs-stats { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+.cs-stat { display: flex; flex-direction: column; }
+.cs-stat-num { font-size: 22px; font-weight: 700; color: var(--brand-accent); font-variant-numeric: tabular-nums; }
+.cs-stat-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; }
+.cs-how { color: var(--text-tertiary); font-size: 13px; line-height: 1.5; border-top: 1px solid var(--border-subtle); padding-top: var(--space-4); }
+.proof-cta { text-align: center; margin-top: var(--space-7); }
+
+/* ============================================================
+   SECTION 8: TESTIMONIAL MARQUEE
+   ============================================================ */
+#testimonials { background: var(--bg-surface); overflow: hidden; }
+.review-badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-7);
+  flex-wrap: wrap;
+}
+.review-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  background: var(--bg-canvas);
+}
+.review-badge-stars { color: #F5A623; font-size: 14px; }
+.review-badge-text { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.review-badge-platform { font-size: 12px; color: var(--text-tertiary); }
+.testimonial-rows { display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; }
+.testimonial-row {
+  display: flex;
+  gap: var(--space-4);
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+}
+.testimonial-row.reverse { animation: marquee-scroll-reverse 32s linear infinite; }
+.testimonial-rows:hover .testimonial-row { animation-play-state: paused; }
+@keyframes marquee-scroll-reverse {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+.testimonial-card {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  width: 320px;
+  flex-shrink: 0;
+}
+.testimonial-quote {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.testimonial-author { display: flex; align-items: center; gap: var(--space-3); }
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  flex-shrink: 0;
+}
+.author-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.author-role { font-size: 12px; color: var(--text-tertiary); }
+
+/* ============================================================
+   SECTION 9: FAQ
+   ============================================================ */
+#faq { background: var(--bg-canvas); }
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: var(--space-9);
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .faq-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+.faq-mini-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-top: var(--space-6);
+  box-shadow: var(--shadow-card);
+}
+.faq-mini-card h4 { color: var(--text-primary); margin-bottom: var(--space-3); }
+.faq-mini-card p { color: var(--text-secondary); font-size: 14px; margin-bottom: var(--space-4); }
+.accordion { border-top: 1px solid var(--border-subtle); }
+.accordion-item { border-bottom: 1px solid var(--border-subtle); }
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: var(--space-4);
+  min-height: 44px;
+}
+.accordion-trigger:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; border-radius: 2px; }
+.accordion-question { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+.accordion-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  font-size: 16px;
+  color: var(--text-secondary);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.accordion-item.open .accordion-icon { transform: rotate(45deg); }
+.accordion-body {
+  overflow: hidden;
+  height: 0;
+  transition: height var(--dur-slow) var(--ease-out);
+}
+.accordion-content { padding: 0 0 var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7; }
+
+/* ============================================================
+   SECTION 10: CTA BAND
+   ============================================================ */
+#cta-band {
+  background: var(--bg-ink);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.cta-band-glow {
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
+  height: 60vw;
+  max-width: 700px;
+  max-height: 700px;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 70%);
+  opacity: 0.15;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+.cta-inner .eyebrow { color: var(--brand-accent); margin-bottom: var(--space-5); display: block; }
+.cta-inner h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.cta-inner .subcopy { color: var(--text-on-dark-dim); margin-bottom: var(--space-7); }
+.cta-buttons { display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap; }
+@media (max-width: 640px) {
+  .cta-buttons { flex-direction: column; align-items: stretch; }
+  .cta-buttons .btn { justify-content: center; }
+}
+
+/* Newsletter Block */
+.newsletter-block {
+  background: var(--bg-ink-elevated);
+  border-top: 1px solid var(--border-on-dark);
+  padding: var(--space-8) 0;
+}
+.newsletter-inner {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+.newsletter-inner .eyebrow { color: var(--brand-accent); margin-bottom: var(--space-3); display: block; }
+.newsletter-inner h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 450;
+  color: var(--text-on-dark);
+  margin-bottom: var(--space-3);
+}
+.newsletter-inner p { color: var(--text-on-dark-dim); font-size: 14px; margin-bottom: var(--space-5); }
+.newsletter-form { display: flex; gap: var(--space-2); margin-bottom: var(--space-3); }
+.newsletter-input {
+  flex: 1;
+  height: 48px;
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-on-dark);
+  padding: 0 var(--space-5);
+  font-family: var(--font-body);
+  font-size: 15px;
+  transition: border-color var(--dur-fast);
+}
+.newsletter-input::placeholder { color: rgba(255,255,255,0.4); }
+.newsletter-input:focus {
+  outline: none;
+  border-color: var(--brand-accent);
+}
+.newsletter-consent { font-size: 12px; color: rgba(255,255,255,0.4); }
+@media (max-width: 480px) {
+  .newsletter-form { flex-direction: column; }
+  .newsletter-form .btn { width: 100%; justify-content: center; }
+}
+
+/* ============================================================
+   SITE FOOTER
+   ============================================================ */
+#site-footer {
+  background: var(--bg-ink);
+  border-top: 1px solid var(--border-on-dark);
+  padding: var(--space-9) 0 0;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(4, 1fr);
+  gap: var(--space-8);
+  margin-bottom: var(--space-9);
+}
+@media (max-width: 1024px) {
+  .footer-top { grid-template-columns: repeat(2, 1fr); }
+  .footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-brand { grid-column: auto; }
+}
+.footer-brand {}
+.footer-thesis {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 450;
+  color: var(--text-on-dark);
+  line-height: 1.3;
+  max-width: 28ch;
+  margin-bottom: var(--space-5);
+  letter-spacing: -0.01em;
+}
+.footer-brand-desc { font-size: 14px; color: var(--text-on-dark-dim); line-height: 1.6; max-width: 32ch; }
+.footer-col h4 {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-on-dark-dim);
+  margin-bottom: var(--space-5);
+}
+.footer-col ul { display: flex; flex-direction: column; gap: var(--space-3); }
+.footer-col a {
+  font-size: 14px;
+  color: var(--text-on-dark-dim);
+  transition: color var(--dur-fast);
+}
+.footer-col a:hover { color: var(--text-on-dark); }
+.footer-bottom {
+  border-top: 1px solid var(--border-on-dark);
+  padding: var(--space-5) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+.footer-bottom-left { font-size: 13px; color: var(--text-on-dark-dim); display: flex; gap: var(--space-5); }
+.footer-bottom-left a { color: var(--text-on-dark-dim); transition: color var(--dur-fast); }
+.footer-bottom-left a:hover { color: var(--text-on-dark); }
+.social-icons { display: flex; gap: var(--space-4); }
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-on-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-on-dark-dim);
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+.social-icon:hover { border-color: rgba(255,255,255,0.4); color: var(--text-on-dark); }
+.social-icon svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ============================================================
+     SITE HEADER
+     ============================================================ -->
+<header id="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo-wordmark" aria-label="Northstar Digital — Home">
+      <div class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 2L10 7H15L11 10L12.5 15L8 12L3.5 15L5 10L1 7H6L8 2Z" fill="white"/>
+        </svg>
+      </div>
+      Northstar Digital
+    </a>
+
+    <nav class="header-nav" aria-label="Main navigation">
+      <ul>
+        <li><a href="#" class="has-dropdown">Solutions <svg viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a></li>
+        <li><a href="#" class="has-dropdown">Services <svg viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a></li>
+        <li><a href="#">Tools</a></li>
+        <li><a href="#">Case Studies</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="/contact" class="contact-link">Contact</a>
+      <a href="#cta-band" class="btn btn-primary" style="font-size:14px;padding:10px 22px;">Get a free audit</a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="hamburger-btn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+  <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">×</button>
+  <ul>
+    <li><a href="#">Solutions</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Tools</a></li>
+    <li><a href="#">Case Studies</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="mobile-nav-cta">
+    <a href="#cta-band" class="btn btn-primary" style="width:100%;justify-content:center;">Get a free audit</a>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ============================================================
+       SECTION 1: HERO
+       ============================================================ -->
+  <section id="hero" aria-labelledby="hero-heading">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="hero-inner">
+        <span class="eyebrow reveal">Performance marketing for growth-stage brands</span>
+        <h1 id="hero-heading" class="display-xl reveal" style="transition-delay:60ms">
+          Paid media that pays for itself.
+        </h1>
+        <p class="body-lg subcopy reveal" style="transition-delay:120ms">
+          We run Google, Meta, and LinkedIn ads for B2B and ecommerce brands that have outgrown the agency guesswork. Your budget works harder from day one.
+        </p>
+        <div class="hero-buttons reveal" style="transition-delay:180ms">
+          <a href="#cta-band" class="btn btn-primary">See what's possible</a>
+          <a href="#proof" class="btn btn-secondary">View case studies</a>
+        </div>
+        <div class="trust-strip reveal" style="transition-delay:240ms">
+          <span class="trust-strip-label">Trusted by teams at</span>
+          <div class="trust-logos" aria-label="Partner logos">
+            <div class="trust-logo">Google Partner</div>
+            <div class="trust-logo">Meta Business</div>
+            <div class="trust-logo">LinkedIn MPS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2: LOGO MARQUEE
+       ============================================================ -->
+  <section id="logo-marquee" aria-label="Trusted by">
+    <div class="container">
+      <p class="eyebrow marquee-label">Trusted by teams at</p>
+    </div>
+    <div class="marquee-track-wrap" role="marquee" aria-label="Client logos">
+      <div class="marquee-track" aria-hidden="true">
+        <!-- First set -->
+        <div class="marquee-logo">Vertex</div>
+        <div class="marquee-logo">Lumio</div>
+        <div class="marquee-logo">Orbit</div>
+        <div class="marquee-logo">Northwind</div>
+        <div class="marquee-logo">Cedar</div>
+        <div class="marquee-logo">Halo</div>
+        <div class="marquee-logo">Prism</div>
+        <div class="marquee-logo">Solent</div>
+        <div class="marquee-logo">Kova</div>
+        <div class="marquee-logo">Elara</div>
+        <!-- Duplicate set for seamless loop -->
+        <div class="marquee-logo">Vertex</div>
+        <div class="marquee-logo">Lumio</div>
+        <div class="marquee-logo">Orbit</div>
+        <div class="marquee-logo">Northwind</div>
+        <div class="marquee-logo">Cedar</div>
+        <div class="marquee-logo">Halo</div>
+        <div class="marquee-logo">Prism</div>
+        <div class="marquee-logo">Solent</div>
+        <div class="marquee-logo">Kova</div>
+        <div class="marquee-logo">Elara</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3: THREE PILLARS
+       ============================================================ -->
+  <section id="three-pillars" class="section-pad" aria-labelledby="pillars-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">What we do</span>
+        <h2 id="pillars-heading" class="display-lg">Three ways we move the needle.</h2>
+        <p class="body-lg subcopy" style="color:var(--text-secondary)">From first click to closed deal, we own the paid channel so your team can focus on closing.</p>
+      </div>
+
+      <div class="pillars-grid">
+        <article class="pillar-card reveal" style="transition-delay:0ms">
+          <div class="pillar-img pillar-img-1" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--brand-accent)">
+              <rect x="8" y="32" width="10" height="24" rx="2" fill="currentColor" opacity="0.5"/>
+              <rect x="27" y="20" width="10" height="36" rx="2" fill="currentColor" opacity="0.7"/>
+              <rect x="46" y="10" width="10" height="46" rx="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="pillar-body">
+            <h3 class="display-md">Paid Search</h3>
+            <p class="body-md">Google and Bing campaigns built for conversion. We write the ads, manage the bids, and cut the waste — every week.</p>
+            <a href="#" class="btn-ghost" aria-label="Learn about Paid Search">Learn more</a>
+          </div>
+        </article>
+
+        <article class="pillar-card reveal" style="transition-delay:60ms">
+          <div class="pillar-img pillar-img-2" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--success)">
+              <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+              <circle cx="32" cy="32" r="12" stroke="currentColor" stroke-width="3" opacity="0.6"/>
+              <circle cx="32" cy="32" r="5" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="pillar-body">
+            <h3 class="display-md">Paid Social</h3>
+            <p class="body-md">Meta, LinkedIn, and TikTok ads that find your buyer before they're searching. Creative strategy included — no retainer surprises.</p>
+            <a href="#" class="btn-ghost" aria-label="Learn about Paid Social">Learn more</a>
+          </div>
+        </article>
+
+        <article class="pillar-card reveal" style="transition-delay:120ms">
+          <div class="pillar-img pillar-img-3" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--warning)">
+              <path d="M12 48 L32 16 L52 48" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+              <circle cx="32" cy="16" r="5" fill="currentColor"/>
+              <circle cx="12" cy="48" r="5" fill="currentColor" opacity="0.6"/>
+              <circle cx="52" cy="48" r="5" fill="currentColor" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="pillar-body">
+            <h3 class="display-md">Performance Analytics</h3>
+            <p class="body-md">Attribution that actually makes sense. We track every dollar from click to customer and report on what moves revenue, not vanity.</p>
+            <a href="#" class="btn-ghost" aria-label="Learn about Performance Analytics">Learn more</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4: STATS BAND
+       ============================================================ -->
+  <section id="stats-band" class="section-pad" aria-label="Key metrics">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-block reveal">
+          <span class="stat-num stat-number" data-target="4.8" data-suffix="x" aria-label="4.8x average ROAS">0</span>
+          <span class="stat-label body-sm">Average ROAS</span>
+          <span class="stat-delta">+22% vs. industry avg</span>
+        </div>
+        <div class="stat-block reveal" style="transition-delay:60ms">
+          <span class="stat-num stat-number" data-target="127" data-suffix="M+" aria-label="$127M+ in tracked spend">0</span>
+          <span class="stat-label body-sm">In tracked spend</span>
+          <span class="stat-delta">Since 2019</span>
+        </div>
+        <div class="stat-block reveal" style="transition-delay:120ms">
+          <span class="stat-num stat-number" data-target="340" data-suffix="+" aria-label="340+ campaigns launched">0</span>
+          <span class="stat-label body-sm">Campaigns launched</span>
+          <span class="stat-delta">Across 12 verticals</span>
+        </div>
+        <div class="stat-block reveal" style="transition-delay:180ms">
+          <span class="stat-num stat-number" data-target="94" data-suffix="%" aria-label="94% client retention">0</span>
+          <span class="stat-label body-sm">Client retention</span>
+          <span class="stat-delta">12-month rolling</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 5: HOW WE WORK
+       ============================================================ -->
+  <section id="how-we-work" class="section-pad" aria-labelledby="how-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">How we drive revenue</span>
+        <h2 id="how-heading" class="display-lg">No black boxes. No bloated teams.</h2>
+        <p class="body-lg subcopy" style="color:var(--text-secondary)">A small, senior team runs your account. You see everything we do and why we do it.</p>
+      </div>
+
+      <div class="icon-feature-grid">
+        <div class="icon-feature reveal" style="transition-delay:0ms">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 0-2 2h-2a2 2 0 0 0-2-2z"/></svg>
+          </div>
+          <h3 class="heading-sm">Audit first, spend later</h3>
+          <p>We review your existing campaigns before touching your budget. Every recommendation is tied to a specific revenue lever, not a generic best practice.</p>
+        </div>
+
+        <div class="icon-feature reveal" style="transition-delay:60ms">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <h3 class="heading-sm">Weekly optimisation sprints</h3>
+          <p>Bids, audiences, and copy reviewed every seven days. We don't wait for monthly reports to act on what the data is already showing us.</p>
+        </div>
+
+        <div class="icon-feature reveal" style="transition-delay:120ms">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <h3 class="heading-sm">Full creative production</h3>
+          <p>Ad copy, creative briefs, and landing page recommendations come with every engagement. Conversion rate is our problem, not just click rate.</p>
+        </div>
+
+        <div class="icon-feature reveal" style="transition-delay:180ms">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h3 class="heading-sm">One dashboard, no surprises</h3>
+          <p>Real-time reporting in a shared dashboard. You'll know your CPA, ROAS, and pipeline contribution before we do — no chasing for updates.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 6: DARK FEATURE SECTION
+       ============================================================ -->
+  <section id="dark-feature" class="section-pad" aria-labelledby="dark-feature-heading">
+    <div class="dark-feature-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="dark-feature-grid">
+        <div>
+          <div class="section-header section-header-dark reveal">
+            <span class="eyebrow">The Northstar method</span>
+            <h2 id="dark-feature-heading" class="display-lg">We measure what matters to the board.</h2>
+            <p class="body-lg subcopy">Pipeline, revenue, and payback period — not impressions. Every campaign is grounded in commercial outcomes your CFO can sign off on.</p>
+          </div>
+
+          <div class="value-prop-list" role="list">
+            <div class="value-prop-row reveal" role="listitem" style="transition-delay:60ms">
+              <span class="value-prop-num">01</span>
+              <div class="value-prop-text">
+                <h4 class="heading-sm">Revenue-first attribution</h4>
+                <p>We connect ad spend to closed revenue, not just leads. You'll see pipeline influenced and deals closed — by channel, campaign, and keyword.</p>
+              </div>
+            </div>
+            <div class="value-prop-row reveal" role="listitem" style="transition-delay:120ms">
+              <span class="value-prop-num">02</span>
+              <div class="value-prop-text">
+                <h4 class="heading-sm">Forecasting before launch</h4>
+                <p>Every campaign includes a forward model: expected CPA range, breakeven ROAS, and 90-day spend-to-pipeline projection. No surprises at month end.</p>
+              </div>
+            </div>
+            <div class="value-prop-row reveal" role="listitem" style="transition-delay:180ms">
+              <span class="value-prop-num">03</span>
+              <div class="value-prop-text">
+                <h4 class="heading-sm">Proactive budget reallocation</h4>
+                <p>Budget moves to the best-performing channels weekly — automatically flagged, explained, and approved. Your money never sits in a broken campaign.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Dashboard Mock -->
+        <div class="reveal" style="transition-delay:120ms" aria-label="Illustrative analytics dashboard">
+          <div class="metric-dashboard">
+            <div class="metric-dashboard-header">
+              <span style="font-family:var(--font-display);font-size:16px;color:var(--text-on-dark);font-weight:450;">Campaign overview</span>
+              <span>Last 30 days</span>
+            </div>
+            <div class="metric-tiles" role="group" aria-label="Metric tiles">
+              <div class="metric-tile active" tabindex="0">
+                <div class="metric-tile-label">Clicks</div>
+                <div class="metric-tile-value">48,291</div>
+                <div class="metric-tile-delta">↑ 18.4%</div>
+              </div>
+              <div class="metric-tile" tabindex="0">
+                <div class="metric-tile-label">Conversions</div>
+                <div class="metric-tile-value">1,847</div>
+                <div class="metric-tile-delta">↑ 31.2%</div>
+              </div>
+              <div class="metric-tile" tabindex="0">
+                <div class="metric-tile-label">ROAS</div>
+                <div class="metric-tile-value">5.2x</div>
+                <div class="metric-tile-delta">↑ 0.8x</div>
+              </div>
+              <div class="metric-tile" tabindex="0">
+                <div class="metric-tile-label">Conv. Rate</div>
+                <div class="metric-tile-value">3.82%</div>
+                <div class="metric-tile-delta">↑ 0.6pp</div>
+              </div>
+            </div>
+            <div class="mini-chart">
+              <svg viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#6754E9" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#6754E9" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,70 L30,58 L60,50 L90,42 L120,38 L150,30 L180,20 L210,25 L240,15 L280,10 L280,80 L0,80 Z" fill="url(#chartGrad)"/>
+                <path d="M0,70 L30,58 L60,50 L90,42 L120,38 L150,30 L180,20 L210,25 L240,15 L280,10" fill="none" stroke="#6754E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="280" cy="10" r="4" fill="#6754E9"/>
+              </svg>
+            </div>
+            <p class="chart-caption">Illustrative data — for demonstration only</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 7: PROOF — CASE STUDIES
+       ============================================================ -->
+  <section id="proof" class="section-pad" aria-labelledby="proof-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Client proof</span>
+        <h2 id="proof-heading" class="display-lg">Specific proof beats generic claims.</h2>
+        <p class="body-lg subcopy" style="color:var(--text-secondary)">Real budgets, real clients, real numbers. Here's what the data looks like after 90 days.</p>
+      </div>
+
+      <div class="case-study-grid">
+        <article class="case-study-card reveal" style="transition-delay:0ms">
+          <span class="industry-chip">eCommerce</span>
+          <h3 class="display-md" style="color:var(--text-primary)">Cedar Home</h3>
+          <p class="cs-outcome">Scaled from $40k to $180k monthly ad spend while holding a 4.6x ROAS throughout the ramp.</p>
+          <div class="cs-stats" aria-label="Key metrics">
+            <div class="cs-stat"><span class="cs-stat-num">4.6x</span><span class="cs-stat-label">ROAS</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">+350%</span><span class="cs-stat-label">Revenue</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">90</span><span class="cs-stat-label">Days to scale</span></div>
+          </div>
+          <p class="cs-how">Rebuilt the Google Shopping feed structure, introduced Performance Max with custom audience signals, and cut CPA by 38% in the first six weeks.</p>
+          <a href="#" class="btn-ghost">Read the story</a>
+        </article>
+
+        <article class="case-study-card reveal" style="transition-delay:60ms">
+          <span class="industry-chip">B2B SaaS</span>
+          <h3 class="display-md" style="color:var(--text-primary)">Orbit CRM</h3>
+          <p class="cs-outcome">Reduced cost-per-SQL from $1,240 to $480 while doubling qualified pipeline in six months.</p>
+          <div class="cs-stats" aria-label="Key metrics">
+            <div class="cs-stat"><span class="cs-stat-num">$480</span><span class="cs-stat-label">Cost / SQL</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">2×</span><span class="cs-stat-label">Pipeline</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">61%</span><span class="cs-stat-label">CPA drop</span></div>
+          </div>
+          <p class="cs-how">Rebuilt LinkedIn targeting around job-change signals, added a competitor conquest layer on Google, and A/B tested seven landing page variants.</p>
+          <a href="#" class="btn-ghost">Read the story</a>
+        </article>
+
+        <article class="case-study-card reveal" style="transition-delay:120ms">
+          <span class="industry-chip">Professional Services</span>
+          <h3 class="display-md" style="color:var(--text-primary)">Lumio Legal</h3>
+          <p class="cs-outcome">Generated 220 qualified consultations in Q1 against a £15k monthly budget — all tracked to CRM.</p>
+          <div class="cs-stats" aria-label="Key metrics">
+            <div class="cs-stat"><span class="cs-stat-num">220</span><span class="cs-stat-label">Consultations</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">£68</span><span class="cs-stat-label">Cost / lead</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">11×</span><span class="cs-stat-label">ROI</span></div>
+          </div>
+          <p class="cs-how">Launched intent-based search campaigns targeting high-value practice areas, then used offline conversion imports to close the attribution loop with the firm's CRM.</p>
+          <a href="#" class="btn-ghost">Read the story</a>
+        </article>
+      </div>
+
+      <div class="proof-cta reveal">
+        <a href="#" class="btn btn-secondary">View all stories</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 8: TESTIMONIAL MARQUEE
+       ============================================================ -->
+  <section id="testimonials" class="section-pad" aria-labelledby="testimonials-heading">
+    <div class="container" style="margin-bottom:var(--space-7)">
+      <div class="section-header center reveal">
+        <span class="eyebrow">What clients say</span>
+        <h2 id="testimonials-heading" class="display-lg">Outcomes that speak for themselves.</h2>
+      </div>
+
+      <div class="review-badges" role="list" aria-label="Review platform ratings">
+        <div class="review-badge" role="listitem">
+          <span class="review-badge-stars" aria-hidden="true">★★★★★</span>
+          <span class="review-badge-text">5.0</span>
+          <span class="review-badge-platform">on Google</span>
+        </div>
+        <div class="review-badge" role="listitem">
+          <span class="review-badge-stars" aria-hidden="true">★★★★★</span>
+          <span class="review-badge-text">4.9</span>
+          <span class="review-badge-platform">on Clutch</span>
+        </div>
+        <div class="review-badge" role="listitem">
+          <span class="review-badge-stars" aria-hidden="true">★★★★★</span>
+          <span class="review-badge-text">4.8</span>
+          <span class="review-badge-platform">on G2</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-rows" aria-label="Client testimonials">
+      <!-- Row 1 -->
+      <div class="testimonial-row" aria-hidden="true">
+        <!-- Set 1 -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"We'd tried two agencies before Northstar. Neither could explain why CPAs were rising. Within 30 days of working together, we had a clear diagnosis and a plan that actually worked."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">JK</div>
+            <div><div class="author-name">Jamie K.</div><div class="author-role">Head of Growth · Cedar Home</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"The reporting alone was worth switching. We can finally connect ad spend to pipeline in the same view. Our CFO actually reads the dashboards now."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">SR</div>
+            <div><div class="author-name">Sarah R.</div><div class="author-role">VP Marketing · Orbit CRM</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Northstar didn't just hit our ROAS target — they rebuilt our entire funnel structure. We're now getting leads we'd never have captured with our old setup."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">MC</div>
+            <div><div class="author-name">Marcus C.</div><div class="author-role">Founder · Halo Studio</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"I was sceptical about switching during a busy quarter. They made it seamless and we saw better CPLs in week two. Should have done it sooner."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">AT</div>
+            <div><div class="author-name">Anika T.</div><div class="author-role">CMO · Vertex Health</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Our Google spend had been flat for 18 months with the previous agency. Northstar scaled it 3× in 90 days while ROAS went up, not down."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">PL</div>
+            <div><div class="author-name">Pete L.</div><div class="author-role">Director of Ecomm · Northwind Co.</div></div>
+          </div>
+        </div>
+        <!-- Duplicate -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"We'd tried two agencies before Northstar. Neither could explain why CPAs were rising. Within 30 days of working together, we had a clear diagnosis and a plan that actually worked."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">JK</div>
+            <div><div class="author-name">Jamie K.</div><div class="author-role">Head of Growth · Cedar Home</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"The reporting alone was worth switching. We can finally connect ad spend to pipeline in the same view. Our CFO actually reads the dashboards now."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">SR</div>
+            <div><div class="author-name">Sarah R.</div><div class="author-role">VP Marketing · Orbit CRM</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Northstar didn't just hit our ROAS target — they rebuilt our entire funnel structure. We're now getting leads we'd never have captured with our old setup."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">MC</div>
+            <div><div class="author-name">Marcus C.</div><div class="author-role">Founder · Halo Studio</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"I was sceptical about switching during a busy quarter. They made it seamless and we saw better CPLs in week two. Should have done it sooner."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">AT</div>
+            <div><div class="author-name">Anika T.</div><div class="author-role">CMO · Vertex Health</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Our Google spend had been flat for 18 months with the previous agency. Northstar scaled it 3× in 90 days while ROAS went up, not down."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">PL</div>
+            <div><div class="author-name">Pete L.</div><div class="author-role">Director of Ecomm · Northwind Co.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2 (reverse) -->
+      <div class="testimonial-row reverse" aria-hidden="true">
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Every other agency sent a junior account manager. At Northstar, the person who pitched us is the person managing our account. That accountability shows in the results."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">DW</div>
+            <div><div class="author-name">Dana W.</div><div class="author-role">CEO · Lumio Legal</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"The weekly performance reviews keep us aligned in a way monthly reports never did. Small adjustments compound fast — our Q4 was our best paid quarter ever."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">TM</div>
+            <div><div class="author-name">Tom M.</div><div class="author-role">Performance Lead · Prism Retail</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"They came in, ran the audit, found £40k in wasted spend inside a week, and fixed it before charging us anything meaningful. That trust is hard to find."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">EB</div>
+            <div><div class="author-name">Elena B.</div><div class="author-role">Head of Paid · Kova Finance</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"We scaled budget 4× in three months. CPAs went down, not up. That doesn't happen without serious structural work under the hood."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">RN</div>
+            <div><div class="author-name">Rohan N.</div><div class="author-role">COO · Elara Tech</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"What separates them is the creative process. They don't just manage bids — they shipped 12 landing page variants in the first quarter and tested every one of them."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">CJ</div>
+            <div><div class="author-name">Cleo J.</div><div class="author-role">Brand Director · Solent Co.</div></div>
+          </div>
+        </div>
+        <!-- Duplicate -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Every other agency sent a junior account manager. At Northstar, the person who pitched us is the person managing our account. That accountability shows in the results."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">DW</div>
+            <div><div class="author-name">Dana W.</div><div class="author-role">CEO · Lumio Legal</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"The weekly performance reviews keep us aligned in a way monthly reports never did. Small adjustments compound fast — our Q4 was our best paid quarter ever."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">TM</div>
+            <div><div class="author-name">Tom M.</div><div class="author-role">Performance Lead · Prism Retail</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"They came in, ran the audit, found £40k in wasted spend inside a week, and fixed it before charging us anything meaningful. That trust is hard to find."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">EB</div>
+            <div><div class="author-name">Elena B.</div><div class="author-role">Head of Paid · Kova Finance</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"We scaled budget 4× in three months. CPAs went down, not up. That doesn't happen without serious structural work under the hood."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">RN</div>
+            <div><div class="author-name">Rohan N.</div><div class="author-role">COO · Elara Tech</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"What separates them is the creative process. They don't just manage bids — they shipped 12 landing page variants in the first quarter and tested every one of them."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">CJ</div>
+            <div><div class="author-name">Cleo J.</div><div class="author-role">Brand Director · Solent Co.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 9: FAQ
+       ============================================================ -->
+  <section id="faq" class="section-pad" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="faq-grid">
+        <div>
+          <div class="section-header reveal">
+            <span class="eyebrow">Common questions</span>
+            <h2 id="faq-heading" class="display-lg">Clear answers, no fluff.</h2>
+            <p class="body-lg subcopy" style="color:var(--text-secondary)">If your question isn't here, there's a human on the other end.</p>
+          </div>
+          <div class="faq-mini-card reveal" style="transition-delay:120ms">
+            <h4 class="heading-sm">Still have questions?</h4>
+            <p>Book a 30-minute call with a senior account strategist. No sales pitch — just honest answers about whether we're the right fit.</p>
+            <a href="#" class="btn btn-secondary" style="font-size:14px;padding:10px 22px;">Book a call</a>
+          </div>
+        </div>
+
+        <div class="accordion reveal" style="transition-delay:60ms" role="list">
+          <div class="accordion-item open" role="listitem">
+            <button class="accordion-trigger" aria-expanded="true" aria-controls="faq-1">
+              <span class="accordion-question">How quickly will we see results?</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="faq-1" role="region">
+              <div class="accordion-content">Most clients see meaningful CPA improvement within the first 30 days. Scale and ROAS improvements compound from weeks 6–12 as our optimisation signals build. We model expected outcomes before launch so you know the timeline upfront, not after the fact.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-2">
+              <span class="accordion-question">What budget do you work with?</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="faq-2" role="region">
+              <div class="accordion-content">Our engagements start at £10k/month in managed media spend. Below that threshold, the data signal is too thin to optimise meaningfully. If you're pre-scale, we're happy to refer you to a vetted partner who works at smaller budgets.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-3">
+              <span class="accordion-question">Do you lock clients into long contracts?</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="faq-3" role="region">
+              <div class="accordion-content">No. We use rolling monthly agreements after an initial 90-day onboarding period. The 90-day window gives us enough time to rebuild structure and generate real data. After that, you stay because results are working — not because paperwork traps you.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-4">
+              <span class="accordion-question">Who actually manages our account?</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="faq-4" role="region">
+              <div class="accordion-content">A senior strategist owns your account end-to-end. We don't hand accounts to juniors after onboarding. Your strategist attends every review, writes the briefs, and makes the optimisation calls. You'll have their direct contact from day one.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-5">
+              <span class="accordion-question">How do you handle creative and landing pages?</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="faq-5" role="region">
+              <div class="accordion-content">Ad copy and creative briefs are included. For landing pages, we audit your existing pages and provide CRO recommendations. If you need net-new pages built, we have a vetted design partner we can introduce — or we can work with your in-house team.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-6">
+              <span class="accordion-question">What channels do you run?</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="faq-6" role="region">
+              <div class="accordion-content">Google Search, Shopping, and Performance Max. Meta (Facebook and Instagram). LinkedIn. Microsoft/Bing as a secondary where relevant. We don't spread across every platform — we go deep on the channels that match your buyer's journey and run them at a high standard.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 10: CTA BAND + NEWSLETTER
+       ============================================================ -->
+  <section id="cta-band" class="section-pad" aria-labelledby="cta-heading">
+    <div class="cta-band-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="cta-inner reveal">
+        <span class="eyebrow">Ready to scale?</span>
+        <h2 id="cta-heading" class="display-lg">Stop guessing. Start compounding.</h2>
+        <p class="body-lg subcopy">Book a free audit. We'll review your current campaigns, identify the biggest leaks, and show you a realistic path to better returns — no obligation.</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-on-dark">Get my free audit</a>
+          <a href="#" class="btn btn-secondary-dark">See case studies</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="newsletter-block" role="complementary" aria-label="Newsletter signup">
+    <div class="container">
+      <div class="newsletter-inner reveal">
+        <span class="eyebrow">The Performance Brief</span>
+        <h3>Weekly insights on paid media that actually runs.</h3>
+        <p>No generic tips. One actionable read, every Thursday. Read by 4,200+ growth marketers.</p>
+        <form class="newsletter-form" novalidate aria-label="Newsletter signup form">
+          <label for="newsletter-email" class="sr-only">Email address</label>
+          <input type="email" id="newsletter-email" class="newsletter-input" placeholder="you@company.com" required autocomplete="email">
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+        <p class="newsletter-consent">No spam. Unsubscribe any time. We handle your data per our <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:underline">Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ============================================================
+     SITE FOOTER
+     ============================================================ -->
+<footer id="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo-wordmark" style="margin-bottom:var(--space-5);display:inline-flex">
+          <div class="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L10 7H15L11 10L12.5 15L8 12L3.5 15L5 10L1 7H6L8 2Z" fill="white"/></svg>
+          </div>
+          Northstar Digital
+        </a>
+        <p class="footer-thesis">Performance marketing built on proof, not promises.</p>
+        <p class="footer-brand-desc">We run paid media for growth-stage brands that need results their CFO can see. Senior teams, zero guesswork.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">How we work</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Paid Search</a></li>
+          <li><a href="#">Paid Social</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Creative</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Case studies</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Free tools</a></li>
+          <li><a href="#">Research</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">Book a call</a></li>
+          <li><a href="#">hello@northstar.digital</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter/X</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom container">
+    <div class="footer-bottom-left">
+      <span>© 2025 Northstar Digital. Placeholder brand.</span>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+    <div class="social-icons" aria-label="Social media links">
+      <a href="#" class="social-icon" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Twitter / X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- Screen reader only utility -->
+<style>
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+</style>
+
+<!-- ============================================================
+     INLINE JAVASCRIPT — scroll reveal, count-up, accordion, header, mobile nav
+     ============================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --------------------------------------------------
+     HEADER: border on scroll
+  -------------------------------------------------- */
+  const header = document.getElementById('site-header');
+  const onScroll = () => {
+    header.classList.toggle('scrolled', window.scrollY > 8);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* --------------------------------------------------
+     MOBILE NAV
+  -------------------------------------------------- */
+  const hamburger = document.getElementById('hamburger-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  const mobileClose = document.getElementById('mobile-nav-close');
+
+  function openNav() {
+    mobileNav.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    mobileClose.focus();
+  }
+  function closeNav() {
+    mobileNav.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    hamburger.focus();
+  }
+  hamburger.addEventListener('click', openNav);
+  mobileClose.addEventListener('click', closeNav);
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
+
+  /* --------------------------------------------------
+     SCROLL REVEAL
+  -------------------------------------------------- */
+  if (!prefersReduced) {
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    revealEls.forEach(el => revealObserver.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }
+
+  /* --------------------------------------------------
+     STAT COUNT-UP
+  -------------------------------------------------- */
+  function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+
+  function animateCount(el) {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const isDecimal = target % 1 !== 0;
+    const duration = 1200;
+    const start = performance.now();
+
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeOutQuart(progress);
+      const current = target * eased;
+      el.textContent = (isDecimal ? current.toFixed(1) : Math.round(current)) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if (!prefersReduced) {
+    const statEls = document.querySelectorAll('.stat-number');
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          statObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    statEls.forEach(el => statObserver.observe(el));
+  } else {
+    document.querySelectorAll('.stat-number').forEach(el => {
+      el.textContent = el.dataset.target + (el.dataset.suffix || '');
+    });
+  }
+
+  /* --------------------------------------------------
+     ACCORDION
+  -------------------------------------------------- */
+  const accordionItems = document.querySelectorAll('.accordion-item');
+
+  // Initialise first item open
+  const firstItem = accordionItems[0];
+  if (firstItem) {
+    const firstBody = firstItem.querySelector('.accordion-body');
+    firstBody.style.height = firstBody.scrollHeight + 'px';
+  }
+
+  accordionItems.forEach(item => {
+    const trigger = item.querySelector('.accordion-trigger');
+    const body = item.querySelector('.accordion-body');
+
+    trigger.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+
+      // Close all
+      accordionItems.forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+        i.querySelector('.accordion-body').style.height = '0';
+      });
+
+      // Open clicked if was closed
+      if (!isOpen) {
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+        body.style.height = body.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* --------------------------------------------------
+     NEWSLETTER FORM
+  -------------------------------------------------- */
+  const newsletterForm = document.querySelector('.newsletter-form');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const input = newsletterForm.querySelector('input');
+      if (!input.value || !input.value.includes('@')) {
+        input.style.borderColor = 'var(--error)';
+        input.focus();
+        return;
+      }
+      input.style.borderColor = '';
+      const btn = newsletterForm.querySelector('button');
+      btn.textContent = 'Subscribed ✓';
+      btn.style.background = 'var(--success)';
+      input.disabled = true;
+      btn.disabled = true;
+    });
+  }
+
+})();
+</script>
+
+<!-- JSON-LD: Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Northstar Digital",
+  "description": "Performance marketing agency specialising in paid media for growth-stage brands.",
+  "url": "https://placeholder.northstar.digital",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "hello@northstar.digital",
+    "contactType": "sales"
+  }
+}
+</script>
+
+<!-- JSON-LD: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How quickly will we see results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most clients see meaningful CPA improvement within the first 30 days. Scale and ROAS improvements compound from weeks 6–12 as our optimisation signals build."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What budget do you work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our engagements start at £10k/month in managed media spend."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you lock clients into long contracts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. We use rolling monthly agreements after an initial 90-day onboarding period."
+      }
+    }
+  ]
+}
+</script>
+
+</body>
+</html>
