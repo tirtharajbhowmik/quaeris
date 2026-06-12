@@ -1,0 +1,40 @@
+/* Veris — white-label template brand tokens (visual output must not change) */
+:root {
+  /* Canvas & surfaces */
+  --bg-canvas:        #F7F7FA;
+  --bg-surface:       #FFFFFF;
+  --bg-warm:          #F6F4F2;
+  --bg-ink:           #0A0A12;
+  --bg-ink-elevated:  #14141F;
+
+  /* Text */
+  --text-primary:     #0B0E1E;
+  --text-secondary:   #51555F;
+  --text-tertiary:    #8A8E99;
+  --text-on-dark:     #FFFFFF;
+  --text-on-dark-dim: rgba(255,255,255,0.72);
+
+  /* Brand accent */
+  --brand-accent:        #9333EA;
+  --brand-accent-hover:  #7E22CE;
+  --brand-accent-deep:   #581C87;
+  --brand-accent-soft:   rgba(147,51,234,0.10);
+  --brand-accent-glow:   rgba(147,51,234,0.25);
+
+  /* Borders */
+  --border-subtle:    rgba(11,14,30,0.08);
+  --border-strong:    rgba(11,14,30,0.16);
+  --border-on-dark:   rgba(255,255,255,0.12);
+
+  /* CTA shape & fill (brand-divergent) */
+  --radius-cta:    var(--radius-pill);
+  --cta-bg:        var(--brand-accent);
+  --cta-bg-hover:  var(--brand-accent-hover);
+
+  /* Display weight (Fraunces is variable; 450 is intentional) */
+  --weight-display: 450;
+
+  /* Typography — next/font variables come from brands/veris/fonts.ts */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body:    var(--font-inter), system-ui, -apple-system, sans-serif;
+}
