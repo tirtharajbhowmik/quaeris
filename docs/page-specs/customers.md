@@ -3,7 +3,7 @@
 **Status:** Implementation-ready proof page structure  
 **Date:** 2026-06-12  
 **Audience:** Enterprise buyers (CFOs, CDOs, heads of data, analytics leaders) in finance, insurance, retail/CPG, healthcare, manufacturing, construction  
-**Brand context:** Quaeris (`/customers` nav promise: "How data leaders use Veris")
+**Brand context:** Quaeris (`/customers` nav promise: "How data leaders use Quaeris")
 
 ---
 
@@ -171,7 +171,7 @@ The page is the primary **EEAT credibility builder** on the site. Currently, the
 ```
 
 **Real quote from audit:**  
-> "We'd been fighting over metric definitions for two years. Veris gave us a single place to certify them — and now every agent answer uses the same number. The board debates stopped."
+> "We'd been fighting over metric definitions for two years. Quaeris gave us a single place to certify them — and now every agent answer uses the same number. The board debates stopped."
 — J.K., Head of Data · [Company name to confirm]
 
 **Candidate themes for 8–10 additional quotes [data-placeholder]:**
@@ -205,7 +205,7 @@ The page is the primary **EEAT credibility builder** on the site. Currently, the
 1. **Week 1 — Connect**
    - Icon: plug-2 (Lucide)
    - Title: "Connect your warehouse"
-   - Body: "Veris integrates directly with Snowflake, BigQuery, Databricks, Redshift, or Azure. No data moves. Setup takes hours."
+   - Body: "Quaeris integrates directly with Snowflake, BigQuery, Databricks, Redshift, or Azure. No data moves. Setup takes hours."
    - Supporting data: "[data-placeholder: typical connection time: 4–8 hours]"
 
 2. **Week 1–2 — Define**
