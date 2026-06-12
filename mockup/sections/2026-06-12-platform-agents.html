@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/agents — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic) */
+
+/* ── NEW:AgentHeroVideo ─────────────────────────────────────── */
+.agents-hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: var(--space-9);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.agents-hero-video {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-on-dark);
+  background: linear-gradient(135deg, var(--bg-ink) 0%, var(--bg-ink-elevated) 55%, var(--brand-accent-deep) 160%);
+  box-shadow: var(--shadow-card-hover);
+  overflow: hidden;
+  padding: var(--space-6);
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.agents-hero-video:hover { transform: translateY(-2px); }
+.agents-hero-video:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.agents-video-skel {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--border-on-dark);
+}
+.agents-video-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  background: color-mix(in srgb, var(--bg-ink) 35%, transparent);
+  transition: background var(--dur-base) var(--ease-out);
+}
+.agents-hero-video:hover .agents-video-overlay { background: color-mix(in srgb, var(--bg-ink) 18%, transparent); }
+.agents-video-play {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--cta-bg);
+  color: var(--text-on-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-cta);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.agents-hero-video:hover .agents-video-play { transform: scale(1.06); }
+.agents-video-play svg { width: 24px; height: 24px; margin-left: 3px; }
+.agents-video-label { color: var(--text-on-dark); font-weight: 600; font-size: 15px; }
+.agents-video-duration { font-size: 12px; color: var(--text-on-dark-dim); }
+
+/* ── NEW:AgentWorkflowSteps ─────────────────────────────────── */
+.agents-step-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+}
+
+/* 3-column variant of the existing .icon-feature-grid (spec 3.4 wants 3×2) */
+.agents-icon-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+/* ── NEW:CompetitiveMatrix ──────────────────────────────────── */
+.agents-matrix-wrap {
+  margin-top: var(--space-8);
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-card);
+}
+.agents-matrix {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.agents-matrix th,
+.agents-matrix td {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.agents-matrix tbody tr:last-child th,
+.agents-matrix tbody tr:last-child td { border-bottom: none; }
+.agents-matrix thead th {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  background: var(--bg-warm);
+  white-space: nowrap;
+}
+.agents-matrix tbody th {
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 200px;
+}
+.agents-matrix td { color: var(--text-secondary); }
+.agents-matrix .agents-matrix-quaeris {
+  background: var(--brand-accent-soft);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.agents-matrix thead .agents-matrix-quaeris { color: var(--brand-accent); }
+
+/* ── NEW:AgentExampleShowcase ───────────────────────────────── */
+.agents-console {
+  max-width: 880px;
+  margin: var(--space-8) auto 0;
+  background: var(--bg-ink-elevated);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.agents-console-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-on-dark);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-on-dark-dim);
+}
+.agents-console-body { display: flex; flex-direction: column; gap: var(--space-4); }
+.agents-chat-user {
+  align-self: flex-end;
+  max-width: 34em;
+  background: color-mix(in srgb, var(--brand-accent) 28%, var(--bg-ink-elevated));
+  color: var(--text-on-dark);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  font-size: 15px;
+  line-height: 1.55;
+}
+.agents-chat-agent {
+  align-self: flex-start;
+  max-width: 42em;
+  background: var(--bg-ink);
+  border: 1px solid var(--border-on-dark);
+  color: var(--text-on-dark);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-sm);
+  padding: var(--space-4) var(--space-5);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.agents-trace { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.agents-trace-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-on-dark-dim);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+.agents-trace-chip svg { width: 14px; height: 14px; color: var(--success); flex-shrink: 0; }
+.agents-example-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+}
+.agents-example-steps > * { height: 100%; }
+.agents-example-step { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.agents-example-step .heading-sm { color: var(--text-on-dark); }
+.agents-example-step blockquote {
+  color: var(--text-on-dark-dim);
+  font-size: 14px;
+  line-height: 1.6;
+  border-left: 2px solid var(--brand-accent);
+  padding-left: var(--space-4);
+}
+.agents-example-step blockquote a { color: var(--brand-accent); text-decoration: underline; }
+
+/* 2×2 variant of the existing .segment-cards-grid (spec 3.7 wants four cards in a 2×2) */
+.agents-segments-2x2 { grid-template-columns: repeat(2, 1fr); }
+.agents-segment-q {
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-top: var(--space-2);
+}
+.agents-segment-q-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  margin-bottom: var(--space-1);
+}
+
+/* Problem-card counterpart of the existing .ps-fix-box (error-tinted impact callout) */
+.agents-impact-box {
+  background: color-mix(in srgb, var(--error) 8%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+.agents-impact-label { color: var(--error); font-size: 11px; letter-spacing: 2px; }
+
+/* Responsive rules for the new classes */
+@media (max-width: 1024px) {
+  .agents-icon-grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .agents-example-steps { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .agents-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+  .agents-segments-2x2 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .agents-icon-grid-3 { grid-template-columns: 1fr; }
+  .agents-example-steps { grid-template-columns: 1fr; }
+  .agents-segments-2x2 { grid-template-columns: 1fr; }
+  .agents-chat-user, .agents-chat-agent { max-width: 100%; }
+  .agents-console { padding: var(--space-5); }
+}
+</style>
+
+<main id="main">
+
+  <!-- ════════════════════════════════════════════════════════
+       3.1 HERO — SectionHeader + NEW:AgentHeroVideo
+       ════════════════════════════════════════════════════════ -->
+  <section id="hero" aria-labelledby="agents-hero-heading">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container section-pad">
+      <div class="agents-hero-grid">
+        <div class="hero-inner reveal">
+          <span class="eyebrow">The Agentic Query Engine</span>
+          <h1 id="agents-hero-heading" class="hero-h1">Ask. We answer. Sources cited.</h1>
+          <p class="subcopy body-lg">Quaeris agents turn plain-language questions into governed, audited answers. No hallucinations. No guessing. Every number traces back to a certified metric in your semantic layer.</p>
+          <div class="hero-buttons">
+            <a href="/platform" class="btn-ghost">Platform overview</a>
+          </div>
+        </div>
+
+        <!-- Video modal trigger (not auto-playing). Poster is a token-tinted CSS mock. -->
+        <a href="#" class="agents-hero-video reveal" data-placeholder="video URL" aria-label="Watch a 2-minute demo of the Agentic Query Engine (opens video)">
+          <span class="agents-video-skel" style="width: 58%;" aria-hidden="true"></span>
+          <span class="agents-video-skel" style="width: 76%;" aria-hidden="true"></span>
+          <span class="agents-video-skel" style="width: 42%;" aria-hidden="true"></span>
+          <span class="agents-video-overlay">
+            <span class="agents-video-play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3" /></svg>
+            </span>
+            <span class="agents-video-label">Watch a 2-minute demo</span>
+            <span class="agents-video-duration">2:04 · Governed answer, live warehouse</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.2 THREE-STEP WORKFLOW — NEW:AgentWorkflowSteps
+       ════════════════════════════════════════════════════════ -->
+  <section id="workflow" class="section-pad" aria-labelledby="workflow-heading" style="background: var(--bg-canvas);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow" data-placeholder>How it works</span>
+        <h2 id="workflow-heading" class="display-lg" data-placeholder>Three steps from question to audited answer.</h2>
+      </div>
+
+      <ol class="pillars-grid" style="list-style: none;">
+        <li>
+          <article class="card agents-step-card reveal">
+            <span class="segment-index" aria-hidden="true">01</span>
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: search -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+            </div>
+            <span class="eyebrow" style="color: var(--brand-accent);">Parse &amp; Govern</span>
+            <h3 class="heading-sm">Question → Intent</h3>
+            <p class="body-sm" style="color: var(--text-secondary);">User types a business question in plain language. The agent parses intent, maps the question to available metrics in your semantic layer, and routes it to the correct agent workflow. No free-form SQL generation.</p>
+          </article>
+        </li>
+        <li>
+          <article class="card agents-step-card reveal">
+            <span class="segment-index" aria-hidden="true">02</span>
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: database -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v14a9 3 0 0 0 18 0V5" /><path d="M3 12a9 3 0 0 0 18 0" /></svg>
+            </div>
+            <span class="eyebrow" style="color: var(--brand-accent);">Query &amp; Verify</span>
+            <h3 class="heading-sm">Metric → Answer</h3>
+            <p class="body-sm" style="color: var(--text-secondary);">The agent queries only certified, role-gated metrics from your warehouse. It verifies the query shape against your semantic layer before execution. If a question can&rsquo;t be answered from the semantic layer, the agent says so rather than hallucinating.</p>
+          </article>
+        </li>
+        <li>
+          <article class="card agents-step-card reveal">
+            <span class="segment-index" aria-hidden="true">03</span>
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: file-check -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v4a2 2 0 0 0 2 2h4" /><path d="m9 15 2 2 4-4" /></svg>
+            </div>
+            <span class="eyebrow" style="color: var(--brand-accent);">Cite &amp; Audit</span>
+            <h3 class="heading-sm">Answer → Source</h3>
+            <p class="body-sm" style="color: var(--text-secondary);">The agent returns a precise answer with full source lineage: which metric definitions were used, which business rules applied, and which warehouse table was queried. Every answer is logged for compliance audit.</p>
+          </article>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.3 THE HALLUCINATION PROBLEM SOLVED — ProblemSolutionCards
+       ════════════════════════════════════════════════════════ -->
+  <section id="no-hallucinations" class="section-pad" aria-labelledby="hallucination-heading" style="background: var(--bg-warm);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow" style="color: var(--text-tertiary);">The hallucination problem, solved</span>
+        <h2 id="hallucination-heading" class="display-lg">Most AI analytics tools generate answers. Quaeris agents retrieve them.</h2>
+      </div>
+
+      <div class="ps-grid" role="list">
+        <article class="ps-card reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true" style="background: color-mix(in srgb, var(--error) 10%, transparent);">
+            <!-- lucide: alert-triangle -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--error);"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+          </div>
+          <h3 class="display-md ps-problem">Hallucinations Happen When:</h3>
+          <p class="body-md" style="color: var(--text-secondary);">AI models guess numbers from training data instead of querying governed sources. Every other conversational BI tool relies on LLM creativity &mdash; it&rsquo;s fast but unreliable. When the model doesn&rsquo;t know an answer, it makes one up.</p>
+          <div class="agents-impact-box" aria-label="Business impact">
+            <span class="agents-impact-label eyebrow">Business impact</span>
+            <p class="body-md ps-fix-body">Conflicting numbers reported to the board, failed audits, lost trust.</p>
+          </div>
+        </article>
+
+        <article class="ps-card reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: shield-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg>
+          </div>
+          <h3 class="display-md ps-problem">Quaeris Difference:</h3>
+          <p class="body-md" style="color: var(--text-secondary);">Agents don&rsquo;t generate answers &mdash; they retrieve them from your certified semantic layer. If a metric isn&rsquo;t defined, the agent says &ldquo;I don&rsquo;t know&rdquo; instead of guessing. Every number is grounded in a source. No training-data hallucinations. No free-form SQL. Just governed, auditable answers every time.</p>
+          <div class="ps-fix-box" aria-label="Trust restored">
+            <span class="ps-fix-label eyebrow">Trust restored</span>
+            <p class="body-md ps-fix-body">Full lineage, full audit trail, zero hallucinations.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.4 SIX AGENT CAPABILITIES — IconFeatureGrid (3×2 variant)
+       ════════════════════════════════════════════════════════ -->
+  <section id="capabilities" class="section-pad" aria-labelledby="capabilities-heading" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow">What agents can do</span>
+        <h2 id="capabilities-heading" class="display-lg">Autonomous multi-step analysis. Governed from the start.</h2>
+      </div>
+
+      <div class="icon-feature-grid agents-icon-grid-3" role="list">
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: wand-2 -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z" /><path d="m14 7 3 3" /><path d="M5 6v4" /><path d="M19 14v4" /><path d="M10 2v2" /><path d="M7 8H3" /><path d="M21 16h-4" /><path d="M11 3H9" /></svg>
+          </div>
+          <h3 class="heading-sm">Natural Language to Governed SQL</h3>
+          <p>Users ask questions in plain English. Agents translate to SQL constrained by your semantic layer &mdash; no model-generated code. Every query is validated against certified metrics before execution.</p>
+        </div>
+
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: zap -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+          </div>
+          <h3 class="heading-sm">Multi-Step Autonomous Workflows</h3>
+          <p>Agents don&rsquo;t stop at a single query. They plan and execute fetch-filter-join-forecast sequences without human input. Anomaly detected? Agents root-cause automatically. Forecast needed? Done in one prompt.</p>
+        </div>
+
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: trending-up -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></svg>
+          </div>
+          <h3 class="heading-sm">Predictive &amp; Proactive Analysis</h3>
+          <p>Agents forecast trends, flag anomalies, and diagnose root causes without being asked. A revenue dip is flagged before the executive standup. A warehouse query slowdown is surfaced before users notice. Proactivity built in.</p>
+        </div>
+
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: shield-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg>
+          </div>
+          <h3 class="heading-sm">Governed at Every Step</h3>
+          <p>Role-based access, data residency, audit trails &mdash; enforced at query time, not dashboard time. Users see only the data their role permits. Every answer is logged with who asked, what was returned, and why. Compliance-ready.</p>
+        </div>
+
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: layers -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" /><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" /><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" /></svg>
+          </div>
+          <h3 class="heading-sm">Smart Semantic Layer Learning</h3>
+          <p>The semantic layer isn&rsquo;t static. It learns from agent interactions. Users define metrics once; agents use them everywhere. New business logic? Update the semantic layer once; all agent answers reflect the change immediately.</p>
+        </div>
+
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: brain -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" /><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" /><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" /></svg>
+          </div>
+          <h3 class="heading-sm">Autonomous Root-Cause Diagnosis</h3>
+          <p>Revenue down 12%? Agents automatically investigate across regions, cohorts, campaigns, and product lines to find the driver &mdash; then surface the diagnosis with confidence scores. Manual troubleshooting replaced by agent rigor.</p>
+        </div>
+      </div>
+
+      <div class="proof-cta reveal">
+        <a href="/platform/semantic-layer" class="btn-ghost">Explore the semantic layer</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.5 COMPETITIVE DIFFERENTIATION — NEW:CompetitiveMatrix
+       ════════════════════════════════════════════════════════ -->
+  <section id="compare" class="section-pad" aria-labelledby="compare-heading" style="background: var(--bg-canvas);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow" style="color: var(--text-tertiary);">Competitive differentiation</span>
+        <h2 id="compare-heading" class="display-lg">How Quaeris agents compare</h2>
+        <p class="subcopy body-lg">Most conversational BI tools bolt AI onto a dashboard. Quaeris builds agents on a governed semantic layer.</p>
+      </div>
+
+      <div class="agents-matrix-wrap reveal" role="region" aria-labelledby="compare-heading" tabindex="0">
+        <table class="agents-matrix">
+          <caption class="sr-only">Feature comparison of Quaeris agents against ThoughtSpot Spotter, Cortex Analyst, AWS Q, and Looker AI</caption>
+          <thead>
+            <tr>
+              <th scope="col">Capability</th>
+              <th scope="col" class="agents-matrix-quaeris">Quaeris</th>
+              <th scope="col">ThoughtSpot Spotter</th>
+              <th scope="col">Cortex Analyst</th>
+              <th scope="col">AWS Q</th>
+              <th scope="col">Looker AI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Plain-language questions</th>
+              <td class="agents-matrix-quaeris">Yes</td>
+              <td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td>
+            </tr>
+            <tr>
+              <th scope="row">Answers cited to metrics</th>
+              <td class="agents-matrix-quaeris">Yes &mdash; every answer</td>
+              <td>Yes</td><td>Limited</td><td>Limited</td><td>Limited</td>
+            </tr>
+            <tr>
+              <th scope="row">Governed semantic layer</th>
+              <td class="agents-matrix-quaeris">Auto-learns</td>
+              <td>Manual modeling</td><td>Requires YAML</td><td>Requires manual config</td><td>Requires LookML</td>
+            </tr>
+            <tr>
+              <th scope="row">Zero hallucinations</th>
+              <td class="agents-matrix-quaeris">Guaranteed (no generation)</td>
+              <td>Mostly (search-token model)</td><td>High risk</td><td>High risk</td><td>High risk</td>
+            </tr>
+            <tr>
+              <th scope="row">BYOM (pick your LLM)</th>
+              <td class="agents-matrix-quaeris">Yes &mdash; swap anytime</td>
+              <td>Model-locked</td><td>Warehouse-locked</td><td>AWS-locked</td><td>Google-locked</td>
+            </tr>
+            <tr>
+              <th scope="row">Warehouse-portable</th>
+              <td class="agents-matrix-quaeris">All major + more</td>
+              <td>All major</td><td>Snowflake only</td><td>AWS only</td><td>Google Cloud only</td>
+            </tr>
+            <tr>
+              <th scope="row">Multi-step agent workflows</th>
+              <td class="agents-matrix-quaeris">Yes &mdash; fetch/filter/join/forecast</td>
+              <td>Limited</td><td>Limited</td><td>Limited</td><td>Limited</td>
+            </tr>
+            <tr>
+              <th scope="row">Autonomous anomaly detection</th>
+              <td class="agents-matrix-quaeris">Yes</td>
+              <td>No</td><td>No</td><td>No</td><td>No</td>
+            </tr>
+            <tr>
+              <th scope="row">Full audit trail (who/what/why)</th>
+              <td class="agents-matrix-quaeris">Yes &mdash; prompt + agent steps</td>
+              <td>Limited</td><td>Limited</td><td>Limited</td><td>Limited</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="body-sm reveal" style="color: var(--text-tertiary); text-align: center; margin-top: var(--space-5);" data-placeholder>Comparison is directional, based on public product documentation &mdash; validate against live competitor docs before publish.</p>
+
+      <div class="proof-cta reveal">
+        <a href="/platform/warehouse" class="btn-ghost">See supported warehouses</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.6 REAL-WORLD EXAMPLE WORKFLOW — NEW:AgentExampleShowcase
+       ════════════════════════════════════════════════════════ -->
+  <section id="example" class="section-pad" aria-labelledby="example-heading" style="background: var(--bg-ink);">
+    <div class="container">
+      <div class="section-header section-header-dark center reveal">
+        <span class="eyebrow">Revenue-tracking example</span>
+        <h2 id="example-heading" class="display-lg">See it in action</h2>
+      </div>
+
+      <!-- Illustrative agent-console mock (stands in for the annotated screenshot) -->
+      <div class="agents-console reveal" data-placeholder="annotated screenshot — illustrative console mock">
+        <div class="agents-console-header">
+          <span>Quaeris Agent Console</span>
+          <span>Audit log: recording</span>
+        </div>
+        <div class="agents-console-body">
+          <p class="agents-chat-user">What was revenue last quarter by region, and which regions missed their plan?</p>
+
+          <div class="agents-trace" aria-label="Agent execution trace">
+            <span class="agents-trace-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+              Intent parsed
+            </span>
+            <span class="agents-trace-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+              Metric retrieved
+            </span>
+            <span class="agents-trace-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+              Query executed
+            </span>
+            <span class="agents-trace-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+              Answer cited
+            </span>
+          </div>
+
+          <p class="agents-chat-agent">Last quarter, all regions combined achieved $4.2M revenue. West overperformed by 8%; Central underperformed by 3%; East hit target; South missed by 11%.</p>
+        </div>
+      </div>
+
+      <!-- Four annotation cards: the agent's reasoning, step by step -->
+      <div class="agents-example-steps" role="list">
+        <article class="card card-dark agents-example-step reveal" role="listitem">
+          <span class="eyebrow" style="color: var(--brand-accent);">Card 1</span>
+          <h3 class="heading-sm">Intent Parse</h3>
+          <blockquote>Agent detects: intent=metric-retrieval, metric=revenue, dimension=region, time-filter=last-quarter, analysis-type=vs-plan. All entities mapped to semantic layer.</blockquote>
+        </article>
+        <article class="card card-dark agents-example-step reveal" role="listitem">
+          <span class="eyebrow" style="color: var(--brand-accent);">Card 2</span>
+          <h3 class="heading-sm">Metric Lookup</h3>
+          <blockquote>Agent retrieves certified metric: &ldquo;Revenue&rdquo; = <code>SUM(transactions.amount WHERE status='completed') BY region</code>, filtered by role-based access. User has access to all regions. Metric definition version 3.2 (current).</blockquote>
+        </article>
+        <article class="card card-dark agents-example-step reveal" role="listitem">
+          <span class="eyebrow" style="color: var(--brand-accent);">Card 3</span>
+          <h3 class="heading-sm">Query Execution</h3>
+          <blockquote>Agent constructs and executes: <code>SELECT region, revenue, plan, variance FROM warehouse.revenue_metrics WHERE period='q3-2026' AND role_allows_visibility</code>. Result: 4 regions returned, 1 region blocked by access policy.</blockquote>
+        </article>
+        <article class="card card-dark agents-example-step reveal" role="listitem">
+          <span class="eyebrow" style="color: var(--brand-accent);">Card 4</span>
+          <h3 class="heading-sm">Answer with Lineage</h3>
+          <blockquote>&ldquo;Last quarter, all regions combined achieved $4.2M revenue. West overperformed by 8%; Central underperformed by 3%; East hit target; South missed by 11%. This answer cites the Revenue metric (v3.2), uses 3 warehouse tables (transactions, regions, plans), and applies role-based access for region visibility. <a href="/platform/governance">Full audit trail</a>.&rdquo;</blockquote>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.7 USE CASES BY ROLE — SegmentCards (2×2 variant)
+       ════════════════════════════════════════════════════════ -->
+  <section id="use-cases" class="section-pad" aria-labelledby="use-cases-heading" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow" style="color: var(--text-tertiary);">Who benefits</span>
+        <h2 id="use-cases-heading" class="display-lg">Agents work for your whole team</h2>
+      </div>
+
+      <div class="segment-cards-grid agents-segments-2x2" role="list">
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: users -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+          </div>
+          <h3 class="heading-sm segment-label">Data Analyst</h3>
+          <p class="body-sm segment-desc">Self-serve exploratory analysis without SQL</p>
+          <div class="agents-segment-q">
+            <span class="agents-segment-q-label">Example question</span>
+            &ldquo;Show me cohort churn by acquisition channel for new users signing up in Q2&rdquo;
+          </div>
+        </article>
+
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: briefcase -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /><rect width="20" height="14" x="2" y="6" rx="2" /></svg>
+          </div>
+          <h3 class="heading-sm segment-label">Business User</h3>
+          <p class="body-sm segment-desc">Instant answers to business questions</p>
+          <div class="agents-segment-q">
+            <span class="agents-segment-q-label">Example question</span>
+            &ldquo;How much revenue came from our top 10 customers last month?&rdquo;
+          </div>
+        </article>
+
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: trending-up -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></svg>
+          </div>
+          <h3 class="heading-sm segment-label">Executive</h3>
+          <p class="body-sm segment-desc">Proactive insights without waiting on reports</p>
+          <div class="agents-segment-q">
+            <span class="agents-segment-q-label">Example question</span>
+            &ldquo;Which product had the biggest month-over-month growth?&rdquo;
+          </div>
+        </article>
+
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: code -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>
+          </div>
+          <h3 class="heading-sm segment-label">Data Engineer</h3>
+          <p class="body-sm segment-desc">Governance enforcement and semantic layer ownership</p>
+          <div class="agents-segment-q">
+            <span class="agents-segment-q-label">Example question</span>
+            &ldquo;Which metrics are being queried most, and are definitions consistent?&rdquo;
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.8 TRUST & GOVERNANCE PROOF — StatBlock + MetricDashboardMock
+       ════════════════════════════════════════════════════════ -->
+  <section id="governance" class="section-pad" aria-labelledby="governance-heading" style="background: var(--bg-warm);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow" style="color: var(--text-tertiary);">Governance at scale</span>
+        <h2 id="governance-heading" class="display-lg" data-placeholder>Trust you can audit.</h2>
+      </div>
+
+      <div class="stats-band-gradient reveal" style="margin-top: var(--space-8);">
+        <div class="stats-grid-gradient">
+          <div class="stat-block">
+            <span class="stat-num stat-number" data-target="0" data-suffix="" aria-label="Zero hallucinated answers">0</span>
+            <span class="stat-label body-sm">Hallucinated answers</span>
+            <span class="stat-delta">Every answer grounded in certified metrics</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-num stat-number" data-target="87" data-suffix="" aria-label="87 percent reduction in ad-hoc requests">87</span>
+            <span class="stat-label body-sm">% reduction in ad-hoc requests</span>
+            <span class="stat-delta">Within 90 days of deployment</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-num stat-number" data-target="14" data-suffix=" sec" aria-label="14 seconds average answer time">14&nbsp;sec</span>
+            <span class="stat-label body-sm">Avg. answer time</span>
+            <span class="stat-delta">From question to audited answer</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-num stat-number" data-target="100" data-suffix="" aria-label="100 percent of queries audited">100</span>
+            <span class="stat-label body-sm">% of queries audited</span>
+            <span class="stat-delta">Full trace from question to source</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MetricDashboardMock — illustrative agent query dashboard -->
+      <div class="metric-dashboard reveal" style="max-width: 640px; margin: var(--space-8) auto 0;" data-placeholder="illustrative dashboard data">
+        <div class="metric-dashboard-header">
+          <span style="font-family: var(--font-display); font-size: 16px; color: var(--text-on-dark); font-weight: var(--weight-display);">Agent activity</span>
+          <span>Last 30 days</span>
+        </div>
+        <div class="metric-tiles" role="group" aria-label="Agent governance metrics">
+          <div class="metric-tile">
+            <div class="metric-tile-label">Questions answered</div>
+            <div class="metric-tile-value">1,247</div>
+          </div>
+          <div class="metric-tile">
+            <div class="metric-tile-label">Metrics cited</div>
+            <div class="metric-tile-value">142</div>
+          </div>
+          <div class="metric-tile active">
+            <div class="metric-tile-label">Access violations detected</div>
+            <div class="metric-tile-value">0</div>
+          </div>
+          <a class="metric-tile" href="/platform/governance">
+            <div class="metric-tile-label">Audit records</div>
+            <div class="metric-tile-value">100% logged</div>
+            <div class="metric-tile-delta">View audit records →</div>
+          </a>
+        </div>
+        <div class="mini-chart">
+          <svg viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="agentsChartGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--brand-accent)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--brand-accent)" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path d="M0,68 L35,60 L70,54 L105,44 L140,40 L175,28 L210,24 L245,16 L280,10 L280,80 L0,80 Z" fill="url(#agentsChartGrad)" />
+            <path d="M0,68 L35,60 L70,54 L105,44 L140,40 L175,28 L210,24 L245,16 L280,10" fill="none" stroke="var(--brand-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="280" cy="10" r="4" fill="var(--brand-accent)" />
+          </svg>
+        </div>
+        <p class="chart-caption">Questions answered per week</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.9 FAQ — Accordion (Radix Accordion at port time)
+       ════════════════════════════════════════════════════════ -->
+  <section id="faq" class="section-pad" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="faq-grid">
+        <div>
+          <div class="section-header reveal">
+            <span class="eyebrow">Common questions</span>
+            <h2 id="faq-heading" class="display-lg">Your questions answered</h2>
+          </div>
+          <div class="faq-mini-card reveal" data-placeholder>
+            <h3 class="heading-sm">Still have questions?</h3>
+            <p>Talk to an engineer about your warehouse, your governance model, and a two-week rollout plan.</p>
+            <a href="/contact" class="btn btn-secondary" style="font-size: 14px; padding: 10px 22px;">Book a demo</a>
+          </div>
+        </div>
+
+        <div class="accordion reveal">
+          <div class="accordion-item">
+            <div>
+              <button class="accordion-trigger" aria-expanded="true" aria-controls="faq-1" data-state="open">
+                <span class="accordion-question">What happens if an agent can&rsquo;t answer a question?</span>
+                <span class="accordion-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+            </div>
+            <div class="accordion-content" id="faq-1" data-state="open">
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">The agent says &ldquo;I don&rsquo;t have enough information to answer that&rdquo; rather than guessing. It surfaces which metrics or data sources would be needed. Your data team then evaluates whether to expand the semantic layer. Silence is better than hallucination.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div>
+              <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-2" data-state="closed">
+                <span class="accordion-question">Can agents replace our BI team?</span>
+                <span class="accordion-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+            </div>
+            <div class="accordion-content" id="faq-2" data-state="closed" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">No &mdash; agents complement your BI team. They handle exploratory, ad-hoc questions. Your dashboards, reports, and scheduled jobs continue to serve structured reporting. Agents are the self-serve layer on top of the semantic layer your data team owns.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div>
+              <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-3" data-state="closed">
+                <span class="accordion-question">How do you prevent unauthorized data access?</span>
+                <span class="accordion-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+            </div>
+            <div class="accordion-content" id="faq-3" data-state="closed" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">Role-based access policies are enforced at query time, not at the dashboard layer. When an agent executes a query, it applies the user&rsquo;s warehouse role and access permissions. Users see only the data their role permits &mdash; no workarounds, no filter bypasses.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div>
+              <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-4" data-state="closed">
+                <span class="accordion-question">What LLMs do agents support?</span>
+                <span class="accordion-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+            </div>
+            <div class="accordion-content" id="faq-4" data-state="closed" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">Bring your own. GPT-4, Claude, Gemini, Meta Llama &mdash; agents work with any LLM. Your compliance team picks the model and vendor. You&rsquo;re never locked in. Swap LLMs anytime without redeploying agents or the semantic layer.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div>
+              <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-5" data-state="closed">
+                <span class="accordion-question">How long does it take to deploy agents?</span>
+                <span class="accordion-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+            </div>
+            <div class="accordion-content" id="faq-5" data-state="closed" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">Most teams have agents running against a live warehouse within two weeks. Week one is warehouse integration and semantic layer migration. Week two is user onboarding and access policy setup. No data movement required &mdash; agents query your warehouse in place.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div>
+              <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-6" data-state="closed">
+                <span class="accordion-question">What warehouses do agents support?</span>
+                <span class="accordion-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+            </div>
+            <div class="accordion-content" id="faq-6" data-state="closed" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">Snowflake, BigQuery, Databricks, Redshift, Azure Synapse, and more. All major warehouses. The agent doesn&rsquo;t care which warehouse you use &mdash; it&rsquo;s warehouse-agnostic.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div>
+              <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-7" data-state="closed">
+                <span class="accordion-question">Can agents handle real-time data?</span>
+                <span class="accordion-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+            </div>
+            <div class="accordion-content" id="faq-7" data-state="closed" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">Yes &mdash; agents query your warehouse in real time. If your warehouse ingests streaming data, agents see it immediately. No caching, no lag.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div>
+              <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-8" data-state="closed">
+                <span class="accordion-question">Do agents generate SQL code for users to review?</span>
+                <span class="accordion-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6" /></svg>
+                </span>
+              </button>
+            </div>
+            <div class="accordion-content" id="faq-8" data-state="closed" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">No &mdash; agents execute queries directly against your warehouse. SQL is generated internally and validated against your semantic layer, but users don&rsquo;t see or edit the SQL. The agent handles the execution; you control the governance through the semantic layer.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.10 CUSTOMER PROOF — CaseStudyCard ×3 + TestimonialMarquee
+       ════════════════════════════════════════════════════════ -->
+  <section id="customer-proof" class="section-pad" aria-labelledby="customer-proof-heading" style="background: var(--bg-surface); overflow: hidden;">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Trusted by data leaders</span>
+        <h2 id="customer-proof-heading" class="display-lg" data-placeholder>Results from governed deployments.</h2>
+      </div>
+
+      <div class="case-study-grid">
+        <article class="case-study-card reveal">
+          <span class="industry-chip">Financial Services</span>
+          <h3 class="display-md" style="color: var(--text-primary);" data-placeholder="named customer">Kova Finance</h3>
+          <p class="cs-outcome">Reduced ad-hoc analytics requests by 84% while expanding self-serve access to 600+ business users &mdash; without relaxing governance.</p>
+          <div class="cs-stats" aria-label="Key metrics">
+            <div class="cs-stat"><span class="cs-stat-num">84%</span><span class="cs-stat-label">fewer requests</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">600+</span><span class="cs-stat-label">self-serve users</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">90</span><span class="cs-stat-label">days to rollout</span></div>
+          </div>
+          <p class="cs-how">Connected agents to Snowflake warehouse, migrated 120 certified metrics into the semantic layer, deployed agents to all business teams with row-level security enforced automatically.</p>
+          <a href="/case-studies" class="btn-ghost">Read the case study</a>
+        </article>
+
+        <article class="case-study-card reveal">
+          <span class="industry-chip">B2B SaaS</span>
+          <h3 class="display-md" style="color: var(--text-primary);" data-placeholder="named customer">Orbit Analytics</h3>
+          <p class="cs-outcome">Cut time-to-insight from 3 days to under 20 minutes &mdash; eliminating the request backlog that had blocked product launches.</p>
+          <div class="cs-stats" aria-label="Key metrics">
+            <div class="cs-stat"><span class="cs-stat-num">20 min</span><span class="cs-stat-label">avg answer time</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">3×</span><span class="cs-stat-label">faster than tickets</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">0</span><span class="cs-stat-label">hallucinations</span></div>
+          </div>
+          <p class="cs-how">Deployed agents across product, revenue, and marketing metrics. Agents now answer product-usage and pipeline questions with sources cited in every response.</p>
+          <a href="/case-studies" class="btn-ghost">Read the case study</a>
+        </article>
+
+        <article class="case-study-card reveal">
+          <span class="industry-chip">Retail/CPG</span>
+          <h3 class="display-md" style="color: var(--text-primary);" data-placeholder="named customer">Northwind Co.</h3>
+          <p class="cs-outcome">Unified conflicting metric definitions across 6 regional teams &mdash; giving executives a single, consistent view.</p>
+          <div class="cs-stats" aria-label="Key metrics">
+            <div class="cs-stat"><span class="cs-stat-num">6</span><span class="cs-stat-label">teams aligned</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">1</span><span class="cs-stat-label">metric definition per KPI</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">11×</span><span class="cs-stat-label">ROI</span></div>
+          </div>
+          <p class="cs-how">Audited 300+ metric variants, consolidated to 80 certified definitions in the semantic layer, retired four legacy BI dashboards.</p>
+          <a href="/case-studies" class="btn-ghost">Read the case study</a>
+        </article>
+      </div>
+    </div>
+
+    <!-- Testimonial marquee — quotes from the existing testimonial bank (config.ts),
+         filtered to audit-trail and governance themes -->
+    <div class="testimonial-rows" aria-label="Customer quotes on governance and audit trails" style="margin-top: var(--space-9);">
+      <div class="testimonial-row" aria-hidden="true">
+        <div class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;The lineage view alone justified the deployment. My team can click any answer and trace it back to the source table in one step. That transparency is what governance actually looks like.&rdquo;</p>
+          <div class="testimonial-author">
+            <span class="author-avatar">SR</span>
+            <div><div class="author-name">S.R.</div><div class="author-role">VP Analytics · Orbit Analytics</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;I was nervous about giving executives direct query access. Quaeris&rsquo;s role-based controls meant I didn&rsquo;t have to be. They only see what they should &mdash; enforced at the agent level.&rdquo;</p>
+          <div class="testimonial-author">
+            <span class="author-avatar">AT</span>
+            <div><div class="author-name">A.T.</div><div class="author-role">Head of Data Platform · Vertex Health</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;Every other analytics AI we evaluated made up numbers when it didn&rsquo;t know the answer. Quaeris is architecturally different &mdash; it can&rsquo;t hallucinate because it queries governed metrics, not a language model&rsquo;s memory.&rdquo;</p>
+          <div class="testimonial-author">
+            <span class="author-avatar">DW</span>
+            <div><div class="author-name">D.W.</div><div class="author-role">CDO · Lumio Retail</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;What separates Quaeris is the governance-first design. It&rsquo;s not a chatbot bolted onto a dashboard &mdash; it&rsquo;s a governed data layer with an agent interface on top. That architectural difference shows in every answer.&rdquo;</p>
+          <div class="testimonial-author">
+            <span class="author-avatar">CJ</span>
+            <div><div class="author-name">C.J.</div><div class="author-role">Chief Analytics Officer · Cedar Group</div></div>
+          </div>
+        </div>
+        <!-- duplicate set for seamless marquee loop -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;The lineage view alone justified the deployment. My team can click any answer and trace it back to the source table in one step. That transparency is what governance actually looks like.&rdquo;</p>
+          <div class="testimonial-author">
+            <span class="author-avatar">SR</span>
+            <div><div class="author-name">S.R.</div><div class="author-role">VP Analytics · Orbit Analytics</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;I was nervous about giving executives direct query access. Quaeris&rsquo;s role-based controls meant I didn&rsquo;t have to be. They only see what they should &mdash; enforced at the agent level.&rdquo;</p>
+          <div class="testimonial-author">
+            <span class="author-avatar">AT</span>
+            <div><div class="author-name">A.T.</div><div class="author-role">Head of Data Platform · Vertex Health</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;Every other analytics AI we evaluated made up numbers when it didn&rsquo;t know the answer. Quaeris is architecturally different &mdash; it can&rsquo;t hallucinate because it queries governed metrics, not a language model&rsquo;s memory.&rdquo;</p>
+          <div class="testimonial-author">
+            <span class="author-avatar">DW</span>
+            <div><div class="author-name">D.W.</div><div class="author-role">CDO · Lumio Retail</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;What separates Quaeris is the governance-first design. It&rsquo;s not a chatbot bolted onto a dashboard &mdash; it&rsquo;s a governed data layer with an agent interface on top. That architectural difference shows in every answer.&rdquo;</p>
+          <div class="testimonial-author">
+            <span class="author-avatar">CJ</span>
+            <div><div class="author-name">C.J.</div><div class="author-role">Chief Analytics Officer · Cedar Group</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.11 CTA BAND — CTABand
+       ════════════════════════════════════════════════════════ -->
+  <section id="cta-band" class="section-pad" aria-labelledby="cta-heading">
+    <div class="cta-band-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="cta-inner reveal">
+        <span class="eyebrow">Ready to deploy?</span>
+        <h2 id="cta-heading" class="display-lg">Stop waiting on ad-hoc requests. Start asking agents.</h2>
+        <p class="body-lg subcopy">Book a demo. We&rsquo;ll walk through your warehouse setup, show you how agents work with your data, and deliver a live governed answer in 30 minutes.</p>
+        <div class="cta-buttons">
+          <a href="/contact" class="btn btn-on-dark">Book a demo</a>
+          <a href="/docs" class="btn btn-secondary-dark">See documentation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       3.12 NEWSLETTER SIGNUP — NewsletterBlock
+       ════════════════════════════════════════════════════════ -->
+  <div id="newsletter" class="newsletter-block" role="complementary" aria-label="Newsletter signup">
+    <div class="container">
+      <div class="newsletter-inner reveal">
+        <span class="eyebrow">The Governed Analytics Brief</span>
+        <h3>Weekly insights on agentic AI and enterprise trust.</h3>
+        <p>One practical read on governed analytics, agents, and semantic layers &mdash; every Thursday. No generic AI hype. Just rigorous patterns from data leaders deploying agents at scale.</p>
+        <form class="newsletter-form" novalidate aria-label="Newsletter signup form">
+          <label for="newsletter-email" class="sr-only">Email address</label>
+          <input type="email" id="newsletter-email" class="newsletter-input" placeholder="your@company.com" required autocomplete="email" />
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+        <p class="newsletter-consent">No spam. Unsubscribe anytime. We handle your data per our <a href="/privacy" style="color: var(--text-on-dark-dim); text-decoration: underline;">Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Mockup-only accordion shim — the Radix Accordion component provides this behavior at port time.
+  document.querySelectorAll(".accordion-trigger").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var item = btn.closest(".accordion-item");
+      var content = item.querySelector(".accordion-content");
+      var wasOpen = btn.getAttribute("aria-expanded") === "true";
+      document.querySelectorAll(".accordion-item").forEach(function (other) {
+        var t = other.querySelector(".accordion-trigger");
+        var c = other.querySelector(".accordion-content");
+        t.setAttribute("aria-expanded", "false");
+        t.setAttribute("data-state", "closed");
+        c.setAttribute("data-state", "closed");
+        c.hidden = true;
+      });
+      if (!wasOpen) {
+        btn.setAttribute("aria-expanded", "true");
+        btn.setAttribute("data-state", "open");
+        content.setAttribute("data-state", "open");
+        content.hidden = false;
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

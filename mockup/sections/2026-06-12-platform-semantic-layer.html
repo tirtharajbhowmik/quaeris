@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/semantic-layer — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- SEO (port time):
+     Title tag  : AI Semantic Layer for Enterprise Governance | Quaeris
+     Meta desc  : Auto-learn business metrics from usage. Define revenue, churn, and KPIs once — every agent answer cites certified definitions. No upfront modeling sprints.
+     Schema     : SoftwareApplication + Product JSON-LD, BreadcrumbList (Home > Platform > Semantic Layer), FAQPage. -->
+
+<style>
+/* PORT: new classes — token-driven, move to globals.css at port time.
+   Page-area prefix: .sem- (/platform/semantic-layer). */
+
+/* Hero trust badges with a leading icon (extends existing .badge) */
+.sem-badge { gap: var(--space-2); padding: 6px 12px; font-size: 13px; }
+.sem-badge svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* 3-column variant of the existing .icon-feature-grid (which defaults to 4) */
+.sem-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+/* 2×2 variant of the existing .segment-cards-grid (which defaults to 5) */
+.sem-grid-2x2 { grid-template-columns: repeat(2, 1fr); }
+
+/* NEW:ComparisonTable — feature comparison matrix */
+.sem-compare-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: var(--space-8);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-card);
+}
+.sem-compare-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.sem-compare-table th,
+.sem-compare-table td {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.sem-compare-table thead th {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  background: var(--bg-canvas);
+  white-space: nowrap;
+}
+.sem-compare-table tbody th[scope="row"] {
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 180px;
+}
+.sem-compare-table td { color: var(--text-secondary); }
+.sem-compare-table tbody tr:last-child th,
+.sem-compare-table tbody tr:last-child td { border-bottom: none; }
+.sem-col-quaeris { background: var(--brand-accent-soft); }
+.sem-compare-table thead .sem-col-quaeris { color: var(--brand-accent); }
+.sem-compare-table tbody .sem-col-quaeris { color: var(--text-primary); font-weight: 500; }
+.sem-table-note {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-tertiary);
+  margin-top: var(--space-4);
+  max-width: 72ch;
+}
+.sem-table-note a { color: var(--brand-accent); text-decoration: underline; }
+
+/* NEW:SemanticLayerAnatomy — 3-column certified-metric breakout */
+.sem-anatomy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.sem-anatomy-grid > * { height: 100%; }
+.sem-spec-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+.sem-spec-list > div { display: flex; flex-direction: column; gap: 2px; }
+.sem-spec-list dt {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.sem-spec-list dd { font-size: 14px; line-height: 1.55; color: var(--text-primary); }
+.sem-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent-deep);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* Getting-started accordion: narrow column + two-line trigger + multi-line body */
+.sem-acc-wrap { max-width: 800px; margin: var(--space-8) auto 0; }
+.sem-acc-head { display: flex; flex-direction: column; gap: var(--space-1); text-align: left; }
+.sem-acc-head .eyebrow { color: var(--brand-accent); }
+.sem-acc-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+  max-width: 70ch;
+}
+
+/* Proof: case-study card + standalone testimonial card side by side */
+.sem-proof-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+  align-items: stretch;
+}
+.sem-proof-grid > * { height: 100%; }
+.sem-proof-grid .testimonial-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+}
+.sem-proof-grid .testimonial-quote {
+  display: block;
+  -webkit-line-clamp: unset;
+  flex: 1;
+  font-size: 16px;
+}
+
+/* Deep-dive editorial background wash (spec: warm → canvas gradient) */
+.sem-editorial-bg { background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-canvas) 100%); }
+
+/* CTABand — light variant (spec: warm surface, ink headline) */
+.sem-cta-light { background: var(--bg-warm); text-align: center; border-top: 1px solid var(--border-subtle); }
+.sem-cta-light .cta-inner h2 { color: var(--text-primary); }
+.sem-cta-light .cta-inner .subcopy { color: var(--text-secondary); }
+
+/* Token-tinted diagram placeholders inside .feature-row-img-wrap */
+.sem-diagram {
+  color: var(--brand-accent);
+  background: linear-gradient(135deg, var(--brand-accent-soft) 0%, var(--bg-surface) 100%);
+}
+
+@media (max-width: 1024px) {
+  .sem-grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .sem-anatomy-grid { grid-template-columns: 1fr; }
+  .sem-proof-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .sem-grid-3 { grid-template-columns: 1fr; }
+  .sem-grid-2x2 { grid-template-columns: 1fr; }
+}
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     SECTION 0 · HERO — reuses existing HeroHome component
+     (FloatingPaths animated background + scrim come from the
+     component at port time; customize copy only.)
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="hero-inner">
+      <span class="eyebrow">The Semantic Layer</span>
+      <h1 id="hero-heading" class="hero-h1">Metrics your team can trust. <span class="accent-line">No upfront modeling.</span></h1>
+      <p class="subcopy body-lg">Define revenue, churn, activation — once. Quaeris learns from usage patterns and agent questions, auto-building a certified semantic layer. Every answer traces back to those definitions. No LookML sprints. No manual metric catalog.</p>
+      <div class="hero-buttons btn-stack">
+        <a href="/contact" class="btn btn-primary">See it in action</a>
+        <a href="/resources/white-papers/smart-semantic-layers" class="btn btn-secondary">Read the white paper: Smart Semantic Layers</a>
+      </div>
+      <div class="trust-badges" aria-label="Platform trust badges">
+        <span class="badge badge-accent sem-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          Warehouse-native — scales to thousands of metrics
+        </span>
+        <span class="badge badge-accent sem-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Auto-learned from prompts — no coding required
+        </span>
+        <span class="badge badge-accent sem-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Certified by your team — versioned &amp; audited
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 1 · THE PROBLEM — NEW:ProblemContext
+     (Maps onto the existing ProblemSolutionCards pattern:
+     .ps-grid / .ps-card — port as a 2-card variant.)
+     ============================================================ -->
+<section id="problem" class="section-pad" aria-label="The problem and the Quaeris answer">
+  <div class="container">
+    <div class="ps-grid" style="margin-top: 0;">
+      <article class="ps-card reveal">
+        <span class="eyebrow" style="color: var(--text-tertiary);">The problem</span>
+        <h2 class="display-md">Semantic layers are built, not born.</h2>
+        <p class="body-md" style="color: var(--text-secondary);">Traditional semantic layers require upfront modeling: LookML in Looker, dbt YAML in dbt Semantic Layer, hand-written cube definitions in Cube. Your data team spends 3–6 months building before a single user asks their first question. Metric definitions live in code, buried in git history. When definitions change, documentation lags by weeks. Business teams end up with six conflicting 'revenue' definitions — one in Tableau, one in Sigma, one in a spreadsheet. Trust collapses.</p>
+      </article>
+      <article class="ps-card reveal">
+        <span class="eyebrow" style="color: var(--brand-accent);">The Quaeris answer</span>
+        <h2 class="display-md">Learn from every question.</h2>
+        <p class="body-md" style="color: var(--text-secondary);">Quaeris watches. As business users ask questions in natural language, the platform observes which tables they're asking about, which filters they apply, which metrics they care about. Over days and weeks, it learns the semantic structure of your warehouse — not from documentation, but from <em>actual usage</em>. Your data team certifies what it learns (marking 'revenue' as the authoritative definition, versioning it, scoping who sees it). From that moment on, every agent answer uses the same certified number.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 · HOW IT WORKS — reuses existing FeatureRow × 3
+     (alternating text/visual; screenshots are token-tinted SVG
+     placeholders pending real product captures.)
+     ============================================================ -->
+<section id="how-it-works" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="section-header methodology-header">
+      <h2 id="how-heading" class="display-lg">How it works</h2>
+    </div>
+
+    <div class="feature-rows-list">
+
+      <!-- Row 1: Auto-Learning -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 01 — Observe</span>
+          <h3 class="display-md feature-row-heading">Quaeris watches your usage. You certify what you learn.</h3>
+          <p class="feature-row-body body-md">As users ask questions — 'What was Q2 revenue by region?' — Quaeris parses the natural language, maps it to your warehouse tables, and notes which metrics matter. It builds a probabilistic model of your semantic structure: revenue is typically <code class="sem-code">SUM of orders.order_total WHERE orders.status = 'completed'</code>. Region comes from the geography dimension. Over 100 questions, patterns emerge. No manual YAML, no config files, no sprint meetings. Just observation.</p>
+          <a href="/contact" class="btn btn-ghost">Watch a live demo</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap feature-row-img-fallback sem-diagram" data-placeholder role="img" aria-label="Quaeris semantic layer learning engine analyzing user questions to infer metric definitions">
+            <!-- Placeholder for: screenshot of Quaeris parsing a natural-language question and inferring metric definitions from warehouse schema -->
+            <svg viewBox="0 0 600 400" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <rect x="42" y="56" width="232" height="104" rx="14" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-opacity="0.45" stroke-width="2"/>
+              <rect x="64" y="82" width="172" height="12" rx="6" fill="currentColor" fill-opacity="0.3"/>
+              <rect x="64" y="106" width="128" height="12" rx="6" fill="currentColor" fill-opacity="0.18"/>
+              <circle cx="64" cy="186" r="10" fill="currentColor" fill-opacity="0.25"/>
+              <rect x="84" y="178" width="120" height="12" rx="6" fill="currentColor" fill-opacity="0.14"/>
+              <path d="M288 108 L348 108" stroke="currentColor" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+              <path d="M340 102 L350 108 L340 114" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="448" cy="110" r="34" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="2"/>
+              <rect x="372" y="222" width="120" height="48" rx="10" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="2"/>
+              <rect x="372" y="294" width="120" height="48" rx="10" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+              <rect x="120" y="258" width="120" height="48" rx="10" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+              <path d="M448 144 L432 222" stroke="currentColor" stroke-width="2" stroke-opacity="0.5" fill="none"/>
+              <path d="M448 144 L440 294" stroke="currentColor" stroke-width="2" stroke-opacity="0.3" fill="none"/>
+              <path d="M414 110 L240 268" stroke="currentColor" stroke-width="2" stroke-opacity="0.3" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Certification (flipped) -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 02 — Certify</span>
+          <h3 class="display-md feature-row-heading">Your team owns the canonical definitions.</h3>
+          <p class="feature-row-body body-md">Your data engineer reviews what Quaeris learned and certifies it: 'Yes, this is revenue. No, that variant is a one-off for the finance team. This churn definition is correct for product metrics but not for customer success.' Certification happens in the Quaeris UI — no code, no YAML, no friction. Once certified, a definition is locked, versioned, and owned. When it changes, every downstream agent answer updates automatically. The change is audited.</p>
+          <a href="/platform/governance" class="btn btn-ghost">Explore the certification flow</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap feature-row-img-fallback sem-diagram" data-placeholder role="img" aria-label="Data engineer certifying and versioning a revenue metric definition in Quaeris">
+            <!-- Placeholder for: screenshot of the Quaeris certification UI showing a revenue metric with ownership, version history, and business rules -->
+            <svg viewBox="0 0 600 400" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <rect x="80" y="48" width="440" height="304" rx="16" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.45" stroke-width="2"/>
+              <rect x="112" y="84" width="180" height="16" rx="8" fill="currentColor" fill-opacity="0.32"/>
+              <rect x="112" y="124" width="376" height="1.5" fill="currentColor" fill-opacity="0.25"/>
+              <rect x="112" y="152" width="240" height="12" rx="6" fill="currentColor" fill-opacity="0.16"/>
+              <rect x="112" y="180" width="296" height="12" rx="6" fill="currentColor" fill-opacity="0.16"/>
+              <rect x="112" y="208" width="200" height="12" rx="6" fill="currentColor" fill-opacity="0.16"/>
+              <rect x="112" y="260" width="104" height="36" rx="10" fill="currentColor" fill-opacity="0.18"/>
+              <rect x="232" y="260" width="104" height="36" rx="10" fill="none" stroke="currentColor" stroke-opacity="0.4" stroke-width="2"/>
+              <circle cx="452" cy="92" r="26" fill="currentColor" fill-opacity="0.14" stroke="currentColor" stroke-width="2"/>
+              <path d="M441 92 L449 100 L464 84" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="384" y="260" width="104" height="36" rx="18" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="5 5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Trust & Governance -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 03 — Trust</span>
+          <h3 class="display-md feature-row-heading">Every answer cites the certified metric.</h3>
+          <p class="feature-row-body body-md">When a business user asks 'What's our Q3 churn?', the Quaeris agent returns not just a number, but the metric definition it used — owner, version, business logic, and the exact table lineage. Users see why the answer is what it is. If a different team has a different churn definition, both coexist in the semantic layer with clear ownership. The Quaeris governance dashboard shows metric usage, ownership, lineage, and change history. This is how trust scales.</p>
+          <a href="/platform/governance" class="btn btn-ghost">See the lineage view</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap feature-row-img-fallback sem-diagram" data-placeholder role="img" aria-label="Quaeris answer with full metric lineage and governance metadata">
+            <!-- Placeholder for: screenshot of a Quaeris answer showing metric definition, owner, and full lineage back to source tables -->
+            <svg viewBox="0 0 600 400" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <rect x="48" y="64" width="220" height="120" rx="14" fill="currentColor" fill-opacity="0.07" stroke="currentColor" stroke-opacity="0.5" stroke-width="2"/>
+              <rect x="70" y="90" width="120" height="20" rx="6" fill="currentColor" fill-opacity="0.34"/>
+              <rect x="70" y="126" width="160" height="10" rx="5" fill="currentColor" fill-opacity="0.18"/>
+              <rect x="70" y="146" width="132" height="10" rx="5" fill="currentColor" fill-opacity="0.18"/>
+              <circle cx="356" cy="124" r="18" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="452" cy="76" r="14" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="2"/>
+              <circle cx="476" cy="160" r="14" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="2"/>
+              <circle cx="420" cy="248" r="14" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="2"/>
+              <circle cx="524" cy="252" r="14" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="2"/>
+              <circle cx="476" cy="330" r="14" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="2"/>
+              <path d="M268 124 L338 124" stroke="currentColor" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+              <path d="M372 114 L440 82" stroke="currentColor" stroke-width="2" stroke-opacity="0.55" fill="none"/>
+              <path d="M373 130 L462 154" stroke="currentColor" stroke-width="2" stroke-opacity="0.55" fill="none"/>
+              <path d="M468 172 L428 236" stroke="currentColor" stroke-width="2" stroke-opacity="0.4" fill="none"/>
+              <path d="M482 174 L518 240" stroke="currentColor" stroke-width="2" stroke-opacity="0.4" fill="none"/>
+              <path d="M424 262 L468 320" stroke="currentColor" stroke-width="2" stroke-opacity="0.28" fill="none"/>
+              <path d="M520 266 L484 320" stroke="currentColor" stroke-width="2" stroke-opacity="0.28" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 · WHY AUTO-LEARNING WINS — reuses existing
+     IconFeatureGrid (.icon-feature-grid) with a 3-col variant.
+     ============================================================ -->
+<section id="why-auto-learning" class="section-pad" aria-labelledby="why-heading">
+  <div class="container">
+    <div class="section-header center">
+      <h2 id="why-heading" class="display-lg">Why auto-learning wins</h2>
+    </div>
+
+    <div class="icon-feature-grid sem-grid-3">
+
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3 class="heading-sm">Weeks, not months</h3>
+        <p>Traditional semantic layers need 3–6 month modeling sprints. Quaeris learns from usage in days. Deploy on week one, <span data-placeholder>[time to first certified metric]</span> by week two.</p>
+      </div>
+
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="4" y1="4" x2="20" y2="20"/></svg>
+        </div>
+        <h3 class="heading-sm">No code required</h3>
+        <p>Your data team certifies metrics in a UI, not YAML or MDX. Analytics engineers can stay focused on BI work, not semantic layer maintenance.</p>
+      </div>
+
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+        </div>
+        <h3 class="heading-sm">Versioned &amp; audited</h3>
+        <p>Every metric definition change is logged with owner, timestamp, and rationale. Rollback or compare versions in one click. Full audit trail.</p>
+      </div>
+
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="heading-sm">Multiple authoritative definitions</h3>
+        <p>Finance's 'revenue' and Product's 'activation' coexist in one semantic layer. No forced reconciliation. Ownership and lineage make the difference clear.</p>
+      </div>
+
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+        </div>
+        <h3 class="heading-sm">Scales to thousands</h3>
+        <p>Warehouse-native design handles thousands of metrics across hundreds of tables. No performance cliff as your semantic layer grows.</p>
+      </div>
+
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3 class="heading-sm">Governance by design</h3>
+        <p>Access controls, role-based metric visibility, and lineage enforcement are built in. Not added later. Security scales with adoption.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 · COMPARISON MATRIX — NEW:ComparisonTable
+     ============================================================ -->
+<section id="comparison" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="comparison-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Comparison</span>
+      <h2 id="comparison-heading" class="display-lg">How Quaeris compares to other semantic layers</h2>
+    </div>
+
+    <div class="sem-compare-wrap reveal" role="region" aria-labelledby="comparison-heading" tabindex="0">
+      <table class="sem-compare-table">
+        <caption class="sr-only">Feature comparison of the Quaeris Smart Semantic Layer against dbt Semantic Layer, Cube, AtScale, and Looker LookML</caption>
+        <thead>
+          <tr>
+            <th scope="col">Feature / Capability</th>
+            <th scope="col" class="sem-col-quaeris">Quaeris Smart Semantic Layer</th>
+            <th scope="col">dbt Semantic Layer</th>
+            <th scope="col">Cube</th>
+            <th scope="col">AtScale</th>
+            <th scope="col">Looker LookML</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Auto-learn from usage</th>
+            <td class="sem-col-quaeris">Yes — learns from natural-language prompts</td>
+            <td>No — requires YAML config</td>
+            <td>Partial — requires code</td>
+            <td>No — manual cube design</td>
+            <td>No — requires LookML</td>
+          </tr>
+          <tr>
+            <th scope="row">UI-based certification</th>
+            <td class="sem-col-quaeris">Yes — zero code</td>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <th scope="row">Warehouse-native</th>
+            <td class="sem-col-quaeris">Yes — queries live data</td>
+            <td>Yes — via dbt Cloud</td>
+            <td>Partial — proxies queries</td>
+            <td>Limited — requires data sync</td>
+            <td>No — proprietary model</td>
+          </tr>
+          <tr>
+            <th scope="row">Versioning &amp; audit trail</th>
+            <td class="sem-col-quaeris">Full history, owner tracking</td>
+            <td>Via git only</td>
+            <td>Via API only</td>
+            <td>Limited</td>
+            <td>Limited</td>
+          </tr>
+          <tr>
+            <th scope="row">Role-based metric access</th>
+            <td class="sem-col-quaeris">Yes — agent-level enforcement</td>
+            <td>No</td>
+            <td>Partial</td>
+            <td>Partial</td>
+            <td>Via Looker roles</td>
+          </tr>
+          <tr>
+            <th scope="row">Time to first metric (starting from scratch)</th>
+            <td class="sem-col-quaeris" data-placeholder>[Time to first certified metric]</td>
+            <td data-placeholder>[Estimated — dbt requires upfront YAML config sprints before queries can run]</td>
+            <td data-placeholder>[Estimated — Cube requires developer setup and architecture work before first query]</td>
+            <td data-placeholder>[Estimated — AtScale requires heavy upfront cube modeling per research]</td>
+            <td data-placeholder>[Estimated — Looker requires LookML expertise and a modeling sprint]</td>
+          </tr>
+          <tr>
+            <th scope="row">Supports multiple warehouse platforms</th>
+            <td class="sem-col-quaeris">Yes — Snowflake, BigQuery, Databricks, Redshift, Synapse</td>
+            <td>Yes — via adapters</td>
+            <td>Yes — via drivers</td>
+            <td>Yes</td>
+            <td>Looker-only</td>
+          </tr>
+          <tr>
+            <th scope="row">Learning curve for data teams</th>
+            <td class="sem-col-quaeris">Low — watch &amp; certify</td>
+            <td>Medium — YAML + dbt modeling</td>
+            <td>High — code + architecture</td>
+            <td>High — cube design</td>
+            <td>Very high — LookML + Looker concepts</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="sem-table-note">Feature comparison current as of June 2026. See detailed comparison pages for <a href="/compare/quaeris-vs-cube">Cube vs. Quaeris</a> and <a href="/compare/quaeris-vs-dbt-semantic-layer">dbt Semantic Layer alternative</a> for deeper analysis.</p>
+
+    <div style="text-align: center; margin-top: var(--space-7);">
+      <a href="/resources/semantic-layer-comparison-guide" class="btn btn-secondary">Download the full competitive analysis</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 · INSIDE THE SEMANTIC LAYER — NEW:SemanticLayerAnatomy
+     (3-column certified-metric breakout on the warm surface.)
+     ============================================================ -->
+<section id="anatomy" class="section-pad" style="background: var(--bg-warm); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);" aria-labelledby="anatomy-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Inside the semantic layer</span>
+      <h2 id="anatomy-heading" class="display-lg">What a certified metric looks like</h2>
+      <p class="subcopy body-lg">Every metric definition in Quaeris contains the information your team needs to trust it.</p>
+    </div>
+
+    <div class="sem-anatomy-grid">
+
+      <article class="card reveal">
+        <span class="eyebrow" style="color: var(--brand-accent);">Definition</span>
+        <h3 class="heading-sm" style="margin-top: var(--space-3);">What is it?</h3>
+        <dl class="sem-spec-list">
+          <div><dt>Metric name</dt><dd>Revenue</dd></div>
+          <div><dt>Description</dt><dd>Total order value excluding taxes and refunds</dd></div>
+          <div><dt>Owner</dt><dd>Head of Finance (sarah@company.com)</dd></div>
+          <div><dt>Version</dt><dd>2.3 (updated Jun 10, 2026)</dd></div>
+        </dl>
+      </article>
+
+      <article class="card reveal">
+        <span class="eyebrow" style="color: var(--brand-accent);">Lineage</span>
+        <h3 class="heading-sm" style="margin-top: var(--space-3);">Where does it come from?</h3>
+        <dl class="sem-spec-list">
+          <div><dt>Source tables</dt><dd>orders, order_items, refunds</dd></div>
+          <div><dt>Key filter</dt><dd><code class="sem-code">WHERE status = 'completed'</code></dd></div>
+          <div><dt>Calculation</dt><dd><code class="sem-code">SUM(order_items.price) - SUM(refunds.amount)</code></dd></div>
+          <div><dt>Last updated</dt><dd>Jun 10, 2026 by sarah@company.com</dd></div>
+        </dl>
+      </article>
+
+      <article class="card reveal">
+        <span class="eyebrow" style="color: var(--brand-accent);">Governance</span>
+        <h3 class="heading-sm" style="margin-top: var(--space-3);">Who can see it?</h3>
+        <dl class="sem-spec-list">
+          <div><dt>Visibility</dt><dd>Finance, Executive, Sales Leadership</dd></div>
+          <div><dt>Restricted from</dt><dd>Customer Success, Product</dd></div>
+          <div><dt>Change log</dt><dd>12 versions tracked</dd></div>
+          <div><dt>Audit trail</dt><dd>340 queries this month</dd></div>
+        </dl>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 · USE CASES — reuses existing SegmentCards
+     (.segment-cards-grid) in a 2×2 variant.
+     ============================================================ -->
+<section id="use-cases" class="section-pad" aria-labelledby="use-cases-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Use cases</span>
+      <h2 id="use-cases-heading" class="display-lg">Where the Smart Semantic Layer delivers</h2>
+    </div>
+
+    <div class="segment-cards-grid sem-grid-2x2">
+
+      <article class="segment-card reveal">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="segment-label heading-sm">Finance + Product + Sales speak the same language</h3>
+        <p class="segment-desc body-sm">Each team has their own 'revenue' definition. Quaeris holds all of them in one semantic layer with clear ownership. No more reconciliation calls before the board meeting.</p>
+        <a href="/use-cases/financial-services-metric-alignment" class="btn btn-ghost" data-placeholder>[See how a financial-services customer unified metrics across teams]</a>
+      </article>
+
+      <article class="segment-card reveal">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3 class="segment-label heading-sm">Stop the ad-hoc request queue</h3>
+        <p class="segment-desc body-sm">Business teams no longer ask 'What's our revenue?' — they know the certified definition and ask confident follow-ups. Your data team shrinks the backlog by <span data-placeholder>[% reduction in ad-hoc request queue]</span>.</p>
+        <a href="/use-cases/saas-time-to-insight" class="btn btn-ghost" data-placeholder>[Read: How an analytics team cut time-to-insight]</a>
+      </article>
+
+      <article class="segment-card reveal">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3 class="segment-label heading-sm">Audit every metric and every query</h3>
+        <p class="segment-desc body-sm">Regulated industries (finance, insurance, healthcare) need proof that metrics are certified and queries are governed. Quaeris's semantic layer IS the proof.</p>
+        <a href="/platform/audit" class="btn btn-ghost">Explore compliance &amp; audit features</a>
+      </article>
+
+      <article class="segment-card reveal">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <h3 class="segment-label heading-sm">Migrate off multiple BI tools</h3>
+        <p class="segment-desc body-sm">Teams running Tableau, Looker, and Sigma in parallel — each with different metric definitions. Quaeris's semantic layer becomes the single source of truth. Retire the legacy BI tool.</p>
+        <a href="/resources/bi-consolidation-roi" class="btn btn-ghost">See consolidation ROI analysis</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7 · GETTING STARTED — reuses existing Accordion
+     (Radix Accordion at port time; mockup uses a small
+     mockup-only script for open/close.)
+     ============================================================ -->
+<section id="getting-started" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="getting-started-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Getting started</span>
+      <h2 id="getting-started-heading" class="display-lg">Deploy in two weeks. Govern on day one.</h2>
+    </div>
+
+    <div class="sem-acc-wrap">
+      <div class="accordion">
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="true" aria-controls="gs-panel-1" id="gs-trigger-1" data-state="open">
+              <span class="sem-acc-head">
+                <span class="eyebrow">Week 1 — Connect &amp; Observe</span>
+                <span class="accordion-question">Connect your warehouse. Quaeris begins learning.</span>
+              </span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="gs-panel-1" role="region" aria-labelledby="gs-trigger-1" data-state="open">
+            <div class="sem-acc-body">
+              <p>Day 1–2: Connect to your Snowflake, BigQuery, Databricks, or Redshift instance (30 minutes). Quaeris scans your schema and begins observing user questions.</p>
+              <p>Day 3–5: Your data team invites business users to ask pilot questions (10–20 exploratory queries). Quaeris infers metric patterns.</p>
+              <p>Day 7: Review what Quaeris learned. Begin certification: 'Yes, that's our revenue. No, that's a one-off.'</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="gs-panel-2" id="gs-trigger-2" data-state="closed">
+              <span class="sem-acc-head">
+                <span class="eyebrow">Week 2 — Certify &amp; Govern</span>
+                <span class="accordion-question">Your team certifies metrics. Governance locks in.</span>
+              </span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="gs-panel-2" role="region" aria-labelledby="gs-trigger-2" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Day 8–10: Data engineer certifies the top 20–30 metrics. Assigns owners, writes business rules, versions each one.</p>
+              <p>Day 11–12: Configure role-based access. Decide which teams see which metrics. Test with a cohort of power users.</p>
+              <p>Day 14: Go live. All agent answers cite certified metrics. Lineage is live. Audit logs are flowing.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="gs-panel-3" id="gs-trigger-3" data-state="closed">
+              <span class="sem-acc-head">
+                <span class="eyebrow">Week 3+ — Scale &amp; Optimize</span>
+                <span class="accordion-question">Grow metrics. Refine governance.</span>
+              </span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="gs-panel-3" role="region" aria-labelledby="gs-trigger-3" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Weeks 3–4: Monitor usage. Add new metrics as they emerge. Retire obsolete definitions.</p>
+              <p>Month 2: Roll out to all business teams. Measure reduction in data-team ad-hoc requests.</p>
+              <p>Ongoing: Quaeris learns new patterns. Your team certifies quarterly. Semantic layer stays current.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="gs-panel-4" id="gs-trigger-4" data-state="closed">
+              <span class="sem-acc-head">
+                <span class="eyebrow">Support &amp; Training</span>
+                <span class="accordion-question">Quaeris runs alongside your existing BI stack.</span>
+              </span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="gs-panel-4" role="region" aria-labelledby="gs-trigger-4" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Your data team gets: setup support, bi-weekly office hours, Slack channel with Quaeris experts.</p>
+              <p>Business users get: 30-minute training on how to ask questions and read metric definitions.</p>
+              <p>Documentation: API reference, SQL generator, lineage how-tos, governance playbooks.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 8 · PROOF — reuses existing CaseStudyCard +
+     TestimonialCard (all customer data pending consent).
+     ============================================================ -->
+<section id="proof" class="section-pad" aria-labelledby="proof-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Proof</span>
+      <h2 id="proof-heading" class="display-lg">Trusted by data leaders</h2>
+    </div>
+
+    <div class="sem-proof-grid">
+
+      <article class="case-study-card reveal">
+        <span class="industry-chip" data-placeholder>[Customer industry]</span>
+        <h3 class="heading-sm" data-placeholder>[Customer name]</h3>
+        <div class="cs-stats">
+          <div class="cs-stat">
+            <span class="cs-stat-num" data-placeholder>—%</span>
+            <span class="cs-stat-label">Reduction in metric definition conflicts</span>
+          </div>
+        </div>
+        <p class="cs-outcome">&ldquo;<span data-placeholder>[Quote from data leader on governance impact]</span>&rdquo;</p>
+        <a href="/case-studies" class="btn btn-ghost">Read the full story</a>
+      </article>
+
+      <figure class="testimonial-card reveal">
+        <blockquote class="testimonial-quote">&ldquo;<span data-placeholder>[Quote on auto-learning semantic layer]</span>&rdquo;</blockquote>
+        <figcaption class="testimonial-author" data-placeholder>
+          <span class="author-avatar" aria-hidden="true">··</span>
+          <span>
+            <span class="author-name">[Name, Title]</span><br />
+            <span class="author-role">[Company]</span>
+          </span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 9 · DEEP DIVE — reuses existing EditorialBlock
+     (warm gradient wash + brand-purple accent line via pullquote).
+     ============================================================ -->
+<section id="deep-dive" class="section-pad sem-editorial-bg" aria-labelledby="deep-dive-heading">
+  <div class="container">
+    <div class="editorial-inner reveal">
+      <span class="eyebrow editorial-eyebrow">Why auto-learning matters</span>
+      <h2 id="deep-dive-heading" class="display-lg editorial-headline">The semantic layer bottleneck — and why Quaeris solves it</h2>
+      <div class="editorial-prose body-md">
+        <p>Every semantic layer product asks your team to do the work upfront. Looker demands LookML expertise. dbt Semantic Layer requires weeks of YAML config writing. Cube and AtScale need architects to design cubes before a single question gets answered. The ROI math is brutal: you spend 3–6 months building before you get any benefit. Meanwhile, business teams have already found their own analytics solutions (spreadsheets, Sigma, Mode) and defined their own 'revenue.' Once that fragmentation sets in, unifying metrics later is a political problem, not a technical one.</p>
+        <p>Quaeris flips the model. Metrics emerge <em>from usage</em>. Your team certifies what Quaeris learns, not the other way around. Governance happens at the point of observation, not at the end of a long modeling sprint. The ROI is immediate: in week two, every agent answer cites a certified metric. By month three, your data team's ad-hoc request queue has shrunk by <span data-placeholder>[% reduction in ad-hoc request queue]</span>.</p>
+        <blockquote class="editorial-pullquote">
+          <p>This is the only semantic layer that pays for itself before your team finishes configuring it.</p>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 10 · FAQS — reuses existing FAQSection
+     (.faq-grid + Radix Accordion at port time; FAQPage schema.)
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-grid">
+
+      <div class="section-header">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="faq-heading" class="display-lg">Common questions about the Smart Semantic Layer</h2>
+        <div class="faq-mini-card" data-placeholder>
+          <p class="heading-sm" style="color: var(--text-primary); margin-bottom: var(--space-3);">Still have questions?</p>
+          <p>Talk to a Quaeris engineer about your warehouse, your metrics, and your governance requirements.</p>
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        </div>
+      </div>
+
+      <div class="accordion">
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="true" aria-controls="faq-panel-1" id="faq-trigger-1" data-state="open">
+              <span class="accordion-question">Does Quaeris replace our existing BI tool's semantic layer (LookML, YAML, etc.)?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-panel-1" role="region" aria-labelledby="faq-trigger-1" data-state="open">
+            <div class="sem-acc-body">
+              <p>Quaeris complements, not replaces, your BI tool. If you're using Looker's LookML, Quaeris can coexist and serve natural-language queries while LookML continues to power structured dashboards. If you're looking to migrate off a legacy BI tool altogether, Quaeris's semantic layer becomes the source of truth — and you can retire LookML, YAML, or proprietary models.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-2" id="faq-trigger-2" data-state="closed">
+              <span class="accordion-question">Can Quaeris learn metrics from a warehouse that already has a semantic layer?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-panel-2" role="region" aria-labelledby="faq-trigger-2" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Yes. If you have Looker, dbt Semantic Layer, or Cube already deployed, Quaeris can ingest those definitions and extend them. It learns from new questions, suggests new metrics, and lets your team version everything in one place. You're not forced to rebuild from scratch.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-3" id="faq-trigger-3" data-state="closed">
+              <span class="accordion-question">What if Quaeris learns a metric definition wrong?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-panel-3" role="region" aria-labelledby="faq-trigger-3" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Your data team reviews it during certification. If it's wrong, you reject it or correct it — mark the actual business rule. Quaeris won't use the rejected definition. It's not training on your corrections in a black-box way; your team's certification decision is explicit and versioned.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-4" id="faq-trigger-4" data-state="closed">
+              <span class="accordion-question">Who owns the metrics — Quaeris or our team?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-panel-4" role="region" aria-labelledby="faq-trigger-4" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>100% your team. Metrics live in your warehouse. Definitions are certified by your data engineers. Quaeris is the platform that learns patterns and surfaces them for your approval. You control versioning, access, change history, everything.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-5" id="faq-trigger-5" data-state="closed">
+              <span class="accordion-question">Does the auto-learning happen in real time or in batch?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-panel-5" role="region" aria-labelledby="faq-trigger-5" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Quaeris observes questions in real time and incrementally updates its confidence in metric patterns. Certification happens on your schedule — daily, weekly, or monthly. No batch delays. No waiting.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-6" id="faq-trigger-6" data-state="closed">
+              <span class="accordion-question">What if we have conflicting metric definitions (Finance's revenue vs. Product's revenue)?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-panel-6" role="region" aria-labelledby="faq-trigger-6" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Both live in the semantic layer. Quaeris tracks which team owns which definition, tags them separately, and ensures agents use the correct one based on context or user role. No forced reconciliation. Transparency replaces conflict.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-7" id="faq-trigger-7" data-state="closed">
+              <span class="accordion-question">Can we audit which queries used which metric definition?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-panel-7" role="region" aria-labelledby="faq-trigger-7" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Yes. Every answer Quaeris returns is logged with: the metric definition version used, the date, the user who asked, the warehouse tables queried, and the exact lineage. This audit logging capability supports regulated-industry governance workflows. <span data-placeholder>[Confirm held certifications (SOC 2, HIPAA BAA, ISO 27001) with security/compliance team before citing specific standards — see Open Question #5]</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-8" id="faq-trigger-8" data-state="closed">
+              <span class="accordion-question">How does Quaeris handle new tables or schema changes?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-panel-8" role="region" aria-labelledby="faq-trigger-8" data-state="closed" hidden>
+            <div class="sem-acc-body">
+              <p>Quaeris rescans your warehouse regularly. When a new table appears, it learns potential metrics from that table. When a schema changes, it updates its confidence estimates. Your team re-certifies as needed. Zero downtime.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 11 · CTA BAND — reuses existing CTABand structure
+     with a light (warm-surface) variant per spec.
+     ============================================================ -->
+<section id="cta" class="section-pad sem-cta-light" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to deploy?</span>
+      <h2 id="cta-heading" class="display-lg">See the Smart Semantic Layer in action.</h2>
+      <p class="subcopy body-lg">Book a 30-minute demo. We'll connect to your warehouse, walk through a live metric certification, and show you an agent answer with full lineage — using your actual schema.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        <a href="/resources/white-papers/smart-semantic-layers" class="btn btn-secondary">Get the white paper</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 12 · FOOTER — omitted; shared SiteFooter component from brand config at port time. -->
+
+</main>
+
+<script>
+// Mockup-only: accordion open/close so the section is reviewable in a browser.
+// Replaced by Radix Accordion (existing Accordion component) at port time.
+document.querySelectorAll('.accordion-trigger').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    btn.setAttribute('aria-expanded', String(!open));
+    btn.setAttribute('data-state', open ? 'closed' : 'open');
+    if (panel) {
+      panel.hidden = open;
+      panel.setAttribute('data-state', open ? 'closed' : 'open');
+    }
+  });
+});
+</script>
+
+</body>
+</html>

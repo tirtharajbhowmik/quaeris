@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /pricing — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- ============================================================
+     MOCKUP — /pricing (spec: docs/page-specs/pricing.md, 2026-06-12)
+     PORT NOTES:
+     • Real route <title>: "Quaeris Pricing — Governed Analytics, Built to Scale"
+       Meta description: "Quaeris pricing scales with your data team — from a
+       governed pilot to enterprise-wide agentic analytics. Contact sales for a
+       configuration built around your stack."
+     • Schema: SoftwareApplication with `offers` (one Offer per tier;
+       priceType InvoicePrice, no numeric price on Enterprise — Week 2 push)
+       + FAQPage JSON-LD (included inline below near the FAQ section).
+     • All [data-placeholder] content (prices, user counts, BYOM slots, audit
+       retention, certifications, uptime SLA, case-study stats, enterprise-brief
+       asset) awaits sales/product/legal input — see spec §4 and Open Questions.
+       Do not ship without confirmed figures.
+     • Footer addition at port time (NOT mocked here): "See how Quaeris
+       compares" → /compare in a footer column, per spec §5.
+     • The Annual/Monthly billing toggle is mockup-JS only; it becomes React
+       state inside NEW:PricingTierGrid at port time. If contracts are
+       annual-only (spec Open Question 10), remove the toggle and show
+       "Annual contract · Billed upfront."
+     ============================================================ -->
+
+<style>
+  /* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic). */
+
+  /* — Section 01 · Page Hero (SectionHeader hero variant + billing toggle) — */
+  .pricing-hero { background: var(--bg-warm); }
+  .pricing-hero-inner { max-width: 720px; margin: 0 auto; text-align: center; }
+  .pricing-hero-inner .badge { margin-bottom: var(--space-5); }
+  .pricing-hero-inner h1 { margin-bottom: var(--space-5); }
+  .pricing-hero-sub { color: var(--text-secondary); }
+  .pricing-toggle {
+    display: inline-flex;
+    gap: var(--space-1);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: var(--space-1);
+    margin-top: var(--space-5); /* spec: 24px below subheading */
+  }
+  .pricing-toggle-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0 var(--space-5);
+    border-radius: var(--radius-pill);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .pricing-toggle-btn[aria-pressed="true"] { background: var(--brand-accent); color: var(--text-on-dark); }
+  .pricing-toggle-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+  .pricing-hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3) var(--space-6);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .pricing-hero-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .pricing-hero-trust-item svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+
+  /* — Section 02 · NEW:PricingTierGrid — */
+  .pricing-tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+  .pricing-tier-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md); /* spec: 12px */
+    box-shadow: var(--shadow-card);
+    padding: var(--space-6);
+  }
+  .pricing-tier-card--featured {
+    border-top: 4px solid var(--brand-accent); /* spec: accent top stripe */
+    background: var(--bg-warm);
+  }
+  .pricing-tier-badge {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-5);
+    background: var(--brand-accent);
+    color: var(--text-on-dark);
+    border-radius: var(--radius-pill);
+    padding: 4px 12px;
+  }
+  .pricing-tier-positioning { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+  .pricing-tier-price { margin-top: var(--space-2); }
+  .pricing-price { display: block; font-size: 17px; font-weight: 600; color: var(--text-primary); line-height: 1.45; }
+  .pricing-price-num { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .pricing-price-note { font-size: 14px; font-weight: 400; color: var(--text-tertiary); }
+  .pricing-tier-sublabel { font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-1); }
+  /* Billing toggle state — default Annual; .pricing-billing-monthly is set on <main> by the toggle */
+  .pricing-price-monthly { display: none; }
+  .pricing-billing-monthly .pricing-price-annual { display: none; }
+  .pricing-billing-monthly .pricing-price-monthly { display: block; }
+  .pricing-feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5) 0;
+    margin-top: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+    flex: 1;
+  }
+  .pricing-feature-list li {
+    display: flex;
+    gap: var(--space-2);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-secondary); /* spec's raw feature-text hex → semantic secondary text token */
+  }
+  .pricing-feature-list li svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 3px; }
+  .pricing-feature-lead { font-weight: 600; color: var(--text-primary); }
+  .pricing-tier-cta { display: flex; flex-direction: column; gap: var(--space-2); margin-top: auto; }
+  .pricing-tier-cta .btn { justify-content: center; }
+  .pricing-tier-cta .btn-ghost { align-self: center; }
+  @media (max-width: 1024px) {
+    .pricing-tier-grid { grid-template-columns: 1fr; max-width: 560px; margin-left: auto; margin-right: auto; }
+    /* spec: on mobile, Professional renders first */
+    .pricing-tier-card--featured { order: -1; }
+  }
+
+  /* — Section 03 · StatBlock (dark band variant) — */
+  .pricing-stats-band { background: var(--bg-ink); }
+  .pricing-stats-band .marquee-label { color: var(--text-on-dark-dim); }
+  .pricing-stats-band .stat-label { color: var(--text-on-dark-dim); }
+  .pricing-stats-band .stat-delta {
+    background: none;
+    padding: 0;
+    font-weight: 400;
+    font-size: 13px;
+    color: color-mix(in srgb, var(--text-on-dark) 55%, transparent);
+  }
+  .pricing-stats-band .stat-block + .stat-block::before { background: var(--border-on-dark); }
+  .pricing-stat-unit { font-size: 0.45em; font-weight: 600; letter-spacing: 0; }
+
+  /* — Section 04 · NEW:PricingFeatureMatrix — */
+  .pricing-matrix-wrap {
+    overflow-x: auto;
+    margin-top: var(--space-7);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+  }
+  .pricing-matrix { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 14px; }
+  .pricing-matrix th,
+  .pricing-matrix td {
+    padding: var(--space-3) var(--space-4);
+    text-align: center;
+    border-bottom: 1px solid var(--border-subtle);
+    vertical-align: middle;
+    color: var(--text-secondary);
+  }
+  .pricing-matrix thead th {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 15px;
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+  }
+  .pricing-matrix tbody tr { background: var(--bg-surface); }
+  .pricing-matrix tbody tr:nth-child(even) { background: var(--bg-canvas); } /* spec: alternating rows */
+  .pricing-matrix-group th {
+    background: var(--bg-warm);
+    color: var(--text-primary);
+    text-align: left;
+  }
+  .pricing-matrix th[scope="row"],
+  .pricing-matrix thead th:first-child {
+    text-align: left;
+    font-weight: 500;
+    color: var(--text-primary);
+    min-width: 280px;
+    position: sticky; /* spec: sticky first column */
+    left: 0;
+    background: inherit;
+    z-index: 1;
+    box-shadow: inset -1px 0 0 var(--border-subtle);
+  }
+  .pricing-matrix thead th:first-child { background: var(--bg-surface); z-index: 2; }
+  .pricing-matrix-check svg { width: 18px; height: 18px; color: var(--brand-accent); display: inline-block; vertical-align: middle; }
+  .pricing-matrix-minus svg { width: 18px; height: 18px; color: var(--text-tertiary); display: inline-block; vertical-align: middle; }
+  .pricing-matrix-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--brand-accent-glow);
+    text-underline-offset: 3px;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .pricing-matrix-link:hover { color: var(--brand-accent); }
+  .pricing-matrix-cta { text-align: center; margin-top: var(--space-6); }
+
+  /* — Section 05 · SegmentCards (3-up warm variant) — */
+  .segment-cards-grid.pricing-seg-3 { grid-template-columns: repeat(3, 1fr); }
+  .segment-cards-grid.pricing-seg-3 .segment-card { background: var(--bg-warm); } /* spec: warm card bg */
+  @media (max-width: 900px) { .segment-cards-grid.pricing-seg-3 { grid-template-columns: 1fr; } }
+  @media (max-width: 768px) { .segment-cards-grid.pricing-seg-3 { grid-template-columns: 1fr; } }
+
+  /* — Section 06 · NEW:TrustBadgeStrip — */
+  .pricing-trust-strip {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: var(--space-8) 0;
+  }
+  .pricing-trust-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--space-6) var(--space-4);
+  }
+  .pricing-trust-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+    min-height: 44px;
+    border-radius: var(--radius-md);
+  }
+  .pricing-trust-badge svg { width: 24px; height: 24px; color: var(--brand-accent); flex-shrink: 0; }
+  .pricing-trust-label { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+  .pricing-trust-sub { font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+  a.pricing-trust-badge { transition: background var(--dur-fast) var(--ease-out); }
+  a.pricing-trust-badge:hover { background: var(--bg-canvas); }
+  a.pricing-trust-badge:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+  /* Unobtained certifications render muted until activated by CMS flag (spec S06 note) */
+  .pricing-trust-badge--pending { opacity: 0.45; }
+  .pricing-trust-badge--pending .pricing-trust-sub { text-decoration: line-through; }
+  @media (max-width: 1024px) { .pricing-trust-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 640px)  { .pricing-trust-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* — Section 07 · CaseStudyCard (2-up row) — */
+  .pricing-case-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+  .pricing-case-grid > * { height: 100%; }
+  @media (max-width: 768px) { .pricing-case-grid { grid-template-columns: 1fr; } }
+
+  /* — Section 08 · FAQ (centered SectionHeader + Accordion) — */
+  .pricing-faq-wrap { max-width: 800px; margin: var(--space-8) auto 0; }
+
+  /* — Shared responsive polish — */
+  @media (max-width: 640px) {
+    .pricing-hero-trust { gap: var(--space-3) var(--space-4); }
+    .pricing-tier-card { padding: var(--space-5); }
+    .pricing-toggle-btn { padding: 0 var(--space-4); }
+  }
+</style>
+
+<main id="main">
+
+  <!-- ============ Section 01 — Page Hero · SectionHeader (hero variant; toggle becomes
+       state inside NEW:PricingTierGrid at port time) ============ -->
+  <section id="pricing-hero" class="pricing-hero section-pad" aria-labelledby="pricing-hero-heading">
+    <div class="container">
+      <div class="pricing-hero-inner reveal">
+        <span class="badge badge-accent">Governed Agentic Analytics — Pricing</span>
+        <h1 id="pricing-hero-heading" class="hero-h1">Pricing that matches how enterprise data actually works.</h1>
+        <p class="body-lg pricing-hero-sub">
+          Quaeris deployments are scoped to your warehouse configuration, your governance
+          requirements, and the number of engines you activate — not an arbitrary seat count.
+          Every tier runs warehouse-native. Your data never leaves your environment.
+        </p>
+
+        <!-- Default state: Annual (spec S01). Swaps pricing callout text in Section 02 only. -->
+        <div class="pricing-toggle" role="group" aria-label="Billing period">
+          <button type="button" class="pricing-toggle-btn" data-billing="annual" aria-pressed="true">Annual</button>
+          <button type="button" class="pricing-toggle-btn" data-billing="monthly" aria-pressed="false">Monthly</button>
+        </div>
+
+        <ul class="pricing-hero-trust" role="list">
+          <li class="pricing-hero-trust-item" data-placeholder>
+            <!-- shield-check — badge displays only when certified (spec S01) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>SOC 2 Type II</span>
+          </li>
+          <li class="pricing-hero-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Warehouse-native. Data never copied.</span>
+          </li>
+          <li class="pricing-hero-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+            <span>BYOM — OpenAI, Anthropic, Google, Meta</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 02 — Tier Cards · NEW:PricingTierGrid ============
+       Implementation notes (spec S02):
+       • No hardcoded monetary figures — every price string comes from a CMS/config
+         field marked data-placeholder so sales can update without a deploy.
+       • Annual/Monthly toggle swaps pricing callout strings ONLY (features/CTAs fixed).
+       • On mobile, render order: Professional (top), Team, Enterprise. -->
+  <section id="plans" class="section-pad" aria-label="Pricing tiers">
+    <div class="container">
+      <div class="pricing-tier-grid">
+
+        <!-- Card 1 — Team -->
+        <article class="pricing-tier-card reveal">
+          <h2 class="display-md" style="color: var(--text-primary);">Team</h2>
+          <p class="pricing-tier-positioning">For a single data team deploying governed natural-language analytics on one warehouse.</p>
+          <div class="pricing-tier-price" aria-live="polite">
+            <span class="pricing-price pricing-price-annual">From <span class="pricing-price-num" data-placeholder aria-label="Price awaiting sales input">—</span> / month <span class="pricing-price-note">· billed annually</span></span>
+            <span class="pricing-price pricing-price-monthly">From <span class="pricing-price-num" data-placeholder aria-label="Price awaiting sales input">—</span> / month <span class="pricing-price-note">· billed monthly</span></span>
+            <span class="pricing-tier-sublabel">Up to <span data-placeholder>—</span> active users</span>
+          </div>
+          <ul class="pricing-feature-list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Context Engine — Ask, Integrate, Activate</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Smart Semantic Layer (auto-learning, up to <span data-placeholder>—</span> certified metrics)</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Natural Language to SQL with governed prompt routing</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Single warehouse connection (Snowflake, BigQuery, Databricks, Redshift, or Azure Synapse)</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Role-based access controls — enforced at query time</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Prompt-level audit log — <span data-placeholder>—</span> days retention</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span><span data-placeholder>—</span> AI model connection (BYOM — one provider slot)</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Community support + documentation</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Standard SLA</span>
+            </li>
+          </ul>
+          <div class="pricing-tier-cta">
+            <a href="/contact?plan=team" class="btn btn-primary">Start a pilot</a>
+            <a href="#whats-included" class="btn btn-ghost">See what's included</a>
+          </div>
+        </article>
+
+        <!-- Card 2 — Professional (Most chosen — elevated treatment) -->
+        <article class="pricing-tier-card pricing-tier-card--featured reveal">
+          <span class="eyebrow pricing-tier-badge">Most chosen</span>
+          <h2 class="display-md" style="color: var(--text-primary);">Professional</h2>
+          <p class="pricing-tier-positioning">For cross-functional analytics teams that need multi-engine workflows, document agents, and full audit readiness.</p>
+          <div class="pricing-tier-price" aria-live="polite">
+            <span class="pricing-price pricing-price-annual">From <span class="pricing-price-num" data-placeholder aria-label="Price awaiting sales input">—</span> / month <span class="pricing-price-note">· billed annually</span></span>
+            <span class="pricing-price pricing-price-monthly">From <span class="pricing-price-num" data-placeholder aria-label="Price awaiting sales input">—</span> / month <span class="pricing-price-note">· billed monthly</span></span>
+            <span class="pricing-tier-sublabel">Up to <span data-placeholder>—</span> active users</span>
+          </div>
+          <ul class="pricing-feature-list">
+            <li><span class="pricing-feature-lead">Everything in Team, plus:</span></li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Answer Engine — Search, Share, Accelerate</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Decision Engine — Pin, Embed, Resonate</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Autonomous Multi-Step Agentic Workflows</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Data and Document Agents (SharePoint, Google Drive ingestion)</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Predictive and Proactive Analysis (forecasts, anomaly flags, root-cause)</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Up to <span data-placeholder>—</span> warehouse connections</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Extended prompt-level audit log — <span data-placeholder>—</span> days retention</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span><span data-placeholder>—</span> BYOM model provider slots</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Embedded analytics (pinboards and embeds)</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Priority support + dedicated onboarding</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Enhanced SLA</span>
+            </li>
+          </ul>
+          <div class="pricing-tier-cta">
+            <a href="/contact?plan=professional" class="btn btn-primary">Book a Demo</a>
+            <a href="#whats-included" class="btn btn-ghost">See what's included</a>
+          </div>
+        </article>
+
+        <!-- Card 3 — Enterprise -->
+        <article class="pricing-tier-card reveal">
+          <h2 class="display-md" style="color: var(--text-primary);">Enterprise</h2>
+          <p class="pricing-tier-positioning">For regulated organizations that require multi-warehouse deployments, compliance controls, and a named success team.</p>
+          <div class="pricing-tier-price">
+            <span class="pricing-price">Custom pricing <span class="pricing-price-note">— contact sales for a configuration scoped to your environment.</span></span>
+            <span class="pricing-tier-sublabel">Unlimited users · Custom SLA</span>
+          </div>
+          <ul class="pricing-feature-list">
+            <li><span class="pricing-feature-lead">Everything in Professional, plus:</span></li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Unlimited warehouse connections</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Unlimited BYOM model provider slots — switch models without re-configuration</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Multi-tenant and embedded OEM deployment options</span>
+            </li>
+            <li data-placeholder>
+              <!-- certifications listed as obtained (spec S02 / Open Question 5) -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>HIPAA, SOC 2 Type II, GDPR, ISO 27001 compliance controls</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Custom data residency configuration</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Advanced role and attribute-based access controls</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Extended prompt-level audit log — custom retention</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>SSO / SAML 2.0 / SCIM provisioning</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Named Customer Success Manager</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Dedicated SLA with <span data-placeholder>—</span> uptime guarantee</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Security review and procurement support</span>
+            </li>
+          </ul>
+          <div class="pricing-tier-cta">
+            <a href="/contact?plan=enterprise" class="btn btn-primary">Contact Sales</a>
+            <a href="/resources/enterprise-brief" class="btn btn-ghost" data-placeholder>Download the Enterprise brief</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 03 — Stat Band · StatBlock (dark variant) ============
+       Spec S03: the only numbers on the page. First three numerals are
+       data-placeholder until validated customer data exists; "6 industries" is
+       factual from the Quaeris homepage. Do NOT reuse Veris config stat values. -->
+  <section id="deployment-stats" class="pricing-stats-band section-pad" aria-label="Proof of deployment efficiency">
+    <div class="container">
+      <p class="eyebrow marquee-label">Deployment efficiency</p>
+      <div class="stats-grid reveal">
+        <div class="stat-block">
+          <span class="stat-num stat-number" data-placeholder aria-label="Placeholder — awaiting verified figure">— <span class="pricing-stat-unit">weeks</span></span>
+          <span class="stat-label body-sm">Median time to first governed answer in production</span>
+          <span class="stat-delta">From warehouse connection to live queries</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number" data-placeholder aria-label="Placeholder — awaiting verified figure">— <span class="pricing-stat-unit">min</span></span>
+          <span class="stat-label body-sm">Median time-to-insight per question</span>
+          <span class="stat-delta">From plain-English question to audited answer</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number" data-placeholder aria-label="Placeholder — awaiting verified figure">—</span>
+          <span class="stat-label body-sm">Warehouse and document sources supported</span>
+          <span class="stat-delta">Snowflake, BigQuery, Databricks, Redshift, Synapse, SharePoint, Drive</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number" aria-label="Six">6</span>
+          <span class="stat-label body-sm">Industries deployed</span>
+          <span class="stat-delta">Finance · Insurance · Retail · Healthcare · Manufacturing · Construction</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 04 — Capability Depth by Tier · NEW:PricingFeatureMatrix ============
+       Anchor target for the tier-card ghost links ("See what's included").
+       Spec implementation note: ALL data-placeholder cells must be resolved before
+       go-live — this matrix is the most likely element cited in procurement RFP
+       responses and AI Overview results. -->
+  <section id="whats-included" class="section-pad" aria-labelledby="matrix-heading">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow">Feature matrix</span>
+        <h2 id="matrix-heading" class="display-lg">Capability depth by tier.</h2>
+      </div>
+
+      <div class="pricing-matrix-wrap reveal" role="region" aria-labelledby="matrix-heading" tabindex="0">
+        <table class="pricing-matrix">
+          <caption class="sr-only">Capability comparison across the Team, Professional, and Enterprise tiers.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Capability</th>
+              <th scope="col">Team</th>
+              <th scope="col">Professional</th>
+              <th scope="col">Enterprise</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr class="pricing-matrix-group">
+              <th colspan="4" scope="colgroup"><span class="eyebrow">Context Engine</span></th>
+            </tr>
+            <tr>
+              <th scope="row">Natural Language to SQL (governed, semantic-layer grounded)</th>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><a class="pricing-matrix-link" href="/platform/semantic-layer">Smart Semantic Layer</a> — auto-learning metric definitions</th>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><a class="pricing-matrix-link" href="/platform/warehouse">Warehouse-native</a> connection (data never copied)</th>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">BYOM model provider slots</th>
+              <td data-placeholder>1</td>
+              <td data-placeholder>—</td>
+              <td>Unlimited</td>
+            </tr>
+            <tr>
+              <th scope="row">Warehouse connections</th>
+              <td>1</td>
+              <td data-placeholder>—</td>
+              <td>Unlimited</td>
+            </tr>
+            <tr>
+              <th scope="row">SharePoint and Google Drive document ingestion</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+          </tbody>
+
+          <tbody>
+            <tr class="pricing-matrix-group">
+              <th colspan="4" scope="colgroup"><span class="eyebrow">Answer Engine</span></th>
+            </tr>
+            <tr>
+              <th scope="row">Conversational search across governed metrics</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Autonomous Multi-Step Agentic Workflows</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Predictive analysis (forecasts, anomaly detection)</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Proactive alerts (surface issues before they impact)</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Root-cause diagnosis</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Data and Document Agents (structured + unstructured unified query)</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+          </tbody>
+
+          <tbody>
+            <tr class="pricing-matrix-group">
+              <th colspan="4" scope="colgroup"><span class="eyebrow">Decision Engine</span></th>
+            </tr>
+            <tr>
+              <th scope="row">Pinboards (governed metric snapshots)</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Embedded analytics (iframe / SDK embed)</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Multi-tenant embedded / OEM deployment</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Communities and shared insight distribution</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+          </tbody>
+
+          <tbody>
+            <tr class="pricing-matrix-group">
+              <th colspan="4" scope="colgroup"><span class="eyebrow">Governance and Security</span></th>
+            </tr>
+            <tr>
+              <th scope="row"><a class="pricing-matrix-link" href="/platform/access-control">Role-based access controls</a> — enforced at query time</th>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><a class="pricing-matrix-link" href="/platform/audit">Prompt-level audit log</a> — retention</th>
+              <td data-placeholder>— days</td>
+              <td data-placeholder>— days</td>
+              <td>Custom</td>
+            </tr>
+            <tr>
+              <th scope="row">Attribute-based access controls</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">SSO / SAML 2.0 / SCIM provisioning</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">HIPAA controls</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check" data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">SOC 2 Type II</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check" data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">GDPR data processing controls</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check" data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-placeholder>ISO 27001</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check" data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Custom data residency configuration</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Security review and procurement support</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+          </tbody>
+
+          <tbody>
+            <tr class="pricing-matrix-group">
+              <th colspan="4" scope="colgroup"><span class="eyebrow">Support and Success</span></th>
+            </tr>
+            <tr>
+              <th scope="row">Documentation and community support</th>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Priority support</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Dedicated onboarding</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Named Customer Success Manager</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Custom SLA</th>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-minus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Not included</span></td>
+              <td class="pricing-matrix-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="sr-only">Included</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Uptime SLA</th>
+              <td>Standard</td>
+              <td>Enhanced</td>
+              <td data-placeholder>—%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pricing-matrix-cta reveal">
+        <a href="/platform" class="btn btn-ghost">See platform capabilities</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 05 — Deployment Use Cases · SegmentCards (3-up warm variant) ============
+       Icon/typography sizing follows the existing SegmentCards component, not the
+       spec's raw px citations (tokens-only rule). -->
+  <section id="use-cases" class="section-pad" aria-label="Deployment use cases">
+    <div class="container">
+      <div class="segment-cards-grid pricing-seg-3" role="list">
+
+        <!-- Card 1 — Regulated Industry Deployment ( /industries route pending — spec §5 note) -->
+        <a href="/industries" class="segment-card reveal" role="listitem" data-placeholder>
+          <div class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h2 class="heading-sm segment-label">Governance-first deployments for regulated industries.</h2>
+          <p class="body-sm segment-desc">
+            Finance, Insurance, Healthcare, and Manufacturing organizations use the Enterprise tier
+            for its HIPAA controls, extended audit log, and custom data residency configuration.
+            The platform's BYOM architecture means your compliance team — not Quaeris — selects and
+            certifies the AI model in your environment.
+          </p>
+          <span class="btn btn-ghost">See regulated industry deployments</span>
+        </a>
+
+        <!-- Card 2 — Analytics Engineering Teams -->
+        <a href="/platform" class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+          </div>
+          <h2 class="heading-sm segment-label">A governed semantic layer your data team owns.</h2>
+          <p class="body-sm segment-desc">
+            Data and analytics engineering teams deploy the Team or Professional tier to eliminate
+            ad-hoc request backlogs. The Smart Semantic Layer auto-learns metric definitions from
+            user interaction — no upfront LookML or MDX modeling sprint required. Your data team
+            certifies; business users ask.
+          </p>
+          <span class="btn btn-ghost">See platform capabilities</span>
+        </a>
+
+        <!-- Card 3 — Embedded and OEM Analytics ( /platform/embedded-analytics route pending — spec §5 note) -->
+        <a href="/platform/embedded-analytics" class="segment-card reveal" role="listitem" data-placeholder>
+          <div class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          </div>
+          <h2 class="heading-sm segment-label">Governed AI analytics embedded in your product.</h2>
+          <p class="body-sm segment-desc">
+            SaaS companies and platform builders use the Enterprise tier's embedded analytics and
+            multi-tenant deployment to ship governed natural-language analytics to their own
+            customers — with full audit trails and role-scoped access enforced at the query layer.
+          </p>
+          <span class="btn btn-ghost">See embedded analytics</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 06 — Trust and Compliance Strip · NEW:TrustBadgeStrip ============
+       Do NOT display certification badges not yet obtained: SOC 2 Type II and
+       ISO 27001 render muted ("Certification in progress") until activated by a
+       CMS flag (spec S06 note / Open Question 5). Compliance badges link to /trust
+       (planned route — spec §5). -->
+  <section id="trust" class="pricing-trust-strip" aria-label="Trust and compliance">
+    <div class="container">
+      <ul class="pricing-trust-grid" role="list">
+        <li>
+          <span class="pricing-trust-badge pricing-trust-badge--pending" data-placeholder>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span class="pricing-trust-label">SOC 2 Type II</span>
+            <span class="pricing-trust-sub">Certification in progress</span>
+          </span>
+        </li>
+        <li>
+          <a href="/trust" class="pricing-trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span class="pricing-trust-label">HIPAA Controls</span>
+            <span class="pricing-trust-sub">Available on Enterprise</span>
+          </a>
+        </li>
+        <li>
+          <a href="/trust" class="pricing-trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            <span class="pricing-trust-label">GDPR</span>
+            <span class="pricing-trust-sub">Data processing controls</span>
+          </a>
+        </li>
+        <li>
+          <span class="pricing-trust-badge pricing-trust-badge--pending" data-placeholder>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/></svg>
+            <span class="pricing-trust-label">ISO 27001</span>
+            <span class="pricing-trust-sub">Certification in progress</span>
+          </span>
+        </li>
+        <li>
+          <span class="pricing-trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            <span class="pricing-trust-label">Warehouse-native</span>
+            <span class="pricing-trust-sub">Your data never leaves your environment</span>
+          </span>
+        </li>
+        <li>
+          <span class="pricing-trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+            <span class="pricing-trust-label">BYOM</span>
+            <span class="pricing-trust-sub">OpenAI · Anthropic · Google · Meta</span>
+          </span>
+        </li>
+        <li>
+          <span class="pricing-trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+            <span class="pricing-trust-label">Zero data copying</span>
+            <span class="pricing-trust-sub">No pipelines to rebuild</span>
+          </span>
+        </li>
+        <li>
+          <a href="/platform/governance" class="pricing-trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+            <span class="pricing-trust-label">Prompt-level audit trail</span>
+            <span class="pricing-trust-sub">Every question, every answer, logged</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Section 07 — Customer Proof (Abbreviated) · CaseStudyCard ×2 ============
+       All Quaeris case studies are currently anonymized — cards keep the anonymized
+       framing until named consent exists. Replace body + stats as soon as two named
+       customer stories are available (spec S07 implementation note). -->
+  <section id="proof" class="section-pad" aria-label="Customer proof">
+    <div class="container">
+      <div class="pricing-case-grid">
+
+        <article class="case-study-card reveal">
+          <span class="industry-chip">Financial Services</span>
+          <h2 class="display-md" style="color: var(--text-primary);" data-placeholder>A leading financial institution</h2>
+          <p class="cs-outcome">
+            A leading financial institution reduced analytics query response time and eliminated
+            conflicting metric definitions across regional teams by deploying Quaeris on their
+            existing Snowflake warehouse with role-scoped access enforced at the query layer.
+          </p>
+          <div class="cs-stats" aria-label="Key metrics" data-placeholder>
+            <div class="cs-stat"><span class="cs-stat-num">—</span><span class="cs-stat-label">Reduction in ad-hoc requests</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">—</span><span class="cs-stat-label">Certified metric definitions</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">—</span><span class="cs-stat-label">Days to production</span></div>
+          </div>
+          <!-- Direct case-study link pending publication (spec S07) -->
+          <a href="/use-cases" class="btn-ghost" data-placeholder>Read the case study</a>
+        </article>
+
+        <article class="case-study-card reveal">
+          <span class="industry-chip">Insurance</span>
+          <h2 class="display-md" style="color: var(--text-primary);" data-placeholder>An insurance company</h2>
+          <p class="cs-outcome">
+            An insurance company deployed Quaeris's Document Agents to query claims documents and
+            warehouse fact tables in a single natural-language prompt — eliminating the manual
+            extract-transform-load cycle between their document store and their BI layer.
+          </p>
+          <div class="cs-stats" aria-label="Key metrics" data-placeholder>
+            <div class="cs-stat"><span class="cs-stat-num">—</span><span class="cs-stat-label">Faster claims insight</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">—</span><span class="cs-stat-label">Document sources unified</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">—</span><span class="cs-stat-label">Weeks to full deployment</span></div>
+          </div>
+          <!-- Direct case-study link pending publication (spec S07) -->
+          <a href="/use-cases" class="btn-ghost" data-placeholder>Read the case study</a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 08 — Pricing FAQ · Accordion (ui/Accordion.tsx) + SectionHeader ============
+       Q1 open by default (defaultOpen: true). FAQPage JSON-LD below — highest-priority
+       schema upgrade for this page per the research audit. -->
+  <section id="faq" class="section-pad" aria-labelledby="pricing-faq-heading">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow">Common pricing questions</span>
+        <h2 id="pricing-faq-heading" class="display-lg">Clear answers before the sales conversation.</h2>
+        <p class="body-lg subcopy">If your question isn't below, there is a solutions engineer on the other end of the contact form.</p>
+      </div>
+
+      <div class="pricing-faq-wrap reveal">
+        <div class="accordion">
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" data-state="open" aria-expanded="true" aria-controls="pricing-faq-a1">
+              <span class="accordion-question">How is Quaeris priced?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+            </button>
+            <div class="accordion-content" id="pricing-faq-a1" data-state="open" style="animation: none;">
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                Quaeris pricing is based on your deployment configuration: the number of warehouse
+                connections, the engines you activate (Context / Answer / Decision), and the
+                governance and compliance controls your organization requires. There is no per-seat
+                fee for business users who ask questions through the platform. Contact sales for a
+                configuration scoped to your environment.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="pricing-faq-a2">
+              <span class="accordion-question">Do you charge per query or per user?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+            </button>
+            <div class="accordion-content" id="pricing-faq-a2" data-state="closed" style="animation: none;" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                No. Quaeris does not charge per query or per seat for business users who consume
+                governed answers. Pricing is structured around your deployment scope — warehouse
+                connections, active engines, and support tier — so the cost scales with your
+                infrastructure, not with how many people ask questions.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="pricing-faq-a3">
+              <span class="accordion-question">Is there a free trial or pilot program?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+            </button>
+            <div class="accordion-content" id="pricing-faq-a3" data-state="closed" style="animation: none;" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                Yes. Quaeris offers a structured pilot program for qualified enterprise teams. A
+                pilot connects to your existing warehouse, activates the Context Engine, and
+                delivers governed answers against your real data within
+                <span data-placeholder>—</span> weeks. Contact sales to scope a pilot for your
+                organization.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="pricing-faq-a4">
+              <span class="accordion-question">Can we start with one warehouse and expand later?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+            </button>
+            <div class="accordion-content" id="pricing-faq-a4" data-state="closed" style="animation: none;" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                Yes. The Team tier starts with a single warehouse connection. Professional and
+                Enterprise tiers support multiple connections. You can upgrade tiers at any time —
+                your semantic layer definitions, audit logs, and access policies migrate without
+                reconfiguration.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="pricing-faq-a5">
+              <span class="accordion-question">Which AI models does Quaeris support?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+            </button>
+            <div class="accordion-content" id="pricing-faq-a5" data-state="closed" style="animation: none;" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                Quaeris is built on a Bring Your Own Model (BYOM) architecture. You can connect
+                OpenAI, Anthropic, Google, or Meta models and switch providers without
+                re-configuring your deployment. Your compliance team selects and certifies the
+                model — Quaeris is not the model gatekeeper. The Team tier includes
+                <span data-placeholder>—</span> provider slot; Professional and Enterprise tiers
+                include <span data-placeholder>—</span> slots and unlimited respectively.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="pricing-faq-a6">
+              <span class="accordion-question">Does Quaeris comply with HIPAA, SOC 2, and GDPR?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+            </button>
+            <div class="accordion-content" id="pricing-faq-a6" data-state="closed" style="animation: none;" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                Enterprise tier deployments include controls for HIPAA, GDPR, and SOC 2 Type II
+                <span data-placeholder>[update as certifications are obtained]</span>. All tiers
+                run warehouse-native — your data is never copied to Quaeris infrastructure, which
+                simplifies your data processing agreements. For a detailed compliance brief,
+                contact sales.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="pricing-faq-a7">
+              <span class="accordion-question">How long does deployment take?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+            </button>
+            <div class="accordion-content" id="pricing-faq-a7" data-state="closed" style="animation: none;" hidden>
+              <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                Most teams connect their warehouse and serve governed answers in production within
+                <span data-placeholder>—</span> weeks. Week one covers warehouse integration and
+                Smart Semantic Layer setup. Week two covers user onboarding and access policy
+                configuration. There is no data migration — your existing warehouse is the
+                deployment target.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQPage JSON-LD — highest-priority schema upgrade for this page (carries to port).
+       NOTE: resolve every [data-placeholder] in these answers before the page ships. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How is Quaeris priced?", "acceptedAnswer": { "@type": "Answer", "text": "Quaeris pricing is based on your deployment configuration: the number of warehouse connections, the engines you activate (Context / Answer / Decision), and the governance and compliance controls your organization requires. There is no per-seat fee for business users who ask questions through the platform. Contact sales for a configuration scoped to your environment." } },
+      { "@type": "Question", "name": "Do you charge per query or per user?", "acceptedAnswer": { "@type": "Answer", "text": "No. Quaeris does not charge per query or per seat for business users who consume governed answers. Pricing is structured around your deployment scope — warehouse connections, active engines, and support tier — so the cost scales with your infrastructure, not with how many people ask questions." } },
+      { "@type": "Question", "name": "Is there a free trial or pilot program?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Quaeris offers a structured pilot program for qualified enterprise teams. A pilot connects to your existing warehouse, activates the Context Engine, and delivers governed answers against your real data within [data-placeholder] weeks. Contact sales to scope a pilot for your organization." } },
+      { "@type": "Question", "name": "Can we start with one warehouse and expand later?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Team tier starts with a single warehouse connection. Professional and Enterprise tiers support multiple connections. You can upgrade tiers at any time — your semantic layer definitions, audit logs, and access policies migrate without reconfiguration." } },
+      { "@type": "Question", "name": "Which AI models does Quaeris support?", "acceptedAnswer": { "@type": "Answer", "text": "Quaeris is built on a Bring Your Own Model (BYOM) architecture. You can connect OpenAI, Anthropic, Google, or Meta models and switch providers without re-configuring your deployment. Your compliance team selects and certifies the model — Quaeris is not the model gatekeeper. The Team tier includes [data-placeholder] provider slot; Professional and Enterprise tiers include [data-placeholder] slots and unlimited respectively." } },
+      { "@type": "Question", "name": "Does Quaeris comply with HIPAA, SOC 2, and GDPR?", "acceptedAnswer": { "@type": "Answer", "text": "Enterprise tier deployments include controls for HIPAA, GDPR, and SOC 2 Type II [data-placeholder: update as certifications are obtained]. All tiers run warehouse-native — your data is never copied to Quaeris infrastructure, which simplifies your data processing agreements. For a detailed compliance brief, contact sales." } },
+      { "@type": "Question", "name": "How long does deployment take?", "acceptedAnswer": { "@type": "Answer", "text": "Most teams connect their warehouse and serve governed answers in production within [data-placeholder] weeks. Week one covers warehouse integration and Smart Semantic Layer setup. Week two covers user onboarding and access policy configuration. There is no data migration — your existing warehouse is the deployment target." } }
+    ]
+  }
+  </script>
+
+  <!-- ============ Section 09 — CTA Band · CTABand ============ -->
+  <section id="cta-band" class="section-pad" aria-labelledby="pricing-cta-heading">
+    <div class="cta-band-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="cta-inner reveal">
+        <span class="eyebrow">Ready to scope a deployment?</span>
+        <h2 id="pricing-cta-heading" class="display-lg">Talk to a solutions engineer. Not a form processor.</h2>
+        <p class="body-lg subcopy">
+          Book a 30-minute call. We will connect to your warehouse, show you a governed answer
+          against your actual data, and scope a configuration that matches your governance
+          requirements — before you commit to anything.
+        </p>
+        <div class="cta-buttons">
+          <a href="/contact?plan=enterprise" class="btn btn-primary">Book a Demo</a>
+          <!-- Enterprise Brief asset pending publication (spec Open Question 9) -->
+          <a href="/resources/enterprise-brief" class="btn btn-secondary-dark" data-placeholder>Download the Enterprise Brief</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Mockup-only: Annual/Monthly billing toggle (spec S01) — becomes React state
+  // inside NEW:PricingTierGrid at port time. Swaps pricing callout strings ONLY.
+  document.querySelectorAll(".pricing-toggle-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".pricing-toggle-btn").forEach(function (b) {
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.setAttribute("aria-pressed", "true");
+      document.getElementById("main").classList.toggle(
+        "pricing-billing-monthly",
+        btn.getAttribute("data-billing") === "monthly"
+      );
+    });
+  });
+
+  // Mockup-only: minimal accordion toggle so the FAQ is reviewable in-browser.
+  // The port uses the existing Radix-based Accordion component (Accordion.tsx).
+  document.querySelectorAll(".accordion-trigger").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var wasOpen = btn.getAttribute("data-state") === "open";
+      document.querySelectorAll(".accordion-item").forEach(function (item) {
+        var t = item.querySelector(".accordion-trigger");
+        var c = item.querySelector(".accordion-content");
+        t.setAttribute("data-state", "closed");
+        t.setAttribute("aria-expanded", "false");
+        c.setAttribute("data-state", "closed");
+        c.hidden = true;
+      });
+      if (!wasOpen) {
+        var content = document.getElementById(btn.getAttribute("aria-controls"));
+        btn.setAttribute("data-state", "open");
+        btn.setAttribute("aria-expanded", "true");
+        content.setAttribute("data-state", "open");
+        content.hidden = false;
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

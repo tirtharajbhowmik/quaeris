@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/executives — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- ============================================================
+     MOCKUP — /solutions/executives
+     (spec: docs/page-specs/solutions-executives.md, 2026-06-12)
+     PORT NOTES:
+     • Real route <title>: "AI Analytics for Executives | Trusted Metrics On Demand"
+       Meta description: "Skip the data tickets. Get governed answers in seconds.
+       Quaeris delivers trusted business metrics and executive insights on any
+       device, audited end-to-end."
+     • Schema: BreadcrumbList + SoftwareApplication (global) + FAQPage JSON-LD
+       (included inline below near the FAQ section — all 7 Q&A pairs).
+     • CTAs carry UTM params at port time (utm_source=solutions_executives,
+       utm_medium=cta, utm_campaign=<section>) — omitted here for readability.
+     • All [data-placeholder] content awaits customer opt-in / certification
+       confirmation — see spec §4 and Open Questions 1–3. Do not ship without
+       verified figures, quotes, logos, and certification status.
+     ============================================================ -->
+
+<style>
+  /* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic). */
+
+  /* — Section 02 · Hero (HeroHome variant) — warm bg + diagonal accent line (spec §3.2) — */
+  .exec-hero { background: var(--bg-warm); position: relative; overflow: hidden; }
+  .exec-hero-line {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* Subtle 2px diagonal accent, top-right to bottom-left (spec border-accent → token) */
+    background: linear-gradient(
+      to bottom left,
+      transparent calc(50% - 1px),
+      var(--border-strong) calc(50% - 1px),
+      var(--border-strong) calc(50% + 1px),
+      transparent calc(50% + 1px)
+    );
+  }
+  .exec-hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .exec-hero-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .exec-hero-trust-item svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+
+  /* — Section 03 · Problem/Solution — 3-up variant of the existing .ps-grid — */
+  .ps-grid.exec-ps-3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 1024px) { .ps-grid.exec-ps-3 { grid-template-columns: 1fr; } }
+
+  /* — Section 04 · Value Drivers — 3-up variant of the existing .icon-feature-grid — */
+  .icon-feature-grid.exec-cols-3 { grid-template-columns: repeat(3, 1fr); gap: var(--space-7); }
+  @media (max-width: 1024px) { .icon-feature-grid.exec-cols-3 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  { .icon-feature-grid.exec-cols-3 { grid-template-columns: 1fr; gap: var(--space-6); } }
+
+  /* — Section 05 · Executive use-case tiles (bento-card content) — */
+  .exec-usecase-card {
+    background: var(--bg-canvas); /* spec "subtle bg" → canvas token */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    height: 100%;
+  }
+  .exec-usecase-head { display: flex; align-items: center; gap: var(--space-3); }
+  .exec-usecase-q {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-primary);
+    flex: 1;
+  }
+  .exec-usecase-a {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .exec-usecase-a-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--brand-accent);
+  }
+  .exec-usecase-a p { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+  .exec-usecase-note { color: var(--text-tertiary); font-style: italic; margin-top: var(--space-4); }
+
+  /* — Section 06 · Speed Advantage — illustrative query-panel visual (spec §3.6) — */
+  .exec-query-panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .exec-query-input {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    font-size: 14px;
+    color: var(--text-primary);
+  }
+  .exec-query-input svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+  .exec-query-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+  .exec-query-metric {
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+  }
+  .exec-query-metric-label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-1);
+  }
+  .exec-query-metric-value {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .exec-query-metric-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: var(--space-1);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--brand-accent);
+  }
+  .exec-query-metric-badge svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .exec-query-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-4);
+  }
+  .exec-query-meta-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .exec-query-meta-row svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+  .exec-query-caption { font-size: 12px; color: var(--text-tertiary); text-align: center; }
+  @media (max-width: 640px) {
+    .exec-query-metrics { grid-template-columns: 1fr; }
+    .exec-query-panel { padding: var(--space-5); }
+  }
+
+  /* — Section 10 · CTA band gradient accent border top (spec §3.10) — */
+  .exec-cta-topline {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--cta-bg);
+  }
+</style>
+
+<main id="main">
+
+  <!-- ============ Section 02 — Hero · HeroHome.tsx (reuse structure, customize copy) ============ -->
+  <section id="exec-hero" class="exec-hero section-pad" aria-labelledby="exec-hero-heading">
+    <div class="exec-hero-line" aria-hidden="true"></div>
+    <div class="container">
+      <div class="hero-inner reveal">
+        <span class="eyebrow">For Executives</span>
+        <h1 id="exec-hero-heading" class="hero-h1">Answers in seconds. Numbers you can trust.</h1>
+        <p class="body-lg subcopy">
+          Stop waiting on data tickets. Quaeris delivers governed business metrics on
+          demand—audited, sourced, and accurate. Ask questions in plain language. Get the
+          answers you need before the next meeting.
+        </p>
+        <div class="hero-buttons">
+          <a href="/contact?role=executive" class="btn btn-primary" aria-label="See a live demo for executives">See a live demo</a>
+          <a href="#how-it-works" class="btn btn-ghost" aria-label="Explore how Quaeris works for executives">Explore how it works</a>
+        </div>
+        <ul class="exec-hero-trust" role="list">
+          <li class="exec-hero-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Audit trail on every query</span>
+          </li>
+          <li class="exec-hero-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Role-based access enforced</span>
+          </li>
+          <li class="exec-hero-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            <span>Warehouse-native (zero data copy)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 03 — Problem/Solution Cards · ProblemSolutionCards.tsx ============ -->
+  <section id="problem" class="section-pad" aria-labelledby="problem-heading" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow">The Executive Data Problem</span>
+        <h2 id="problem-heading" class="display-lg">Metrics used to be a conversation. Now they're a process.</h2>
+        <p class="body-lg subcopy">Three patterns break executive decision-making in governed enterprises.</p>
+      </div>
+
+      <div class="ps-grid exec-ps-3" role="list">
+
+        <article class="ps-card reveal" role="listitem">
+          <span class="ps-index" aria-hidden="true">01</span>
+          <h3 class="heading-sm">Metric Definition Drift</h3>
+          <p class="body-md ps-problem">
+            Finance says revenue is $X; sales says $Y. Two teams, two numbers, one angry board.
+          </p>
+          <div class="ps-fix-box">
+            <span class="ps-fix-label eyebrow">Single Governed Definition</span>
+            <p class="body-md ps-fix-body">
+              Every query uses the certified metric your data team owns. When definitions change,
+              the audit trail shows who changed it and why. No more conflicting numbers.
+            </p>
+          </div>
+        </article>
+
+        <article class="ps-card reveal" role="listitem">
+          <span class="ps-index" aria-hidden="true">02</span>
+          <h3 class="heading-sm">Analytics Request Backlog</h3>
+          <p class="body-md ps-problem">
+            "I need Q3 performance by region." You email analytics. They add it to the queue.
+            You get the answer Thursday, but you needed it Monday.
+          </p>
+          <div class="ps-fix-box">
+            <span class="ps-fix-label eyebrow">Instant Self-Service</span>
+            <p class="body-md ps-fix-body">
+              Ask in plain language. Quaeris executes against your governed metrics in 14 minutes.
+              No queue, no waiting, no "I'll get back to you."
+            </p>
+          </div>
+        </article>
+
+        <article class="ps-card reveal" role="listitem">
+          <span class="ps-index" aria-hidden="true">03</span>
+          <h3 class="heading-sm">Hidden Query Logic</h3>
+          <p class="body-md ps-problem">
+            You see a number in a dashboard but can't trace where it came from. Did someone change
+            a filter? Is this old data? You don't know.
+          </p>
+          <div class="ps-fix-box">
+            <span class="ps-fix-label eyebrow">Full Lineage &amp; Audit Trail</span>
+            <p class="body-md ps-fix-body">
+              Click any metric. See the exact query, the data source, the business rules applied,
+              and who asked the question. Traceability by design.
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 04 — Three Value Drivers · IconFeatureGrid.tsx ============ -->
+  <section id="value-drivers" class="section-pad" aria-labelledby="value-drivers-heading">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow">Why Executives Trust Quaeris</span>
+        <h2 id="value-drivers-heading" class="display-lg">Three layers of oversight, zero hallucinations.</h2>
+        <p class="body-lg subcopy">
+          Governed agentic analytics means every answer is grounded in certified metrics, fully
+          audited, and tied to the semantic layer your data team controls.
+        </p>
+      </div>
+
+      <div class="icon-feature-grid exec-cols-3" role="list">
+
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: shield-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h3 class="heading-sm">No Hallucinations</h3>
+          <p>
+            Quaeris agents query governed metrics, not language model memory. Every number is
+            certified and traceable. If the answer can't be sourced, the agent says so.
+          </p>
+        </div>
+
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: link -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </div>
+          <h3 class="heading-sm">Complete Lineage</h3>
+          <p>
+            From question to source data. Executives click any metric and see the exact query,
+            business rules applied, and who asked. Governance by design.
+          </p>
+        </div>
+
+        <div class="icon-feature reveal" role="listitem">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: lock -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3 class="heading-sm">Enforced Access Control</h3>
+          <p>
+            Role-based permissions apply at query time, not as a dashboard filter. Executive sees
+            only the slice of data their role permits—automatically, consistently.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 05 — Executive Use Cases · NEW:BentoGrid (exec use-case tiles) ============ -->
+  <section id="use-cases" class="section-pad" aria-labelledby="use-cases-heading" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow">How Executives Use Quaeris</span>
+        <h2 id="use-cases-heading" class="display-lg">Real questions, real answers, real outcomes.</h2>
+        <p class="body-lg subcopy">
+          Across finance, operations, and strategy—executives skip the queue and get governed
+          answers in seconds.
+        </p>
+        <p class="body-sm exec-usecase-note">
+          Example — illustrative data. These tiles show sample questions and outputs for UI
+          demonstration only.
+        </p>
+      </div>
+
+      <div class="bento-grid" role="list">
+
+        <article class="bento-card exec-usecase-card reveal" role="listitem">
+          <div class="exec-usecase-head">
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: trending-up -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            </div>
+            <h3 class="heading-sm">CFO — Revenue Variance</h3>
+          </div>
+          <p class="exec-usecase-q">"What drove the $2M revenue miss in EMEA last quarter?"</p>
+          <div class="exec-usecase-a" data-placeholder>
+            <span class="exec-usecase-a-label">Answer</span>
+            <p>
+              Volume down 8% + ASP flat vs. plan. Sourced from billing + contracts tables.
+              Audit: Q3 query, role CFO, timestamp.
+            </p>
+          </div>
+        </article>
+
+        <article class="bento-card exec-usecase-card reveal" role="listitem">
+          <div class="exec-usecase-head">
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: bar-chart-3 -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+            </div>
+            <h3 class="heading-sm">CEO — Board Dashboard</h3>
+          </div>
+          <p class="exec-usecase-q">"What's our ARR, churn rate, and new customer acquisition this month?"</p>
+          <div class="exec-usecase-a" data-placeholder>
+            <span class="exec-usecase-a-label">Answer</span>
+            <p>
+              Three certified metrics, updated hourly. One click shows lineage for each. Board sees
+              the same numbers as finance.
+            </p>
+          </div>
+        </article>
+
+        <article class="bento-card exec-usecase-card reveal" role="listitem">
+          <div class="exec-usecase-head">
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: clipboard-check -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+            </div>
+            <h3 class="heading-sm">CDO — Governance Audit</h3>
+          </div>
+          <p class="exec-usecase-q">"Who queried customer margin data in the last 90 days?"</p>
+          <div class="exec-usecase-a" data-placeholder>
+            <span class="exec-usecase-a-label">Answer</span>
+            <p>
+              Complete query audit log. 47 queries, 8 roles, all within policy. Full lineage for
+              flagged anomalies.
+            </p>
+          </div>
+        </article>
+
+        <article class="bento-card exec-usecase-card reveal" role="listitem">
+          <div class="exec-usecase-head">
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: alert-triangle -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            </div>
+            <h3 class="heading-sm">VP Operations — Anomaly Alert</h3>
+          </div>
+          <p class="exec-usecase-q">"Why did our operational cost jump 15% week-over-week?"</p>
+          <div class="exec-usecase-a" data-placeholder>
+            <span class="exec-usecase-a-label">Answer</span>
+            <p>
+              Manual cost allocation on Tuesday + seasonal contractor surge. Quaeris highlights the
+              root cause automatically.
+            </p>
+          </div>
+        </article>
+
+        <article class="bento-card exec-usecase-card reveal" role="listitem">
+          <div class="exec-usecase-head">
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: calculator -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+            </div>
+            <h3 class="heading-sm">Head of Finance Planning — Budget vs. Actual</h3>
+          </div>
+          <p class="exec-usecase-q">"Are we tracking to full-year guidance on payroll spend?"</p>
+          <div class="exec-usecase-a" data-placeholder>
+            <span class="exec-usecase-a-label">Answer</span>
+            <p>
+              On track. 94% of full-year budget consumed by month 9. Variance by department.
+              No surprises.
+            </p>
+          </div>
+        </article>
+
+        <article class="bento-card exec-usecase-card reveal" role="listitem">
+          <div class="exec-usecase-head">
+            <div class="icon-box" aria-hidden="true">
+              <!-- lucide: file-text -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+            </div>
+            <h3 class="heading-sm">Investor Relations — Metric Definition Proof</h3>
+          </div>
+          <p class="exec-usecase-q">"Can we prove to auditors that our ARR and logo retention metrics match the definitions in our S-1?"</p>
+          <div class="exec-usecase-a" data-placeholder>
+            <span class="exec-usecase-a-label">Answer</span>
+            <p>
+              Yes. Audit trail for every query. Metric definitions versioned and signed off by the
+              CFO. Certified.
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 06 — The Speed Advantage · FeatureRow.tsx ============ -->
+  <section id="how-it-works" class="section-pad" aria-labelledby="how-it-works-heading" style="background: var(--bg-warm);">
+    <div class="container">
+      <div class="feature-row">
+
+        <div class="feature-row-text reveal">
+          <span class="eyebrow feature-row-eyebrow">How Quaeris Works for Executives</span>
+          <h2 id="how-it-works-heading" class="display-lg feature-row-heading">From question to trusted answer in 14 minutes.</h2>
+          <p class="body-md feature-row-body">
+            No data team bottleneck. No waiting for the report. Ask a question in plain language.
+            Quaeris returns a governed answer—sourced, audited, and ready to act on. Every answer
+            shows its metrics, its lineage, and who asked. Compliance built in.
+          </p>
+          <div>
+            <a href="/platform" class="btn btn-secondary" aria-label="Explore the Quaeris platform">Explore the platform</a>
+          </div>
+        </div>
+
+        <div class="feature-row-visual reveal">
+          <!-- Illustrative query-panel screenshot stand-in (spec §3.6) -->
+          <div class="exec-query-panel" data-placeholder>
+            <div class="exec-query-input">
+              <!-- lucide: search -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <span>What is our Q3 revenue by region and segment?</span>
+            </div>
+            <div class="exec-query-metrics">
+              <div class="exec-query-metric">
+                <span class="exec-query-metric-label">EMEA Revenue</span>
+                <span class="exec-query-metric-value">$4.8M</span>
+                <span class="exec-query-metric-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  Certified
+                </span>
+              </div>
+              <div class="exec-query-metric">
+                <span class="exec-query-metric-label">AMER Revenue</span>
+                <span class="exec-query-metric-value">$11.2M</span>
+                <span class="exec-query-metric-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  Certified
+                </span>
+              </div>
+              <div class="exec-query-metric">
+                <span class="exec-query-metric-label">APAC Revenue</span>
+                <span class="exec-query-metric-value">$2.6M</span>
+                <span class="exec-query-metric-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  Certified
+                </span>
+              </div>
+            </div>
+            <div class="exec-query-meta">
+              <div class="exec-query-meta-row">
+                <!-- lucide: git-branch (lineage) -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                <span>Sources: billing.revenue, contracts.segment, geo.region</span>
+              </div>
+              <div class="exec-query-meta-row">
+                <!-- lucide: scroll-text (audit trail) -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+                <span>Audit trail: Query by CFO at 2026-06-12 14:47 UTC</span>
+              </div>
+            </div>
+            <p class="exec-query-caption">Example—illustrative data for demonstration only</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 07 — Proof: Customer Outcome Cards · CaseStudyCard.tsx ============ -->
+  <section id="customer-proof" class="section-pad" aria-labelledby="customer-proof-heading">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow">Proven with Real Leaders</span>
+        <h2 id="customer-proof-heading" class="display-lg">Executives cutting insight time by 3&times;.</h2>
+        <p class="body-lg subcopy">
+          From deployment to board-ready answers—here's what it looks like in the first 90 days.
+        </p>
+      </div>
+
+      <div class="case-study-grid" role="list">
+
+        <article class="case-study-card reveal" role="listitem">
+          <span class="industry-chip">Financial Services</span>
+          <h3 class="heading-sm">Chief Financial Officer</h3>
+          <blockquote class="cs-outcome" data-placeholder>
+            "We stopped debating whose number was right. The board pack now builds itself from
+            certified metrics—and every figure can show its work."
+          </blockquote>
+          <div class="cs-stats" data-placeholder>
+            <div class="cs-stat">
+              <span class="cs-stat-num">62%</span>
+              <span class="cs-stat-label">Fewer data-team tickets</span>
+            </div>
+            <div class="cs-stat">
+              <span class="cs-stat-num">14 min</span>
+              <span class="cs-stat-label">Median time to answer</span>
+            </div>
+            <div class="cs-stat">
+              <span class="cs-stat-num">5&times;</span>
+              <span class="cs-stat-label">Self-serve queries by month 3</span>
+            </div>
+          </div>
+          <div class="cs-how">
+            <span class="trust-logo" data-placeholder>Customer logo — pending opt-in</span>
+          </div>
+          <a href="/case-studies" class="btn btn-ghost" aria-label="Read the financial services case study">Read the story</a>
+        </article>
+
+        <article class="case-study-card reveal" role="listitem">
+          <span class="industry-chip">Healthcare / Insurance</span>
+          <h3 class="heading-sm">Chief Data Officer</h3>
+          <blockquote class="cs-outcome" data-placeholder>
+            "Compliance signed off because every metric traces to source. Our audit reviews got
+            shorter, not longer, after we added AI."
+          </blockquote>
+          <div class="cs-stats" data-placeholder>
+            <div class="cs-stat">
+              <span class="cs-stat-num">100%</span>
+              <span class="cs-stat-label">Metrics traced to source</span>
+            </div>
+            <div class="cs-stat">
+              <span class="cs-stat-num">40%</span>
+              <span class="cs-stat-label">Shorter compliance reviews</span>
+            </div>
+            <div class="cs-stat">
+              <span class="cs-stat-num">9 mo</span>
+              <span class="cs-stat-label">Hallucination-free deployment</span>
+            </div>
+          </div>
+          <div class="cs-how">
+            <span class="trust-logo" data-placeholder>Customer logo — pending opt-in</span>
+          </div>
+          <a href="/case-studies" class="btn btn-ghost" aria-label="Read the healthcare and insurance case study">Read the story</a>
+        </article>
+
+        <article class="case-study-card reveal" role="listitem">
+          <span class="industry-chip">Technology / SaaS</span>
+          <h3 class="heading-sm">CEO + CFO Joint Deployment</h3>
+          <blockquote class="cs-outcome" data-placeholder>
+            "Finance and the board now read from the same semantic layer. Reconciliation meetings
+            simply stopped happening."
+          </blockquote>
+          <div class="cs-stats" data-placeholder>
+            <div class="cs-stat">
+              <span class="cs-stat-num">92%</span>
+              <span class="cs-stat-label">Semantic layer adoption</span>
+            </div>
+            <div class="cs-stat">
+              <span class="cs-stat-num">2 wks</span>
+              <span class="cs-stat-label">To aligned metric definitions</span>
+            </div>
+            <div class="cs-stat">
+              <span class="cs-stat-num">0</span>
+              <span class="cs-stat-label">Board reconciliation disputes</span>
+            </div>
+          </div>
+          <div class="cs-how">
+            <span class="trust-logo" data-placeholder>Customer logo — pending opt-in</span>
+          </div>
+          <a href="/case-studies" class="btn btn-ghost" aria-label="Read the technology and SaaS case study">Read the story</a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 08 — Governance & Compliance Assurance · SegmentCards.tsx (trust pillars) ============ -->
+  <section id="governance" class="section-pad" aria-labelledby="governance-heading" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="section-header center reveal">
+        <span class="eyebrow">Built for Governed Enterprises</span>
+        <h2 id="governance-heading" class="display-lg">Compliance, not an afterthought.</h2>
+        <p class="body-lg subcopy">
+          Quaeris is designed for regulated industries and governance-first organizations. Audit
+          trails, role-based access, warehouse-native deployment, and BYOM as a compliance
+          feature—not a sales pitch.
+        </p>
+      </div>
+
+      <div class="segment-cards-grid" role="list">
+
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: scroll-text (spec icon "audit") -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+          </div>
+          <h3 class="heading-sm segment-label">Complete Audit Trail</h3>
+          <p class="body-sm segment-desc">
+            Every query and answer logged. Who asked the question, when, what metrics were used,
+            and the exact business rules applied. Queryable, downloadable, SOX/HIPAA ready.
+          </p>
+        </article>
+
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: lock -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3 class="heading-sm segment-label">Role-Based Access at Query Time</h3>
+          <p class="body-sm segment-desc">
+            Permissions enforced when the agent executes, not as a dashboard filter. Users see
+            exactly the slice of data their role permits. Role changes propagate instantly.
+          </p>
+        </article>
+
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: server -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+          </div>
+          <h3 class="heading-sm segment-label">Warehouse-Native Deployment</h3>
+          <p class="body-sm segment-desc">
+            Your data never leaves your environment. Quaeris queries your Snowflake, BigQuery,
+            Databricks, or Redshift in place. Zero data residency risk.
+          </p>
+        </article>
+
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: cpu -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+          </div>
+          <h3 class="heading-sm segment-label">BYOM: Your Compliance, Your Model</h3>
+          <p class="body-sm segment-desc">
+            Connect OpenAI, Anthropic, Google, or Meta models. Your compliance team chooses the
+            LLM vendor. Quaeris is not the model gatekeeper.
+          </p>
+        </article>
+
+        <article class="segment-card reveal" role="listitem">
+          <div class="segment-icon-box" aria-hidden="true">
+            <!-- lucide: shield-alert -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          </div>
+          <h3 class="heading-sm segment-label">SOC 2 Type II &middot; GDPR &middot; HIPAA Ready</h3>
+          <!-- Certification details and dates pending confirmation (spec Open Question 2) -->
+          <p class="body-sm segment-desc" data-placeholder>
+            Enterprise security posture, audit-ready architecture. Full infrastructure details
+            available under NDA.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 09 — FAQ · FAQSection.tsx (Radix Accordion at port; FAQPage JSON-LD below) ============ -->
+  <section id="faq" class="section-pad" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="faq-grid">
+        <div>
+          <div class="section-header reveal">
+            <span class="eyebrow">Common Questions</span>
+            <h2 id="faq-heading" class="display-lg">Clear answers, no fluff.</h2>
+          </div>
+          <div class="faq-mini-card reveal">
+            <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Still have questions?</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: var(--space-4);">
+              Book a 30-minute executive briefing with a Quaeris solutions architect. We'll walk
+              through your governance model and show you a live answer against your own data.
+            </p>
+            <a href="/contact?role=executive" class="btn btn-secondary" style="font-size: 14px; padding: 10px 22px;" aria-label="Book an executive briefing demo">Book a Demo</a>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <div class="accordion">
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" data-state="open" aria-expanded="true" aria-controls="faq-a1">
+                <span class="accordion-question">Does Quaeris hallucinate numbers like ChatGPT does?</span>
+                <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="accordion-content" id="faq-a1" data-state="open" style="animation: none;">
+                <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                  No. Quaeris agents query your governed semantic layer—they don't generate numbers
+                  from training data. Every answer is grounded in certified metric definitions your
+                  data team controls and maintains. If an answer can't be sourced from the semantic
+                  layer, the agent explicitly says so rather than guessing. This is a fundamental
+                  architectural difference from generic AI chatbots.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="faq-a2">
+                <span class="accordion-question">How is access controlled? Can an executive see data outside their permission scope?</span>
+                <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="accordion-content" id="faq-a2" data-state="closed" style="animation: none;" hidden>
+                <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                  Role-based access controls apply at query time, when the agent executes the query.
+                  Access is enforced at the database level—not as a dashboard filter that can be
+                  circumvented. If an executive's role doesn't permit visibility into APAC revenue,
+                  the query will reject that filter and return only the data their role permits.
+                  Every access decision is audited.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="faq-a3">
+                <span class="accordion-question">What's the deployment timeline? How long until I get my first answered question?</span>
+                <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="accordion-content" id="faq-a3" data-state="closed" style="animation: none;" hidden>
+                <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                  Most teams deploy in 2–3 weeks. Week 1: warehouse integration and semantic layer
+                  setup. Week 2: executive access configuration and user onboarding. You get your
+                  first governed answer by week 2. There is no data migration—your existing
+                  warehouse becomes the query target.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="faq-a4">
+                <span class="accordion-question">Do you replace our BI tool?</span>
+                <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="accordion-content" id="faq-a4" data-state="closed" style="animation: none;" hidden>
+                <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                  No. Quaeris complements your BI stack. Your dashboards and reports stay—they're
+                  still the system of record for structured, scheduled reporting. Quaeris answers
+                  the questions that don't fit a dashboard: 'What happened to gross margin in Q3?'
+                  'Why did churn spike?' 'Are we tracking to plan?' Exploratory, ad-hoc, governed
+                  questions.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="faq-a5">
+                <span class="accordion-question">Where does our data live? Is there a data copy in the cloud?</span>
+                <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="accordion-content" id="faq-a5" data-state="closed" style="animation: none;" hidden>
+                <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                  Your data stays in your warehouse. Quaeris is warehouse-native—it connects
+                  directly to your Snowflake, BigQuery, Databricks, or Redshift instance and queries
+                  it in place. We don't copy, cache, or replicate your data to Quaeris
+                  infrastructure. Your data residency and compliance posture remain unchanged.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="faq-a6">
+                <span class="accordion-question">Can auditors verify that metrics are consistent and auditable?</span>
+                <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="accordion-content" id="faq-a6" data-state="closed" style="animation: none;" hidden>
+                <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                  Yes. Every metric is versioned, owned, and traced to source. The audit trail shows
+                  when metric definitions changed, who changed them, and why. You can download the
+                  full audit log for any query and present it to regulators. This is what audit
+                  trail by design actually looks like.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger" data-state="closed" aria-expanded="false" aria-controls="faq-a7">
+                <span class="accordion-question">What if we use multiple data warehouses (Snowflake + BigQuery)?</span>
+                <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="accordion-content" id="faq-a7" data-state="closed" style="animation: none;" hidden>
+                <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                  Quaeris can query across multiple warehouses in a single semantic layer. The
+                  semantic layer is warehouse-agnostic, so you can define once and query everywhere.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQPage JSON-LD — all 7 Q&A pairs (spec §9.5; carries to port) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Does Quaeris hallucinate numbers like ChatGPT does?", "acceptedAnswer": { "@type": "Answer", "text": "No. Quaeris agents query your governed semantic layer—they don't generate numbers from training data. Every answer is grounded in certified metric definitions your data team controls and maintains. If an answer can't be sourced from the semantic layer, the agent explicitly says so rather than guessing. This is a fundamental architectural difference from generic AI chatbots." } },
+      { "@type": "Question", "name": "How is access controlled? Can an executive see data outside their permission scope?", "acceptedAnswer": { "@type": "Answer", "text": "Role-based access controls apply at query time, when the agent executes the query. Access is enforced at the database level—not as a dashboard filter that can be circumvented. If an executive's role doesn't permit visibility into APAC revenue, the query will reject that filter and return only the data their role permits. Every access decision is audited." } },
+      { "@type": "Question", "name": "What's the deployment timeline? How long until I get my first answered question?", "acceptedAnswer": { "@type": "Answer", "text": "Most teams deploy in 2–3 weeks. Week 1: warehouse integration and semantic layer setup. Week 2: executive access configuration and user onboarding. You get your first governed answer by week 2. There is no data migration—your existing warehouse becomes the query target." } },
+      { "@type": "Question", "name": "Do you replace our BI tool?", "acceptedAnswer": { "@type": "Answer", "text": "No. Quaeris complements your BI stack. Your dashboards and reports stay—they're still the system of record for structured, scheduled reporting. Quaeris answers the questions that don't fit a dashboard: 'What happened to gross margin in Q3?' 'Why did churn spike?' 'Are we tracking to plan?' Exploratory, ad-hoc, governed questions." } },
+      { "@type": "Question", "name": "Where does our data live? Is there a data copy in the cloud?", "acceptedAnswer": { "@type": "Answer", "text": "Your data stays in your warehouse. Quaeris is warehouse-native—it connects directly to your Snowflake, BigQuery, Databricks, or Redshift instance and queries it in place. We don't copy, cache, or replicate your data to Quaeris infrastructure. Your data residency and compliance posture remain unchanged." } },
+      { "@type": "Question", "name": "Can auditors verify that metrics are consistent and auditable?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every metric is versioned, owned, and traced to source. The audit trail shows when metric definitions changed, who changed them, and why. You can download the full audit log for any query and present it to regulators. This is what audit trail by design actually looks like." } },
+      { "@type": "Question", "name": "What if we use multiple data warehouses (Snowflake + BigQuery)?", "acceptedAnswer": { "@type": "Answer", "text": "Quaeris can query across multiple warehouses in a single semantic layer. The semantic layer is warehouse-agnostic, so you can define once and query everywhere." } }
+    ]
+  }
+  </script>
+
+  <!-- ============ Section 10 — CTA Band · CTABand.tsx ============ -->
+  <section id="cta-band" class="section-pad" aria-labelledby="cta-heading">
+    <div class="exec-cta-topline" aria-hidden="true"></div>
+    <div class="cta-band-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="cta-inner reveal">
+        <span class="eyebrow">Ready to stop waiting on data?</span>
+        <h2 id="cta-heading" class="display-lg">Start getting governed answers in 14 minutes.</h2>
+        <p class="body-lg subcopy">
+          Book a personalized 30-minute executive briefing. We'll show you how Quaeris delivers
+          trusted metrics on any device, audited end-to-end. No generic demo. We'll bring the
+          conversation to your warehouse.
+        </p>
+        <div class="cta-buttons">
+          <a href="/contact?role=executive" class="btn btn-primary" aria-label="Book a demo for executives">Book a Demo</a>
+          <a href="#customer-proof" class="btn btn-secondary-dark" aria-label="See executive case studies">See case studies</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Mockup-only: minimal accordion toggle so the FAQ is reviewable in-browser.
+  // The port uses the existing Radix-based Accordion component (Accordion.tsx).
+  document.querySelectorAll(".accordion-trigger").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var wasOpen = btn.getAttribute("data-state") === "open";
+      document.querySelectorAll(".accordion-item").forEach(function (item) {
+        var t = item.querySelector(".accordion-trigger");
+        var c = item.querySelector(".accordion-content");
+        t.setAttribute("data-state", "closed");
+        t.setAttribute("aria-expanded", "false");
+        c.setAttribute("data-state", "closed");
+        c.hidden = true;
+      });
+      if (!wasOpen) {
+        var content = document.getElementById(btn.getAttribute("aria-controls"));
+        btn.setAttribute("data-state", "open");
+        btn.setAttribute("aria-expanded", "true");
+        content.setAttribute("data-state", "open");
+        content.hidden = false;
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

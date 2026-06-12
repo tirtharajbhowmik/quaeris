@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/audit — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- ============================================================
+     MOCKUP — /platform/audit (spec: docs/page-specs/platform-audit.md)
+     SEO at port time:
+       <title> AI Analytics Audit Trail | Quaeris Platform
+       meta description: Track every question, query, and answer. Full audit trail
+       from user to metric to warehouse—governance by design. Quaeris makes AI
+       analytics auditable.
+       Schema: FAQPage (from Accordion data), SoftwareApplication, Product
+       (comparison table), BreadcrumbList.
+     Component map (spec §3): SectionHeader hero (3.1) · ProblemSolutionCards (3.2)
+     · FeatureRow ×4 (3.3) · NEW AuditLogMock — MetricDashboardMock variant (3.4)
+     · IconFeatureGrid 2-col (3.5) · SegmentCards 4-up (3.6) · NEW ComparisonTable
+     (3.7) · FAQSection+Accordion (3.8) · CTABand (3.9) · NewsletterBlock (3.10).
+     ============================================================ -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic). */
+
+/* --- 2-up variant of the icon feature grid (spec §3.5: 6 cards, 2-column desktop) --- */
+.icon-feature-grid.audit-grid-2 { grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+@media (max-width: 768px) { .icon-feature-grid.audit-grid-2 { grid-template-columns: 1fr; gap: var(--space-5); } }
+.audit-grid-2 > * { height: 100%; }
+
+/* --- 4-up variant of the segment cards grid (spec §3.6: 4 use-case cards) --- */
+.segment-cards-grid.audit-segment-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1024px) { .segment-cards-grid.audit-segment-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .segment-cards-grid.audit-segment-4 { grid-template-columns: 1fr; } }
+
+/* --- Allow/deny status pills (audit decisions; tinted with semantic tokens) --- */
+.audit-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; line-height: 1.2; border-radius: var(--radius-pill); padding: 3px 10px; white-space: nowrap; flex-shrink: 0; }
+.audit-pill-allow { color: var(--success); background: color-mix(in srgb, var(--success) 12%, transparent); }
+.audit-pill-deny  { color: var(--error);   background: color-mix(in srgb, var(--error) 12%, transparent); }
+
+/* --- Placeholder product shots inside feature rows (swap for real screenshots at port) --- */
+.audit-shot { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); padding: var(--space-6); background: linear-gradient(135deg, var(--brand-accent-soft), transparent 70%); }
+.audit-shot-label { color: var(--text-tertiary); display: block; }
+.audit-shot-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: var(--space-3) var(--space-4); font-size: 13px; color: var(--text-secondary); }
+.audit-shot-row strong { color: var(--text-primary); font-weight: 600; }
+
+/* --- NEW component: AuditLogMock (spec §3.4 — on-dark variant of MetricDashboardMock) --- */
+.audit-log-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border-on-dark); border-radius: var(--radius-md); }
+.audit-log-table { width: 100%; min-width: 960px; border-collapse: collapse; font-size: 13px; }
+.audit-log-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-on-dark-dim); background: rgba(255,255,255,0.04); padding: var(--space-3) var(--space-4); white-space: nowrap; }
+.audit-log-table td { padding: var(--space-3) var(--space-4); border-top: 1px solid var(--border-on-dark); color: var(--text-on-dark-dim); vertical-align: top; line-height: 1.5; }
+.audit-log-table tbody tr { transition: background var(--dur-fast) var(--ease-out); }
+.audit-log-table tbody tr:hover { background: rgba(255,255,255,0.04); }
+.audit-log-question { color: var(--text-on-dark); font-weight: 500; }
+.audit-log-num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* --- NEW component: ComparisonTable (spec §3.7 — capability matrix, scrolls on mobile) --- */
+.audit-compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: var(--space-8); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); box-shadow: var(--shadow-card); }
+.audit-compare { width: 100%; min-width: 1080px; border-collapse: collapse; font-size: 13px; }
+.audit-compare th, .audit-compare td { text-align: left; padding: var(--space-4) var(--space-4); border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); line-height: 1.45; vertical-align: top; }
+.audit-compare thead th { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); background: var(--bg-warm); white-space: nowrap; }
+.audit-compare tbody th[scope="row"] { font-weight: 600; color: var(--text-primary); }
+.audit-compare tbody tr:last-child th, .audit-compare tbody tr:last-child td { border-bottom: none; }
+.audit-compare tbody tr:hover { background: var(--bg-warm); }
+.audit-col-q { background: var(--brand-accent-soft); color: var(--text-primary); font-weight: 500; }
+.audit-compare thead th.audit-col-q { color: var(--brand-accent); }
+.audit-compare-foot { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-4); max-width: 78ch; }
+
+/* --- MOCKUP-ONLY shims (do NOT port): native <details> stands in for Accordion.tsx (Radix) --- */
+details.accordion-item > summary { list-style: none; }
+details.accordion-item > summary::-webkit-details-marker { display: none; }
+details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     3.1 HERO — SectionHeader (reuse: hero-inner / hero-buttons)
+     ============================================================ -->
+<section id="audit-hero" class="section-pad" style="background: var(--bg-surface); position: relative; overflow: hidden;" aria-labelledby="audit-hero-heading">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-inner reveal">
+      <span class="eyebrow">Governance by design</span>
+      <h1 id="audit-hero-heading" class="display-lg" style="max-width: 22ch;">Every question. Every answer. Full audit trail.</h1>
+      <p class="subcopy body-lg">Business users ask in plain language. Agents query the semantic layer. Role-based access is enforced. And every step — from question to metric to warehouse — is logged, traceable, and auditable. Quaeris makes AI analytics transparent.</p>
+      <div class="hero-buttons" style="margin-bottom: 0;">
+        <a href="/contact" class="btn btn-primary">Schedule an audit demo</a>
+        <a href="/platform/governance" class="btn btn-secondary">See how it works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.2 THE PROBLEM — ProblemSolutionCards (reuse .ps-*; spec header
+     labels this NEW: ProblemSolutionCards, but the pattern already
+     exists in globals.css — port is mechanical)
+     ============================================================ -->
+<section id="why-audit-trails" class="section-pad" aria-labelledby="why-audit-trails-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>The problem</span>
+      <h2 id="why-audit-trails-heading" class="display-lg">The problem: Why audit trails matter</h2>
+    </div>
+
+    <div class="ps-grid">
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">01</span>
+        <h3 class="heading-sm">AI Black Box</h3>
+        <p class="ps-problem body-md">Most AI analytics platforms treat agents as black boxes. You see an answer — but not the reasoning, not which metrics were queried, not whether the user had access to that data.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris</span>
+          <p class="ps-fix-body body-md">Quaeris logs every agent step. The system records which business rules were applied, which semantic layer definitions were used, and whether row-level access controls permitted the result. No hidden reasoning.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">02</span>
+        <h3 class="heading-sm">Orphaned Metrics</h3>
+        <p class="ps-problem body-md">Compliance teams need proof of which numbers came from which tables, which business rules generated them, and who approved those rules. Standard BI tools show a dashboard — not the provenance.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris</span>
+          <p class="ps-fix-body body-md">Every Quaeris answer surface the exact metric definitions it used. Traces back to the semantic layer version, the data table, the transformation rules, and the owner approval. Click any number and see the full chain.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">03</span>
+        <h3 class="heading-sm">Access Control Theater</h3>
+        <p class="ps-problem body-md">Role-based access on dashboards is a filter — a UI layer. Executives can screenshot restricted data or pivot on unintended dimensions. Governance theater doesn't satisfy auditors.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris</span>
+          <p class="ps-fix-body body-md">Quaeris enforces access at query time. Role policies are applied when the agent executes — not when the user views the result. Users cannot see data their role forbids, period. And every query attempt is logged.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">04</span>
+        <h3 class="heading-sm">Who Asked What?</h3>
+        <p class="ps-problem body-md">When a number in the boardroom turns out to be wrong, compliance needs to know: who asked? when? with what intent? which model assumptions did they use? Standard analytics tools have no answer history.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris</span>
+          <p class="ps-fix-body body-md">Quaeris maintains a complete audit log of every question asked — by whom, when, which data they accessed, which metrics were returned, whether they're supposed to see it. Searchable, timestamped, exportable for compliance workflows.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.3 THE AUDIT TRAIL ARCHITECTURE — FeatureRow ×4 (reuse, alternating)
+     ============================================================ -->
+<section id="architecture" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="architecture-heading">
+  <div class="container">
+    <div class="section-header methodology-header reveal">
+      <span class="eyebrow" data-placeholder>How it works</span>
+      <h2 id="architecture-heading" class="display-lg">The audit trail architecture</h2>
+    </div>
+
+    <div class="feature-rows-list">
+      <!-- Step 1: Question Capture -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 01 — Question Capture</span>
+          <h3 class="display-md feature-row-heading">Every question logged, exactly as asked.</h3>
+          <p class="feature-row-body body-md">When a user types 'Revenue vs. plan by region,' Quaeris records: the exact text, the user's identity, the timestamp, their role/team, and the warehouse they're querying. The question enters the audit log immediately — before the agent even processes it. No guessing what was asked. No reconstructing intent from logs.</p>
+          <a href="/platform/governance" class="btn btn-ghost">Learn about prompt audit</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="audit-shot" role="img" aria-label="Quaeris audit log entry capturing a question with user identity, timestamp, role, and warehouse" data-placeholder>
+              <span class="eyebrow audit-shot-label">Question captured</span>
+              <div class="audit-shot-row"><span>"Revenue vs. plan by region"</span><span class="audit-pill audit-pill-allow">Logged</span></div>
+              <div class="audit-shot-row"><span>User · <strong>S. Chen</strong> · Head of Analytics</span><span>2026-06-12 14:32:18</span></div>
+              <div class="audit-shot-row"><span>Role · <strong>Analytics leadership</strong></span><span>Warehouse · <strong>Snowflake prod</strong></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Query Translation & Lineage (flipped) -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 02 — Query Translation &amp; Lineage</span>
+          <h3 class="display-md feature-row-heading">AI-to-SQL translation is visible and auditable.</h3>
+          <p class="feature-row-body body-md">The agent translates the plain-language question into SQL against the semantic layer. Quaeris logs: the generated SQL, which semantic layer definitions were consulted, which business rules were applied, and the query execution time. If the agent needed to make assumptions (e.g., 'revenue' → the Booked Revenue metric, not Pipeline Revenue), those assumptions are logged and surfaced.</p>
+          <a href="/platform/semantic-layer" class="btn btn-ghost">Explore the semantic layer</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="audit-shot" role="img" aria-label="Quaeris lineage log showing generated SQL, semantic layer definitions consulted, and a logged assumption" data-placeholder>
+              <span class="eyebrow audit-shot-label">Translation &amp; lineage</span>
+              <div class="audit-shot-row"><span>Generated SQL · <strong>SELECT region, booked_revenue …</strong></span><span class="audit-pill audit-pill-allow">Logged</span></div>
+              <div class="audit-shot-row"><span>Definitions · <strong>Booked Revenue v4.1, Plan Amount v2.3</strong></span></div>
+              <div class="audit-shot-row"><span>Assumption · "revenue" → <strong>Booked Revenue</strong>, not Pipeline Revenue</span><span class="audit-pill audit-pill-allow">Surfaced</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Access Control Enforcement -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 03 — Access Control Enforcement</span>
+          <h3 class="display-md feature-row-heading">Role policies enforced at query execution.</h3>
+          <p class="feature-row-body body-md">Before the query runs, Quaeris evaluates the user's row-level security policies against the warehouse. The system logs: which rows the user requested, which rows their role permits, and whether the query was allowed or denied. If allowed, which row-level filters were applied. Every access decision is auditable — and compliant auditors can verify that a director-level user never saw frontline-employee data.</p>
+          <a href="/platform/access-control" class="btn btn-ghost">See access control in action</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="audit-shot" role="img" aria-label="Quaeris access control log showing a row-level policy evaluation with applied filters and a denied attempt" data-placeholder>
+              <span class="eyebrow audit-shot-label">Policy evaluation</span>
+              <div class="audit-shot-row"><span>Requested · <strong>All regions</strong></span><span>Permitted · <strong>Region IN ['US', 'EMEA']</strong></span></div>
+              <div class="audit-shot-row"><span>Row-level filter applied at execution</span><span class="audit-pill audit-pill-allow">Allowed</span></div>
+              <div class="audit-shot-row"><span>14:15:44 · "Churn by contract value" · <strong>Strategic Contracts</strong></span><span class="audit-pill audit-pill-deny">Denied</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Answer Delivery & Provenance (flipped) -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 04 — Answer Delivery &amp; Provenance</span>
+          <h3 class="display-md feature-row-heading">Results returned with full source citation.</h3>
+          <p class="feature-row-body body-md">The agent returns the answer to the user. Quaeris logs: the result set, the execution time, the user's response (did they refine the query?), and a complete chain of custody. Every number in the answer is clickable — users can trace 'Revenue = $2.4M' back to the exact metric definition, the table query, the transformation rules, and the owner certification. Auditors can download the full provenance report for any answer.</p>
+          <!-- spec href /resources/sample-audit-report — create route or gated PDF at port time -->
+          <a href="/resources/sample-audit-report" class="btn btn-ghost" data-placeholder>View an audit report</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="audit-shot" role="img" aria-label="Quaeris provenance chain tracing an answer back to metric definition, source table, transformation rules, and owner certification" data-placeholder>
+              <span class="eyebrow audit-shot-label">Chain of custody</span>
+              <div class="audit-shot-row"><span>Answer · <strong>Revenue = $2.4M</strong></span><span>1.4s</span></div>
+              <div class="audit-shot-row"><span>Metric · <strong>Booked Revenue v4.1</strong> → Table · <strong>fct_revenue</strong></span></div>
+              <div class="audit-shot-row"><span>Rules · FX normalization · Owner · <strong>Finance</strong></span><span class="audit-pill audit-pill-allow">Certified</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.4 LIVE AUDIT DASHBOARD — NEW: AuditLogMock
+     (on-dark variant of MetricDashboardMock; reuses .metric-dashboard frame)
+     ============================================================ -->
+<section id="audit-log" class="section-pad" style="background: var(--bg-ink); position: relative; overflow: hidden;" aria-labelledby="audit-log-heading">
+  <div class="dark-feature-glow" aria-hidden="true"></div>
+  <div class="container" style="position: relative; z-index: 1;">
+    <div class="section-header center section-header-dark reveal">
+      <span class="eyebrow" data-placeholder>Inside the platform</span>
+      <h2 id="audit-log-heading" class="display-lg" data-placeholder>The audit log, live.</h2>
+    </div>
+
+    <div class="metric-dashboard reveal" style="margin-top: var(--space-8);">
+      <div class="metric-dashboard-header">
+        <span>Quaeris · Audit log</span>
+        <span data-placeholder>Live stream · last 30 minutes</span>
+      </div>
+      <div class="audit-log-scroll" role="region" aria-label="Sample audit log entries (scrollable)" tabindex="0">
+        <table class="audit-log-table" aria-describedby="audit-log-caption" data-placeholder>
+          <thead>
+            <tr>
+              <th scope="col">Timestamp</th>
+              <th scope="col">User</th>
+              <th scope="col">Question</th>
+              <th scope="col">Status</th>
+              <th scope="col">Metrics Used</th>
+              <th scope="col">Data Access</th>
+              <th scope="col">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="audit-log-num">2026-06-12 14:32:18</td>
+              <td data-placeholder>S. Chen · Head of Analytics</td>
+              <td class="audit-log-question">Revenue vs. plan by region</td>
+              <td><span class="audit-pill audit-pill-allow">✓ Allowed</span></td>
+              <td>Booked Revenue, Plan Amount, Regional Sales Org</td>
+              <td>Region IN ['US', 'EMEA']</td>
+              <td class="audit-log-num">1.4s</td>
+            </tr>
+            <tr>
+              <td class="audit-log-num">2026-06-12 14:28:03</td>
+              <td data-placeholder>M. Okafor · FP&amp;A Director</td>
+              <td class="audit-log-question">Commission accrual forecast</td>
+              <td><span class="audit-pill audit-pill-allow">✓ Allowed</span></td>
+              <td>Accrual Rate, Headcount Forecast</td>
+              <td>Department = 'Sales'</td>
+              <td class="audit-log-num">2.1s</td>
+            </tr>
+            <tr>
+              <td class="audit-log-num">2026-06-12 14:15:44</td>
+              <td data-placeholder>J. Rivera · Account Executive</td>
+              <td class="audit-log-question">Churn by contract value</td>
+              <td><span class="audit-pill audit-pill-deny">✗ Denied</span></td>
+              <td>N/A</td>
+              <td>Access denied: Strategic Contracts restricted</td>
+              <td class="audit-log-num">—</td>
+            </tr>
+            <tr>
+              <td class="audit-log-num">2026-06-12 14:12:09</td>
+              <td data-placeholder>P. Natarajan · Sales Manager</td>
+              <td class="audit-log-question">Pipeline by stage and manager</td>
+              <td><span class="audit-pill audit-pill-allow">✓ Allowed</span></td>
+              <td>Pipeline Weighted, Stage Duration</td>
+              <td>Manager IN [own team]</td>
+              <td class="audit-log-num">0.9s</td>
+            </tr>
+            <tr>
+              <td class="audit-log-num">2026-06-12 14:09:55</td>
+              <td data-placeholder>L. Dubois · Chief of Staff</td>
+              <td class="audit-log-question">Explain why MRR dropped YoY</td>
+              <td><span class="audit-pill audit-pill-allow">✓ Allowed</span></td>
+              <td>MRR, Expansion, Churn, Discount Rate</td>
+              <td>Warehouse filtering per role</td>
+              <td class="audit-log-num">3.2s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p id="audit-log-caption" class="chart-caption" style="margin-top: var(--space-4);">Illustrative live audit log — for demonstration only. Real deployments log millions of interactions per month, all queryable and exportable.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 KEY AUDIT CAPABILITIES — IconFeatureGrid (reuse, 2-up variant)
+     ============================================================ -->
+<section id="capabilities" class="section-pad" aria-labelledby="capabilities-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Capabilities</span>
+      <h2 id="capabilities-heading" class="display-lg">Key audit capabilities</h2>
+    </div>
+
+    <div class="icon-feature-grid audit-grid-2">
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <h3 class="heading-sm">Role-based access control</h3>
+        <p>Every query enforces the user's role policies. Access decisions are logged. Users cannot see data their role forbids—enforced at query execution, not just the UI.</p>
+      </article>
+
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+        </span>
+        <h3 class="heading-sm">Complete question history</h3>
+        <p>Every question asked is logged with timestamp, user, intent, and outcome. Searchable audit log—compliance teams can answer 'Who asked about customer churn?' in seconds.</p>
+      </article>
+
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </span>
+        <h3 class="heading-sm">Metric-to-table lineage</h3>
+        <p>Every answer traces back to metric definitions, business rules, source tables, and transformations. One click: see the full chain of custody for any number.</p>
+      </article>
+
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <h3 class="heading-sm">Proof of data access</h3>
+        <p>Quaeris logs which specific rows each user accessed, which rows were filtered out, and why. Row-level security is auditable—not just a dashboard filter.</p>
+      </article>
+
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        </span>
+        <h3 class="heading-sm">Exportable audit reports</h3>
+        <p>Generate timestamped, signed audit reports for compliance workflows. SOX, HIPAA, EU AI Act—format the report to match your audit requirements.</p>
+      </article>
+
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+        </span>
+        <h3 class="heading-sm">Access denial logs</h3>
+        <p>Denied queries are logged as thoroughly as allowed ones. Compliance teams see every attempt to access restricted data—and proof it was blocked.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.6 USE CASES — SegmentCards (reuse, 4-up variant)
+     ============================================================ -->
+<section id="use-cases" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="use-cases-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Use cases</span>
+      <h2 id="use-cases-heading" class="display-lg">Use cases: Who needs audit trails</h2>
+    </div>
+
+    <div class="segment-cards-grid audit-segment-4">
+      <!-- spec href /resources/sox-ai-analytics-checklist — create resource at port time -->
+      <a href="/resources/sox-ai-analytics-checklist" class="segment-card reveal" data-placeholder>
+        <span class="segment-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">SOX Compliance &amp; Financial Audits</h3>
+        <p class="body-sm segment-desc">Auditors need to trace every number in board materials back to source data. Quaeris gives you: question, assumption, metric, table, owner certification, access control. Satisfy auditors without blocking analytics velocity.</p>
+        <span class="btn btn-ghost">Read the SOX guide</span>
+      </a>
+
+      <a href="/platform/semantic-layer" class="segment-card reveal">
+        <span class="segment-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Metric Governance &amp; Lineage</h3>
+        <p class="body-sm segment-desc">Data leaders own the semantic layer. Quaeris audit logs show you which metrics each question used, which business rules applied, and which users accessed sensitive metrics. Governance becomes visible, not theoretical.</p>
+        <span class="btn btn-ghost">Learn about semantic lineage</span>
+      </a>
+
+      <!-- spec href /resources/eu-ai-act-analytics-assessment — create resource at port time -->
+      <a href="/resources/eu-ai-act-analytics-assessment" class="segment-card reveal" data-placeholder>
+        <span class="segment-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Data Privacy &amp; EU AI Act</h3>
+        <p class="body-sm segment-desc">EU AI Act requires audit trails for high-risk AI. GDPR requires data-access logging. Quaeris logs every query at the row level. Prove compliance with automated audit exports.</p>
+        <span class="btn btn-ghost">See the EU AI Act checklist</span>
+      </a>
+
+      <!-- spec href /resources/hipaa-ai-analytics-guide — create resource at port time -->
+      <a href="/resources/hipaa-ai-analytics-guide" class="segment-card reveal" data-placeholder>
+        <span class="segment-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">HIPAA &amp; Regulated Industry AI</h3>
+        <p class="body-sm segment-desc">Sensitive industries need to prove that AI agents respect access controls. Quaeris enforces role-based access at query time and logs every access attempt. Healthcare and insurance teams can deploy agentic AI without audit risk.</p>
+        <span class="btn btn-ghost">View the HIPAA readiness guide</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.7 COMPARISON — NEW: ComparisonTable
+     ============================================================ -->
+<section id="comparison" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="comparison-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Quaeris vs the field</span>
+      <h2 id="comparison-heading" class="display-lg">Comparison: Audit trail across BI platforms</h2>
+    </div>
+
+    <div class="audit-compare-scroll reveal" role="region" aria-label="Audit trail capability comparison across BI platforms (scrollable)" tabindex="0">
+      <!-- Competitor cells pending verification against current docs (spec §3.7 footnote) -->
+      <table class="audit-compare" aria-describedby="comparison-footnote" data-placeholder>
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col" class="audit-col-q">Quaeris</th>
+            <th scope="col">Tableau</th>
+            <th scope="col">Power BI</th>
+            <th scope="col">Looker</th>
+            <th scope="col">ThoughtSpot</th>
+            <th scope="col">Sigma</th>
+            <th scope="col">Domo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Question logging</th>
+            <td class="audit-col-q">Per-user, full text, timestamped</td>
+            <td>Dashboard usage only</td>
+            <td>Per-user, limited</td>
+            <td>Query audit limited</td>
+            <td>Search token logging</td>
+            <td>Basic activity log</td>
+            <td>Basic activity log</td>
+          </tr>
+          <tr>
+            <th scope="row">Metric-to-table lineage</th>
+            <td class="audit-col-q">✓ Auto-surfaced per answer</td>
+            <td>Dashboard-level lineage</td>
+            <td>Model-level, not answer-level</td>
+            <td>LookML dependencies</td>
+            <td>Worksheet-level</td>
+            <td>Basic lineage</td>
+            <td>Basic lineage</td>
+          </tr>
+          <tr>
+            <th scope="row">Row-level access enforcement</th>
+            <td class="audit-col-q">✓ Query-time enforcement</td>
+            <td>Filter-based (UI layer)</td>
+            <td>Model &amp; RLS</td>
+            <td>LookML RLS</td>
+            <td>Search-token scoped</td>
+            <td>Dashboard-level</td>
+            <td>Access model-scoped</td>
+          </tr>
+          <tr>
+            <th scope="row">AI reasoning logged</th>
+            <td class="audit-col-q">✓ SQL, assumptions, rules</td>
+            <td>N/A (no AI)</td>
+            <td>Copilot actions hidden</td>
+            <td>Conversational logs limited</td>
+            <td>Spotter reasoning opaque</td>
+            <td>Agent steps hidden</td>
+            <td>Domo.AI opaque</td>
+          </tr>
+          <tr>
+            <th scope="row">Access denial audit trail</th>
+            <td class="audit-col-q">✓ Full logging</td>
+            <td>Not logged</td>
+            <td>Logged, limited</td>
+            <td>Not clearly logged</td>
+            <td>Not transparent</td>
+            <td>Not transparent</td>
+            <td>Not transparent</td>
+          </tr>
+          <tr>
+            <th scope="row">Exportable compliance reports</th>
+            <td class="audit-col-q">✓ SOX/HIPAA/EU AI ready</td>
+            <td>Manual export only</td>
+            <td>Manual export only</td>
+            <td>Manual export only</td>
+            <td>Manual export only</td>
+            <td>Manual export only</td>
+            <td>Manual export only</td>
+          </tr>
+          <tr>
+            <th scope="row">Warehouse-native logging</th>
+            <td class="audit-col-q">✓ Warehouse-native queries logged</td>
+            <td>Cloud-based, query-hidden</td>
+            <td>Cloud-based, hidden</td>
+            <td>Cloud-based, hidden</td>
+            <td>Elastic-based</td>
+            <td>Cloud-based, hidden</td>
+            <td>Cloud-based, hidden</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Footnote — competitor capabilities to be verified against current docs pre-launch -->
+    <p id="comparison-footnote" class="audit-compare-foot reveal" data-placeholder>Comparison based on public documentation as of Q2 2026. Actual capabilities vary by version and deployment model.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.8 FAQ — FAQSection (reuse) + Accordion (Radix at port time;
+     native <details> here so the static mockup is interactive)
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-grid">
+      <div>
+        <div class="section-header reveal">
+          <span class="eyebrow" data-placeholder>FAQ</span>
+          <h2 id="faq-heading" class="display-lg">FAQ: Audit trail specifics</h2>
+        </div>
+        <aside class="faq-mini-card reveal" data-placeholder>
+          <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Auditor in the room?</h3>
+          <p>Bring your compliance team to a live session — we'll trace a real query end to end through access control, lineage, and retention, and answer governance questions on the spot.</p>
+          <a href="/contact" class="btn btn-ghost">Book a Demo</a>
+        </aside>
+      </div>
+
+      <div class="accordion reveal">
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How granular is the audit trail?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Every user action is logged: the exact question text, the user's identity, the timestamp down to milliseconds, their role/team context, which warehouse they queried, the generated SQL, which metrics were accessed, and the result. If access was denied, that's logged too. Logs are immutable and timestamped.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can I export audit logs for my SOX auditor?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Yes. Quaeris provides an audit export tool that generates compliance-ready reports: full query history, access decisions, metric lineage, denied attempts, and user identity. Export as PDF, CSV, or in formats your auditor specifies. Reports are timestamped and signed.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How long are audit logs retained?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <!-- spec: verify retention policy details with product team before launch -->
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;" data-placeholder>Audit retention policies are configurable. Enterprise deployments typically retain 1–2 years online; older logs can be archived to cold storage per your compliance requirements.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can users delete their questions from the audit log?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">No. Audit logs are immutable once written. Users cannot delete or modify their questions or access history. Only admins with explicit audit-log governance permissions can export or filter logs—and those administrative actions are themselves logged.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Does Quaeris log if someone tried to access data they're not permitted to see?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Yes. Every access denial is logged with the same level of detail as allowed queries: who tried, what they asked for, when, and why the request was denied (which role policy blocked it). This is essential for security audits and detecting attempted access violations.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How is the audit log connected to the semantic layer?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">When a query runs, Quaeris logs: the plain-language question, the semantic layer version used (with version timestamp), which metrics were queried, which business rules were applied. Auditors can trace any answer back to the exact semantic-layer snapshot that produced it—useful if metric definitions change.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.9 CTA BAND — CTABand (reuse)
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-band-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Demonstrate to your auditors</span>
+      <h2 id="cta-band-heading" class="display-lg">See your audit trail in action.</h2>
+      <p class="subcopy body-lg">Book a 20-minute demo. We'll walk through a sample audit log, show you how a compliant query flows through access control, lineage, and retention—then answer your governance questions. No fluff, all answers.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Schedule audit demo</a>
+        <!-- spec href /resources/quaeris-audit-trail-guide — create route or gated PDF at port time -->
+        <a href="/resources/quaeris-audit-trail-guide" class="btn btn-secondary-dark" data-placeholder>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+          Download the audit guide
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.10 NEWSLETTER — NewsletterBlock (reuse)
+     ============================================================ -->
+<section id="newsletter" class="newsletter-block" aria-labelledby="newsletter-heading">
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <span class="eyebrow">Stay updated on governance</span>
+      <h3 id="newsletter-heading">Weekly insights on governed AI analytics.</h3>
+      <p>Every Thursday: practical tips on audit-ready AI, semantic governance, and compliance-first analytics architectures. No hype, no fluff—just what works.</p>
+      <form class="newsletter-form" action="#" method="post">
+        <label class="sr-only" for="newsletter-email">Work email</label>
+        <input class="newsletter-input" type="email" id="newsletter-email" name="email" placeholder="Work email" autocomplete="email" required data-placeholder />
+        <button type="submit" class="btn btn-primary" data-placeholder>Subscribe</button>
+      </form>
+      <p class="newsletter-consent">No spam. Unsubscribe any time. We handle your data per our <a href="/privacy" style="text-decoration: underline;" data-placeholder>Privacy Policy</a>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/governance — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- ============================================================
+     MOCKUP — /platform/governance (spec: docs/page-specs/platform-governance.md)
+     SEO at port time:
+       <title> Governance & Audit Trail for Enterprise Analytics | Quaeris
+       meta description: Certified metrics, policy enforcement, and full audit trails.
+       See how Quaeris brings governance-first design to enterprise analytics—no
+       hallucinations, no gaps.
+       Schema: SoftwareApplication, FAQPage (from Accordion data), BreadcrumbList.
+     Component map (spec §3): SectionHeader hero (3.1) · IconFeatureGrid (3.2) ·
+     FeatureRow ×2 (3.3) · NEW GovernanceAuditCard (3.4) · BentoGrid (3.5) ·
+     ProblemSolutionCards (3.6) · CaseStudyCard (3.7) · FAQSection+Accordion (3.8) ·
+     StatBlock + NEW ComplianceBadgeGrid (3.9) · CTABand (3.10).
+     ============================================================ -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic). */
+
+/* --- Governance hero (dark band variant of SectionHeader intro) --- */
+.gov-hero { background: var(--bg-ink); position: relative; overflow: hidden; }
+.gov-hero-inner { position: relative; z-index: 1; max-width: 760px; }
+.gov-hero-inner .eyebrow { color: var(--brand-accent); display: block; margin-bottom: var(--space-5); }
+.gov-hero-inner h1 { color: var(--text-on-dark); margin-bottom: var(--space-5); max-width: 22ch; }
+.gov-hero-sub { color: var(--text-on-dark-dim); max-width: 60ch; margin-bottom: var(--space-7); }
+
+/* --- 3-up variant of the icon feature grid (home grid is 4-up) --- */
+.icon-feature-grid.gov-grid-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1024px) { .icon-feature-grid.gov-grid-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .icon-feature-grid.gov-grid-3 { grid-template-columns: 1fr; } }
+.gov-grid-3 > * { height: 100%; }
+
+/* --- Gradient accent rule on certified-metric cards (spec: gradient accent → var(--cta-bg)) --- */
+.gov-accent-bar { width: 48px; height: 4px; border-radius: var(--radius-pill); background: var(--cta-bg); }
+
+/* --- Placeholder product shots inside feature rows (replaced by real screenshots at port) --- */
+.gov-shot { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); padding: var(--space-6); background: linear-gradient(135deg, var(--brand-accent-soft), transparent 70%); }
+.gov-shot-label { color: var(--text-tertiary); display: block; }
+.gov-shot-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: var(--space-3) var(--space-4); font-size: 13px; color: var(--text-secondary); }
+.gov-shot-row strong { color: var(--text-primary); font-weight: 600; }
+.gov-shot-allow, .gov-shot-deny { font-size: 11px; font-weight: 600; line-height: 1.2; border-radius: var(--radius-pill); padding: 3px 10px; white-space: nowrap; flex-shrink: 0; }
+.gov-shot-allow { color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); }
+.gov-shot-deny  { color: var(--error);   background: color-mix(in srgb, var(--error) 10%, transparent); }
+
+/* --- NEW component: GovernanceAuditCard (spec §3.4) --- */
+.gov-audit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-top: var(--space-8); }
+@media (max-width: 1024px) { .gov-audit-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .gov-audit-grid { grid-template-columns: 1fr; } }
+.gov-audit-grid > * { height: 100%; }
+.gov-audit-card { display: flex; flex-direction: column; gap: var(--space-4); height: 100%; }
+.gov-audit-card > p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; flex: 1; }
+.gov-audit-log { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; margin-top: auto; }
+.gov-audit-log-head { background: var(--bg-warm); padding: var(--space-2) var(--space-3); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); }
+.gov-audit-log-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-top: 1px solid var(--border-subtle); font-size: 12px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.gov-audit-log-row strong { color: var(--text-primary); font-weight: 600; }
+
+/* --- Compliance bento modifiers (spec §3.5: tall/medium cells, left accent border) --- */
+.gov-bento-accent { border-left: 4px solid var(--brand-accent); }
+.gov-bento-tall { grid-row: span 2; }
+@media (max-width: 640px) { .gov-bento-tall { grid-row: auto; } }
+
+/* --- NEW component: ComplianceBadgeGrid (spec §3.9) --- */
+.gov-badge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-5); margin-top: var(--space-8); }
+@media (max-width: 1024px) { .gov-badge-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .gov-badge-grid { grid-template-columns: 1fr; } }
+.gov-badge-grid > * { height: 100%; }
+.gov-badge-card { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.gov-badge-card p { font-size: 14px; line-height: 1.5; }
+
+/* --- MOCKUP-ONLY shims (do NOT port): native <details> stands in for Accordion.tsx (Radix) --- */
+details.accordion-item > summary { list-style: none; }
+details.accordion-item > summary::-webkit-details-marker { display: none; }
+details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     3.1 HERO — SectionHeader (reuse) + custom dark intro
+     ============================================================ -->
+<section id="gov-hero" class="gov-hero section-pad" aria-labelledby="gov-hero-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="gov-hero-inner reveal">
+      <span class="eyebrow">Governance by design</span>
+      <h1 id="gov-hero-heading" class="display-lg">Certified metrics. Enforced policies. Complete transparency.</h1>
+      <p class="gov-hero-sub body-lg">Every answer is grounded in your governance framework—not a model's guess. Full lineage from question to source. Role-based access enforced at query time. Enterprise compliance, built in.</p>
+      <div class="hero-buttons" style="margin-bottom: 0;">
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        <!-- spec href /resources/security-brief — create route or gated PDF at port time -->
+        <a href="/resources/security-brief" class="btn btn-secondary-dark" data-placeholder>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+          Download Security Brief
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.2 CERTIFIED METRICS — IconFeatureGrid (reuse, 3-up variant)
+     ============================================================ -->
+<section id="certified-metrics" class="section-pad" aria-labelledby="certified-metrics-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Certified metrics</span>
+      <h2 id="certified-metrics-heading" class="display-lg">Metrics you've certified, agents honor.</h2>
+      <p class="subcopy body-lg">Your data team defines the truth once — revenue, churn, activation rate. Agents query that semantic layer, not raw tables. Every answer traces back to a certified definition.</p>
+    </div>
+
+    <div class="icon-feature-grid gov-grid-3">
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </span>
+        <h3 class="heading-sm">Single source of truth</h3>
+        <p>Define your metrics once in the semantic layer. Every agent query returns the same number—no regional conflicts, no dashboard wars.</p>
+        <span class="gov-accent-bar" style="margin-top: auto;" aria-hidden="true"></span>
+      </article>
+
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <h3 class="heading-sm">No hallucinated numbers</h3>
+        <p>Agents retrieve answers from your governed semantic layer, not from a language model's training data. If a question can't be answered from certified metrics, the agent says so.</p>
+        <span class="gov-accent-bar" style="margin-top: auto;" aria-hidden="true"></span>
+      </article>
+
+      <article class="card icon-feature reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+        </span>
+        <h3 class="heading-sm">Lineage on every answer</h3>
+        <p>Click any result to see: which metric definition was used, which table it queried, which business rule applied. Full traceability in one step.</p>
+        <span class="gov-accent-bar" style="margin-top: auto;" aria-hidden="true"></span>
+      </article>
+    </div>
+
+    <div class="proof-cta reveal">
+      <a href="/platform/semantic-layer" class="btn btn-ghost">Learn about the governed semantic layer</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.3 POLICY ENFORCEMENT — FeatureRow ×2 (reuse, alternating)
+     ============================================================ -->
+<section id="policy-enforcement" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="policy-enforcement-heading">
+  <div class="container">
+    <div class="section-header methodology-header reveal">
+      <span class="eyebrow" data-placeholder>Policy enforcement</span>
+      <h2 id="policy-enforcement-heading" class="display-lg">Policies enforced. Not bypassed.</h2>
+      <p class="subcopy body-lg">Role-based access and data lineage controls are applied at query execution time—enforced by the agent, not bolted onto dashboards. Users see exactly what they're permitted. Nothing more.</p>
+    </div>
+
+    <div class="feature-rows-list">
+      <!-- Row 1: Role-Based Access -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 1 — Define</span>
+          <h3 class="display-md feature-row-heading">Map roles to metric access.</h3>
+          <p class="feature-row-body body-md">Your governance team defines which roles can see which metrics. Finance can see P&amp;L; product can see engagement KPIs. These policies map to your existing warehouse role hierarchy. No manual dashboard filter logic—enforcement is native.</p>
+          <a href="/platform/access-control" class="btn btn-ghost">Learn about role-based access</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="gov-shot" role="img" aria-label="Data governance team reviewing role-based metric policies in the Quaeris admin panel" data-placeholder>
+              <span class="eyebrow gov-shot-label">Role → metric access</span>
+              <div class="gov-shot-row"><span><strong>Finance</strong> · P&amp;L, Margin, Revenue</span><span class="gov-shot-allow">Allowed</span></div>
+              <div class="gov-shot-row"><span><strong>Product</strong> · Engagement KPIs, Activation</span><span class="gov-shot-allow">Allowed</span></div>
+              <div class="gov-shot-row"><span><strong>Support</strong> · P&amp;L</span><span class="gov-shot-deny">Denied</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Query-Time Enforcement (flipped) -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 2 — Execute</span>
+          <h3 class="display-md feature-row-heading">Every query respects policy.</h3>
+          <p class="feature-row-body body-md">When a user asks a question, the agent checks role-based policies before generating an answer. If the user's role doesn't permit access to a metric, the agent declines—it doesn't hide the number in fine print or filter the dashboard. Access is enforced at the architecture level.</p>
+          <!-- spec href: /platform/governance (this page) — rendered as the in-page anchor -->
+          <a href="#architecture" class="btn btn-ghost">Explore governance architecture</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="gov-shot" role="img" aria-label="Quaeris agent interface confirming role-based policy enforcement on a governed query" data-placeholder>
+              <span class="eyebrow gov-shot-label">Agent session</span>
+              <div class="gov-shot-row"><span>"What was Q1 gross margin by region?"</span></div>
+              <div class="gov-shot-row"><span>Policy check · role: <strong>FP&amp;A analyst</strong></span><span class="gov-shot-allow">Access granted</span></div>
+              <div class="gov-shot-row"><span>Certified metric · <strong>gross_margin v3.2</strong></span><span class="gov-shot-allow">Lineage attached</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.4 AUDIT TRAIL — NEW: GovernanceAuditCard
+     ============================================================ -->
+<section id="audit-trail" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="audit-trail-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Audit trail</span>
+      <h2 id="audit-trail-heading" class="display-lg">Complete audit trail. Always.</h2>
+      <p class="subcopy body-lg">Every question, every answer, every policy decision is logged and queryable. Who asked what? When? Was access granted or denied? Why did a metric return that value? Answers in seconds.</p>
+    </div>
+
+    <div class="gov-audit-grid">
+      <article class="card gov-audit-card reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+        </span>
+        <h3 class="heading-sm">Who-Asked-What Log</h3>
+        <p>All agent interactions logged with timestamp, user, question, answer, metrics used. Searchable audit table. Use case: compliance audits, insider-threat investigation, change impact analysis.</p>
+        <div class="gov-audit-log" data-placeholder>
+          <div class="gov-audit-log-head">Recent activity</div>
+          <div class="gov-audit-log-row"><span><strong>09:42</strong> · j.rivera</span><span>"Q1 churn by segment"</span></div>
+          <div class="gov-audit-log-row"><span><strong>09:38</strong> · m.chen</span><span>"Revenue vs forecast"</span></div>
+          <div class="gov-audit-log-row"><span><strong>09:31</strong> · a.okafor</span><span>"Activation rate WoW"</span></div>
+        </div>
+      </article>
+
+      <article class="card gov-audit-card reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <h3 class="heading-sm">Policy Decision Trail</h3>
+        <p>Every access grant/deny decision recorded: user, role, metric, policy rule applied, timestamp. Enforcement audit, not just event logging.</p>
+        <div class="gov-audit-log" data-placeholder>
+          <div class="gov-audit-log-head">Policy decisions</div>
+          <div class="gov-audit-log-row"><span><strong>09:42</strong> · churn_rate</span><span class="gov-shot-allow">Granted</span></div>
+          <div class="gov-audit-log-row"><span><strong>09:35</strong> · gross_margin</span><span class="gov-shot-deny">Denied</span></div>
+          <div class="gov-audit-log-row"><span><strong>09:31</strong> · activation_rate</span><span class="gov-shot-allow">Granted</span></div>
+        </div>
+      </article>
+
+      <article class="card gov-audit-card reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+        </span>
+        <h3 class="heading-sm">Metric Change History</h3>
+        <p>When a metric definition changes (version, owner, business rule update), full diff logged. Which queries were affected? When?</p>
+        <div class="gov-audit-log" data-placeholder>
+          <div class="gov-audit-log-head">Definition history</div>
+          <div class="gov-audit-log-row"><span><strong>v3.2</strong> · gross_margin</span><span>Owner: Finance</span></div>
+          <div class="gov-audit-log-row"><span><strong>v3.1</strong> · gross_margin</span><span>Rule updated</span></div>
+          <div class="gov-audit-log-row"><span><strong>v3.0</strong> · gross_margin</span><span>Initial certification</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 COMPLIANCE FRAMEWORKS — BentoGrid (reuse) + gov modifiers
+     ============================================================ -->
+<section id="compliance" class="section-pad" aria-labelledby="compliance-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Compliance frameworks</span>
+      <h2 id="compliance-heading" class="display-lg">Built for regulated industries.</h2>
+      <p class="subcopy body-lg">Governance-first architecture means Quaeris is purpose-built for regulated verticals: finance (SOX compliance), insurance (model risk management), healthcare (HIPAA audit trails), and more.</p>
+    </div>
+
+    <div class="bento-grid">
+      <article class="bento-card gov-bento-accent gov-bento-tall reveal">
+        <h3 class="display-md" style="margin-bottom: var(--space-3);">Financial Services (SOX)</h3>
+        <p class="body-md" style="color: var(--text-secondary);">Certified metrics audit trail satisfies SOX 404 requirements for IT change management and access controls. Every answer is traceable to source and policy-enforced.</p>
+      </article>
+
+      <article class="bento-card gov-bento-accent gov-bento-tall reveal">
+        <h3 class="display-md" style="margin-bottom: var(--space-3);">Insurance (Model Risk)</h3>
+        <p class="body-md" style="color: var(--text-secondary);">Insurance regulations require transparent model decisions and full audit trails. Quaeris agents are not black-box LLMs—they execute governed queries with full lineage.</p>
+      </article>
+
+      <article class="bento-card gov-bento-accent reveal">
+        <h3 class="display-md" style="margin-bottom: var(--space-3);">Healthcare (HIPAA)</h3>
+        <p class="body-md" style="color: var(--text-secondary);">Role-based access enforced at query time (not dashboard-level) ensures PHI access is granular and auditable. Who saw what PHI? When? Why? Always logged.</p>
+      </article>
+
+      <article class="bento-card gov-bento-accent reveal">
+        <h3 class="display-md" style="margin-bottom: var(--space-3);">Multitenancy &amp; Data Residency</h3>
+        <p class="body-md" style="color: var(--text-secondary);">Data never moves. Agents run queries in your warehouse. Tenants in regulated regions (EU, Canada, Australia) can deploy with zero cross-border data movement.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.6 COMPARISON — ProblemSolutionCards (reuse)
+     ============================================================ -->
+<section id="architecture" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="architecture-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Quaeris vs typical BI</span>
+      <h2 id="architecture-heading" class="display-lg">Governance isn't a feature. It's the foundation.</h2>
+      <p class="subcopy body-lg">Most BI tools add governance as an afterthought. Quaeris is governance-first by architecture.</p>
+    </div>
+
+    <div class="ps-grid">
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">01</span>
+        <p class="ps-problem body-lg"><strong>BI dashboards:</strong> Role-based access bolted on—users can still see restricted metrics if they have the worksheet.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris</span>
+          <p class="ps-fix-body body-md">Access enforced at query execution time. Users cannot see metrics they're not permitted to access, period.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">02</span>
+        <p class="ps-problem body-lg"><strong>Ad-hoc SQL tools:</strong> Audit logs record queries, but not the business decisions behind them (which metric definitions applied, which policy was used).</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris</span>
+          <p class="ps-fix-body body-md">Every answer logs the metric definition, business rules, and governance policy enforced. Full context, every time.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">03</span>
+        <p class="ps-problem body-lg"><strong>Generic GenAI tools:</strong> Chat produces numbers and natural language—impossible to know if the answer is grounded in governed data or hallucinated.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris</span>
+          <p class="ps-fix-body body-md">Every answer is grounded in certified metrics from your semantic layer. If it can't answer from governed data, it says so.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">04</span>
+        <p class="ps-problem body-lg"><strong>Fragmented stacks:</strong> Policy in one tool, audit in another, lineage in a third. Compliance team coordinates across three vendors.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris</span>
+          <p class="ps-fix-body body-md">Policy, audit, lineage, and agent reasoning in one platform. One contract, one audit trail, one truth.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.7 PROOF — CaseStudyCard (reuse, single centered card)
+     ============================================================ -->
+<section id="case-study" class="section-pad" style="background: var(--bg-warm);" aria-label="Customer proof">
+  <div class="container">
+    <article class="case-study-card reveal" style="max-width: 760px; margin: 0 auto;">
+      <span class="industry-chip">Financial Services</span>
+      <p class="body-sm" style="color: var(--text-tertiary);" data-placeholder>A leading financial institution</p>
+      <h3 class="display-md">Closed SOX audit finding by implementing governed AI analytics.</h3>
+      <div class="cs-stats">
+        <div class="cs-stat">
+          <span class="cs-stat-num">100%</span>
+          <span class="cs-stat-label">Audit trail coverage</span>
+        </div>
+        <div class="cs-stat">
+          <span class="cs-stat-num">0</span>
+          <span class="cs-stat-label">Governance exceptions</span>
+        </div>
+        <div class="cs-stat">
+          <span class="cs-stat-num">14</span>
+          <span class="cs-stat-label">Days from deployment to first audit-ready report</span>
+        </div>
+      </div>
+      <p class="cs-how">Deployed Quaeris semantic layer with certified revenue and margin definitions. Role-based access policies mapped to existing GL hierarchy. Full query audit trail enabled from day one. SOX audit team had complete traceability for the first time.</p>
+      <!-- spec href: /case-studies/[customer-slug] -->
+      <a href="/case-studies/financial-services" class="btn btn-ghost" data-placeholder>Read the full case study</a>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.8 FAQ — FAQSection (reuse) + Accordion (Radix at port time;
+     native <details> here so the static mockup is interactive)
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-grid">
+      <div>
+        <div class="section-header reveal">
+          <span class="eyebrow" data-placeholder>FAQ</span>
+          <h2 id="faq-heading" class="display-lg">Governance questions. Clear answers.</h2>
+        </div>
+        <aside class="faq-mini-card reveal" data-placeholder>
+          <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Compliance-specific questions?</h3>
+          <p>Our team will walk your governance leads through SOX, HIPAA, and GDPR specifics — including the SOX readiness brief.</p>
+          <a href="mailto:seek@quaeris.ai" class="btn btn-ghost">Email seek@quaeris.ai</a>
+        </aside>
+      </div>
+
+      <div class="accordion reveal">
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Does Quaeris meet SOX requirements?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Quaeris satisfies SOX 404(b) IT change-management and access-control audit requirements through certified-metrics versioning, role-based policy enforcement, and complete query audit trails. Every answer is traceable to a certified metric definition and the policy that governed access. We provide a SOX readiness brief—contact seek@quaeris.ai for compliance-specific details.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What's the difference between Quaeris governance and a dashboard's row-level security?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Dashboard RLS is applied after the data is retrieved—a dashboard filter. Quaeris governance is applied at query execution time, enforced by the agent itself. Users cannot see metrics they're not permitted to access, period. The policy is in the platform, not the presentation layer.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How is the audit trail structured for compliance audits?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Every query generates an audit record with: timestamp, user identity, question asked, agent reasoning (which metrics were queried, which rules applied), answer returned, metrics definition versions used, and role-based access decisions. The full trace is queryable—you can run "show me all queries for this metric from this role in the last 90 days" in seconds.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can we customize governance policies to match our compliance framework?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Yes. Governance policies are defined by your data team and map to your warehouse role hierarchy. You define the rules; the agent enforces them. If your compliance framework requires specific approval workflows for certain metrics or roles, Quaeris can enforce those—we'll customize the policy layer.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Is the audit trail immutable?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Audit records are immutable in Quaeris—you cannot edit or delete historical query logs. This immutability is essential for compliance audits. Audit data is retained per your data retention policy (customizable).</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What if a user asks a question about a metric they're not allowed to see?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">The agent declines the question before generating an answer. The user sees: "You do not have access to [metric name]. Contact [governance team] for approval." The access denial is itself logged in the audit trail—compliance teams can see who tried to access what and when.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Does Quaeris work in multi-tenant environments?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Yes. Governance policies can be tenant-scoped—different organizations in the same deployment have independent metric definitions, role hierarchies, and audit trails. One Quaeris instance serves multiple regulated entities with full data isolation.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What's the audit trail retention policy?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">You set it. Quaeris can retain audit logs for 1 year, 3 years, 7 years, or indefinitely based on your compliance requirements (SOX, HIPAA, GDPR all have different windows). Logs are stored in your warehouse, not Quaeris infrastructure.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.9 TRUST SIGNALS — StatBlock (reuse) + NEW: ComplianceBadgeGrid
+     ============================================================ -->
+<section id="trust" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="trust-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Trust signals</span>
+      <h2 id="trust-heading" class="display-lg">Trusted by data teams in regulated industries.</h2>
+    </div>
+
+    <div class="stats-band-gradient reveal" style="margin-top: var(--space-8);">
+      <div class="stats-grid-gradient">
+        <div class="stat-block">
+          <span class="stat-num stat-number">100%</span>
+          <span class="stat-label">Audit trail completeness</span>
+          <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">Every query, every answer, every policy decision logged</p>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number" data-placeholder>40+</span>
+          <span class="stat-label">Query-time policy enforcement</span>
+          <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">customers deployed, zero governance exceptions</p>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number">14 min</span>
+          <span class="stat-label">Time to first audit-ready answer</span>
+          <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">From warehouse connection to governed query with full lineage</p>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number">&lt;24 hrs</span>
+          <span class="stat-label">MTTR for governance questions</span>
+          <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">Compliance team can audit any metric or user activity in minutes</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEW: ComplianceBadgeGrid — update with real certification dates/logos once available -->
+    <div class="gov-badge-grid">
+      <article class="card gov-badge-card reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <h3 class="heading-sm">SOC 2 Type II</h3>
+        <p style="color: var(--text-secondary);">Audited security &amp; availability</p>
+        <p style="color: var(--text-tertiary); margin-top: auto;" data-placeholder>Certification year / auditor pending confirmation</p>
+      </article>
+
+      <article class="card gov-badge-card reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </span>
+        <h3 class="heading-sm">GDPR compliant</h3>
+        <p style="color: var(--text-secondary);">EU data residency ready</p>
+        <p style="color: var(--text-tertiary); margin-top: auto;">EU data center available; GDPR DPA in place</p>
+      </article>
+
+      <article class="card gov-badge-card reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
+        </span>
+        <h3 class="heading-sm">HIPAA eligible</h3>
+        <p style="color: var(--text-secondary);">Healthcare-grade encryption &amp; audit</p>
+        <p style="color: var(--text-tertiary); margin-top: auto;" data-placeholder>HITRUST status / date pending confirmation</p>
+      </article>
+
+      <article class="card gov-badge-card reveal">
+        <span class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+        </span>
+        <h3 class="heading-sm">ISO 27001</h3>
+        <p style="color: var(--text-secondary);">Information security</p>
+        <p style="color: var(--text-tertiary); margin-top: auto;" data-placeholder>Certification year pending confirmation</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.10 CTA BAND — CTABand (reuse)
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-band-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to audit everything?</span>
+      <h2 id="cta-band-heading" class="display-lg">Governance-first analytics in 30 minutes.</h2>
+      <p class="subcopy body-lg">Book a demo. We'll connect your warehouse, show you a governed query with full lineage, and walk through your governance policy options. No slides. Real answers.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>

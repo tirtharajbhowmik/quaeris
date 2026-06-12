@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/product — Quaeris</title>
+<meta name="description" content="Ask engagement and retention questions without SQL. Governed analytics for product teams—certified metrics, audit trails, zero hallucinations." />
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time. Token-driven, brand-agnostic.
+   Page-area prefix: .prod- (route /solutions/product). */
+
+/* — 3.1 Hero (NEW:ProductHero — HeroHome pattern adapted, two-column) — */
+.prod-hero { position: relative; overflow: hidden; background: var(--bg-warm); padding: var(--section-pad-y) 0; }
+.prod-hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 6fr 5fr; gap: var(--space-9); align-items: center; }
+.prod-hero-copy .eyebrow { display: block; color: var(--text-tertiary); margin-bottom: var(--space-5); }
+.prod-hero-copy h1 { margin-bottom: var(--space-5); max-width: 18ch; }
+.prod-hero-sub { color: var(--text-secondary); max-width: 54ch; margin-bottom: var(--space-7); }
+.prod-hero-visual { min-width: 0; }
+
+/* Hero answer-card mock — stands in for the real product screenshot (data-placeholder) */
+.prod-answer-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); box-shadow: var(--shadow-card-hover); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+.prod-answer-q { display: flex; align-items: flex-start; gap: var(--space-3); background: var(--brand-accent-soft); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); font-size: 14px; font-weight: 500; color: var(--text-primary); line-height: 1.5; }
+.prod-answer-q svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--brand-accent); margin-top: 2px; }
+.prod-answer-stat { display: flex; flex-direction: column; gap: var(--space-1); }
+.prod-answer-stat .bento-stat-num { color: var(--brand-accent); }
+.prod-answer-stat-label { font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; }
+.prod-answer-chart svg { display: block; width: 100%; height: auto; color: var(--brand-accent); }
+.prod-answer-meta { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); border-top: 1px solid var(--border-subtle); padding-top: var(--space-3); font-size: 12px; color: var(--text-tertiary); }
+
+/* — 3.2 Problem/Solution extensions (existing ProblemSolutionCards classes) — */
+.prod-ps-top { display: flex; justify-content: space-between; align-items: center; }
+.prod-fix-head { display: flex; align-items: center; gap: var(--space-2); }
+.prod-fix-head svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+.prod-fix-head h4 { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+
+/* — 3.3 Step visuals (existing IconFeatureGrid + per-step placeholder visual) — */
+.prod-step-visual { margin-top: var(--space-2); display: flex; align-items: center; justify-content: center; min-height: 120px; border: 1px dashed var(--border-strong); border-radius: var(--radius-md); background: var(--bg-surface); color: var(--text-tertiary); font-size: 12px; text-align: center; padding: var(--space-3); }
+
+/* — 3.4 Use-case cards (NEW:ProductUseCaseCards — built on existing .segment-card) — */
+.prod-usecase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-5); margin-top: var(--space-8); }
+.prod-usecase-grid > * { height: 100%; }
+.prod-usecase-eyebrow { color: var(--brand-accent); display: block; }
+.prod-usecase-questions { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-2) 0 var(--space-4); }
+.prod-usecase-questions li { display: flex; gap: var(--space-2); align-items: flex-start; font-size: 13px; line-height: 1.55; color: var(--text-secondary); }
+.prod-usecase-questions li svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--brand-accent); margin-top: 3px; }
+.prod-usecase-answer { margin-top: auto; background: var(--brand-accent-soft); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); font-size: 13px; line-height: 1.55; color: var(--text-primary); }
+
+/* — 3.5 Case studies, two-up (existing CaseStudyCard classes, 2-col grid) — */
+.prod-case-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); margin-top: var(--space-8); }
+.prod-case-grid > * { height: 100%; }
+.prod-case-label { color: var(--text-tertiary); display: block; }
+.prod-outcome-list { display: flex; flex-direction: column; gap: var(--space-2); }
+.prod-outcome-list li { display: flex; gap: var(--space-2); align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+.prod-outcome-list li svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--success); margin-top: 2px; }
+
+/* — 3.6 Dark governance: spec requires h3 (heading order) where the existing
+     DarkFeature component renders h4 — mirror .value-prop-text h4 styling + accent icon. — */
+.value-prop-text h3 { display: flex; align-items: center; gap: var(--space-2); font-size: 16px; font-weight: 600; color: var(--text-on-dark); margin-bottom: var(--space-1); }
+.value-prop-text h3 svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* — 3.7 Comparison table (NEW:ComparisonTable) — */
+.prod-compare-wrap { margin-top: var(--space-8); overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); box-shadow: var(--shadow-card); }
+.prod-compare { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 14px; text-align: left; }
+.prod-compare th, .prod-compare td { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
+.prod-compare thead th { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); background: var(--bg-canvas); white-space: nowrap; }
+.prod-compare tbody th { font-weight: 600; color: var(--text-primary); }
+.prod-compare td { color: var(--text-secondary); }
+.prod-compare tbody tr:last-child th, .prod-compare tbody tr:last-child td { border-bottom: none; }
+.prod-compare .prod-compare-hl { background: var(--brand-accent-soft); color: var(--text-primary); }
+.prod-compare thead th.prod-compare-hl { color: var(--brand-accent); }
+
+/* — 3.8 Warehouse compatibility (reuses .marquee-logo tile, static centered row) — */
+.prod-warehouse-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); margin-top: var(--space-7); margin-bottom: var(--space-7); }
+.prod-integrations-copy { max-width: 62ch; margin: 0 auto; text-align: center; color: var(--text-secondary); }
+
+/* — Responsive (new classes only) — */
+@media (max-width: 1200px) {
+  .prod-usecase-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .prod-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+  .prod-case-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .prod-hero-copy { text-align: center; }
+  .prod-hero-copy h1 { margin-left: auto; margin-right: auto; }
+  .prod-hero-sub { margin-left: auto; margin-right: auto; }
+  .prod-usecase-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<main id="main-content">
+
+<!-- ============================================================
+     3.1 HERO — NEW:ProductHero (HeroHome pattern adapted; soft warm bg,
+     two-column with answer-card mock standing in for a product screenshot)
+     ============================================================ -->
+<section id="product-hero" class="prod-hero" aria-labelledby="hero-heading">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="container prod-hero-grid">
+    <div class="prod-hero-copy reveal">
+      <span class="eyebrow">Product Analytics</span>
+      <h1 id="hero-heading" class="hero-h1">Understand your users. <span class="accent-line">Without writing SQL.</span></h1>
+      <p class="prod-hero-sub body-lg">Quaeris gives product teams instant access to engagement, retention, and cohort metrics—grounded in your governed semantic layer. Ask anything. Get sources cited.</p>
+      <div class="hero-buttons btn-stack">
+        <a href="#" class="btn btn-primary">Book a Demo</a>
+        <a href="#use-cases" class="btn btn-secondary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          See analytics in action
+        </a>
+      </div>
+    </div>
+
+    <!-- Visual: illustrative governed-answer card. Replace with real product screenshot. -->
+    <div class="prod-hero-visual reveal" data-placeholder>
+      <figure class="prod-answer-card" role="img" aria-label="Illustration of a Quaeris governed answer: a plain-language retention question with a certified, source-cited result">
+        <div class="prod-answer-q">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>&ldquo;What is retention for users acquired in Q1 2026?&rdquo;</span>
+        </div>
+        <div class="prod-answer-stat">
+          <span class="prod-answer-stat-label">Day-30 retention &mdash; Q1 2026 cohort</span>
+          <span class="bento-stat-num">38%</span>
+        </div>
+        <div class="prod-answer-chart" aria-hidden="true">
+          <svg viewBox="0 0 320 110" focusable="false">
+            <line x1="8" y1="96" x2="312" y2="96" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+            <rect x="16"  y="26" width="26" height="70" rx="4" fill="currentColor" opacity="0.9"/>
+            <rect x="54"  y="38" width="26" height="58" rx="4" fill="currentColor" opacity="0.75"/>
+            <rect x="92"  y="46" width="26" height="50" rx="4" fill="currentColor" opacity="0.65"/>
+            <rect x="130" y="52" width="26" height="44" rx="4" fill="currentColor" opacity="0.55"/>
+            <rect x="168" y="56" width="26" height="40" rx="4" fill="currentColor" opacity="0.5"/>
+            <rect x="206" y="58" width="26" height="38" rx="4" fill="currentColor" opacity="0.45"/>
+            <rect x="244" y="60" width="26" height="36" rx="4" fill="currentColor" opacity="0.4"/>
+            <rect x="282" y="61" width="26" height="35" rx="4" fill="currentColor" opacity="0.35"/>
+          </svg>
+        </div>
+        <div class="trust-badges">
+          <span class="badge badge-accent">Certified metric</span>
+          <span class="badge badge-accent">Sources cited</span>
+          <span class="badge">Audited</span>
+        </div>
+        <figcaption class="prod-answer-meta">
+          <span>Definition: retention-rate</span>
+          <span>Window: cohort-window</span>
+          <span>Lineage traced to source</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.2 PROBLEM / SOLUTION — maps to existing ProblemSolutionCards component
+     ============================================================ -->
+<section id="challenge" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="challenge-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <h2 id="challenge-heading" class="display-lg">The Product Analytics Challenge</h2>
+    </div>
+
+    <div class="ps-grid">
+      <article class="ps-card reveal">
+        <div class="prod-ps-top">
+          <div class="icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <span class="ps-index" aria-hidden="true">01</span>
+        </div>
+        <h3 class="heading-sm">Time-to-insight kills momentum</h3>
+        <p class="ps-problem body-md">You ask a retention question on Monday. Your data team builds it Friday. By then, the window has passed and you&rsquo;re on to the next issue. Product velocity gets crushed by analytics latency.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Solution</span>
+          <div class="prod-fix-head">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <h4>14-minute time-to-insight, not multi-day builds</h4>
+          </div>
+          <p class="ps-fix-body body-md">Type your question once. Quaeris agents interpret it, query your semantic layer, and return a certified answer with sources cited&mdash;with a median time to first insight of 14 minutes, not days.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <div class="prod-ps-top">
+          <div class="icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          </div>
+          <span class="ps-index" aria-hidden="true">02</span>
+        </div>
+        <h3 class="heading-sm">Conflicting definitions cause wrong calls</h3>
+        <p class="ps-problem body-md">One team&rsquo;s &lsquo;active user&rsquo; is another&rsquo;s &lsquo;paid user.&rsquo; Your CEO&rsquo;s board presentation uses different retention math than your product spec. These inconsistencies compound into misaligned decisions.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Solution</span>
+          <div class="prod-fix-head">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <h4>One definition per metric, always</h4>
+          </div>
+          <p class="ps-fix-body body-md">Your data team owns the semantic layer. Every agent answer is locked to certified metric definitions&mdash;revenue, activation, churn, cohort size. Same definition, every time, every team.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <div class="prod-ps-top">
+          <div class="icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <span class="ps-index" aria-hidden="true">03</span>
+        </div>
+        <h3 class="heading-sm">Governance and speed feel like a tradeoff</h3>
+        <p class="ps-problem body-md">Self-serve BI gives you speed but breaks compliance. Asking analysts gives you audit trails but kills productivity. You&rsquo;re stuck choosing between velocity and control.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Solution</span>
+          <div class="prod-fix-head">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <h4>Governed speed. Role-based access enforced.</h4>
+          </div>
+          <p class="ps-fix-body body-md">Quaeris is governance-first by design. Role-based access is enforced at the agent level, not at the dashboard filter. Every query and answer is audited. Speed and compliance, not either-or.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.3 HOW PRODUCT TEAMS USE QUAERIS — maps to existing IconFeatureGrid
+     (HowWeWork) component; per-step placeholder visuals added
+     ============================================================ -->
+<section id="how-we-work" class="section-pad" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Four-Step Flow</span>
+      <h2 id="how-heading" class="display-lg">How Product Teams Get Governed Answers</h2>
+    </div>
+
+    <div class="icon-feature-grid">
+      <div class="icon-feature reveal">
+        <div class="icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+        </div>
+        <h3 class="heading-sm">Connect your warehouse</h3>
+        <p>Link Quaeris to Snowflake, BigQuery, Databricks, or Redshift. Your event data, user tables, and subscription facts become queryable through one governed semantic layer.</p>
+        <div class="prod-step-visual" data-placeholder>Warehouse connection diagram</div>
+      </div>
+
+      <div class="icon-feature reveal">
+        <div class="icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        </div>
+        <h3 class="heading-sm">Define product metrics once</h3>
+        <p>Your data team defines activated-users, retention-rate, churn-definition, cohort-window. These live in the semantic layer. Every agent answer locks to these definitions.</p>
+        <div class="prod-step-visual" data-placeholder>Semantic layer edit UI</div>
+      </div>
+
+      <div class="icon-feature reveal">
+        <div class="icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3 class="heading-sm">Ask in plain language</h3>
+        <p>Type: &ldquo;What is retention for users acquired in Q1 2026?&rdquo; or &ldquo;Cohort sizes by acquisition channel?&rdquo; Quaeris interprets the question and queries the semantic layer, no SQL needed.</p>
+        <div class="prod-step-visual" data-placeholder>Agent chat interface</div>
+      </div>
+
+      <div class="icon-feature reveal">
+        <div class="icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="heading-sm">Get governed answers, every time</h3>
+        <p>The answer shows engagement, retention, or cohort breakdown&mdash;plus the metric definitions and data lineage behind it. Role-based access means your product managers only see data they&rsquo;re allowed to see.</p>
+        <div class="prod-step-visual" data-placeholder>Answer card with sources cited</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.4 REAL METRICS & USE CASES — NEW:ProductUseCaseCards
+     (built on existing SegmentCards classes; 4-up grid)
+     ============================================================ -->
+<section id="use-cases" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="use-cases-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Common Questions from Product Teams</span>
+      <h2 id="use-cases-heading" class="display-lg">Product Questions Quaeris Answers</h2>
+    </div>
+
+    <div class="prod-usecase-grid">
+      <article class="segment-card reveal">
+        <div class="segment-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <span class="eyebrow prod-usecase-eyebrow">Activation &amp; Engagement</span>
+        <h3 class="segment-label heading-sm">&ldquo;What is day-1, day-7, day-30 activation by cohort?&rdquo;</h3>
+        <ul class="prod-usecase-questions">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;How many users activated within 24 hours of signup?&rdquo;</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;Which onboarding path drives fastest feature adoption?&rdquo;</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;What&rsquo;s the engagement curve for mobile vs. web users?&rdquo;</span></li>
+        </ul>
+        <p class="prod-usecase-answer">Quaeris returns activation rates by cohort, with the metric definitions and the warehouse tables queried, all audited.</p>
+      </article>
+
+      <article class="segment-card reveal">
+        <div class="segment-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+        </div>
+        <span class="eyebrow prod-usecase-eyebrow">Retention &amp; Churn Analysis</span>
+        <h3 class="segment-label heading-sm">&ldquo;What is day-30 retention for high-value cohorts?&rdquo;</h3>
+        <ul class="prod-usecase-questions">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;What&rsquo;s our retention curve for power users in Q2 2026?&rdquo;</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;Which features correlate with staying vs. churning?&rdquo;</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;How does retention differ by subscription tier?&rdquo;</span></li>
+        </ul>
+        <p class="prod-usecase-answer">Quaeris surfaces retention by segment with lineage back to the churn definition your team certified.</p>
+      </article>
+
+      <article class="segment-card reveal">
+        <div class="segment-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        </div>
+        <span class="eyebrow prod-usecase-eyebrow">Cohort &amp; Conversion Funnels</span>
+        <h3 class="segment-label heading-sm">&ldquo;How many users funnel through [event A] &rarr; [event B] &rarr; [event C]?&rdquo;</h3>
+        <ul class="prod-usecase-questions">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;What&rsquo;s the conversion rate from trial signup to first paid month?&rdquo;</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;How do users in different acquisition cohorts progress through our product?&rdquo;</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;What&rsquo;s the step-off point in our onboarding funnel?&rdquo;</span></li>
+        </ul>
+        <p class="prod-usecase-answer">Quaeris builds funnels from your event schema and returns drop-off rates per step, all certified.</p>
+      </article>
+
+      <article class="segment-card reveal">
+        <div class="segment-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <span class="eyebrow prod-usecase-eyebrow">Product-Driven Revenue Metrics</span>
+        <h3 class="segment-label heading-sm">&ldquo;Does feature adoption correlate with lifetime value?&rdquo;</h3>
+        <ul class="prod-usecase-questions">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;What&rsquo;s the LTV for users who adopted feature X in their first week?&rdquo;</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;How does churn rate vary by usage intensity?&rdquo;</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>&ldquo;Which segments are expanding vs. contracting?&rdquo;</span></li>
+        </ul>
+        <p class="prod-usecase-answer">Quaeris correlates usage with ARR, churn, and expansion revenue&mdash;all audited, all linked to certified definitions.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 PROOF — maps to existing CaseStudyCard component (2-up variant)
+     ============================================================ -->
+<section id="proof" class="section-pad" aria-labelledby="proof-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Real Deployments</span>
+      <h2 id="proof-heading" class="display-lg">Product Teams Moving Faster</h2>
+    </div>
+
+    <div class="prod-case-grid">
+      <article class="case-study-card reveal">
+        <span class="industry-chip">B2B SaaS</span>
+        <h3 class="heading-sm" data-placeholder>Named Product SaaS</h3>
+        <span class="eyebrow prod-case-label">Challenge</span>
+        <p class="cs-outcome">Product team was writing 5&ndash;10 analytics requests per week. Each took 2&ndash;3 days. Team velocity on features plummeted because half the time went to waiting for data.</p>
+        <span class="eyebrow prod-case-label">Solution</span>
+        <p class="cs-outcome">Deployed Quaeris with a 120-metric semantic layer. Linked to Snowflake. Gave product team read-access to the agent interface.</p>
+        <span class="eyebrow prod-case-label">Outcome</span>
+        <ul class="prod-outcome-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>80% of analytics requests now answered in minutes, not days</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Product team unblocked 12 feature launches in Q2</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Data consistency: one definition of &lsquo;active user&rsquo; across dashboards, decks, and conversations</span></li>
+        </ul>
+        <blockquote class="cs-how" data-placeholder>&ldquo;Before Quaeris, we were our own bottleneck. Now I ask a question and get a cited answer in 10 minutes. Everything we ship is grounded in the same metric.&rdquo;</blockquote>
+      </article>
+
+      <article class="case-study-card reveal">
+        <span class="industry-chip">Retail / eCommerce</span>
+        <h3 class="heading-sm" data-placeholder>Named Retail / eCommerce</h3>
+        <span class="eyebrow prod-case-label">Challenge</span>
+        <p class="cs-outcome">Mobile, web, and in-store teams each had their own definition of &lsquo;purchase&rsquo; and &lsquo;repeat customer.&rsquo; Board meetings were debates about methodology, not insights.</p>
+        <span class="eyebrow prod-case-label">Solution</span>
+        <p class="cs-outcome">Federated all event definitions into a Quaeris semantic layer. Taught product teams to ask cohort and retention questions in plain language.</p>
+        <span class="eyebrow prod-case-label">Outcome</span>
+        <ul class="prod-outcome-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>One definition per KPI across all channels</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Board consensus on metrics: first time in three years</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Product team now runs their own engagement analysis; no longer waiting on analytics</span></li>
+        </ul>
+        <blockquote class="cs-how" data-placeholder>&ldquo;Quaeris solved a problem we didn&rsquo;t know how to name: the audit trail of who asked what and why the numbers matter.&rdquo;</blockquote>
+      </article>
+    </div>
+
+    <div class="proof-cta reveal">
+      <a href="/case-studies" class="btn btn-secondary">See Real Case Studies</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.6 FEATURE SPOTLIGHT: GOVERNANCE & AUDIT — maps to existing
+     DarkFeature component (.dark-feature-grid + .value-prop-list +
+     MetricDashboardMock). Spec heading levels require h3 value props.
+     ============================================================ -->
+<section id="dark-feature" class="section-pad" aria-labelledby="governance-heading">
+  <div class="dark-feature-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="dark-feature-grid">
+      <div class="reveal">
+        <div class="section-header section-header-dark">
+          <span class="eyebrow">Governance Built In, Not Bolted On</span>
+          <h2 id="governance-heading" class="display-lg">Why Product Teams Trust Quaeris</h2>
+        </div>
+
+        <div class="value-prop-list">
+          <div class="value-prop-row">
+            <span class="value-prop-num" aria-hidden="true">01</span>
+            <div class="value-prop-text">
+              <h3>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                Certified Metrics, Not Model Outputs
+              </h3>
+              <p>Quaeris agents query your semantic layer&mdash;they don&rsquo;t generate numbers. Your data team owns the definitions. Every engagement metric, every retention curve, every cohort breakdown is locked to definitions your team certifies.</p>
+            </div>
+          </div>
+          <div class="value-prop-row">
+            <span class="value-prop-num" aria-hidden="true">02</span>
+            <div class="value-prop-text">
+              <h3>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                Full Lineage: Question to Source
+              </h3>
+              <p>Click any answer and trace it back: which metric definition was used, which warehouse table it queried, which business rule applied. Product managers can audit any number in one click. Executives see sources, not hunches.</p>
+            </div>
+          </div>
+          <div class="value-prop-row">
+            <span class="value-prop-num" aria-hidden="true">03</span>
+            <div class="value-prop-text">
+              <h3>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                Role-Based Access, Enforced at Query Time
+              </h3>
+              <p>Access policies aren&rsquo;t dashboard filters&mdash;they&rsquo;re enforced when the agent runs. Product managers in North America see US data only. Product managers in EMEA see EMEA data only. Nothing more. Nothing less. Every query is logged for audit.</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="/platform/governance" class="btn btn-secondary-dark" style="margin-top: var(--space-7);">Governance &amp; Audit Trails</a>
+      </div>
+
+      <!-- Visual: MetricDashboardMock (existing component pattern) -->
+      <div class="reveal">
+        <div class="metric-dashboard">
+          <div class="metric-dashboard-header">
+            <span data-placeholder>Product analytics &mdash; governed view</span>
+            <span class="badge badge-accent">Audited</span>
+          </div>
+          <div class="metric-tiles">
+            <div class="metric-tile">
+              <div class="metric-tile-label">Engagement questions answered</div>
+              <div class="metric-tile-value">142</div>
+              <div class="metric-tile-delta">this month</div>
+            </div>
+            <div class="metric-tile">
+              <div class="metric-tile-label">Avg answer time</div>
+              <div class="metric-tile-value">14s</div>
+            </div>
+            <div class="metric-tile">
+              <div class="metric-tile-label">Metrics certified</div>
+              <div class="metric-tile-value">87</div>
+            </div>
+            <div class="metric-tile active">
+              <div class="metric-tile-label">Access violations caught</div>
+              <div class="metric-tile-value">0</div>
+            </div>
+          </div>
+          <div class="mini-chart" data-placeholder aria-hidden="true">
+            <svg viewBox="0 0 280 80" focusable="false" style="color: var(--brand-accent);">
+              <line x1="6" y1="70" x2="274" y2="70" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+              <polyline points="6,58 46,52 86,55 126,44 166,40 206,33 246,28 274,24" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="chart-caption">Cohort retention trend &mdash; trailing 6 months</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.7 COMPETITIVE CONTEXT — NEW:ComparisonTable
+     (horizontal scroll on mobile, full table on desktop)
+     ============================================================ -->
+<section id="comparison" class="section-pad" aria-labelledby="comparison-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <h2 id="comparison-heading" class="display-lg">Why Product Teams Choose Quaeris Over Legacy Tools</h2>
+    </div>
+
+    <div class="prod-compare-wrap reveal" role="region" aria-labelledby="comparison-heading" tabindex="0">
+      <table class="prod-compare">
+        <caption class="sr-only">Comparison of legacy BI dashboards, ad-hoc SQL or analyst workflows, and Quaeris across six dimensions</caption>
+        <thead>
+          <tr>
+            <th scope="col">Dimension</th>
+            <th scope="col">Legacy BI Dashboard</th>
+            <th scope="col">Ad-Hoc SQL / Analyst</th>
+            <th scope="col" class="prod-compare-hl">Quaeris</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Speed to insight</th>
+            <td>Weeks to deploy, days to query</td>
+            <td>2&ndash;5 days per request</td>
+            <td class="prod-compare-hl">10&ndash;20 minutes, self-serve</td>
+          </tr>
+          <tr>
+            <th scope="row">Metric consistency</th>
+            <td>Different definitions per dashboard</td>
+            <td>Definitions live in analysts&rsquo; heads</td>
+            <td class="prod-compare-hl">One semantic layer, always certified</td>
+          </tr>
+          <tr>
+            <th scope="row">Governance</th>
+            <td>Dashboard filters only; not enforced</td>
+            <td>Ad-hoc access; hard to audit</td>
+            <td class="prod-compare-hl">Query-time access control; fully audited</td>
+          </tr>
+          <tr>
+            <th scope="row">Who can ask questions</th>
+            <td>&ldquo;Dashboard builders&rdquo; only</td>
+            <td>Analysts and data engineers</td>
+            <td class="prod-compare-hl">Any product person; no SQL needed</td>
+          </tr>
+          <tr>
+            <th scope="row">Audit trail</th>
+            <td>&ldquo;What dashboard was viewed&rdquo;</td>
+            <td>Which analyst ran what; hard to trace sources</td>
+            <td class="prod-compare-hl">Every question, answer, and source metric logged</td>
+          </tr>
+          <tr>
+            <th scope="row">Compliance readiness</th>
+            <td>Weak; data may have escaped to Excel</td>
+            <td>Manual audit logs</td>
+            <td class="prod-compare-hl">Built-in lineage; EU AI Act ready</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.8 INTEGRATION & WAREHOUSE COMPATIBILITY — IconFeatureGrid adaptation
+     (static tile row reusing the existing .marquee-logo tile style)
+     ============================================================ -->
+<section id="integrations" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="integrations-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Connect in Minutes</span>
+      <h2 id="integrations-heading" class="display-lg">Works with Your Warehouse</h2>
+    </div>
+
+    <ul class="prod-warehouse-grid reveal" aria-label="Supported warehouses and sources">
+      <li class="marquee-logo" data-placeholder>Snowflake</li>
+      <li class="marquee-logo" data-placeholder>BigQuery</li>
+      <li class="marquee-logo" data-placeholder>Databricks</li>
+      <li class="marquee-logo" data-placeholder>Redshift</li>
+      <li class="marquee-logo" data-placeholder>Azure Synapse</li>
+      <li class="marquee-logo" data-placeholder>SharePoint</li>
+      <li class="marquee-logo" data-placeholder>Google Drive</li>
+    </ul>
+
+    <p class="prod-integrations-copy body-md reveal">Quaeris connects directly to your warehouse. No data migration. No ETL pipeline rebuilds. Your data stays exactly where it is&mdash;we query in place, enforce role-based access, and log every query.</p>
+
+    <div class="reveal" style="text-align: center; margin-top: var(--space-6);">
+      <a href="/platform" class="btn btn-ghost">How Quaeris Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.9 FAQ — maps to existing FAQ component (#faq + .accordion;
+     Radix Accordion provides collapse behavior at port time)
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="reveal">
+        <div class="section-header">
+          <span class="eyebrow">Common Questions from Product Leaders</span>
+          <h2 id="faq-heading" class="display-lg">Product Questions About Quaeris</h2>
+        </div>
+        <div class="faq-mini-card">
+          <p class="heading-sm" style="color: var(--text-primary); margin-bottom: var(--space-2);" data-placeholder>Keep exploring</p>
+          <ul>
+            <li><a href="/solutions" class="btn btn-ghost">Back to Solutions</a></li>
+            <li><a href="/platform" class="btn btn-ghost">How Quaeris Works</a></li>
+            <li><a href="/platform/semantic-layer" class="btn btn-ghost">Learn About the Smart Semantic Layer</a></li>
+            <li><a href="/platform/governance" class="btn btn-ghost">Governance &amp; Audit Trails</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion reveal">
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="true" aria-controls="faq-a1" data-state="open">
+            <span class="accordion-question">Do we need to remodel our data to use Quaeris?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          <div class="accordion-content" id="faq-a1" data-state="open">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">No. Quaeris works with your existing event and fact tables. Your data team defines the semantic layer (the certified metrics) on top of your warehouse schema. No new tables needed, no data remodeling required.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a2" data-state="closed">
+            <span class="accordion-question">Can we ask time-series questions&mdash;like &lsquo;How does retention trend month-over-month?&rsquo;</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          <div class="accordion-content" id="faq-a2" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Yes. Quaeris agents can build trend analysis, cohort tracking, and time-series forecasts directly from your semantic layer. Ask &ldquo;What is our cohort retention trend for the last 6 months?&rdquo; and the agent retrieves and visualizes the data automatically.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a3" data-state="closed">
+            <span class="accordion-question">What if a metric isn&rsquo;t in our semantic layer yet?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          <div class="accordion-content" id="faq-a3" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Your data team can add new metric definitions to the semantic layer in a single session. Once defined, the agent can query it immediately. This usually takes minutes, not days or weeks.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a4" data-state="closed">
+            <span class="accordion-question">How do we avoid different teams asking the same question in different ways?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          <div class="accordion-content" id="faq-a4" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">The semantic layer is the source of truth. Every agent answer is locked to the same certified definitions. Over time, your team converges on the same language and methodology. Quaeris also surfaces how similar questions were answered before.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a5" data-state="closed">
+            <span class="accordion-question">Can our external partners or consultants ask questions safely?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          <div class="accordion-content" id="faq-a5" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Yes, with role-based access control. You can grant partner accounts read-access to specific metrics and cohorts. Access is enforced at query time. Every partner query is logged. You maintain full audit control.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a6" data-state="closed">
+            <span class="accordion-question">What about data residency and compliance?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          <div class="accordion-content" id="faq-a6" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Quaeris is warehouse-native&mdash;your data never leaves your environment. GDPR, HIPAA, SOC 2, and FedRAMP compliance depend on your warehouse&rsquo;s certifications. Quaeris&rsquo;s audit trail and role-based access help you meet regulatory requirements.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.10 CTA BAND — maps to existing CTABand component
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to Unblock Your Product Team?</span>
+      <h2 id="cta-heading" class="display-lg">Stop waiting for analysts. Start asking Quaeris.</h2>
+      <p class="subcopy body-lg">Book a 30-minute demo. We&rsquo;ll show you how to connect your warehouse, define metrics once, and unlock self-serve analytics for your entire product org.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-on-dark">Book a Demo</a>
+        <a href="#" class="btn btn-secondary-dark">Watch a 5-minute walkthrough</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.11 NEWSLETTER — maps to existing NewsletterBlock component
+     ============================================================ -->
+<section id="newsletter" class="newsletter-block" aria-labelledby="newsletter-heading">
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <span class="eyebrow">The Governed Analytics Brief</span>
+      <h3 id="newsletter-heading">Weekly insights for product leaders and analytics engineers.</h3>
+      <p>One practical read on retention metrics, engagement analysis, and product-driven growth&mdash;every Thursday. No hype. No sales emails. Just insights.</p>
+      <form class="newsletter-form" action="#" method="post">
+        <label class="sr-only" for="newsletter-email">Email address</label>
+        <input class="newsletter-input" type="email" id="newsletter-email" name="email" placeholder="your@email.com" autocomplete="email" required />
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+      <p class="newsletter-consent">No spam. Unsubscribe any time. We handle your data per our <a href="/privacy" style="text-decoration: underline;">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+  // Mockup-only: Radix Accordion provides this behavior in-app at port time.
+  document.querySelectorAll(".accordion-trigger").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var panel = document.getElementById(btn.getAttribute("aria-controls"));
+      var isOpen = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!isOpen));
+      btn.setAttribute("data-state", isOpen ? "closed" : "open");
+      panel.hidden = isOpen;
+      panel.setAttribute("data-state", isOpen ? "closed" : "open");
+    });
+  });
+</script>
+
+</body>
+</html>

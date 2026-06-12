@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/analysts — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- PORT NOTES (route /solutions/analysts):
+     Title tag:        "AI Analytics for Analysts | Quaeris"
+     Meta description: "Ask complex questions, get trusted answers instantly. Quaeris agents serve
+                        governed analytics directly to analysts without bottlenecks or hallucinations."
+     Canonical:        https://www.quaeris.ai/solutions/analysts
+     Schema:           BreadcrumbList (/solutions > /solutions/analysts) + FAQPage.
+     All colors below are semantic tokens — the spec's older hex palette was mapped per tokens.css. -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic).
+   Note for port: --font-mono is a functional system stack, not a brand font; add it as a
+   token to BOTH brand tokens.css files when porting. */
+:root { --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace; }
+
+/* — Hero (NEW:HeroAnalysts) — */
+.ana-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  padding: var(--section-pad-y) 0;
+  position: relative;
+  z-index: 1;
+}
+.ana-hero-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.ana-hero-panel-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-canvas);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+}
+.ana-hero-panel-body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.ana-chat-q {
+  align-self: flex-end;
+  max-width: 85%;
+  background: var(--brand-accent-soft);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+  font-weight: 500;
+}
+.ana-chat-a {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  font-size: 14px;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.ana-meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.ana-meta-row svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; color: var(--success); }
+.ana-meta-row.ana-meta-accent svg { color: var(--brand-accent); }
+
+/* — Mock screenshots inside .feature-row-img-wrap (workflow steps) — */
+.ana-shot {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-canvas);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.ana-shot-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.ana-shot-input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.ana-shot-input svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--brand-accent); }
+.ana-shot-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.ana-shot-row svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; color: var(--success); }
+.ana-shot-row.ana-shot-row-accent svg { color: var(--brand-accent); }
+
+/* — Query walkthrough (NEW:AnalystQueryWalkthrough) — */
+.ana-walk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  margin-top: var(--space-8);
+}
+.ana-walk-panel {
+  height: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.ana-walk-panel-canvas { background: var(--bg-canvas); }
+.ana-walk-panel-warm { background: var(--bg-warm); }
+.ana-walk-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: var(--weight-display);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--border-strong);
+}
+.ana-code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.ana-walk-subtext { font-size: 13px; color: var(--text-tertiary); }
+
+/* — Grid modifiers (capabilities 2×3, integrations 4-up) — */
+.ana-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.ana-segments-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* — Checkmark list (semantic-layer editorial) — */
+.ana-check-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.ana-check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.ana-check-list svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 3px; color: var(--success); }
+
+/* — Featured case study (single CaseStudyCard) — */
+.ana-case-featured { max-width: 880px; margin: var(--space-8) auto 0; }
+.ana-case-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+.ana-case-label { display: block; color: var(--text-tertiary); margin-bottom: var(--space-2); }
+.ana-case-label-accent { color: var(--brand-accent); }
+
+/* — Responsive for new classes — */
+@media (max-width: 1200px) {
+  .ana-segments-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 1024px) {
+  .ana-walk-grid { grid-template-columns: 1fr; }
+  .ana-grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .ana-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+  .ana-case-cols { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .ana-grid-3 { grid-template-columns: 1fr; }
+  .ana-segments-4 { grid-template-columns: 1fr; }
+}
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     SECTION 1 · HERO — NEW:HeroAnalysts (variant of HeroHome)
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-h1">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container">
+    <div class="ana-hero-grid">
+      <div class="hero-inner reveal">
+        <span class="eyebrow">Built for analysts</span>
+        <h1 id="hero-h1" class="hero-h1">Ask questions. <span class="accent-line">Get governed answers.</span> In seconds.</h1>
+        <p class="subcopy body-lg">Forget SQL queues and dashboard wait-lists. Quaeris agents answer your questions in natural language&mdash;with full lineage, certified metrics, and role-based access built in. Self-serve analytics your data team can trust.</p>
+        <div class="hero-buttons" style="margin-bottom: 0;">
+          <a class="btn btn-primary" href="/contact">Book a Demo</a>
+          <a class="btn btn-secondary" href="#how-it-works">See how it works</a>
+        </div>
+      </div>
+
+      <!-- Illustrative mock: analyst question + split response (answer / sources / access controls) -->
+      <div class="ana-hero-panel reveal" data-placeholder>
+        <div class="ana-hero-panel-bar">
+          <span>Quaeris &middot; Query console</span>
+          <span class="badge badge-accent">Governed</span>
+        </div>
+        <div class="ana-hero-panel-body">
+          <p class="ana-chat-q">What drove Q2 revenue growth vs. plan?</p>
+          <div class="ana-chat-a">
+            <p><strong>Q2 revenue closed above plan</strong>, driven by Enterprise expansion and improved win rates in the West region.</p>
+            <div class="ana-meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <span>Metrics used: Revenue (certified), Plan vs. Actuals &mdash; owned by Finance</span>
+            </div>
+            <div class="ana-meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+              <span>Lineage traced: dwh.prod.revenue &rarr; segment &rarr; month</span>
+            </div>
+            <div class="ana-meta-row ana-meta-accent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Access control applied: your role permits Enterprise &amp; Mid-market</span>
+            </div>
+          </div>
+          <div class="trust-badges">
+            <span class="badge badge-accent">Cited</span>
+            <span class="badge">Audit logged</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 · QUICK WIN STATS — StatBlock (reuse, gradient variant)
+     ============================================================ -->
+<section class="section-pad" id="stats" aria-label="Why analysts choose Quaeris">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Why analysts choose Quaeris</span>
+    </div>
+    <!-- All stats pending verification against real deployments (spec §3 notes) -->
+    <div class="stats-band-gradient reveal" style="margin-top: var(--space-6);">
+      <div class="stats-grid-gradient">
+        <div class="stat-block">
+          <span class="stat-num stat-number" data-placeholder>14 seconds</span>
+          <span class="stat-label"><strong style="display: block; color: var(--text-primary);">Time to first answer</strong>From question to verified result</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number" data-placeholder>89%</span>
+          <span class="stat-label"><strong style="display: block; color: var(--text-primary);">Self-serve adoption</strong>Of analysts answer own questions</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number" data-placeholder>0</span>
+          <span class="stat-label"><strong style="display: block; color: var(--text-primary);">False answers prevented</strong>Every answer cited to metrics</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num stat-number" data-placeholder>76%</span>
+          <span class="stat-label"><strong style="display: block; color: var(--text-primary);">Backlog reduction</strong>Hours freed up for data teams</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 · THE ANALYST'S WORKFLOW — FeatureRow (reuse)
+     ============================================================ -->
+<section class="section-pad" id="how-it-works" aria-labelledby="workflow-h2" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header methodology-header reveal">
+      <span class="eyebrow">Three steps to self-serve analytics</span>
+      <h2 id="workflow-h2" class="display-lg">The Analyst&rsquo;s Workflow</h2>
+    </div>
+
+    <div class="feature-rows-list">
+
+      <!-- Step 1 -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span class="feature-row-eyebrow eyebrow">Step 1: Ask in Plain Language</span>
+          <h3 class="feature-row-heading display-md">Write your question as you would ask a colleague.</h3>
+          <p class="feature-row-body body-md">No SQL syntax. No dashboard hunting. Type a natural-language question: &ldquo;What&rsquo;s the MRR trend for Enterprise customers in the West region this quarter?&rdquo; Quaeris agents parse your question and reason over your semantic layer to find the answer.</p>
+          <a class="btn-ghost" href="#faq">See examples</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap" data-placeholder>
+            <div class="ana-shot" role="img" aria-label="Quaeris query panel showing a typed natural-language question about MRR trend, mapped to a certified metric">
+              <div class="ana-shot-bar">Query console</div>
+              <div class="ana-shot-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>What&rsquo;s the MRR trend for Enterprise customers in the West region this quarter?</span>
+              </div>
+              <div class="ana-shot-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Mapped to certified metric: MRR &mdash; owned by Finance</span>
+              </div>
+              <div class="ana-shot-row ana-shot-row-accent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                <span>Scope resolved: Enterprise &middot; West region &middot; this quarter</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="icon-box" style="color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent);" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--success);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <span class="feature-row-eyebrow eyebrow">Step 2: Get Verified Answers</span>
+          <h3 class="feature-row-heading display-md">Every answer cites its metric source.</h3>
+          <p class="feature-row-body body-md">Quaeris agents retrieve answers from your governed semantic layer &mdash; not from model hallucinations. You see exactly which metrics were queried, which business rules applied, and which data lineage was traced. No mystery numbers. No guessing. Answers your analysts can trust and defend to leadership.</p>
+          <a class="btn-ghost" href="/platform/governance">How governance works</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap" data-placeholder>
+            <div class="ana-shot" role="img" aria-label="Mock dashboard showing an answer with metric sources and a data lineage tree">
+              <div class="ana-shot-bar">Answer &middot; cited</div>
+              <div class="ana-shot-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                <span>Enterprise MRR grew quarter-over-quarter, led by the West region.</span>
+              </div>
+              <div class="ana-shot-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Source: MRR (certified) &mdash; business rule: FX-normalized</span>
+              </div>
+              <div class="ana-shot-row ana-shot-row-accent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                <span>Lineage: dwh.prod.subscriptions &rarr; mrr_monthly &rarr; segment</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          <span class="feature-row-eyebrow eyebrow">Step 3: Stay Compliant</span>
+          <h3 class="feature-row-heading display-md">Role-based access enforced at query time.</h3>
+          <p class="feature-row-body body-md">Your data permissions don&rsquo;t live in a dashboard filter &mdash; they live in the query engine. Every analyst sees exactly the data their role permits. Full audit trail: who asked what, when, and which metrics they accessed. <span data-placeholder>[Compliance certifications &mdash; confirm SOC&nbsp;2 / GDPR / HIPAA with product/legal before asserting specific frameworks.]</span> Data teams sleep better.</p>
+          <a class="btn-ghost" href="/platform/audit">Explore security &amp; audit</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap" data-placeholder>
+            <div class="ana-shot" role="img" aria-label="Audit log screenshot showing query history with access controls applied">
+              <div class="ana-shot-bar">Audit log</div>
+              <div class="ana-shot-row ana-shot-row-accent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>09:14 UTC &mdash; jane.doe asked &ldquo;churn by segment&rdquo; &mdash; role filter applied</span>
+              </div>
+              <div class="ana-shot-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>09:14 UTC &mdash; metrics accessed: Churn Rate (Enterprise, Mid-market)</span>
+              </div>
+              <div class="ana-shot-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>09:15 UTC &mdash; response cited &amp; logged &mdash; provenance available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 · THE PROBLEM — ProblemSolutionCards (reuse)
+     ============================================================ -->
+<section class="section-pad" id="problem" aria-labelledby="problem-h2">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Analysts are stuck in the middle</span>
+      <h2 id="problem-h2" class="display-lg">The Problem: Why BI Isn&rsquo;t Enough</h2>
+    </div>
+
+    <div class="ps-grid">
+
+      <!-- Pair 1 -->
+      <article class="ps-card reveal">
+        <div style="display: flex; align-items: center; gap: var(--space-3);">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <h3 class="heading-sm">SQL queues are a bottleneck</h3>
+        </div>
+        <p class="ps-problem body-md" style="color: var(--text-secondary);">Your data team is buried in ad-hoc requests. A simple revenue question means a Slack message, a Jira ticket, waiting two days. For an analyst, that&rsquo;s lost productivity and missed insights.</p>
+        <div class="ps-fix-box">
+          <div style="display: flex; align-items: center; gap: var(--space-2);">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--warning); flex-shrink: 0;" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <h4 class="heading-sm" style="color: var(--brand-accent);">Get answers in 14 seconds</h4>
+          </div>
+          <p class="ps-fix-body body-sm">Ask Quaeris agents directly. No queue. No Jira tickets. Your question is answered and cited in seconds. Data teams go from firefighting to strategy.</p>
+          <a class="btn-ghost" href="#how-it-works">See the workflow</a>
+        </div>
+      </article>
+
+      <!-- Pair 2 -->
+      <article class="ps-card reveal">
+        <div style="display: flex; align-items: center; gap: var(--space-3);">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          </span>
+          <h3 class="heading-sm">BI tools are rigid</h3>
+        </div>
+        <p class="ps-problem body-md" style="color: var(--text-secondary);">Dashboards are pre-built and static. Want to pivot the analysis? Explore a new dimension? You&rsquo;re stuck asking data engineers. Self-serve in theory, locked in practice.</p>
+        <div class="ps-fix-box">
+          <div style="display: flex; align-items: center; gap: var(--space-2);">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--warning); flex-shrink: 0;" aria-hidden="true"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            <h4 class="heading-sm" style="color: var(--brand-accent);">Ask any question, any angle</h4>
+          </div>
+          <p class="ps-fix-body body-sm">Agents reason over your semantic layer on the fly. Pivot, slice, dice, forecast &mdash; all without rebuilding dashboards. True exploratory analytics at the speed of thought.</p>
+          <a class="btn-ghost" href="#capabilities">See what&rsquo;s possible</a>
+        </div>
+      </article>
+
+      <!-- Pair 3 -->
+      <article class="ps-card reveal">
+        <div style="display: flex; align-items: center; gap: var(--space-3);">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+          <h3 class="heading-sm">Conflicting answers across tools</h3>
+        </div>
+        <p class="ps-problem body-md" style="color: var(--text-secondary);">Revenue in the CRM is $50M. Revenue in the data warehouse is $48M. Analysts spend hours debugging definitions. Which number do you present to the board?</p>
+        <div class="ps-fix-box">
+          <div style="display: flex; align-items: center; gap: var(--space-2);">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--success); flex-shrink: 0;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            <h4 class="heading-sm" style="color: var(--brand-accent);">One certified metric, every answer</h4>
+          </div>
+          <p class="ps-fix-body body-sm">Your data team defines revenue once in the semantic layer. Every agent answer &mdash; across every analyst&rsquo;s query &mdash; uses that same certified definition. Consistency guaranteed.</p>
+          <a class="btn-ghost" href="/platform/semantic-layer">Learn about semantic governance</a>
+        </div>
+      </article>
+
+      <!-- Pair 4 -->
+      <article class="ps-card reveal">
+        <div style="display: flex; align-items: center; gap: var(--space-3);">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 10.3c.2-.4.5-.8.9-1a2.1 2.1 0 0 1 2.6.4c.3.4.5.8.5 1.3 0 1.3-2 2-2 2"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+          <h3 class="heading-sm">Compliance audits are painful</h3>
+        </div>
+        <p class="ps-problem body-md" style="color: var(--text-secondary);">Regulators ask: &ldquo;Who accessed that customer cohort?&rdquo; &ldquo;Why was this metric different in Q2?&rdquo; Your BI tool has no answers. You dig through logs for days.</p>
+        <div class="ps-fix-box">
+          <div style="display: flex; align-items: center; gap: var(--space-2);">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--success); flex-shrink: 0;" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg>
+            <h4 class="heading-sm" style="color: var(--brand-accent);">Full audit trail, always</h4>
+          </div>
+          <p class="ps-fix-body body-sm">Every question, every answer, every metric access is logged with timestamps and ownership. Regulators ask, you answer in minutes. No dig, no doubt.</p>
+          <a class="btn-ghost" href="/platform/audit">See audit in action</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 · REAL ANALYST WORKFLOW EXAMPLE — NEW:AnalystQueryWalkthrough
+     ============================================================ -->
+<section class="section-pad" id="walkthrough" aria-labelledby="walkthrough-h2" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">What a real question looks like</span>
+      <h2 id="walkthrough-h2" class="display-lg">Real Analyst Workflow Example</h2>
+      <p class="subcopy body-md">An analyst at a B2B SaaS company wants to understand churn drivers. Here&rsquo;s how Quaeris answers it.</p>
+    </div>
+
+    <div class="ana-walk-grid">
+
+      <!-- Panel 1: The Question -->
+      <article class="ana-walk-panel reveal">
+        <span class="ana-walk-num" aria-hidden="true">01</span>
+        <h3 class="heading-sm">The Question</h3>
+        <pre class="ana-code">"Which customer segments had the highest churn rate in Q2?
+Show me monthly trend and tell me if it's statistically significant vs. Q1."</pre>
+        <p class="ana-walk-subtext">Natural language. No SQL. No data dictionary lookup needed.</p>
+      </article>
+
+      <!-- Panel 2: The Answer (spec's pale-canvas bg → var(--bg-canvas)) -->
+      <article class="ana-walk-panel ana-walk-panel-canvas reveal" data-placeholder>
+        <span class="ana-walk-num" aria-hidden="true">02</span>
+        <h3 class="heading-sm">The Answer</h3>
+        <pre class="ana-code">Quaeris Response:
+
+ANSWER: Enterprise segments had 8.2% churn in Q2, up from 5.1% in Q1.
+This is a 61% month-over-month increase and is statistically significant (p &lt; 0.05).
+
+Mid-market churn was flat at 3.1%.
+
+METRICS USED:
+&bull; Churn Rate (Enterprise) &mdash; definition: (customers_churned / customers_start_of_period)
+  Owned by: analytics-eng@company.com | Last updated: 2026-06-10
+
+&bull; Churn Rate (Mid-market) &mdash; definition: (customers_churned / customers_start_of_period)
+  Owned by: analytics-eng@company.com | Last updated: 2026-06-10
+
+DATA LINEAGE:
+Churn Rate queries: dwh.prod.customers (churn_date field)
+  &rarr; filtered by segment (churn_segment column)
+  &rarr; aggregated by month_date
+  &rarr; statistical significance test via scipy.stats.chi2_contingency
+
+ACCESS CONTROL APPLIED: Your role permits viewing Enterprise and Mid-market segments.
+[View full lineage]</pre>
+        <p class="ana-walk-subtext">Every number is sourced. Every metric is certified. Every access is logged.</p>
+      </article>
+
+      <!-- Panel 3: What the Data Team Sees (spec's warm bg → var(--bg-warm)) -->
+      <article class="ana-walk-panel ana-walk-panel-warm reveal" data-placeholder>
+        <span class="ana-walk-num" aria-hidden="true">03</span>
+        <h3 class="heading-sm">What the Data Team Sees</h3>
+        <pre class="ana-code">Data Team Audit Log:
+
+Analyst: jane.doe@company.com
+Time: 2026-06-12 09:14:23 UTC
+Query: "Which customer segments had the highest churn rate in Q2..."
+Metrics accessed: Churn Rate (Enterprise), Churn Rate (Mid-market)
+Row-level filter applied: Your role permits segments [Enterprise, Mid-market]
+Response status: &#10003; Cited (all metrics verified)
+Audit trail: [View query provenance]</pre>
+        <p class="ana-walk-subtext">Data teams stay in control. Every analyst action is visible.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 · CAPABILITIES SNAPSHOT — IconFeatureGrid (reuse, 2×3)
+     ============================================================ -->
+<section class="section-pad" id="capabilities" aria-labelledby="capabilities-h2">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Capabilities snapshot</span>
+      <h2 id="capabilities-h2" class="display-lg">What analysts can do</h2>
+    </div>
+
+    <div class="icon-feature-grid ana-grid-3">
+
+      <div class="icon-feature reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+        </span>
+        <h3 class="heading-sm">Multi-step analysis</h3>
+        <p>Ask follow-up questions and chain analyses without re-querying. Agents remember context.</p>
+        <a class="btn-ghost" href="/learn/multi-step" data-placeholder>Learn more</a>
+      </div>
+
+      <div class="icon-feature reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </span>
+        <h3 class="heading-sm">Forecasting</h3>
+        <p>&ldquo;How will churn trend if we don&rsquo;t intervene?&rdquo; Agents forecast using historical patterns.</p>
+        <a class="btn-ghost" href="/learn/forecasting" data-placeholder>Learn more</a>
+      </div>
+
+      <div class="icon-feature reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>
+        </span>
+        <h3 class="heading-sm">Root-cause diagnosis</h3>
+        <p>&ldquo;Why did conversion drop last week?&rdquo; Agents trace anomalies to their source.</p>
+        <a class="btn-ghost" href="/learn/root-cause" data-placeholder>Learn more</a>
+      </div>
+
+      <div class="icon-feature reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </span>
+        <h3 class="heading-sm">Anomaly detection</h3>
+        <p>Agents flag suspicious metrics proactively. &ldquo;Revenue is 12% above forecast. Here&rsquo;s why.&rdquo;</p>
+        <a class="btn-ghost" href="/platform/agents" data-placeholder>Learn more</a>
+      </div>
+
+      <div class="icon-feature reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <h3 class="heading-sm">Ad-hoc cohorts</h3>
+        <p>&ldquo;Show me customers who signed up in Q1 and churned by Q2.&rdquo; Agents build cohorts on the fly from the semantic layer.</p>
+        <a class="btn-ghost" href="/platform/semantic-layer" data-placeholder>Learn more</a>
+      </div>
+
+      <div class="icon-feature reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="8.59" y1="10.49" x2="15.42" y2="6.51"/></svg>
+        </span>
+        <h3 class="heading-sm">Export to anywhere</h3>
+        <p>Results to Slack, email, dashboards, or notebooks. Every answer is reproducible.</p>
+        <a class="btn-ghost" href="/platform/integrations" data-placeholder>Learn more</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7 · CASE STUDY — CaseStudyCard (reuse, single featured)
+     ============================================================ -->
+<section class="section-pad" id="case-study" aria-labelledby="case-h2" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">From backlog to autonomy</span>
+      <h2 id="case-h2" class="display-lg">Analytics team cut request wait time from 3 days to 90 seconds &mdash; and data team loved it</h2>
+    </div>
+
+    <article class="case-study-card ana-case-featured reveal">
+      <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+        <span class="industry-chip" data-placeholder>[Customer name &mdash; permission-gated]</span>
+        <span class="industry-chip" data-placeholder>[Industry]</span>
+      </div>
+
+      <div class="ana-case-cols">
+        <div>
+          <span class="eyebrow ana-case-label">Challenge</span>
+          <p class="body-md" style="color: var(--text-secondary);" data-placeholder>[Analyst description]. The team had a 40-ticket backlog. Simple questions about campaign performance took 3+ days. Complex revenue analyses took a week. Analysts spent 40% of their time waiting, 60% analyzing.</p>
+        </div>
+        <div>
+          <span class="eyebrow ana-case-label ana-case-label-accent">Outcome</span>
+          <p class="body-md" style="color: var(--text-secondary);">After deploying Quaeris, the same team answered questions in 90 seconds. Backlog dropped to near-zero. Data team went from firefighting to building new semantic models. Within 60 days, the backlog was solved and the team had capacity for strategic analysis.</p>
+        </div>
+      </div>
+
+      <div class="cs-stats" data-placeholder>
+        <div class="cs-stat">
+          <span class="cs-stat-num">40 &rarr; 2</span>
+          <span class="cs-stat-label">Average days to answer</span>
+        </div>
+        <div class="cs-stat">
+          <span class="cs-stat-num">87%</span>
+          <span class="cs-stat-label">Data team time freed up</span>
+        </div>
+        <div class="cs-stat">
+          <span class="cs-stat-num">300+</span>
+          <span class="cs-stat-label">Questions analysts answered independently</span>
+        </div>
+      </div>
+
+      <p class="cs-how" data-placeholder>[Detailed narrative: How deployment happened, what changed, specific quotes from analysts and data lead. Must be attributed with name/title.]</p>
+
+      <a class="btn-ghost" href="/case-studies/analyst-team" data-placeholder>Read full story</a>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 8 · PROOF — TestimonialMarquee (reuse)
+     ============================================================ -->
+<section class="section-pad" id="testimonials" aria-labelledby="testimonials-h2">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Analysts trust Quaeris</span>
+      <h2 id="testimonials-h2" class="display-lg">What Analysts Say</h2>
+    </div>
+  </div>
+
+  <!-- 5–6 analyst testimonials pending de-anonymization / new interviews (spec §3 + §4) -->
+  <div class="testimonial-rows reveal" style="margin-top: var(--space-8);" data-placeholder>
+    <div class="testimonial-row">
+      <!-- set A -->
+      <article class="testimonial-card">
+        <p class="testimonial-quote">&ldquo;I used to spend half my week in Slack explaining why numbers didn&rsquo;t match. Now every agent answer cites its metric, so the conversation shifts from &lsquo;Which number is right?&rsquo; to &lsquo;What does this mean for our strategy?&rsquo;&rdquo;</p>
+        <div class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">A</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">Senior Analyst &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <p class="testimonial-quote">[Testimonial pending &mdash; analyst quote on time-to-answer]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">B</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <p class="testimonial-quote">[Testimonial pending &mdash; analyst quote on metric trust and certified definitions]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">C</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <p class="testimonial-quote">[Testimonial pending &mdash; analyst quote on audit readiness in a regulated industry]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">D</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <p class="testimonial-quote">[Testimonial pending &mdash; analyst quote on self-serve adoption across the team]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">E</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <p class="testimonial-quote">[Testimonial pending &mdash; data-lead quote on partnership with analysts]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">F</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+
+      <!-- set B — duplicate for seamless loop, hidden from AT -->
+      <article class="testimonial-card" aria-hidden="true">
+        <p class="testimonial-quote">&ldquo;I used to spend half my week in Slack explaining why numbers didn&rsquo;t match. Now every agent answer cites its metric, so the conversation shifts from &lsquo;Which number is right?&rsquo; to &lsquo;What does this mean for our strategy?&rsquo;&rdquo;</p>
+        <div class="testimonial-author">
+          <span class="author-avatar">A</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">Senior Analyst &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card" aria-hidden="true">
+        <p class="testimonial-quote">[Testimonial pending &mdash; analyst quote on time-to-answer]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar">B</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card" aria-hidden="true">
+        <p class="testimonial-quote">[Testimonial pending &mdash; analyst quote on metric trust and certified definitions]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar">C</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card" aria-hidden="true">
+        <p class="testimonial-quote">[Testimonial pending &mdash; analyst quote on audit readiness in a regulated industry]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar">D</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card" aria-hidden="true">
+        <p class="testimonial-quote">[Testimonial pending &mdash; analyst quote on self-serve adoption across the team]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar">E</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card" aria-hidden="true">
+        <p class="testimonial-quote">[Testimonial pending &mdash; data-lead quote on partnership with analysts]</p>
+        <div class="testimonial-author">
+          <span class="author-avatar">F</span>
+          <div><span class="author-name">[Name]</span><br /><span class="author-role">[Role] &middot; [Company]</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 9 · INTEGRATIONS — SegmentCards (reuse, 4-up)
+     All four cards pending product validation (spec §3 note); sourced
+     connectors are Snowflake, BigQuery, Databricks, Azure Synapse,
+     Redshift, SharePoint, Google Drive.
+     ============================================================ -->
+<section class="section-pad" id="integrations" aria-labelledby="integrations-h2">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Integrations</span>
+      <h2 id="integrations-h2" class="display-lg">Answers everywhere analysts work</h2>
+    </div>
+
+    <div class="segment-cards-grid ana-segments-4">
+
+      <article class="segment-card reveal" data-placeholder>
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        </span>
+        <h3 class="segment-label heading-sm">[Slack &mdash; confirm with product]</h3>
+        <p class="segment-desc body-sm">Ask Quaeris directly in Slack. Get cited answers in Slack. No tool-switching.</p>
+      </article>
+
+      <article class="segment-card reveal" data-placeholder>
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </span>
+        <h3 class="segment-label heading-sm">[Notebooks &mdash; confirm with product]</h3>
+        <p class="segment-desc body-sm">Embed Quaeris answers in Python / SQL notebooks. One source of truth for metrics.</p>
+      </article>
+
+      <article class="segment-card reveal" data-placeholder>
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        </span>
+        <h3 class="segment-label heading-sm">[BI embedding &mdash; confirm with product]</h3>
+        <p class="segment-desc body-sm">Drop Quaeris answers into your existing BI dashboards as data source.</p>
+      </article>
+
+      <article class="segment-card reveal" data-placeholder>
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </span>
+        <h3 class="segment-label heading-sm">[Scheduled email &mdash; confirm with product]</h3>
+        <p class="segment-desc body-sm">Schedule recurring analyses. Answers delivered to inboxes weekly. Always fresh, always cited.</p>
+      </article>
+
+    </div>
+
+    <div class="proof-cta reveal">
+      <a class="btn btn-secondary" href="/integrations">See all integrations</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 10 · THE SEMANTIC LAYER — EditorialBlock variant
+     (text + side visual; laid out with existing FeatureRow classes
+     so the port is mechanical)
+     ============================================================ -->
+<section class="section-pad" id="semantic-layer" aria-labelledby="semantic-h2" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="feature-row reveal">
+      <div class="feature-row-text">
+        <span class="feature-row-eyebrow eyebrow">Powered by your governed metrics</span>
+        <h2 id="semantic-h2" class="feature-row-heading display-lg">Every answer is grounded in certified metrics your data team owns.</h2>
+        <p class="feature-row-body body-md">Quaeris agents don&rsquo;t generate numbers &mdash; they retrieve them from your semantic layer. Revenue means the same thing in every query. Churn is defined once. Margin is owned by Finance. When an analyst asks a question, agents reason over these certified definitions and return answers your organization can act on without debate.</p>
+        <p class="feature-row-body body-md">This is where the trust lives. Not in the agent, but in the layer beneath it.</p>
+        <ul class="ana-check-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>One metric definition across all queries</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Ownership and audit trail for every metric</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Automatic consistency across analysts, teams, tools</span>
+          </li>
+        </ul>
+        <a class="btn-ghost" href="/platform/semantic-layer">Learn how to build the semantic layer</a>
+      </div>
+
+      <div class="feature-row-visual">
+        <div class="feature-row-img-wrap feature-row-img-fallback" data-placeholder>
+          <svg viewBox="0 0 600 400" role="img" aria-label="Semantic layer model showing certified metric nodes — Revenue, Churn Rate, and Margin — connected to a metadata card with owner, last-updated date, and lineage" style="font-family: var(--font-body); background: var(--bg-surface);">
+            <!-- connections -->
+            <g style="stroke: var(--border-strong);" stroke-width="1.5" fill="none">
+              <path d="M190 92 C 260 92, 280 160, 330 168" />
+              <path d="M190 200 L 330 200" />
+              <path d="M190 308 C 260 308, 280 240, 330 232" />
+              <path d="M125 114 L 125 178" />
+              <path d="M125 222 L 125 286" />
+            </g>
+            <!-- metric nodes -->
+            <g>
+              <rect x="60" y="70" width="130" height="44" rx="10" style="fill: var(--bg-surface); stroke: var(--border-strong);" stroke-width="1.5" />
+              <text x="125" y="97" text-anchor="middle" font-size="14" font-weight="600" style="fill: var(--text-primary);">Revenue</text>
+            </g>
+            <g>
+              <rect x="60" y="178" width="130" height="44" rx="10" style="fill: var(--brand-accent-soft); stroke: var(--brand-accent);" stroke-width="1.5" />
+              <text x="125" y="205" text-anchor="middle" font-size="14" font-weight="600" style="fill: var(--text-primary);">Churn Rate</text>
+            </g>
+            <g>
+              <rect x="60" y="286" width="130" height="44" rx="10" style="fill: var(--bg-surface); stroke: var(--border-strong);" stroke-width="1.5" />
+              <text x="125" y="313" text-anchor="middle" font-size="14" font-weight="600" style="fill: var(--text-primary);">Margin</text>
+            </g>
+            <!-- metadata card -->
+            <g>
+              <rect x="330" y="130" width="220" height="140" rx="12" style="fill: var(--bg-surface); stroke: var(--border-strong);" stroke-width="1.5" />
+              <text x="350" y="162" font-size="13" font-weight="700" style="fill: var(--text-primary);">Churn Rate &middot; certified</text>
+              <text x="350" y="190" font-size="12" style="fill: var(--text-secondary);">Owner: analytics-eng</text>
+              <text x="350" y="214" font-size="12" style="fill: var(--text-secondary);">Updated: 2026-06-10</text>
+              <text x="350" y="238" font-size="12" style="fill: var(--text-secondary);">Lineage: dwh.prod.customers</text>
+              <circle cx="528" cy="156" r="9" style="fill: var(--brand-accent-soft); stroke: var(--brand-accent);" stroke-width="1.5" />
+              <path d="M524 156 l3 3 l6 -6" style="stroke: var(--brand-accent);" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 11 · FAQ FOR ANALYSTS — FAQSection / Accordion (reuse)
+     ============================================================ -->
+<section class="section-pad" id="faq" aria-labelledby="faq-h2">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="reveal">
+        <div class="section-header">
+          <span class="eyebrow">Questions analysts ask</span>
+          <h2 id="faq-h2" class="display-lg">FAQ for Analysts</h2>
+        </div>
+        <div class="faq-mini-card" data-placeholder>
+          <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Still have questions?</h3>
+          <p>Book a 30-minute demo and ask them live, on your own metrics.</p>
+          <a class="btn btn-primary" href="/contact">Book a Demo</a>
+        </div>
+      </div>
+
+      <!-- Q&A items pending validation against research-doc Q&As (spec §3) -->
+      <div class="accordion reveal" data-placeholder>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="true" aria-controls="faq-a1" data-state="open">
+              <span class="accordion-question">Can I ask follow-up questions, or just one-shot queries?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a1" data-state="open">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Yes, agents remember context across messages. Ask your first question, then refine, drill down, or pivot. Agents chain analyses without losing state.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a2" data-state="closed">
+              <span class="accordion-question">What if the semantic layer doesn&rsquo;t have the metric I need?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a2" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Agents tell you directly. &ldquo;Metric X doesn&rsquo;t exist in the certified layer.&rdquo; Then your data team decides: is this a new metric to add, or should you ask differently? You&rsquo;re never stuck &mdash; you get transparency instead.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a3" data-state="closed">
+              <span class="accordion-question">How long does it take to set up?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a3" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Semantic layer migration typically takes 1&ndash;2 weeks (teams with 50&ndash;200 metrics). After that, analysts can start asking immediately. No data import, no model rebuilding &mdash; your warehouse is the source.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a4" data-state="closed">
+              <span class="accordion-question">What happens if I misinterpret an answer?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a4" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">That&rsquo;s why every answer shows its sources. Click a metric name and you see the definition, business rules, and data lineage. Misinterpretation is caught because you see exactly what was queried.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a5" data-state="closed">
+              <span class="accordion-question">Is this a BI tool replacement?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a5" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">No &mdash; it&rsquo;s a complement. Quaeris handles exploratory questions. Your dashboards and reporting tools stay in place for structured, scheduled reporting. Different tools for different jobs.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a6" data-state="closed">
+              <span class="accordion-question">Can I share answers with colleagues?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a6" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Yes. Copy the answer, the metric definitions, and the audit trail. You can export to Slack, email, dashboards, or notebooks. Every export is reproducible &mdash; colleagues can re-run your analysis.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a7" data-state="closed">
+              <span class="accordion-question">What if a metric is wrong?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a7" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Your data team fixes the definition in the semantic layer once. Every agent answer going forward uses the corrected definition. No bug chasing. No rework.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-a8" data-state="closed">
+              <span class="accordion-question">How much training do I need?</span>
+              <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a8" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Minimal. If you can ask a colleague a question, you can ask Quaeris. Onboarding is typically 1&ndash;2 hours. After that, you&rsquo;re productive.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 12 · CTA BAND — CTABand (reuse)
+     ============================================================ -->
+<section class="section-pad" id="cta-band" aria-labelledby="cta-h2">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to unlock self-serve analytics?</span>
+      <h2 id="cta-h2" class="display-lg">See Quaeris in action &mdash; on your data.</h2>
+      <p class="subcopy body-lg">Book a 30-minute demo with a Quaeris solutions engineer. We&rsquo;ll connect to your warehouse, walk through analyst use cases on your metrics, and show you what self-serve looks like with governance built in.</p>
+      <div class="cta-buttons">
+        <!-- Port note: contact form opens with "Analyst" pre-selected -->
+        <a class="btn btn-primary" href="/contact">Book a Demo</a>
+        <a class="btn btn-secondary-dark" href="/videos/analyst-walkthrough" data-placeholder>See the product tour</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 13 · NEWSLETTER — NewsletterBlock (reuse)
+     ============================================================ -->
+<section class="newsletter-block" id="newsletter" aria-labelledby="newsletter-h3">
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <span class="eyebrow">The Governed Analytics Brief</span>
+      <h3 id="newsletter-h3">Weekly insights on agentic analytics for analysts.</h3>
+      <p>One practical read every Thursday: how governed analytics is changing analyst workflows, semantic layer patterns, and agentic best practices &mdash; no generic AI hype.</p>
+      <form class="newsletter-form" action="#" method="post">
+        <label class="sr-only" for="nl-email">Work email</label>
+        <input class="newsletter-input" type="email" id="nl-email" name="email" placeholder="you@company.com" autocomplete="email" required />
+        <button class="btn btn-primary" type="submit">Subscribe</button>
+      </form>
+      <p class="newsletter-consent">No spam. Unsubscribe any time. <a href="/privacy" style="text-decoration: underline;">Privacy Policy</a></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Mockup-only: accordion interactivity for browser review (Radix Accordion handles this in-app). -->
+<script>
+  document.querySelectorAll(".accordion-trigger").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var isOpen = btn.getAttribute("data-state") === "open";
+      var panel = document.getElementById(btn.getAttribute("aria-controls"));
+      btn.setAttribute("data-state", isOpen ? "closed" : "open");
+      btn.setAttribute("aria-expanded", String(!isOpen));
+      if (panel) {
+        panel.hidden = isOpen;
+        panel.setAttribute("data-state", isOpen ? "closed" : "open");
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

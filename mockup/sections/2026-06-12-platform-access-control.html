@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/access-control — Quaeris</title>
+<meta name="description" content="Fine-grained access controls enforced at query time. Every agent answer respects row, column, and dataset permissions — no data escapes governance." />
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time. Token-driven, brand-agnostic.
+   Page-area prefix: .acl- (platform/access-control). */
+
+/* — Shared dark-section shell (hero + problem + how-it-works use --bg-ink like #dark-feature) — */
+.acl-dark { background: var(--bg-ink); position: relative; overflow: hidden; }
+.acl-dark-divider { border-top: 1px solid var(--border-on-dark); }
+
+/* — NEW: AccessControlHero — */
+.acl-hero-glow {
+  position: absolute; top: -30%; right: -10%;
+  width: 55vw; height: 55vw; max-width: 640px; max-height: 640px;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 70%);
+  opacity: 0.22; border-radius: 50%; pointer-events: none;
+}
+.acl-hero-inner { position: relative; z-index: 1; max-width: 760px; }
+.acl-hero-inner .eyebrow {
+  display: block; margin-bottom: var(--space-5);
+  color: color-mix(in srgb, var(--brand-accent) 50%, var(--text-on-dark));
+}
+.acl-hero-inner .hero-h1 { color: var(--text-on-dark); margin-bottom: var(--space-5); max-width: 18ch; }
+.acl-hero-inner .subcopy { color: var(--text-on-dark-dim); max-width: 60ch; margin-bottom: var(--space-7); }
+
+/* — Pipeline / flow diagram (hero + role-resolver flow; light modifier for white sections) — */
+.acl-pipeline-frame {
+  position: relative; z-index: 1; margin-top: var(--space-8);
+  border: 1px solid var(--border-on-dark); border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.03); padding: var(--space-6); text-align: center;
+}
+.acl-pipeline { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
+.acl-pipe-node { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); text-align: center; min-width: 0; }
+.acl-pipe-icon {
+  width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+  border: 1px solid var(--border-on-dark); background: rgba(255,255,255,0.04);
+  color: var(--text-on-dark); display: flex; align-items: center; justify-content: center;
+}
+.acl-pipe-icon svg { width: 22px; height: 22px; }
+.acl-pipe-label { font-size: 12px; font-weight: 600; line-height: 1.35; color: var(--text-on-dark-dim); max-width: 110px; }
+.acl-pipe-gate .acl-pipe-icon {
+  border-color: var(--brand-accent);
+  color: color-mix(in srgb, var(--brand-accent) 55%, var(--text-on-dark));
+  background: var(--brand-accent-soft);
+  box-shadow: 0 0 0 4px var(--brand-accent-glow);
+}
+.acl-pipe-gate .acl-pipe-label { color: var(--text-on-dark); }
+.acl-pipe-arrow { color: var(--text-on-dark-dim); opacity: 0.7; margin-top: 14px; flex-shrink: 0; }
+.acl-pipe-arrow svg { width: 20px; height: 20px; }
+.acl-pipe-arrow-granted { color: var(--brand-accent); opacity: 1; }
+.acl-pipe-block {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  margin-top: var(--space-6); padding: var(--space-2) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--error) 60%, transparent);
+  border-radius: var(--radius-pill); font-size: 13px; color: var(--text-on-dark-dim);
+}
+.acl-pipe-block svg { width: 16px; height: 16px; color: var(--error); flex-shrink: 0; }
+/* Light variant (used inside white feature-row visuals) */
+.acl-pipeline-light .acl-pipe-icon { border-color: var(--border-strong); background: var(--bg-surface); color: var(--text-secondary); }
+.acl-pipeline-light .acl-pipe-label { color: var(--text-secondary); }
+.acl-pipeline-light .acl-pipe-arrow { color: var(--text-tertiary); }
+.acl-pipeline-light .acl-pipe-gate .acl-pipe-icon {
+  border-color: var(--brand-accent); color: var(--brand-accent);
+  background: var(--brand-accent-soft); box-shadow: 0 0 0 4px var(--brand-accent-soft);
+}
+.acl-pipeline-light .acl-pipe-gate .acl-pipe-label { color: var(--text-primary); }
+.acl-flow-frame {
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+  background: var(--bg-canvas); box-shadow: var(--shadow-card);
+  padding: var(--space-7) var(--space-5);
+}
+
+/* — NEW: AccessControlProblemVisual — */
+.acl-ps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); position: relative; z-index: 1; }
+.acl-ps-panel .eyebrow { display: block; margin-bottom: var(--space-3); color: var(--text-on-dark-dim); }
+.acl-ps-panel h2 { color: var(--text-on-dark); margin-bottom: var(--space-6); }
+.acl-checklist { display: flex; flex-direction: column; gap: var(--space-4); }
+.acl-checklist li { display: flex; gap: var(--space-3); align-items: flex-start; font-size: 16px; line-height: 1.6; }
+.acl-checklist svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 3px; }
+.acl-list-problem li { color: var(--text-on-dark-dim); }
+.acl-list-problem svg { color: var(--error); }
+.acl-list-solution li { color: var(--text-on-dark); }
+.acl-list-solution svg { color: var(--success); }
+
+/* — Three pillars (IconFeatureGrid reuse): 3-col grid + lavender-canvas card tint — */
+.acl-grid-3 { grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+@media (max-width: 1024px) { .acl-grid-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .acl-grid-3 { grid-template-columns: 1fr; } }
+.acl-card-canvas { background: var(--bg-canvas); }
+.acl-pillar-card p { flex: 1; }
+.acl-pillar-card .btn-ghost { margin-top: var(--space-2); align-self: flex-start; }
+
+/* — How it works (dark feature variant): numbered step list + access-scoped dashboard mock — */
+.acl-steps { list-style: none; padding: 0; margin: 0; }
+.acl-step-icon {
+  width: 24px; height: 24px; flex-shrink: 0; margin-top: 2px;
+  color: color-mix(in srgb, var(--brand-accent) 55%, var(--text-on-dark));
+}
+.acl-step-icon svg { width: 20px; height: 20px; }
+/* Mirrors the existing `.value-prop-text h4` rule for correct h3 heading order on this page. */
+.value-prop-text h3 { color: var(--text-on-dark); margin-bottom: var(--space-1); font-size: 16px; font-weight: 600; line-height: 1.4; }
+.acl-query-row {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+  color: var(--text-on-dark); font-size: 14px; margin-bottom: var(--space-5);
+}
+.acl-query-row svg { width: 18px; height: 18px; color: var(--text-on-dark-dim); flex-shrink: 0; }
+.acl-role-badge svg { width: 14px; height: 14px; margin-right: 6px; flex-shrink: 0; }
+.acl-result-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: var(--space-4); }
+.acl-result-table th {
+  text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-on-dark-dim); padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border-on-dark);
+}
+.acl-result-table td {
+  padding: var(--space-3); color: var(--text-on-dark);
+  border-bottom: 1px solid var(--border-on-dark); font-variant-numeric: tabular-nums;
+}
+.acl-cell-masked { display: inline-flex; align-items: center; gap: 6px; color: var(--text-on-dark-dim); opacity: 0.55; font-style: italic; }
+.acl-cell-masked svg { width: 14px; height: 14px; flex-shrink: 0; }
+.acl-rows-note { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-on-dark-dim); margin-bottom: var(--space-3); }
+.acl-rows-note svg { width: 14px; height: 14px; color: color-mix(in srgb, var(--brand-accent) 55%, var(--text-on-dark)); flex-shrink: 0; }
+
+/* — NEW: AccessControlComparison (feature matrix table) — */
+.acl-compare-wrap {
+  overflow-x: auto; margin-top: var(--space-8);
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+  background: var(--bg-surface); box-shadow: var(--shadow-card);
+}
+.acl-compare { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px; }
+.acl-compare th, .acl-compare td {
+  padding: var(--space-4) var(--space-5); text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.acl-compare thead th { font-size: 13px; font-weight: 700; color: var(--text-primary); border-bottom: 1px solid var(--border-strong); }
+.acl-compare tbody th { font-weight: 600; color: var(--text-primary); }
+.acl-compare tbody td { color: var(--text-secondary); }
+.acl-compare tbody tr:last-child th, .acl-compare tbody tr:last-child td { border-bottom: none; }
+.acl-compare-hero { background: var(--brand-accent-soft); }
+.acl-compare-col { display: inline-flex; align-items: center; gap: var(--space-2); }
+.acl-compare-col svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--brand-accent); }
+.acl-compare-col-muted svg { color: var(--text-tertiary); }
+.acl-mark { display: inline-flex; align-items: flex-start; gap: var(--space-2); }
+.acl-mark svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+.acl-mark-yes svg { color: var(--success); }
+.acl-mark-no svg { color: var(--error); }
+.acl-mark-partial svg { color: var(--warning); }
+.acl-compare-note { margin-top: var(--space-4); font-size: 13px; font-style: italic; color: var(--text-tertiary); max-width: 75ch; }
+
+/* — Use cases (CaseStudyCard-pattern variant): outcome checklist — */
+.acl-outcome-list { display: flex; flex-direction: column; gap: var(--space-2); border-top: 1px solid var(--border-subtle); padding-top: var(--space-4); margin-top: auto; }
+.acl-outcome-list li { display: flex; gap: var(--space-2); align-items: flex-start; font-size: 14px; line-height: 1.5; color: var(--text-secondary); }
+.acl-outcome-list svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; color: var(--brand-accent); }
+.acl-usecase-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+
+/* — Policy → SQL code mock (FeatureRow visual) — */
+.acl-code-pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.acl-code-card { background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-5); min-width: 0; }
+.acl-code-label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--space-3); }
+.acl-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px; line-height: 1.7; color: var(--brand-accent-deep);
+  white-space: pre-wrap; word-break: break-word; margin: 0;
+}
+.acl-code-inline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em; background: var(--brand-accent-soft); color: var(--brand-accent-deep);
+  padding: 1px 6px; border-radius: var(--radius-sm);
+}
+
+/* — FAQ: native <details> reusing .accordion-* classes for the static mockup — */
+.acl-faq summary { list-style: none; }
+.acl-faq summary::-webkit-details-marker { display: none; }
+.acl-faq[open] .accordion-icon { transform: rotate(180deg); }
+.acl-faq-answer { padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.65; max-width: 65ch; }
+
+/* — Responsive (new classes only) — */
+@media (max-width: 768px) {
+  .acl-ps-grid { grid-template-columns: 1fr; }
+  .acl-code-pair { grid-template-columns: 1fr; }
+  .acl-pipeline { flex-wrap: wrap; justify-content: center; gap: var(--space-4); }
+  .acl-pipe-arrow { display: none; }
+}
+@media (max-width: 640px) {
+  .acl-compare th, .acl-compare td { padding: var(--space-3) var(--space-4); }
+  .acl-pipeline-frame { padding: var(--space-5) var(--space-4); }
+}
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     3.1 HERO — NEW component: AccessControlHero
+     Dark bg, eyebrow + H1 + subcopy + CTAs, inline access-control
+     pipeline diagram (role-check gate before data retrieval).
+     ============================================================ -->
+<section id="acl-hero" class="section-pad acl-dark" aria-labelledby="page-title">
+  <div class="acl-hero-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="acl-hero-inner reveal">
+      <span class="eyebrow">Security &amp; Control</span>
+      <h1 id="page-title" class="hero-h1">Metrics scoped to who needs them.</h1>
+      <p class="body-lg subcopy">Access enforcement happens at query time, not in dashboards. When an agent answers a question, every row and column is checked against your user&rsquo;s role. Only the data they&rsquo;re permitted to see is returned &mdash; built into the execution, not bolted on.</p>
+      <div class="hero-buttons btn-stack">
+        <a href="/contact" class="btn btn-primary">See it live</a>
+        <a href="/resources" class="btn btn-secondary-dark">Read the governance guide</a>
+      </div>
+    </div>
+
+    <!-- Hero diagram: query pipeline with role-check gate (labels per spec visual-asset appendix) -->
+    <figure class="acl-pipeline-frame reveal">
+      <div class="acl-pipeline" aria-hidden="true">
+        <div class="acl-pipe-node">
+          <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <span class="acl-pipe-label">User</span>
+        </div>
+        <span class="acl-pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        <div class="acl-pipe-node">
+          <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          <span class="acl-pipe-label">Question</span>
+        </div>
+        <span class="acl-pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        <div class="acl-pipe-node acl-pipe-gate">
+          <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <span class="acl-pipe-label">Role Lookup</span>
+        </div>
+        <span class="acl-pipe-arrow acl-pipe-arrow-granted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        <div class="acl-pipe-node">
+          <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="acl-pipe-label">SQL Generation</span>
+        </div>
+        <span class="acl-pipe-arrow acl-pipe-arrow-granted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        <div class="acl-pipe-node">
+          <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg></span>
+          <span class="acl-pipe-label">Warehouse</span>
+        </div>
+        <span class="acl-pipe-arrow acl-pipe-arrow-granted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        <div class="acl-pipe-node">
+          <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <span class="acl-pipe-label">Result (filtered)</span>
+        </div>
+      </div>
+      <span class="acl-pipe-block" data-placeholder>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Unauthorized requests are blocked at the gate &mdash; and logged to the audit trail
+      </span>
+      <figcaption class="sr-only">Diagram of the governed query pipeline: a user&rsquo;s question passes a role-lookup gate before SQL generation; the warehouse executes the governed query and returns a filtered result.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.2 PROBLEM / SOLUTION — NEW component: AccessControlProblemVisual
+     Dark two-column layout inspired by ProblemSolutionCards.
+     ============================================================ -->
+<section id="problem" class="section-pad acl-dark acl-dark-divider" aria-label="The access control problem and the Quaeris solution">
+  <div class="container">
+    <div class="acl-ps-grid">
+      <article class="card card-dark acl-ps-panel reveal">
+        <span class="eyebrow">The problem</span>
+        <h2 class="display-lg">The access control dilemma</h2>
+        <ul class="acl-checklist acl-list-problem">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Dashboard filters are easy to bypass &mdash; users export data and see restricted rows.
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Traditional BI tools enforce access in the UI layer, not in the query. If a user can export, they can see everything.
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Governed semantic layers require manual access policy definition &mdash; one rule per role, per metric, per table.
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            AI agents have no built-in access controls; they hallucinate answers without checking the user&rsquo;s permissions.
+          </li>
+        </ul>
+      </article>
+
+      <article class="card card-dark acl-ps-panel reveal">
+        <span class="eyebrow">The solution &mdash; Quaeris</span>
+        <h2 class="display-lg">Access governance built into the agent</h2>
+        <ul class="acl-checklist acl-list-solution">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Access checks run <strong>at query time</strong>, not at render time. Every SQL execution is sandboxed to the user&rsquo;s role.</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Agents inherit permissions directly from your warehouse (Snowflake, BigQuery, Databricks) &mdash; no separate access model to maintain.
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Row and column restrictions apply equally to every query path &mdash; UI, agent, API, export.
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Unauthorized access attempts are logged with full audit trail: who asked, what they asked, when they asked, and what was blocked.
+          </li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.3 THREE PILLARS — reuse IconFeatureGrid.tsx
+     (.icon-feature pattern in a 3-col grid, lavender-canvas card tint)
+     ============================================================ -->
+<section id="pillars" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="pillars-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2 id="pillars-heading" class="display-lg">Three pillars of governed access</h2>
+    </div>
+
+    <div class="icon-feature-grid acl-grid-3">
+      <article class="icon-feature card acl-card-canvas acl-pillar-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+        </div>
+        <h3 class="heading-sm">Row-Level Security</h3>
+        <p>Filter entire rows based on user role. A sales analyst sees only their region&rsquo;s data; a CFO sees consolidated numbers across all regions. The agent enforces this &mdash; the user can&rsquo;t &lsquo;see around&rsquo; it by changing the question.</p>
+        <a href="/learn" class="btn-ghost">How row filtering works</a>
+      </article>
+
+      <article class="icon-feature card acl-card-canvas acl-pillar-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+        </div>
+        <h3 class="heading-sm">Column-Level Masking</h3>
+        <p>Restrict columns by role. Salary data hidden from ops teams; pricing hidden from customer-facing reps. The agent knows which columns the user can access and won&rsquo;t return forbidden fields &mdash; even if asked directly.</p>
+        <a href="/learn" class="btn-ghost">Masking policies</a>
+      </article>
+
+      <article class="icon-feature card acl-card-canvas acl-pillar-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="heading-sm">Query-Time Enforcement</h3>
+        <p>Access policies run inside the SQL execution, not after. The database itself returns only authorized rows &mdash; Quaeris adds no separate layer, no post-processing cache. The source of truth is the warehouse.</p>
+        <a href="/platform/warehouse" class="btn-ghost">Warehouse-native architecture</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.4 HOW IT WORKS — dark feature section.
+     Reuses .dark-feature-grid / .value-prop-* / .metric-dashboard;
+     port as NEW: AccessControlDashboard (MetricDashboardMock variant).
+     ============================================================ -->
+<section id="how-it-works" class="section-pad acl-dark" aria-labelledby="how-heading">
+  <div class="dark-feature-glow" aria-hidden="true"></div>
+  <div class="container" style="position: relative; z-index: 1;">
+    <div class="section-header section-header-dark reveal">
+      <span class="eyebrow">Access at every step</span>
+      <h2 id="how-heading" class="display-lg">From question to governed answer, without a bypass.</h2>
+      <p class="body-lg subcopy">When a user submits a question, the agent runs a six-step pipeline. At each step, role-based access checks ensure data never escapes the user&rsquo;s permission boundary.</p>
+    </div>
+
+    <div class="dark-feature-grid" style="margin-top: var(--space-7);">
+      <!-- Left: six process steps -->
+      <ol class="value-prop-list acl-steps reveal" style="margin-top: 0;">
+        <li class="value-prop-row">
+          <span class="value-prop-num" aria-hidden="true">01</span>
+          <span class="acl-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg></span>
+          <div class="value-prop-text">
+            <h3>User Authentication</h3>
+            <p>Verify the user&rsquo;s identity and load their assigned roles.</p>
+          </div>
+        </li>
+        <li class="value-prop-row">
+          <span class="value-prop-num" aria-hidden="true">02</span>
+          <span class="acl-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          <div class="value-prop-text">
+            <h3>Question Parsing</h3>
+            <p>Interpret the question into a semantic layer query.</p>
+          </div>
+        </li>
+        <li class="value-prop-row">
+          <span class="value-prop-num" aria-hidden="true">03</span>
+          <span class="acl-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+          <div class="value-prop-text">
+            <h3>Access Policy Evaluation</h3>
+            <p>Query the role definitions and row/column filters for this user.</p>
+          </div>
+        </li>
+        <li class="value-prop-row">
+          <span class="value-prop-num" aria-hidden="true">04</span>
+          <span class="acl-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <div class="value-prop-text">
+            <h3>Governed SQL Generation</h3>
+            <p>Build the SQL with WHERE and SELECT clauses restricted to permitted data.</p>
+          </div>
+        </li>
+        <li class="value-prop-row">
+          <span class="value-prop-num" aria-hidden="true">05</span>
+          <span class="acl-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg></span>
+          <div class="value-prop-text">
+            <h3>Warehouse Execution</h3>
+            <p>Run the SQL against your database &mdash; the warehouse is the enforcement point.</p>
+          </div>
+        </li>
+        <li class="value-prop-row">
+          <span class="value-prop-num" aria-hidden="true">06</span>
+          <span class="acl-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></span>
+          <div class="value-prop-text">
+            <h3>Answer Audit Log</h3>
+            <p>Log the question, the user, the SQL, and the result set to the governance record.</p>
+          </div>
+        </li>
+      </ol>
+
+      <!-- Right: access-scoped dashboard mock (illustrative — no real data) -->
+      <div class="metric-dashboard reveal" data-placeholder>
+        <div class="metric-dashboard-header">
+          <span style="font-family: var(--font-display); font-size: 16px; font-weight: var(--weight-display); color: var(--text-on-dark);">Quaeris &mdash; Governed query</span>
+          <span class="badge badge-accent acl-role-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Region: East Coast, Department: Sales
+          </span>
+        </div>
+        <p class="acl-query-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          &ldquo;What is revenue by product?&rdquo;
+        </p>
+        <table class="acl-result-table">
+          <caption class="sr-only">Illustrative governed query result: rows filtered to the user&rsquo;s region, margin column masked by role</caption>
+          <thead>
+            <tr><th scope="col">Product</th><th scope="col">Revenue</th><th scope="col">Units</th><th scope="col">Margin</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alpha Suite</td><td>$1.2M</td><td>480</td>
+              <td><span class="acl-cell-masked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>Masked</span></td>
+            </tr>
+            <tr>
+              <td>Beta Platform</td><td>$940K</td><td>352</td>
+              <td><span class="acl-cell-masked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>Masked</span></td>
+            </tr>
+            <tr>
+              <td>Gamma API</td><td>$610K</td><td>214</td>
+              <td><span class="acl-cell-masked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>Masked</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="acl-rows-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          3 of 12 rows visible for this role &middot; Margin column masked
+        </p>
+        <p class="chart-caption">Access is scoped in real-time &mdash; the answer only contains rows and columns the user can access.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 COMPARISON — NEW component: AccessControlComparison
+     Plain feature-matrix table (SEO: feature matrices win snippets).
+     ============================================================ -->
+<section id="comparison" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="comparison-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <h2 id="comparison-heading" class="display-lg">Quaeris vs. traditional BI + AI</h2>
+    </div>
+
+    <div class="acl-compare-wrap reveal">
+      <table class="acl-compare">
+        <caption class="sr-only">Access control capability comparison between Quaeris, traditional BI tools, and ungoverned AI agents</caption>
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col" class="acl-compare-hero">
+              <span class="acl-compare-col">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                Quaeris (Governed Agent)
+              </span>
+            </th>
+            <th scope="col">
+              <span class="acl-compare-col acl-compare-col-muted">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                Traditional BI Tool
+              </span>
+            </th>
+            <th scope="col">
+              <span class="acl-compare-col acl-compare-col-muted">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Ungoverned AI Agent
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Row-Level Security</th>
+            <td class="acl-compare-hero"><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Enforced at query time</span></span></td>
+            <td><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Enforced in UI; bypassable via export</span></span></td>
+            <td><span class="acl-mark acl-mark-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span><span class="sr-only">No &mdash; </span>Not enforced</span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">Column-Level Masking</th>
+            <td class="acl-compare-hero"><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Masked before agent sees data</span></span></td>
+            <td><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Enforced in UI; bypassable via export</span></span></td>
+            <td><span class="acl-mark acl-mark-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span><span class="sr-only">No &mdash; </span>Not enforced</span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">Warehouse-Native</th>
+            <td class="acl-compare-hero"><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Runs inside warehouse; no data copy</span></span></td>
+            <td>&#10003; or &#10007; (depends on cloud BI)</td>
+            <td><span class="acl-mark acl-mark-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span><span class="sr-only">No &mdash; </span>Usually cached or federated</span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">Audit Trail for Queries</th>
+            <td class="acl-compare-hero"><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Every question, user, SQL, result logged</span></span></td>
+            <td><span class="acl-mark acl-mark-partial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span><span class="sr-only">Partial &mdash; </span>Partial; dashboard views only</span></span></td>
+            <td><span class="acl-mark acl-mark-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span><span class="sr-only">No &mdash; </span>Often no query-level audit</span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">Role Inheritance</th>
+            <td class="acl-compare-hero"><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Uses warehouse roles directly</span></span></td>
+            <td>&#10003; or &#126; (depends on connector)</td>
+            <td><span class="acl-mark acl-mark-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span><span class="sr-only">No &mdash; </span>Separate access model</span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">Access Policy as Code</th>
+            <td class="acl-compare-hero"><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Defined once, enforced everywhere</span></span></td>
+            <td><span class="acl-mark acl-mark-partial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span><span class="sr-only">Partial &mdash; </span>Per-tool policies</span></span></td>
+            <td><span class="acl-mark acl-mark-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span><span class="sr-only">No &mdash; </span>No policy layer</span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">Can Bypass by Exporting?</th>
+            <td class="acl-compare-hero"><span class="acl-mark acl-mark-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span><span class="sr-only">No &mdash; </span>Export respects filters</span></span></td>
+            <td><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Exports bypass filters</span></span></td>
+            <td><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>No enforcement on export</span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">Multi-Warehouse Support</th>
+            <td class="acl-compare-hero"><span class="acl-mark acl-mark-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><span class="sr-only">Yes &mdash; </span>Works across Snowflake, BigQuery, Databricks, Redshift, Synapse</span></span></td>
+            <td><span class="acl-mark acl-mark-partial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span><span class="sr-only">Partial &mdash; </span>Usually single warehouse vendor</span></span></td>
+            <td><span class="acl-mark acl-mark-partial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span><span class="sr-only">Partial &mdash; </span>Usually single vendor</span></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="acl-compare-note reveal">Note: Checkmarks and X marks based on architecture. Traditional BI includes Power BI, Tableau, Looker. Ungoverned AI includes ChatGPT + BI, generic text-to-SQL tools.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.6 USE CASES — "Who benefits"
+     Reuses .case-study-grid / .case-study-card / .industry-chip /
+     .icon-box; port as AccessControlUseCases (SegmentCards variant).
+     ============================================================ -->
+<section id="use-cases" class="section-pad" aria-labelledby="usecases-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2 id="usecases-heading" class="display-lg">Who benefits</h2>
+    </div>
+
+    <div class="case-study-grid">
+      <article class="case-study-card acl-card-canvas reveal">
+        <div class="acl-usecase-head">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+          </div>
+          <span class="industry-chip">Financial Services</span>
+        </div>
+        <h3 class="heading-sm">Enforced data residency for regulated analytics</h3>
+        <p class="cs-outcome">Traders see positions; risk managers see exposures by desk; compliance sees audit logs. Row-level access per trader ID, column masking on pricing/PnL. EU regulators require audit trails for every access &mdash; Quaeris logs every agent query.</p>
+        <ul class="acl-outcome-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Row filtering by trader/desk</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Column masking on sensitive pricing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Automated compliance audit trail</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Multi-currency dataset access per role</li>
+        </ul>
+      </article>
+
+      <!-- HIPAA compliance certification deliberately NOT asserted here — gate behind /trust once earned (per spec §3.6 + §4.1). -->
+      <article class="case-study-card acl-card-canvas reveal">
+        <div class="acl-usecase-head">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          </div>
+          <span class="industry-chip">Healthcare / Life Sciences</span>
+        </div>
+        <h3 class="heading-sm">Patient data privacy with self-serve analytics</h3>
+        <p class="cs-outcome">Analysts can ask questions about patient cohorts without seeing PII. Identifier masking (names, MRNs) is delegated to warehouse-native controls (e.g., Snowflake Dynamic Data Masking, BigQuery Column-Level Security). Researchers access de-identified datasets; clinical teams see full records. All queries are logged.</p>
+        <ul class="acl-outcome-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>De-identification masking by role</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Cohort analysis without PII exposure</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Warehouse-delegated identifier masking</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Multi-site access control</li>
+        </ul>
+      </article>
+
+      <article class="case-study-card acl-card-canvas reveal">
+        <div class="acl-usecase-head">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg>
+          </div>
+          <span class="industry-chip">Retail / CPG</span>
+        </div>
+        <h3 class="heading-sm">Competitive visibility without exposure</h3>
+        <p class="cs-outcome">Regional managers see their region&rsquo;s data; competitors (or external partners) in the same warehouse see only anonymized benchmarks. Product pricing hidden from suppliers. SKU-level access control per partner.</p>
+        <ul class="acl-outcome-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Partner-level row isolation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Column masking on proprietary pricing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Cross-customer analytics without data leakage</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Automated access provisioning per role</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.7 FEATURE DEEP-DIVE — reuse FeatureRow.tsx (×2, alternating)
+     ============================================================ -->
+<section id="implementation" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="impl-heading">
+  <div class="container">
+    <div class="section-header methodology-header reveal">
+      <h2 id="impl-heading" class="display-lg">Implementation details</h2>
+    </div>
+
+    <div class="feature-rows-list">
+      <!-- Row 1: Role definitions — text left / visual right -->
+      <div class="feature-row">
+        <div class="feature-row-text reveal">
+          <span class="eyebrow feature-row-eyebrow">Role definitions: from warehouse to agent</span>
+          <h3 class="display-md feature-row-heading">Your roles define access, not ours.</h3>
+          <p class="body-md feature-row-body">Quaeris reads role definitions directly from your warehouse (Snowflake, BigQuery, Databricks). You don&rsquo;t need to replicate roles in a Quaeris admin panel. If a user is granted read access to a table in Snowflake, Quaeris sees that and enforces it. Role changes sync automatically &mdash; no manual reconciliation.</p>
+          <a href="/platform/warehouse" class="btn-ghost">See integrations</a>
+        </div>
+        <div class="feature-row-visual reveal">
+          <figure class="acl-flow-frame">
+            <div class="acl-pipeline acl-pipeline-light" aria-hidden="true">
+              <div class="acl-pipe-node">
+                <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg></span>
+                <span class="acl-pipe-label">Warehouse roles</span>
+              </div>
+              <span class="acl-pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+              <div class="acl-pipe-node acl-pipe-gate">
+                <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+                <span class="acl-pipe-label">Quaeris role resolver</span>
+              </div>
+              <span class="acl-pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+              <div class="acl-pipe-node">
+                <span class="acl-pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <span class="acl-pipe-label">Agent execution</span>
+              </div>
+            </div>
+            <figcaption class="sr-only">Flow diagram: warehouse roles feed the Quaeris role resolver, which governs agent execution. Role changes in the warehouse sync to the agent automatically.</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Row 2: Policy → SQL — visual left / text right -->
+      <div class="feature-row feature-row-flip">
+        <div class="feature-row-text reveal">
+          <span class="eyebrow feature-row-eyebrow">From policy to SQL: access control translation</span>
+          <h3 class="display-md feature-row-heading">Access control becomes WHERE clauses.</h3>
+          <p class="body-md feature-row-body">Behind the scenes, Quaeris translates a user&rsquo;s role permissions into SQL WHERE and SELECT restrictions. A sales analyst&rsquo;s query becomes <code class="acl-code-inline">... WHERE region = 'US-East' AND visibility &gt;= user_role_level ...</code>. The database executes the restricted query, not Quaeris &mdash; the warehouse is the enforcement point. You can audit the SQL directly.</p>
+          <a href="/platform/audit" class="btn-ghost">Audit trail deep-dive</a>
+        </div>
+        <div class="feature-row-visual reveal">
+          <div class="acl-code-pair">
+            <div class="acl-code-card" data-placeholder>
+              <span class="acl-code-label">Role definition</span>
+              <pre class="acl-code">role: sales_analyst
+region: US-East
+tables: sales, products
+masked_columns: margin, cost</pre>
+            </div>
+            <div class="acl-code-card">
+              <span class="acl-code-label">Governed SQL</span>
+              <pre class="acl-code">SELECT revenue FROM sales
+WHERE salesperson_id = $user_id
+  AND region IN (
+    SELECT region FROM roles
+    WHERE role = $user_role)</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.8 FAQ — reuse FAQSection / Accordion classes
+     (native <details> stands in for Radix Accordion in the mockup)
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-grid">
+      <!-- Left: section header + mini card -->
+      <div>
+        <div class="section-header reveal">
+          <span class="eyebrow">FAQ</span>
+          <h2 id="faq-heading" class="display-lg">Common access control questions</h2>
+        </div>
+        <div class="faq-mini-card reveal" data-placeholder>
+          <h3 class="heading-sm">Want to see it on your warehouse?</h3>
+          <p>Bring one role-sensitive question to a 30-minute demo &mdash; we&rsquo;ll show row and column enforcement live, under different user roles.</p>
+          <a href="/contact" class="btn btn-secondary" style="font-size: 14px; padding: 10px 22px;">Book a Demo</a>
+        </div>
+      </div>
+
+      <!-- Right: accordion -->
+      <div class="accordion reveal">
+        <details class="accordion-item acl-faq" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Does SSO handle access control?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content"><p class="acl-faq-answer">SSO (via Okta, Azure AD, etc.) authenticates the user &mdash; it confirms they are who they claim to be. Quaeris uses that SSO identity to load their roles from your warehouse and enforces access based on those roles. SSO is the identity layer; warehouse roles are the permission layer. Both are required.</p></div>
+        </details>
+        <details class="accordion-item acl-faq">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can users bypass row-level security by changing a question?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content"><p class="acl-faq-answer">No. Regardless of how a user phrases a question &mdash; &lsquo;Show me all revenue&rsquo;, &lsquo;Give me every product&rsquo;, &lsquo;I want the full table&rsquo; &mdash; the access controls run at query execution. The warehouse only returns authorized rows. The agent doesn&rsquo;t generate unrestricted queries.</p></div>
+        </details>
+        <details class="accordion-item acl-faq">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What happens if a user asks for data they can&rsquo;t access?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content"><p class="acl-faq-answer">The agent runs the query, the warehouse returns zero rows (the question is answered truthfully: &lsquo;no data available&rsquo;). The access denial is logged. The user doesn&rsquo;t see an error; they get a clear message: &lsquo;This dataset is not available for your role.&rsquo;</p></div>
+        </details>
+        <details class="accordion-item acl-faq">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Do you support attribute-based access control (ABAC)?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content"><p class="acl-faq-answer">Yes. If your warehouse supports ABAC policies (like Snowflake&rsquo;s Dynamic Data Masking or BigQuery&rsquo;s column-level access controls), Quaeris enforces them. You define policies in your warehouse; Quaeris respects them. We support any access model your warehouse supports.</p></div>
+        </details>
+        <details class="accordion-item acl-faq">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How often are role definitions synced?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content"><p class="acl-faq-answer">On every query. The agent loads the user&rsquo;s current roles from your warehouse identity layer at execution time. If a user&rsquo;s role changes, the next query they run will respect the new permissions &mdash; no delay.</p></div>
+        </details>
+        <details class="accordion-item acl-faq">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can you mask PII without warehouse support?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content"><p class="acl-faq-answer">Quaeris delegates PII masking to your warehouse (Snowflake Dynamic Data Masking, BigQuery Column-Level Security, etc.). We don&rsquo;t add a separate masking layer &mdash; the warehouse is the source of truth. If you need masking on a platform that doesn&rsquo;t support it, we can discuss custom integration.</p></div>
+        </details>
+        <details class="accordion-item acl-faq">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What does your audit trail log?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content"><p class="acl-faq-answer">Everything: the user&rsquo;s identity, the question they asked, the roles they held at that moment, the SQL generated, the result set size, the rows returned, and timestamps. You can export this to your SIEM or compliance system.</p></div>
+        </details>
+        <details class="accordion-item acl-faq">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How is this different from BI row-level security (RLS)?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content"><p class="acl-faq-answer">BI RLS is typically UI-level filtering &mdash; users see a dashboard with a filter applied. If they export the data or access the underlying database, the RLS doesn&rsquo;t apply. Quaeris enforces access at the query execution layer inside your warehouse. The database itself returns only authorized rows &mdash; no bypass path.</p></div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.9 CTA BAND — reuse CTABand.tsx (spec calls for gradient primary,
+     so .btn-primary replaces the home band's .btn-on-dark)
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to see it work?</span>
+      <h2 id="cta-heading" class="display-lg">Watch access controls in action.</h2>
+      <p class="body-lg subcopy">We&rsquo;ll walk through your warehouse setup, show how role definitions translate to governed queries, and let you ask questions under different user roles. 30 minutes, no sales pitch.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Book a demo</a>
+        <a href="/resources" class="btn btn-secondary-dark">Read the guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.10 NEWSLETTER — reuse NewsletterBlock.tsx (copy from brand config)
+     ============================================================ -->
+<div id="newsletter" class="newsletter-block" role="complementary" aria-label="Newsletter signup">
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <span class="eyebrow">The Governed Analytics Brief</span>
+      <h3>Weekly insights on trustworthy enterprise analytics.</h3>
+      <p>No generic AI hype. One practical read on governed analytics, semantic layers, and agentic AI &mdash; every Thursday.</p>
+      <form class="newsletter-form" novalidate aria-label="Newsletter signup form">
+        <label for="newsletter-email" class="sr-only">Email address</label>
+        <input type="email" id="newsletter-email" class="newsletter-input" placeholder="you@company.com" required autocomplete="email" />
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+      <p class="newsletter-consent">No spam. Unsubscribe any time. We handle your data per our <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: underline;">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+</body>
+</html>

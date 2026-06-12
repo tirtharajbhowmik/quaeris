@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/warehouse — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- ============================================================
+     MOCKUP — /platform/warehouse ("Warehouse-Native" slot in the /platform mega-menu)
+     Spec: docs/page-specs/platform-warehouse.md (2026-06-12, Implementation Ready)
+     SEO at port time:
+       <title> Warehouse-Native AI Analytics | Quaeris
+       meta description: Quaeris runs directly on Snowflake, BigQuery, or Databricks.
+       Your data never leaves your environment. Enterprise-grade governance, zero data copy.
+     Section order: Hero → Problem/Solution → Architecture (NEW) → Connectors →
+       Compliance (NEW) → Deployment models (NEW) → Audit dashboard → FAQ → CTA band → Newsletter
+     ============================================================ -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time. Token-driven, brand-agnostic.
+   Page-area prefix: whse- (/platform/warehouse). */
+
+/* --- Hero: two-column HeroHome variant (text left, warehouse-stack diagram right) --- */
+.whse-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--space-9);
+  align-items: center;
+  padding: var(--space-8) 0 var(--space-9);
+}
+
+/* --- Stack diagram (shared by hero visual + WarehouseArchitectureDiagram) --- */
+.whse-stack { display: flex; flex-direction: column; gap: var(--space-3); }
+.whse-stack-layer {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-4) var(--space-5);
+}
+.whse-stack-base { background: var(--brand-accent-soft); border-color: var(--brand-accent-glow); }
+/* Layer numbers reuse .value-prop-num (existing numbered-index pattern) — no new class. */
+.whse-stack-title { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+.whse-stack-desc  { font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin-top: var(--space-1); }
+.whse-stack-note  { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; margin-top: var(--space-2); }
+.whse-stack-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.whse-stack-arrow svg { width: 14px; height: 14px; }
+.whse-chiprow { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+
+/* --- NEW:WarehouseArchitectureDiagram --- */
+.whse-arch-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+  margin-top: var(--space-8);
+}
+.whse-arch-side { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* --- Check bullet list (connector cards, deployment cards, audit callout) --- */
+.whse-check-list { display: flex; flex-direction: column; gap: var(--space-2); }
+.whse-check-list li {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.whse-check-list svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--brand-accent); margin-top: var(--space-1); }
+.segment-card .whse-check-list { flex: 1; }
+
+/* --- Connectors: SegmentCards at 3-up for the six warehouse cards --- */
+.segment-cards-grid.whse-connectors-grid { grid-template-columns: repeat(3, 1fr); }
+.whse-card-cta { margin-top: var(--space-2); font-size: 14px; }
+
+/* --- NEW:ComplianceMatrix --- */
+/* Two-column shell reuses .faq-grid (1fr 1.6fr, gap space-9, align-items start) — no new class. */
+.whse-compliance-list { display: flex; flex-direction: column; gap: var(--space-7); }
+.whse-compliance-item { display: grid; grid-template-columns: auto 1fr; gap: var(--space-5); align-items: start; }
+.whse-compliance-item h3 { margin-bottom: var(--space-2); color: var(--text-primary); }
+.whse-compliance-item p { color: var(--text-secondary); }
+
+/* --- NEW:DeploymentModelComparison --- */
+/* 3-up shell reuses .case-study-grid (repeat(3,1fr), gap space-6, margin-top space-8,
+   equal-height children, 2-col @1024 / 1-col @640) — no new class. */
+.whse-deploy-card { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-7) var(--space-6); }
+.whse-deploy-icons { display: flex; gap: var(--space-3); }
+.whse-deploy-who { margin-top: auto; border-top: 1px solid var(--border-subtle); padding-top: var(--space-4); }
+.whse-deploy-who p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.whse-deploy-note { margin-top: var(--space-7); max-width: 68ch; }
+
+/* --- Audit section (MetricDashboardMock beside copy + lavender callout) --- */
+.whse-audit-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+/* Box shell (border-subtle + radius-lg + padding space-6) comes from .card —
+   modifier only adds the lavender bg + stacked layout. */
+.whse-callout {
+  background: var(--bg-warm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.whse-callout-head { display: flex; gap: var(--space-4); align-items: center; }
+
+/* --- Responsive (new classes only) --- */
+@media (max-width: 768px) {
+  .whse-hero-grid,
+  .whse-arch-grid,
+  .whse-audit-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+  .segment-cards-grid.whse-connectors-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .segment-cards-grid.whse-connectors-grid { grid-template-columns: 1fr; }
+}
+
+/* Mockup-only — DO NOT PORT: <details>/<summary> stands in for the Radix Accordion
+   (Accordion.tsx provides triggers/animation in-app). */
+summary.accordion-trigger { list-style: none; }
+summary.accordion-trigger::-webkit-details-marker { display: none; }
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     SECTION 01 · HERO — reuse HeroHome pattern (two-column variant
+     with architecture mini-diagram + trust badges). FloatingPaths
+     background + scrim come from HeroHome at port time.
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container">
+    <div class="whse-hero-grid">
+      <div class="hero-inner">
+        <span class="eyebrow" style="color: var(--brand-accent);">Security &amp; Control</span>
+        <h1 id="hero-heading" class="hero-h1">Your data stays where it belongs.</h1>
+        <p class="subcopy body-lg">
+          Quaeris is warehouse-native. No data copy. No cache layer. No exfiltration risk.
+          Agents query your Snowflake, BigQuery, Databricks, or Redshift in place — with
+          row-level security enforced. Every query runs in your environment. Every result
+          stays governed.
+        </p>
+        <div class="hero-buttons">
+          <a href="#architecture" class="btn btn-primary">See the architecture</a>
+          <a href="#deployment-models" class="btn btn-secondary">Compare deployment models</a>
+        </div>
+        <div class="trust-badges" aria-label="Trust badges">
+          <span class="badge badge-accent" style="gap: var(--space-1);">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            Zero data egress
+          </span>
+          <span class="badge badge-accent" style="gap: var(--space-1);">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Role-based enforcement
+          </span>
+          <span class="badge badge-accent" style="gap: var(--space-1);">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            Full residency control
+          </span>
+        </div>
+      </div>
+
+      <!-- Hero visual: agent layer sits ON TOP of the warehouse — "native" made visible -->
+      <div class="whse-stack reveal">
+        <div class="whse-stack-layer">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+          </span>
+          <div>
+            <p class="whse-stack-title" data-placeholder>Quaeris query agents</p>
+            <p class="whse-stack-desc">Plain-language question → governed answer with sources and audit trail.</p>
+          </div>
+        </div>
+        <p class="whse-stack-arrow" aria-hidden="true" data-placeholder>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+          Queries run in place
+        </p>
+        <div class="whse-stack-layer whse-stack-base">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          </span>
+          <div>
+            <p class="whse-stack-title">Your warehouse</p>
+            <p class="whse-stack-desc" data-placeholder>Row-level security enforced. Zero data egress.</p>
+            <div class="whse-chiprow">
+              <span class="badge">Snowflake</span>
+              <span class="badge">BigQuery</span>
+              <span class="badge">Databricks</span>
+              <span class="badge">Redshift</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 02 · THE PROBLEM — reuse ProblemSolutionCards
+     (.ps-grid / .ps-card / .ps-fix-box) as two problem→solution pairs.
+     ============================================================ -->
+<section id="deployment-risks" class="section-pad" aria-labelledby="risks-heading" style="background: var(--bg-canvas);">
+  <div class="container">
+    <div class="section-header center reveal" data-placeholder>
+      <span class="eyebrow">The problem</span>
+      <h2 id="risks-heading" class="display-lg">Most analytics vendors move your data. That&rsquo;s the risk.</h2>
+    </div>
+
+    <div class="ps-grid" role="list">
+      <article class="ps-card reveal" role="listitem">
+        <span class="ps-index" aria-hidden="true">01</span>
+        <div class="ps-problem">
+          <h3 class="display-md" style="margin-bottom: var(--space-3);">SaaS analytics moves your data to the cloud.</h3>
+          <p class="body-md" style="color: var(--text-secondary);">
+            Typical BI vendors copy your warehouse to their infrastructure — &ldquo;for
+            performance.&rdquo; That copy is a compliance liability: data residency violations,
+            audit log gaps, third-party exposure.
+          </p>
+        </div>
+        <div class="ps-fix-box" aria-label="The fix">
+          <span class="ps-fix-label eyebrow">The fix</span>
+          <h4 class="heading-sm">Warehouse-native keeps your data locked in place.</h4>
+          <p class="body-md ps-fix-body">
+            No copy. No cloud sync. Quaeris connects directly to your warehouse and executes
+            queries <em>in silo</em>. Your data never crosses a network boundary to Quaeris
+            infrastructure.
+          </p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal" role="listitem">
+        <span class="ps-index" aria-hidden="true">02</span>
+        <div class="ps-problem">
+          <h3 class="display-md" style="margin-bottom: var(--space-3);">Multi-tenant vendors blur account boundaries.</h3>
+          <p class="body-md" style="color: var(--text-secondary);">
+            Shared infrastructure creates cross-tenant risks. Query isolation is app-level, not
+            infrastructure-level. One SQL injection in another tenant&rsquo;s query potentially
+            exposes your data.
+          </p>
+        </div>
+        <div class="ps-fix-box" aria-label="The fix">
+          <span class="ps-fix-label eyebrow">The fix</span>
+          <h4 class="heading-sm">Single-tenant deployment per customer.</h4>
+          <p class="body-md ps-fix-body">
+            Your agents, your semantic layer, your query execution — all isolated in your
+            environment. No shared infrastructure. No cross-customer blast radius.
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 03 · THE ARCHITECTURE — NEW:WarehouseArchitectureDiagram
+     Four-layer stack (warehouse at the base, agents on top) +
+     compliance callouts on the right.
+     ============================================================ -->
+<section id="architecture" class="section-pad" aria-labelledby="architecture-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The architecture</span>
+      <h2 id="architecture-heading" class="display-lg">The warehouse-native stack.</h2>
+    </div>
+
+    <div class="whse-arch-grid">
+      <!-- Four layers, base at the bottom; arrows show queries flowing up from the warehouse -->
+      <div class="whse-stack reveal">
+        <div class="whse-stack-layer">
+          <span class="value-prop-num" aria-hidden="true">04</span>
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+          </span>
+          <div>
+            <p class="whse-stack-title">Query Agents &amp; Audit</p>
+            <p class="whse-stack-desc">Plain-language query → agent reasoning → result + sources. Audit trail.</p>
+            <p class="whse-stack-note">Agents run in your environment or behind your firewall.</p>
+          </div>
+        </div>
+        <p class="whse-stack-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+          Governed results up
+        </p>
+        <div class="whse-stack-layer">
+          <span class="value-prop-num" aria-hidden="true">03</span>
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+          </span>
+          <div>
+            <p class="whse-stack-title">Governed Semantic Layer</p>
+            <p class="whse-stack-desc">Metric definitions. Business rules. Ownership. Enforced row-level security.</p>
+            <p class="whse-stack-note">Lives in your warehouse (e.g., Snowflake Native App) or your VPC.</p>
+          </div>
+        </div>
+        <p class="whse-stack-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+          Direct SQL up
+        </p>
+        <div class="whse-stack-layer">
+          <span class="value-prop-num" aria-hidden="true">02</span>
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>
+          </span>
+          <div>
+            <p class="whse-stack-title">Quaeris Warehouse Connector</p>
+            <p class="whse-stack-desc">Native connector for your warehouse. Direct SQL execution. Zero copy.</p>
+          </div>
+        </div>
+        <p class="whse-stack-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+          Queries in place
+        </p>
+        <div class="whse-stack-layer whse-stack-base">
+          <span class="value-prop-num" aria-hidden="true">01</span>
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          </span>
+          <div>
+            <p class="whse-stack-title">Your Warehouse</p>
+            <p class="whse-stack-desc">Snowflake, BigQuery, Databricks, Synapse, Redshift.</p>
+            <p class="whse-stack-note">Your system of record. Where your data lives. Unchanged.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: per-layer compliance callouts -->
+      <div class="whse-arch-side">
+        <article class="card reveal">
+          <span class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          </span>
+          <h3 class="heading-sm" style="margin-bottom: var(--space-2);">GDPR-compliant</h3>
+          <p class="body-sm" style="color: var(--text-secondary);">Data in EU, agents in EU.</p>
+        </article>
+        <article class="card reveal">
+          <span class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+          </span>
+          <h3 class="heading-sm" style="margin-bottom: var(--space-2);">SOX audit-ready</h3>
+          <p class="body-sm" style="color: var(--text-secondary);">Query execution logged, immutable trail.</p>
+        </article>
+        <article class="card reveal">
+          <span class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <h3 class="heading-sm" style="margin-bottom: var(--space-2);">Data residency enforced</h3>
+          <p class="body-sm" style="color: var(--text-secondary);">No copy, no shared infrastructure.</p>
+        </article>
+      </div>
+    </div>
+
+    <p class="body-lg reveal" style="color: var(--text-primary); max-width: 68ch; margin-top: var(--space-7);">
+      Warehouse-native isn&rsquo;t a marketing phrase—it&rsquo;s an architecture. Quaeris connects
+      directly to your existing warehouse and executes every query in place. The semantic layer
+      can live in-warehouse (as a Snowflake Native App, for example) or in your private cloud.
+      Agents run in your environment or behind your firewall. Your data never lands on Quaeris
+      infrastructure.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 04 · SUPPORTED WAREHOUSES & CONNECTORS — reuse SegmentCards
+     (.segment-card) at 3-up via .whse-connectors-grid modifier.
+     ============================================================ -->
+<section id="connectors" class="section-pad" aria-labelledby="connectors-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Supported warehouses</span>
+      <h2 id="connectors-heading" class="display-lg">Supported warehouses &amp; connectors.</h2>
+      <p class="body-lg subcopy" style="color: var(--text-secondary);" data-placeholder>
+        Quaeris doesn&rsquo;t lock you to one warehouse vendor — connect to where your data already lives.
+      </p>
+    </div>
+
+    <div class="segment-cards-grid whse-connectors-grid" role="list">
+
+      <a href="/integrations/snowflake" class="segment-card reveal" role="listitem" aria-label="Snowflake — see integration details">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Snowflake</h3>
+        <ul class="whse-check-list">
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Native App or direct connector</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Row-level security &amp; column masking</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Supports Snowflake Data Sharing</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Queries Iceberg tables natively</li>
+        </ul>
+        <span class="btn-ghost whse-card-cta">See Snowflake integration details</span>
+      </a>
+
+      <a href="/integrations/bigquery" class="segment-card reveal" role="listitem" aria-label="BigQuery — see integration details">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">BigQuery</h3>
+        <ul class="whse-check-list">
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Direct API connector</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Authorized Views &amp; column-level masking</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Cloud DLP integration</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>BigLake support for data lake</li>
+        </ul>
+        <span class="btn-ghost whse-card-cta">See BigQuery integration details</span>
+      </a>
+
+      <a href="/integrations/databricks" class="segment-card reveal" role="listitem" aria-label="Databricks — see integration details">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Databricks</h3>
+        <ul class="whse-check-list">
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Unity Catalog integration</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Row-level access control</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>AI/BI Genie alternative</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Supports Delta Lake + Unity tables</li>
+        </ul>
+        <span class="btn-ghost whse-card-cta">See Databricks integration details</span>
+      </a>
+
+      <a href="/integrations/redshift" class="segment-card reveal" role="listitem" aria-label="Redshift — see integration details">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Redshift</h3>
+        <ul class="whse-check-list">
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Direct SQL connector</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>RLS &amp; dynamic masking</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Spectrum external tables supported</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Federated query compatible</li>
+        </ul>
+        <span class="btn-ghost whse-card-cta">See Redshift integration details</span>
+      </a>
+
+      <a href="/integrations/synapse" class="segment-card reveal" role="listitem" aria-label="Azure Synapse — see integration details">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Azure Synapse</h3>
+        <ul class="whse-check-list">
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>T-SQL native connector</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Row-level security &amp; column encryption</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Private endpoints supported</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Dedicated SQL pool optimized</li>
+        </ul>
+        <span class="btn-ghost whse-card-cta">See Synapse integration details</span>
+      </a>
+
+      <a href="/contact" class="segment-card reveal" role="listitem" aria-label="Your warehouse? Discuss custom integration" data-placeholder>
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Your warehouse?</h3>
+        <p class="body-sm segment-desc" style="flex: 0;">Contact our team</p>
+        <ul class="whse-check-list">
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Custom connectors available</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>PostgreSQL, MySQL, Oracle on roadmap</li>
+        </ul>
+        <span class="btn-ghost whse-card-cta">Discuss custom integration</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 05 · DATA RESIDENCY & COMPLIANCE — NEW:ComplianceMatrix
+     Two-column: sticky-feel H2 left, four icon + text blocks right.
+     ============================================================ -->
+<section id="compliance" class="section-pad" aria-labelledby="compliance-heading" style="background: var(--bg-canvas);">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="section-header reveal">
+        <span class="eyebrow">Data residency &amp; compliance</span>
+        <h2 id="compliance-heading" class="display-lg">Data stays in your hands.</h2>
+      </div>
+
+      <div class="whse-compliance-list">
+        <article class="whse-compliance-item reveal">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          </span>
+          <div>
+            <h3 class="heading-sm">GDPR &amp; EU Data Residency</h3>
+            <p class="body-md">
+              European regulations require personal data to stay within EU borders. Quaeris is
+              warehouse-native, so your EU data stays on your EU warehouse instance — no data
+              transfer to US servers. Your semantic layer can be deployed in your EU VPC or on a
+              Snowflake Europe account. Agents run in-region. Audit trails stay in-region.
+            </p>
+            <a href="#" class="btn btn-ghost" data-placeholder>SOC 2 &amp; GDPR certification</a>
+          </div>
+        </article>
+
+        <article class="whse-compliance-item reveal">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
+          </span>
+          <div>
+            <h3 class="heading-sm">HIPAA &amp; Healthcare Data Protection</h3>
+            <p class="body-md">
+              HIPAA-covered entities must maintain tight access logs and audit trails. Quaeris
+              logs every query, every agent step, and every answer at the warehouse level —
+              immutable, in-place. No data copy means no secondary handling; no secondary
+              handling means lower breach risk and simpler audit trails.
+            </p>
+            <a href="#" class="btn btn-ghost" data-placeholder>HIPAA-eligible infrastructure list</a>
+          </div>
+        </article>
+
+        <article class="whse-compliance-item reveal">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+          </span>
+          <div>
+            <h3 class="heading-sm">SOX Compliance &amp; Financial Audit</h3>
+            <p class="body-md">
+              SOX auditors demand proof that financial queries are governed and their results are
+              audited. Quaeris&rsquo;s audit trail is a first-class citizen: every question, every
+              agent reasoning step, every metric definition applied — all logged. The log is
+              immutable (warehouse-level) and can be exported for SOX reviews without
+              reconstructing query history.
+            </p>
+            <a href="#" class="btn btn-ghost" data-placeholder>SOX audit playbook</a>
+          </div>
+        </article>
+
+        <article class="whse-compliance-item reveal">
+          <span class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <div>
+            <h3 class="heading-sm">Data Residency for Regulated Industries</h3>
+            <p class="body-md">
+              Some contracts forbid data transfer to third parties. Others require data to stay
+              within a specific geography or cloud. Warehouse-native architecture solves this:
+              Quaeris is a query layer, not a data layer. Deploy it behind your firewall, in your
+              private cloud, or on your warehouse&rsquo;s private endpoint. Data residency becomes
+              a deployment choice, not a product limitation.
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 06 · DEPLOYMENT MODELS — NEW:DeploymentModelComparison
+     Three-column card comparison. Anchor target of the hero's
+     secondary CTA (#deployment-models).
+     ============================================================ -->
+<section id="deployment-models" class="section-pad" aria-labelledby="deploy-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Deployment models</span>
+      <h2 id="deploy-heading" class="display-lg">Pick your posture.</h2>
+    </div>
+
+    <div class="case-study-grid" role="list">
+
+      <article class="card whse-deploy-card reveal" role="listitem">
+        <div class="whse-deploy-icons" aria-hidden="true">
+          <span class="icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          <span class="icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+          </span>
+        </div>
+        <span class="badge badge-accent">Recommended for most</span>
+        <h3 class="display-md">SaaS, Behind Your Firewall</h3>
+        <p class="body-md" style="color: var(--text-secondary);">
+          Quaeris SaaS runs in AWS or Azure, but agents connect to your warehouse through a
+          private endpoint or VPN tunnel. Your queries never touch the public internet.
+        </p>
+        <ul class="whse-check-list">
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Fastest to deploy (hours, not days)</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Automatic updates and security patches</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Zero infrastructure burden on your team</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Private endpoint or VPN tunnel required</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Data residency: your warehouse location</li>
+        </ul>
+        <div class="whse-deploy-who">
+          <span class="eyebrow" style="color: var(--text-tertiary); display: block; margin-bottom: var(--space-2);">Who it&rsquo;s for</span>
+          <p>Most enterprises. You want SaaS convenience without public-internet data flow.</p>
+        </div>
+      </article>
+
+      <article class="card whse-deploy-card reveal" role="listitem">
+        <div class="whse-deploy-icons" aria-hidden="true">
+          <span class="icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+          </span>
+          <span class="icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+        </div>
+        <h3 class="display-md">Self-Hosted in Your VPC</h3>
+        <p class="body-md" style="color: var(--text-secondary);">
+          Deploy the entire Quaeris stack — agents, semantic layer, API — in your private cloud
+          or VPC. Quaeris connects to your warehouse from inside your network perimeter.
+        </p>
+        <ul class="whse-check-list">
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Complete infrastructure control</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No egress to Quaeris-managed servers</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Your team manages updates</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Single-tenant, isolated deployment</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Data residency: wherever you deploy</li>
+        </ul>
+        <div class="whse-deploy-who">
+          <span class="eyebrow" style="color: var(--text-tertiary); display: block; margin-bottom: var(--space-2);">Who it&rsquo;s for</span>
+          <p>Highly regulated customers (financial services, healthcare, federal). You need total control and zero external dependencies.</p>
+        </div>
+      </article>
+
+      <!-- Open Question Q1: Snowflake Native App availability unverified as of June 2026 —
+           draft copy below is used pending engineering confirmation; swap to a roadmap
+           callout if Native App is roadmap-only. -->
+      <article class="card whse-deploy-card reveal" role="listitem">
+        <div class="whse-deploy-icons" aria-hidden="true">
+          <span class="icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          </span>
+        </div>
+        <span class="badge" data-placeholder>Confirm availability (Open Question Q1)</span>
+        <h3 class="display-md">Warehouse-Native App (Snowflake)</h3>
+        <p class="body-md" style="color: var(--text-secondary);" data-placeholder>
+          Quaeris runs as a Snowflake Native App inside your Snowflake account. No separate
+          infrastructure. Agents execute directly within Snowflake&rsquo;s compute environment.
+        </p>
+        <ul class="whse-check-list">
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Zero external network calls</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Leverages Snowflake&rsquo;s RBAC and audit logs</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Snowflake governance handles everything</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Billed as Snowflake credits</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Ultimate data residency simplicity</li>
+        </ul>
+        <div class="whse-deploy-who">
+          <span class="eyebrow" style="color: var(--text-tertiary); display: block; margin-bottom: var(--space-2);">Who it&rsquo;s for</span>
+          <p data-placeholder>Snowflake-first enterprises. You want the minimal-footprint deployment and native integration with Snowflake&rsquo;s governance.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="whse-deploy-note reveal">
+      <p class="body-lg" style="color: var(--text-secondary); margin-bottom: var(--space-3);">
+        All three models are warehouse-native. Pick the one that matches your infrastructure
+        posture and compliance requirements. Need help deciding?
+      </p>
+      <a href="/contact" class="btn btn-ghost">Book a security review call</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 07 · ACCESS CONTROL & AUDIT — reuse MetricDashboardMock
+     (.metric-dashboard dark card) beside copy + lavender callout box.
+     ============================================================ -->
+<section id="audit" class="section-pad" aria-labelledby="audit-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="whse-audit-grid">
+      <div>
+        <div class="section-header reveal">
+          <span class="eyebrow">Access control &amp; audit</span>
+          <h2 id="audit-heading" class="display-lg">Every query is audited. Every answer is governed.</h2>
+          <p class="body-lg subcopy">
+            Access control is enforced at query execution time, not as a post-query filter. When
+            a user asks a question, Quaeris agents apply their role&rsquo;s permissions before the
+            query runs — only rows and columns they&rsquo;re allowed to see are queried from your
+            warehouse. Results are audited: who asked, what question, which metrics were used,
+            which rows returned. Full lineage, immutable log.
+          </p>
+        </div>
+
+        <div class="card whse-callout reveal">
+          <div class="whse-callout-head">
+            <span class="icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <h3 class="heading-sm">Why query-time access control matters:</h3>
+          </div>
+          <ul class="whse-check-list">
+            <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Faster: no post-query filtering needed</li>
+            <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Safer: permissions enforced before warehouse load</li>
+            <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Auditable: logs prove policy was applied</li>
+            <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Compliant: role-based enforcement passes SOX/HIPAA audits</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Mock audit dashboard (MetricDashboardMock structure, audit data) -->
+      <div class="metric-dashboard reveal">
+        <div class="metric-dashboard-header">
+          <span style="font-family: var(--font-display); font-size: 16px; color: var(--text-on-dark); font-weight: var(--weight-display);">Query audit log</span>
+          <span data-placeholder>Last 30 days</span>
+        </div>
+        <div class="metric-tiles" role="group" aria-label="Audit metric tiles">
+          <div class="metric-tile" tabindex="0">
+            <div class="metric-tile-label">Queries executed (audit log)</div>
+            <div class="metric-tile-value" data-placeholder>1,247</div>
+            <div class="metric-tile-delta" data-placeholder>↑ 18% vs. last month</div>
+          </div>
+          <div class="metric-tile" tabindex="0">
+            <div class="metric-tile-label">Access policies enforced</div>
+            <div class="metric-tile-value" data-placeholder>8,432</div>
+            <div class="metric-tile-delta" data-placeholder>↓ 3 access violations</div>
+          </div>
+          <div class="metric-tile active" tabindex="0">
+            <div class="metric-tile-label">Queries with cited sources</div>
+            <div class="metric-tile-value" data-placeholder>100%</div>
+            <div class="metric-tile-delta">Zero hallucinated answers</div>
+          </div>
+          <div class="metric-tile" tabindex="0">
+            <div class="metric-tile-label">Immutable query history</div>
+            <div class="metric-tile-value" data-placeholder>2 years</div>
+            <div class="metric-tile-delta">SOX/HIPAA ready</div>
+          </div>
+        </div>
+        <div class="mini-chart" data-placeholder>
+          <svg viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="whseChartGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--brand-accent)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--brand-accent)" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path d="M0,70 L30,58 L60,50 L90,42 L120,38 L150,30 L180,20 L210,25 L240,15 L280,10 L280,80 L0,80 Z" fill="url(#whseChartGrad)" />
+            <path d="M0,70 L30,58 L60,50 L90,42 L120,38 L150,30 L180,20 L210,25 L240,15 L280,10" fill="none" stroke="var(--brand-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="280" cy="10" r="4" fill="var(--brand-accent)" />
+          </svg>
+        </div>
+        <p class="chart-caption" data-placeholder>Audited queries — trailing 12 weeks</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 08 · FAQ — reuse FAQSection layout (.faq-grid) +
+     Accordion classes. <details>/<summary> is the mockup stand-in
+     for the Radix Accordion (Q1 open by default).
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-grid">
+      <div>
+        <div class="section-header reveal">
+          <span class="eyebrow">FAQ</span>
+          <h2 id="faq-heading" class="display-lg">Warehouse-Native Questions.</h2>
+          <p class="body-lg subcopy" style="color: var(--text-secondary);">
+            Everything you need to know about how Quaeris keeps your data in place.
+          </p>
+        </div>
+        <div class="faq-mini-card reveal" data-placeholder>
+          <h3 class="heading-sm">Still evaluating the security model?</h3>
+          <p>Bring your security and data engineering teams — we&rsquo;ll walk through the architecture together.</p>
+          <a href="/contact" class="btn btn-secondary" style="font-size: 14px; padding: 10px 22px;">Book a security review</a>
+        </div>
+      </div>
+
+      <div class="accordion reveal">
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Does Quaeris copy my data to its infrastructure?</span>
+            <span class="accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="accordion-content">
+            <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+              No. Quaeris is warehouse-native. Agents query your warehouse directly and return
+              results. Your raw data is never copied to Quaeris infrastructure. Results are cached
+              temporarily for performance (audit-log compatible) but never persisted without your
+              control. Full details in our <a href="#" data-placeholder style="color: var(--brand-accent); text-decoration: underline;">data residency whitepaper</a>.
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What if I have a multi-region deployment?</span>
+            <span class="accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="accordion-content">
+            <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+              Deploy Quaeris in the same region as your primary warehouse, or use private
+              endpoints/VPN to connect from a different region. EU data stays on your EU
+              warehouse; US data on your US instance. No data cross-border without your
+              orchestration. See the <a href="#" data-placeholder style="color: var(--brand-accent); text-decoration: underline;">multi-region deployment guide</a>.
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can you query federated tables across multiple warehouses?</span>
+            <span class="accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="accordion-content">
+            <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+              Yes. Quaeris can execute cross-warehouse queries if your warehouse supports
+              federation (e.g., Snowflake&rsquo;s data sharing, BigQuery federated queries). Data
+              stays in each warehouse; queries fan out to each one and results are merged
+              in-place. No centralized data copy.
+            </div>
+          </div>
+        </details>
+
+        <!-- Open Question Q6: confirm whether Quaeris uses the warehouse's native RLS engine
+             or its own RLS layer on top — update this answer before publishing. -->
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How does row-level security work?</span>
+            <span class="accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="accordion-content">
+            <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;" data-placeholder>
+              Quaeris agents apply row-level security (RLS) policies when they execute queries —
+              if a user&rsquo;s role forbids access to EU customers, the agent&rsquo;s query
+              filters the result set <em>at execution time</em>.
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Is the semantic layer stored in my warehouse?</span>
+            <span class="accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="accordion-content">
+            <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+              By default, yes—as a metadata store in your warehouse (or a separate database
+              schema). For extra isolation, deploy it in your private cloud. Either way,
+              it&rsquo;s under your control and never on Quaeris infrastructure.
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can you run Quaeris in an air-gapped network?</span>
+            <span class="accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="accordion-content">
+            <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+              Yes, if you choose the self-hosted deployment model. Quaeris runs entirely inside
+              your VPC/private cloud and connects to your warehouse over a private network. Zero
+              external network calls. See the <a href="#" data-placeholder style="color: var(--brand-accent); text-decoration: underline;">air-gapped deployment guide</a>.
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How do you handle audit trails for compliance?</span>
+            <span class="accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="accordion-content">
+            <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+              Quaeris logs all queries, agent steps, and answers at the warehouse level
+              (immutable). Additionally, we maintain audit logs in your infrastructure
+              (self-hosted) or in AWS/Azure (SaaS behind firewall) with SOX/HIPAA retention
+              policies. Logs are exportable for compliance reviews. See the
+              <a href="#" data-placeholder style="color: var(--brand-accent); text-decoration: underline;">audit trail specification</a>.
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What if my warehouse doesn&rsquo;t support the features Quaeris needs?</span>
+            <span class="accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="accordion-content">
+            <div style="padding-bottom: var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+              Quaeris supports Snowflake, BigQuery, Databricks, Redshift, and Synapse natively. If
+              you use a different warehouse or have a custom setup,
+              <a href="/contact" style="color: var(--brand-accent); text-decoration: underline;">contact our sales team</a>
+              — we have a track record of building custom connectors for enterprise customers.
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 09 · CTA BAND — reuse CTABand (#cta-band) exactly.
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to deploy?</span>
+      <h2 id="cta-heading" class="display-lg">Data residency you can trust.</h2>
+      <p class="body-lg subcopy">
+        Talk to our security and engineering teams. We&rsquo;ll walk you through the architecture,
+        confirm it meets your compliance requirements, and show you a warehouse integration demo.
+      </p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-on-dark">Book a security review</a>
+        <a href="#" class="btn btn-secondary-dark" data-placeholder>Download the architecture guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 10 · NEWSLETTER — reuse NewsletterBlock (minimal inline variant).
+     ============================================================ -->
+<div id="newsletter" class="newsletter-block" role="complementary" aria-label="Newsletter signup">
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <span class="eyebrow">Governed Analytics Brief</span>
+      <h3>Security updates and compliance tips.</h3>
+      <p>Practical insights on warehouse-native architecture, data residency, and governed AI — every Thursday, no hype.</p>
+      <form class="newsletter-form" action="#" novalidate aria-label="Newsletter signup form">
+        <label for="newsletter-email" class="sr-only">Email address</label>
+        <input type="email" id="newsletter-email" class="newsletter-input" placeholder="you@company.com" required autocomplete="email" />
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+      <p class="newsletter-consent">No spam. Unsubscribe any time.</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+</body>
+</html>

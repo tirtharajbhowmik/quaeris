@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/finance — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- ============================================================
+     MOCKUP — /solutions/finance (spec: docs/page-specs/solutions-finance.md)
+     SEO at port time:
+       <title> AI Analytics for Finance · Certified, Audited Metrics
+       meta description: Single source of truth for audited metrics. Answer variance,
+       forecast, and reporting questions instantly with full audit trail and
+       compliance controls.
+       Schema: FAQPage (from the 7 Accordion Q&As), BreadcrumbList sitewide.
+     Component map (spec §3): NEW:FinanceHero (3.1) · ProblemSolutionCards 3-up (3.2) ·
+     FeatureRow ×3 alternating (3.3) · IconFeatureGrid ×4 (3.4) · SegmentCards 3-up (3.5) ·
+     StatBlock ×4 (3.6) · NEW:TrustBadgeBlock (3.7) · TestimonialCard ×6 in 2 rows of 3 (3.8) ·
+     Accordion ×7 (3.9) · CTABand (3.10) · NewsletterBlock (3.11).
+     NOTE on color: the spec quotes hexes from the pre-retune palette; everything below
+     maps to the current semantic tokens (tokens.css is the source of truth).
+     ============================================================ -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic). */
+
+/* --- NEW:FinanceHero — text column + placeholder finance KPI dashboard --- */
+.fin-hero-grid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  .fin-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+
+.fin-hero-dash {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.fin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+@media (max-width: 480px) {
+  .fin-kpi-grid { grid-template-columns: 1fr; }
+}
+.fin-kpi {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.fin-kpi-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+.fin-kpi-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.fin-kpi-delta {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--success);
+  margin-top: var(--space-1);
+}
+.fin-kpi-delta.down { color: var(--error); }
+.fin-hero-chart svg { width: 100%; height: 96px; display: block; }
+
+/* Hero trust strip — icon + label + one-line proof (spec 3.1) */
+.fin-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-6);
+}
+@media (max-width: 640px) {
+  .fin-trust-strip { flex-direction: column; gap: var(--space-4); }
+}
+.fin-trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  max-width: 240px;
+}
+.fin-trust-item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.fin-trust-item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+.fin-trust-item span {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* --- 3-up modifier for ProblemSolutionCards (home .ps-grid is 2-up; spec §3.2 is 3 cards) --- */
+.ps-grid.fin-ps-grid-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1024px) { .ps-grid.fin-ps-grid-3 { grid-template-columns: 1fr; } }
+
+/* --- Check-bullet list inside FeatureRow text columns (spec §3.3 rows have bullets) --- */
+.fin-bullets { display: flex; flex-direction: column; gap: var(--space-2); }
+.fin-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.fin-bullets svg {
+  width: 16px;
+  height: 16px;
+  color: var(--brand-accent);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* --- Placeholder product shots on light surface (swap for real screenshots at port time) --- */
+.fin-shot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background: linear-gradient(135deg, var(--brand-accent-soft), transparent 70%);
+}
+.fin-shot-label { color: var(--text-tertiary); display: block; }
+.fin-shot-q {
+  background: var(--brand-accent-soft);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  align-self: flex-end;
+  max-width: 90%;
+}
+.fin-shot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.fin-shot-row strong { color: var(--text-primary); font-weight: 600; }
+.fin-shot-ok {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* --- 3-up use-case modifier for SegmentCards (spec §3.5: 3 rich cards in a row) --- */
+.segment-cards-grid.fin-uc-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1024px) { .segment-cards-grid.fin-uc-grid { grid-template-columns: 1fr; } }
+.fin-uc-meta {
+  color: var(--text-tertiary);
+  display: block;
+  margin-top: var(--space-2);
+}
+.fin-uc-outcome {
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+/* --- NEW:TrustBadgeBlock — compliance badge grid (spec §3.7) --- */
+.fin-trustblock-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .fin-trustblock-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .fin-trustblock-grid { grid-template-columns: 1fr; } }
+.fin-trustblock-grid > * { height: 100%; }
+.fin-trust-badge {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+}
+
+/* --- Static 2×3 grid for TestimonialCard (home marquee cards, unclamped quotes; spec §3.8) --- */
+.fin-testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .fin-testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .fin-testimonial-grid { grid-template-columns: 1fr; } }
+.fin-testimonial-grid .testimonial-card {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+}
+.fin-testimonial-grid .testimonial-quote {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+  flex: 1;
+}
+
+/* --- MOCKUP-ONLY shims (do NOT port): native <details> stands in for Accordion.tsx (Radix) --- */
+details.accordion-item > summary { list-style: none; }
+details.accordion-item > summary::-webkit-details-marker { display: none; }
+details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     3.1 HERO — NEW:FinanceHero (becomes src/components/FinanceHero.tsx
+     at port time: hero text + trust strip + placeholder KPI dashboard)
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="fin-hero-grid">
+      <div class="hero-inner reveal">
+        <span class="eyebrow">For Finance Teams and CFOs</span>
+        <h1 id="hero-heading" class="hero-h1">One metric definition. <span class="accent-line">Every report agrees.</span></h1>
+        <p class="subcopy body-lg">Finance teams waste weeks reconciling numbers before board meetings. Quaeris locks metrics to a governed semantic layer — so every variance report, forecast, and ledger reconciliation queries the same certified definition. Auditable. Instant. True.</p>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">Book a Finance Demo</a>
+          <a href="/contact" class="btn btn-secondary">See a live variance query</a>
+        </div>
+        <ul class="fin-trust-strip">
+          <li class="fin-trust-item">
+            <!-- lucide: shield -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <p><strong>Audit-grade lineage</strong> <span>Question to source in one click</span></p>
+          </li>
+          <li class="fin-trust-item">
+            <!-- lucide: trending-up -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            <p><strong>Certified metrics only</strong> <span>No hallucinated numbers in any report</span></p>
+          </li>
+          <li class="fin-trust-item">
+            <!-- lucide: zap -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <p><strong>Role-based access</strong> <span>Controllers see actuals; managers see budget only</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Spec 3.1 hero visual: financial dashboard with three KPI cards, placeholder only -->
+      <div class="reveal">
+        <div class="fin-hero-dash" role="img" aria-label="Placeholder financial dashboard with three KPI cards — Revenue vs Plan, Forecast vs Actual, and Variance percent — above a budget-versus-actual bar chart" data-placeholder>
+          <span class="eyebrow" style="color: var(--text-tertiary);">Quaeris · finance overview</span>
+          <div class="fin-kpi-grid" aria-hidden="true">
+            <div class="fin-kpi">
+              <span class="fin-kpi-label">Revenue vs Plan</span>
+              <span class="fin-kpi-value">$24.8M</span>
+              <span class="fin-kpi-delta">+3.2% vs plan</span>
+            </div>
+            <div class="fin-kpi">
+              <span class="fin-kpi-label">Forecast vs Actual</span>
+              <span class="fin-kpi-value">$23.9M</span>
+              <span class="fin-kpi-delta down">−1.8% vs forecast</span>
+            </div>
+            <div class="fin-kpi">
+              <span class="fin-kpi-label">Variance %</span>
+              <span class="fin-kpi-value">+1.4%</span>
+              <span class="fin-kpi-delta">Within threshold</span>
+            </div>
+          </div>
+          <div class="fin-hero-chart" aria-hidden="true" style="color: var(--brand-accent);">
+            <svg viewBox="0 0 300 96" fill="none">
+              <g fill="currentColor">
+                <rect x="10"  y="48" width="16" height="40" opacity="0.25" rx="2"/><rect x="30"  y="42" width="16" height="46" rx="2"/>
+                <rect x="58"  y="40" width="16" height="48" opacity="0.25" rx="2"/><rect x="78"  y="44" width="16" height="44" rx="2"/>
+                <rect x="106" y="36" width="16" height="52" opacity="0.25" rx="2"/><rect x="126" y="30" width="16" height="58" rx="2"/>
+                <rect x="154" y="42" width="16" height="46" opacity="0.25" rx="2"/><rect x="174" y="46" width="16" height="42" rx="2"/>
+                <rect x="202" y="32" width="16" height="56" opacity="0.25" rx="2"/><rect x="222" y="26" width="16" height="62" rx="2"/>
+                <rect x="250" y="38" width="16" height="50" opacity="0.25" rx="2"/><rect x="270" y="31" width="16" height="57" rx="2"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.2 THE PROBLEM — ProblemSolutionCards (reuse, 3-up modifier;
+     spec cards are pure problem cards: icon + title + body)
+     ============================================================ -->
+<section id="problem" class="section-pad" aria-labelledby="problem-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>The problem</span>
+      <h2 id="problem-heading" class="display-lg">Finance teams trust numbers that don't match.</h2>
+      <p class="subcopy body-lg">The problem isn't speed—it's consistency. Controllers define revenue one way in the GL, FP&amp;A another in their model, and the CEO sees a third number in the BI tool. When the audit questions numbers, everyone panics.</p>
+    </div>
+
+    <div class="ps-grid fin-ps-grid-3">
+      <article class="ps-card reveal">
+        <span class="icon-box">
+          <!-- lucide: alert-circle -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+        </span>
+        <h3 class="heading-sm">Metric Definition Chaos</h3>
+        <p class="ps-problem body-md">Finance teams maintain 80+ revenue definitions across the GL, ERPs, BI tools, and spreadsheets. Reconciling them before board meetings takes 40+ hours. Every definition change breaks something.</p>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="icon-box">
+          <!-- lucide: lock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <h3 class="heading-sm">Audit Trail Gaps</h3>
+        <p class="ps-problem body-md">Ad-hoc analytics have no lineage. An analyst answers 'what was Q3 revenue?' — but the CFO can't trace the number back to the GL or see who ran the query. Audit findings pile up.</p>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="icon-box">
+          <!-- lucide: trending-down -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+        </span>
+        <h3 class="heading-sm">Variance Questions Kill Days</h3>
+        <p class="ps-problem body-md">A manager asks 'why did sales miss forecast?' and the answer requires a data team ticket, a 2-day SQL sprint, and a manual reconciliation. By then, the answer is stale.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.3 HOW QUAERIS SOLVES IT — FeatureRow ×3 (reuse, alternating)
+     ============================================================ -->
+<section id="how-it-works" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="how-it-works-heading">
+  <div class="container">
+    <div class="section-header center methodology-header reveal">
+      <span class="eyebrow" data-placeholder>How it works</span>
+      <h2 id="how-it-works-heading" class="display-lg">Define once. Answer instantly. Audit always.</h2>
+      <p class="subcopy body-lg">Quaeris combines three layers: a governed semantic layer that locks metric definitions, autonomous agents that answer finance questions in seconds, and an audit trail that captures every query and derivation.</p>
+    </div>
+
+    <div class="feature-rows-list">
+
+      <!-- Row 1: Define Your Metrics Once (text left, visual right) -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 01 — Governance</span>
+          <h3 class="display-md feature-row-heading">Certify metrics at the GL. Every report uses the same number.</h3>
+          <p class="feature-row-body body-md">Your data team builds a governed semantic layer: revenue = GL account [X] filtered by [conditions], gross margin = revenue minus COGS, variance = actual vs budget. These definitions are versioned, owned, and audited. Once certified, every agent query and every report—from the GL module to the CFO's variance sheet—queries the same definition.</p>
+          <ul class="fin-bullets">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Revenue, cost structure, headcount metrics — all certified once</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Definitions tied to GL accounts with full lineage</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Changes tracked; previous versions preserved for audit restate</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Access: controllers certify, managers can't override</span></li>
+          </ul>
+          <a href="/platform" class="btn btn-ghost">Explore semantic governance</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="fin-shot" role="img" aria-label="Placeholder screenshot of the Quaeris metric-definition interface showing GL account mapping, ownership, and version history" data-placeholder>
+              <span class="eyebrow fin-shot-label">Semantic layer · certified definitions</span>
+              <div class="fin-shot-row"><span><strong>revenue</strong> · GL 4000–4099, excl. intercompany</span><span class="fin-shot-ok">Certified v3.1</span></div>
+              <div class="fin-shot-row"><span><strong>gross_margin</strong> · revenue − COGS</span><span class="fin-shot-ok">Owner: Controller</span></div>
+              <div class="fin-shot-row"><span><strong>variance</strong> · actual vs budget</span><span class="fin-shot-ok">Version history</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Answer Variance Instantly (visual left, text right) -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 02 — Agents</span>
+          <h3 class="display-md feature-row-heading">Why did we miss forecast? Answered in 20 seconds.</h3>
+          <p class="feature-row-body body-md">Finance users ask questions in plain language: 'Show me Q3 actual vs budget for EMEA,' or 'Why did commission expense jump?' Agents interpret the question against the governed semantic layer and return an instant answer—with the exact metric definitions, filters, and GL accounts that went into the calculation. No data team ticket. No spreadsheet. No guessing.</p>
+          <ul class="fin-bullets">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Plain-language variance and forecast queries, answered in 20 seconds</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Agents cite the metric definitions, GL accounts, and business rules used</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Multi-step questions: 'Compare Q3 budget vs actual, then show the variance drivers by region'</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Results exportable to Excel for board deck inclusion</span></li>
+          </ul>
+          <a href="/contact" class="btn btn-ghost">See a live variance query</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder chat shot — swap for real screenshot/animation at port time -->
+            <div class="fin-shot" role="img" aria-label="Placeholder chat interface showing the finance question 'Why did OPEX exceed budget by 8 percent?' and the agent response with metric sources and GL references" data-placeholder>
+              <span class="eyebrow fin-shot-label">Agent session · variance query</span>
+              <p class="fin-shot-q">"Why did OPEX exceed budget by 8%?"</p>
+              <div class="fin-shot-row"><span>Driver · <strong>commission expense</strong> +5.1%</span><span class="fin-shot-ok">GL 6210</span></div>
+              <div class="fin-shot-row"><span>Driver · <strong>cloud spend</strong> +2.3%</span><span class="fin-shot-ok">GL 6480</span></div>
+              <div class="fin-shot-row"><span>Certified metric · <strong>opex_variance v2.0</strong></span><span class="fin-shot-ok">Definition cited</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Audit Every Number (text left, visual right) -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 03 — Trust</span>
+          <h3 class="display-md feature-row-heading">Full lineage. Full compliance. Full transparency.</h3>
+          <p class="feature-row-body body-md">Every answer shows its audit trail: the metric definition used, the GL accounts queried, the role-based filters applied, and the user who asked. When the auditor asks 'how did you calculate tax provision variance?', the CFO opens Quaeris, clicks one button, and shows the full lineage back to the GL. Role-based access ensures controllers see actuals, managers see budget-only views, and executives see consolidated rollups.</p>
+          <ul class="fin-bullets">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Prompt-to-GL lineage in one click — every number traceable</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Role-based access enforced at query time (not dashboard level)</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Full audit log: who asked, what was asked, when, and what was answered</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Exported reports carry the lineage metadata for audit compliance</span></li>
+          </ul>
+          <a href="/platform/audit" class="btn btn-ghost">Review audit and compliance</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder audit-trail shot — swap for a real screenshot at port time -->
+            <div class="fin-shot" role="img" aria-label="Placeholder audit-trail panel showing a variance query, the metric definitions cited, the GL references, and the user and timestamp metadata" data-placeholder>
+              <span class="eyebrow fin-shot-label">Audit trail · query lineage</span>
+              <div class="fin-shot-row"><span>Query · "tax provision variance, Q3"</span><span class="fin-shot-ok">Logged</span></div>
+              <div class="fin-shot-row"><span>Metric · <strong>tax_provision v1.4</strong> · GL 2310</span><span class="fin-shot-ok">Lineage attached</span></div>
+              <div class="fin-shot-row"><span>User · <strong>Controller</strong> · 2026-06-12 09:14</span><span class="fin-shot-ok">Role enforced</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.4 WHY FINANCE TEAMS CHOOSE QUAERIS — IconFeatureGrid (reuse, 4-up)
+     ============================================================ -->
+<section id="why-quaeris" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="why-quaeris-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Why Quaeris</span>
+      <h2 id="why-quaeris-heading" class="display-lg">Built for the way finance actually works.</h2>
+      <p class="subcopy body-lg">Every feature is designed for the audit, compliance, and reporting workflows that keep CFOs and controllers up at night.</p>
+    </div>
+
+    <div class="icon-feature-grid">
+      <article class="icon-feature reveal">
+        <span class="icon-box">
+          <!-- lucide: book-open -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </span>
+        <h3 class="heading-sm">Certified Metrics Library</h3>
+        <p>Revenue, COGS, SG&amp;A, EBT, tax provision, headcount — all certified once. No more spreadsheet variants.</p>
+      </article>
+
+      <article class="icon-feature reveal">
+        <span class="icon-box">
+          <!-- lucide: bar-chart-4 -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M13 17V9"/><path d="M18 17V5"/><path d="M8 17v-3"/></svg>
+        </span>
+        <h3 class="heading-sm">Multi-Dimensional Variance</h3>
+        <p>Compare actual vs budget vs forecast vs prior year by GL account, cost center, region, or custom hierarchy.</p>
+      </article>
+
+      <article class="icon-feature reveal">
+        <span class="icon-box">
+          <!-- lucide: brain -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </span>
+        <h3 class="heading-sm">Instant Budget Questions</h3>
+        <p>Ask 'which departments exceeded budget by more than 10%?' and get an instant list with GL roots.</p>
+      </article>
+
+      <article class="icon-feature reveal" data-placeholder-verify>
+        <span class="icon-box">
+          <!-- lucide: shield -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        </span>
+        <h3 class="heading-sm">EU AI Act &amp; SOX Ready</h3>
+        <p>Full audit trail for every query. Role-based access. Query-level lineage for regulated industries.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 VERTICAL PROOF: FINANCE USE CASES — SegmentCards (reuse, 3-up modifier)
+     ============================================================ -->
+<section id="use-cases" class="section-pad" aria-labelledby="use-cases-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Finance workflows</span>
+      <h2 id="use-cases-heading" class="display-lg">From board reporting to month-end close.</h2>
+      <p class="subcopy body-lg">Three finance workflows. Three instant answers.</p>
+    </div>
+
+    <div class="segment-cards-grid fin-uc-grid">
+      <article class="segment-card reveal">
+        <span class="segment-icon-box">
+          <!-- lucide: check-square -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Month-End Close Reconciliation</h3>
+        <span class="eyebrow fin-uc-meta">Scenario</span>
+        <p class="body-sm segment-desc" style="flex: 0;">Controller needs to reconcile budget vs actual across 12 GL accounts, 5 departments, in 3 currencies by EOD.</p>
+        <span class="eyebrow fin-uc-meta">How</span>
+        <p class="body-sm" style="color: var(--text-secondary); flex: 1;">Uses Quaeris to query: 'Show me actual YTD spending by GL account, rolled to budget structure.' Gets an instant drill-down with GL posting dates, reversal journals, and accrual adjustments. Sources are cited.</p>
+        <div class="fin-uc-outcome">
+          <span class="eyebrow" style="color: var(--brand-accent); font-size: 11px; letter-spacing: 2px;">Outcome</span>
+          <p class="body-sm" style="color: var(--text-primary);">Close completed in 2 hours instead of a 1-week ticket cycle.</p>
+        </div>
+        <a href="/case-studies" class="btn btn-ghost" data-placeholder>Read the story</a>
+      </article>
+
+      <article class="segment-card reveal">
+        <span class="segment-icon-box">
+          <!-- lucide: trending-up -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Board Variance Analysis</h3>
+        <span class="eyebrow fin-uc-meta">Scenario</span>
+        <p class="body-sm segment-desc" style="flex: 0;">CFO is presenting Q3 results to the board. Director asks: 'Why did gross margin compress 150 bps?' Needs an answer in the meeting.</p>
+        <span class="eyebrow fin-uc-meta">How</span>
+        <p class="body-sm" style="color: var(--text-secondary); flex: 1;">CFO pulls up Quaeris. Asks: 'Show me gross margin variance drivers: COGS vs revenue.' Agent returns a breakdown: 60% from unfavorable COGS, 40% from mix shift. Each number cites the certified metric definition and GL reference.</p>
+        <div class="fin-uc-outcome">
+          <span class="eyebrow" style="color: var(--brand-accent); font-size: 11px; letter-spacing: 2px;">Outcome</span>
+          <p class="body-sm" style="color: var(--text-primary);">Answer delivered in 60 seconds. Board gains confidence in the numbers.</p>
+        </div>
+        <a href="/case-studies" class="btn btn-ghost" data-placeholder>Read the story</a>
+      </article>
+
+      <article class="segment-card reveal">
+        <span class="segment-icon-box">
+          <!-- lucide: line-chart -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">FP&amp;A Forecast Variance Tracking</h3>
+        <span class="eyebrow fin-uc-meta">Scenario</span>
+        <p class="body-sm segment-desc" style="flex: 0;">FP&amp;A manager needs to track forecast accuracy. Did July close match the June forecast? What drove the variances?</p>
+        <span class="eyebrow fin-uc-meta">How</span>
+        <p class="body-sm" style="color: var(--text-secondary); flex: 1;">Asks Quaeris: 'Compare July actual vs June forecast by product line, show variance in dollars and %.' Gets instant rollup with drill-down by segment. Can export to Excel for monthly management pack.</p>
+        <div class="fin-uc-outcome">
+          <span class="eyebrow" style="color: var(--brand-accent); font-size: 11px; letter-spacing: 2px;">Outcome</span>
+          <p class="body-sm" style="color: var(--text-primary);">Monthly forecast variance review automated. FP&amp;A team can focus on drivers instead of data collection.</p>
+        </div>
+        <a href="/case-studies" class="btn btn-ghost" data-placeholder>Read the story</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.6 NUMBERS THAT MATTER — StatBlock ×4 (reuse; counter animation at
+     port time. All stats flagged data-placeholder per spec note)
+     ============================================================ -->
+<section id="stats-band" class="section-pad" aria-labelledby="stats-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Outcomes</span>
+      <h2 id="stats-heading" class="display-lg">The impact of instant, governed answers.</h2>
+    </div>
+
+    <div class="stats-grid reveal" style="margin-top: var(--space-8);">
+      <div class="stat-block" data-placeholder>
+        <span class="stat-num stat-number">40</span>
+        <span class="stat-label">Hours saved per month-end close</span>
+        <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">From manual reconciliation to instant query</p>
+      </div>
+      <div class="stat-block" data-placeholder>
+        <span class="stat-num stat-number">0</span>
+        <span class="stat-label">Hallucinated numbers in compliance reports</span>
+        <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">Every answer cites certified metrics</p>
+      </div>
+      <div class="stat-block" data-placeholder>
+        <span class="stat-num stat-number">3</span>
+        <span class="stat-label">Days faster to board-ready variance analysis</span>
+        <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">vs. traditional ad-hoc query cycle</p>
+      </div>
+      <div class="stat-block" data-placeholder>
+        <span class="stat-num stat-number">100%</span>
+        <span class="stat-label">Audit-trail coverage on every financial query</span>
+        <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">GL lineage, user, timestamp, role enforced</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.7 TECHNICAL PROOF — NEW:TrustBadgeBlock (becomes
+     src/components/TrustBadgeBlock.tsx at port time: compliance badge
+     grid; Lucide substitutes until certification logos are sourced)
+     ============================================================ -->
+<section id="compliance" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="compliance-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Compliance</span>
+      <h2 id="compliance-heading" class="display-lg">Built for audited environments.</h2>
+      <p class="subcopy body-lg">Quaeris was architected from day one for regulated financial services. These certifications and capabilities prove it.</p>
+    </div>
+
+    <div class="fin-trustblock-grid">
+      <article class="card fin-trust-badge reveal" data-placeholder>
+        <span class="icon-box">
+          <!-- lucide: shield -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        </span>
+        <h3 class="heading-sm">SOC 2 Type II</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">Annual audit of security, availability, and integrity controls.</p>
+      </article>
+
+      <article class="card fin-trust-badge reveal" data-placeholder>
+        <span class="icon-box">
+          <!-- lucide: file-check -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+        </span>
+        <h3 class="heading-sm">HIPAA Ready</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">BAA available; supports healthcare finance and insurance operations.</p>
+      </article>
+
+      <article class="card fin-trust-badge reveal" data-placeholder>
+        <span class="icon-box">
+          <!-- lucide: globe -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </span>
+        <h3 class="heading-sm">GDPR Compliant</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">EU AI Act compliance roadmap published; data residency controls enforced.</p>
+      </article>
+
+      <article class="card fin-trust-badge reveal">
+        <span class="icon-box">
+          <!-- lucide: users -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <h3 class="heading-sm">Role-Based Access Control (RBAC)</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">Access policies mapped to GL account hierarchies; enforced at query time, not dashboard level.</p>
+      </article>
+
+      <article class="card fin-trust-badge reveal" data-placeholder-verify>
+        <span class="icon-box">
+          <!-- lucide: file-text -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+        </span>
+        <h3 class="heading-sm">Full Audit Trail</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">Full audit log: who asked, what was asked, when, and what role — every query captured for compliance investigations.</p>
+      </article>
+
+      <article class="card fin-trust-badge reveal">
+        <span class="icon-box">
+          <!-- lucide: database -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+        </span>
+        <h3 class="heading-sm">Warehouse-Native Architecture</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">Your data never leaves your environment. Queries run directly on your Snowflake, BigQuery, or Redshift.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.8 CUSTOMER VOICES — TestimonialCard ×6 (reuse card classes;
+     static 2 rows of 3 per spec instead of the home marquee)
+     ============================================================ -->
+<section id="testimonials" class="section-pad" aria-labelledby="testimonials-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Customer voices</span>
+      <h2 id="testimonials-heading" class="display-lg">Finance leaders who trust Quaeris.</h2>
+      <p class="subcopy body-lg">From controllers to CFOs, from regional finance to global FP&amp;A.</p>
+    </div>
+
+    <div class="fin-testimonial-grid">
+      <article class="testimonial-card reveal">
+        <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Metric Definition Consolidation</h3>
+        <p class="testimonial-quote">"We had 15 definitions of 'revenue' across our GL, BI tool, and spreadsheets. Consolidating them into Quaeris's semantic layer was the first time everyone agreed. The board now sees the same number every time we report."</p>
+        <div class="testimonial-author" data-placeholder>
+          <span class="author-avatar" aria-hidden="true">CP</span>
+          <div>
+            <p class="author-name">C.P., Head of FP&amp;A</p>
+            <p class="author-role">[Company Name]</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card reveal">
+        <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Audit Confidence</h3>
+        <p class="testimonial-quote">"Our auditors grilled us on revenue calculation variance between reports. Quaeris let us trace every number back to the GL in one click. Audit finding closed in the next meeting. That's never happened before."</p>
+        <div class="testimonial-author" data-placeholder>
+          <span class="author-avatar" aria-hidden="true">TM</span>
+          <div>
+            <p class="author-name">T.M., VP Controller</p>
+            <p class="author-role">[Company Name]</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card reveal">
+        <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Board-Ready Speed</h3>
+        <p class="testimonial-quote">"Month-end close used to take a week because we'd manually reconcile variance reports. Now, the CFO runs a single Quaeris query and has the full variance breakdown with GL lineage. Took 20 seconds."</p>
+        <div class="testimonial-author" data-placeholder>
+          <span class="author-avatar" aria-hidden="true">RK</span>
+          <div>
+            <p class="author-name">R.K., Director of Finance</p>
+            <p class="author-role">[Company Name]</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card reveal">
+        <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Forecast Accuracy Tracking</h3>
+        <p class="testimonial-quote">"We set monthly forecasts in June, and I'd spend 3 days analyzing why July didn't match. Quaeris automated that. Now I can spot trends and forecast misses in real time. My FP&amp;A role changed from data janitor to strategist."</p>
+        <div class="testimonial-author" data-placeholder>
+          <span class="author-avatar" aria-hidden="true">AL</span>
+          <div>
+            <p class="author-name">A.L., Senior FP&amp;A Analyst</p>
+            <p class="author-role">[Company Name]</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card reveal">
+        <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Role-Based Governance</h3>
+        <p class="testimonial-quote">"Giving business users analytics access always scared me—compliance risk. Quaeris's role-based controls mean an accounting manager only sees their GL accounts. Gives them speed without giving me heartburn."</p>
+        <div class="testimonial-author" data-placeholder>
+          <span class="author-avatar" aria-hidden="true">JD</span>
+          <div>
+            <p class="author-name">J.D., Chief Financial Officer</p>
+            <p class="author-role">[Company Name]</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card reveal">
+        <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Multi-Currency Reconciliation</h3>
+        <p class="testimonial-quote">"Global consolidation was always error-prone. Different entities would use different FX rates. Locked the rates into the semantic layer, and now every rollup uses the same conversion. Month-end reconciliation headache—solved."</p>
+        <div class="testimonial-author" data-placeholder>
+          <span class="author-avatar" aria-hidden="true">SN</span>
+          <div>
+            <p class="author-name">S.N., Global Finance Director</p>
+            <p class="author-role">[Company Name]</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.9 FAQ — Accordion (Radix at port time; native <details> here so
+     the static mockup is interactive). Feed FAQPage schema at port time.
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="section-header reveal">
+        <span class="eyebrow" data-placeholder>FAQ</span>
+        <h2 id="faq-heading" class="display-lg">Questions finance teams ask.</h2>
+        <p class="subcopy body-lg">(And the governance-first answers.)</p>
+      </div>
+
+      <div class="accordion reveal">
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Will your platform break our audit?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">No. Quaeris is architected to strengthen audits. Every metric definition is versioned and owned. Every query is logged with timestamp, user, role, and lineage. When the auditor asks 'how did you calculate that number?', you open Quaeris and show the full GL-to-answer lineage. The audit trail lives in your environment—Quaeris doesn't store your financial data.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can we map metrics to GL accounts directly?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Yes. The semantic layer lets your data team define revenue as 'GL accounts 4000-4099 excluding inter-company' and COGS as 'GL 5000-5299 adjusted for standard cost variance.' These definitions are stored in your warehouse and versioned for audit compliance.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What if our GL structure changes mid-year?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Metric definitions are versioned. If you add a GL account to the revenue definition in Q3, both the old and new definitions are preserved. Historical reports use the historical definition; forward reports use the new one. Audit-ready.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Does Quaeris handle multi-currency consolidation?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Yes. Define FX rates and consolidation rules in the semantic layer. Every agent answer applies the same consolidation logic. Queries like 'Show me revenue in USD, GBP, and EUR with Q2 FX rates' work instantly.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can we enforce role-based access at the GL account level?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Yes. Define roles that map to GL account hierarchies: 'Accounting Manager sees GL 1000-1999 only.' Access is enforced at query time, not at the dashboard level. An accounting manager can't query GL 4000 even if they somehow find the right question to ask.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How do we handle month-end cut-off dates?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Define cutoff logic in the semantic layer: 'Revenue for month-end close = GL account 4000 filtered by posting date &lt;= [month-end date].' Every agent query uses the same cutoff. No more 'which revenue number?' debates.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Does Quaeris integrate with our GL system (NetSuite, SAP, etc.)?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Quaeris connects to your data warehouse (Snowflake, BigQuery, etc.), where your GL data already lives via ERP connectors. We don't pull data out of your ERP—we query the synced GL data in your warehouse. Your audit controls remain intact.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.10 CTA BAND — CTABand (reuse). Spec asks ghost style for the
+     secondary link; .btn-secondary-dark is the band's AA-safe on-dark
+     equivalent (accent ghost fails contrast on the ink background).
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-band-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to trust your numbers?</span>
+      <h2 id="cta-band-heading" class="display-lg">Stop reconciling. Start governing.</h2>
+      <p class="subcopy body-lg">Book a 30-minute finance demo. We'll connect to your GL (anonymized data OK), show you a live variance query with full audit trail, and discuss how Quaeris integrates into your close calendar. No slides. Just a governed answer against real finance questions.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Book a Finance Demo</a>
+        <a href="/platform" class="btn btn-secondary-dark">See the platform overview</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.11 NEWSLETTER — NewsletterBlock (reuse)
+     ============================================================ -->
+<section id="newsletter" class="newsletter-block" aria-labelledby="newsletter-heading">
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <span class="eyebrow">The Governed Analytics Brief</span>
+      <h3 id="newsletter-heading">Weekly insights for finance leaders moving to AI-powered analytics.</h3>
+      <p>Practical reads on metric governance, audit compliance, and agentic AI in financial reporting. Thursdays. No sales pitch.</p>
+      <form class="newsletter-form" action="#" method="post">
+        <label class="sr-only" for="newsletter-email">Work email</label>
+        <input class="newsletter-input" id="newsletter-email" type="email" name="email" placeholder="Work email" autocomplete="email" required />
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>

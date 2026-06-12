@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /about — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+
+<!-- Organization JSON-LD — spec §6 Open Question 7: must ship in the <head> of /about at launch.
+     `sameAs` omitted: [data-placeholder] pending confirmed social profile URLs. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Quaeris, Inc.",
+  "url": "https://quaeris.ai",
+  "email": "seek@quaeris.ai",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "95 Third Street, 2nd Floor",
+    "addressLocality": "San Francisco",
+    "addressRegion": "CA",
+    "postalCode": "94103",
+    "addressCountry": "US"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "General inquiries",
+    "email": "seek@quaeris.ai",
+    "telephone": "+1-980-476-3737"
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- ============================================================
+     MOCKUP — /about (spec: docs/page-specs/about.md, 2026-06-12)
+     PORT NOTES:
+     • Real route <title>: "About Quaeris — Governed Agentic Analytics, San Francisco"
+       Meta description: "Quaeris Inc. builds secure, governed analytics powered by
+       trusted agents — a San Francisco company on a mission to make enterprise AI
+       data access auditable."
+     • Organization JSON-LD included in <head> above (spec Open Question 7);
+       `sameAs` is [data-placeholder] pending confirmed social URLs.
+     • Spec hexes are from the OLDER palette — every color below maps to the
+       retuned semantic tokens in src/brands/quaeris/tokens.css. Zero hex on page.
+     • All [data-placeholder] content awaits legal/CS/content-ops confirmation —
+       see spec §4 and §6. Do not ship without sign-off.
+     • The /trust footnote link (Section 08) is [data-placeholder] until the
+       /trust page exists (spec Open Question 6).
+     ============================================================ -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time. Token-driven, brand-agnostic.
+   Page-area prefix: about- (/about). */
+
+/* — Section 02 · NEW:CompanyIdentityStrip — */
+.about-identity {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-6) 0;
+}
+.about-identity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.about-identity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 48px;
+}
+.about-identity-label {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+.about-identity-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+.about-identity-value a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--brand-accent);
+}
+@media (max-width: 768px) {
+  .about-identity-grid { grid-template-columns: 1fr; gap: var(--space-5); }
+}
+
+/* — Section 03 · ProblemSolutionCards at 3-up (problem↔solution pairs) — */
+.ps-grid.about-ps-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 768px) {
+  .ps-grid.about-ps-grid { grid-template-columns: 1fr; }
+}
+
+/* — Section 04 · IconFeatureGrid at 3-up (three engines) — */
+.icon-feature-grid.about-engines-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 768px) {
+  .icon-feature-grid.about-engines-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+}
+
+/* — Section 05 · BentoGrid at 2 columns (2 wide + 4 standard cards) — */
+.bento-grid.about-bento { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 640px) {
+  .bento-grid.about-bento { grid-template-columns: 1fr; }
+}
+
+/* — Section 06 · SegmentCards at 3-up (six industries) — */
+.segment-cards-grid.about-industries-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 768px) {
+  .segment-cards-grid.about-industries-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .segment-cards-grid.about-industries-grid { grid-template-columns: 1fr; }
+}
+
+/* — Section 07 · NEW:IntegrationLogoGrid — */
+.about-integrations-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-7);
+  margin-top: var(--space-8);
+}
+.about-integrations-groups {
+  display: grid;
+  grid-template-columns: 5fr 2fr;
+  gap: var(--space-7);
+  align-items: start;
+}
+.about-integration-group-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+.about-integration-group-label svg {
+  width: 18px;
+  height: 18px;
+  color: var(--brand-accent);
+  flex-shrink: 0;
+}
+.about-logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.about-logo-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); /* spec: 8px tile radius */
+  padding: var(--space-3) var(--space-5);
+  min-height: 52px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.about-integration-links {
+  display: flex;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+@media (max-width: 768px) {
+  .about-integrations-panel { padding: var(--space-6) var(--space-5); }
+  .about-integrations-groups { grid-template-columns: 1fr; gap: var(--space-6); }
+}
+
+/* — Section 08 · StatBlock band at 3-up on ink + featured TestimonialCard — */
+.stats-grid.about-proof-stats { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 768px) {
+  .stats-grid.about-proof-stats { grid-template-columns: 1fr; }
+  .stats-grid.about-proof-stats .stat-block + .stat-block::before { display: none; }
+}
+.about-proof-footnote {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-on-dark-dim);
+  margin-top: var(--space-4);
+}
+.about-proof-footnote a {
+  color: var(--text-on-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.about-proof-testimonial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.about-proof-testimonial .testimonial-card { width: min(100%, 560px); }
+.about-proof-testimonial .testimonial-quote {
+  display: block;
+  -webkit-line-clamp: none;
+  overflow: visible;
+  font-size: 16px;
+}
+
+/* — Section 09 · NEW:TeamGrid (CMS-driven; ships with empty slots) — */
+.about-team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+.about-team-photo {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-accent);
+  margin-bottom: var(--space-4);
+}
+.about-team-photo svg { width: 40px; height: 40px; opacity: 0.7; }
+.about-team-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.about-team-role {
+  display: block;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-1);
+}
+.about-team-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  margin-top: var(--space-2);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-accent);
+}
+.about-team-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+@media (max-width: 768px) {
+  .about-team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .about-team-grid { grid-template-columns: 1fr; }
+}
+
+/* — Section 10 · IconFeatureGrid at 2-up (four principles) — */
+.icon-feature-grid.about-values-grid { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 640px) {
+  .icon-feature-grid.about-values-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+}
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     Section 01 — Page Hero (Mission Statement)
+     Component: SectionHeader (centered, on --bg-warm). No CTA.
+     The H1 here is the page's single h1 (SectionHeader renders the
+     heading level passed at port time).
+     ============================================================ -->
+<section id="about-hero" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="about-hero-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color: var(--text-secondary);">Founded in San Francisco · seek@quaeris.ai</span>
+      <h1 id="about-hero-heading" class="display-lg" style="color: var(--text-primary); margin-bottom: var(--space-4);">Secure, Governed Analytics. Powered by Trusted Agents.</h1>
+      <p class="body-lg subcopy" style="color: var(--text-secondary);">Quaeris exists because the enterprise deserved an analytics platform where AI answers are audited, where the model is your choice, and where data governance is a design principle — not a checkbox bolted on at the end.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 02 — Company Identity Strip
+     Component: NEW:CompanyIdentityStrip (lightweight shell — may live as a
+     local page component in /app/about/, spec Open Question 8).
+     ============================================================ -->
+<section id="company-identity" class="about-identity" aria-label="Company identity">
+  <div class="container">
+    <ul class="about-identity-grid" role="list">
+      <li class="about-identity-item reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- map-pin -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <span class="about-identity-label">Headquarters</span>
+          <span class="about-identity-value">Mission &amp; 3rd, San Francisco, CA 94103</span>
+        </div>
+      </li>
+      <li class="about-identity-item reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- mail -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+        </div>
+        <div>
+          <span class="about-identity-label">General inquiries</span>
+          <span class="about-identity-value"><a href="mailto:seek@quaeris.ai">seek@quaeris.ai</a></span>
+        </div>
+      </li>
+      <li class="about-identity-item reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- shield-check -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <span class="about-identity-label">Mission</span>
+          <span class="about-identity-value">Governed Agentic Analytics</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 03 — Why Quaeris Exists (Problem Framing)
+     Component: ProblemSolutionCards — each card pairs a problem with its
+     corresponding solution (spec's left/right columns, paired 1:1).
+     3-up grid via .about-ps-grid modifier.
+     ============================================================ -->
+<section id="why-we-exist" class="section-pad" style="background: var(--bg-canvas);" aria-labelledby="why-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color: var(--text-tertiary);">The problem we set out to solve</span>
+      <h2 id="why-heading" class="display-lg">Enterprise AI analytics had a governance deficit.</h2>
+      <p class="body-lg subcopy" style="color: var(--text-secondary);">Every major analytics vendor was racing to add AI. Almost none of them asked: who audits the answers? Who chooses the model? How does a regulated company trust a response it cannot trace?</p>
+    </div>
+
+    <div class="ps-grid about-ps-grid" role="list">
+
+      <article class="ps-card reveal" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <!-- lock-open -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+        </div>
+        <h3 class="heading-sm" style="color: var(--text-primary);">Ungoverned answers</h3>
+        <p class="body-md ps-problem" style="color: var(--text-secondary);">AI answers generated from language model weights rather than from certified, auditable metric definitions. No traceability. No compliance story.</p>
+        <div class="ps-fix-box" aria-label="The fix">
+          <span class="ps-fix-label eyebrow">The fix</span>
+          <h4 class="heading-sm" style="display: flex; align-items: flex-start; gap: var(--space-2); color: var(--text-primary);">
+            <!-- shield-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: var(--space-1);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            Governed answers from day one
+          </h4>
+          <p class="body-md ps-fix-body">Every Quaeris answer is grounded in the Smart Semantic Layer — auto-learned, auditable metric definitions that your team controls, not the model.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <!-- link -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <h3 class="heading-sm" style="color: var(--text-primary);">Model lock-in</h3>
+        <p class="body-md ps-problem" style="color: var(--text-secondary);">Every hyperscaler and incumbent tied the AI layer to their own model. Snowflake to Cortex. Microsoft to Azure OpenAI. Salesforce to Einstein. Procurement choice became compliance risk.</p>
+        <div class="ps-fix-box" aria-label="The fix">
+          <span class="ps-fix-label eyebrow">The fix</span>
+          <h4 class="heading-sm" style="display: flex; align-items: flex-start; gap: var(--space-2); color: var(--text-primary);">
+            <!-- sliders-horizontal -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: var(--space-1);"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
+            BYOM: your model, your compliance team&rsquo;s choice
+          </h4>
+          <p class="body-md ps-fix-body">Connect OpenAI, Anthropic, Google, or Meta models and switch as the landscape evolves. The model is your procurement decision, not ours.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <!-- file-x -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9.5 12.5 5 5"/><path d="m14.5 12.5-5 5"/></svg>
+        </div>
+        <h3 class="heading-sm" style="color: var(--text-primary);">Structured-only blindspot</h3>
+        <p class="body-md ps-problem" style="color: var(--text-secondary);">Documents and data warehouses lived in entirely separate stacks. No product unified a SharePoint contract with a Snowflake fact table in a single governed query.</p>
+        <div class="ps-fix-box" aria-label="The fix">
+          <span class="ps-fix-label eyebrow">The fix</span>
+          <h4 class="heading-sm" style="display: flex; align-items: flex-start; gap: var(--space-2); color: var(--text-primary);">
+            <!-- layers -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: var(--space-1);"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            Documents and warehouse data in one governed query
+          </h4>
+          <p class="body-md ps-fix-body">Data Agents unify structured warehouse tables and unstructured documents — contracts, invoices, reports — in a single natural-language query with a single audit trail.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 04 — The Three-Engine Architecture
+     Component: IconFeatureGrid (3-col variant via .about-engines-grid).
+     Internal link (spec §5): /platform/agents — "Agentic Query Engine".
+     ============================================================ -->
+<section id="architecture" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="architecture-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">How the platform is built</span>
+      <h2 id="architecture-heading" class="display-lg">Three engines. One governed system.</h2>
+      <p class="body-lg subcopy" style="color: var(--text-secondary);">The Quaeris platform is not a chatbot placed in front of a BI tool. It is a purpose-built three-engine information architecture where governance is enforced at every layer.</p>
+    </div>
+
+    <div class="icon-feature-grid about-engines-grid">
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- cpu -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2"/><path d="M15 2v2"/><path d="M9 20v2"/><path d="M15 20v2"/><path d="M2 9h2"/><path d="M2 15h2"/><path d="M20 9h2"/><path d="M20 15h2"/></svg>
+        </div>
+        <span class="eyebrow" style="color: var(--brand-accent);">Ask · Integrate · Activate</span>
+        <h3 class="heading-sm">Context Engine</h3>
+        <p>Interprets natural-language questions, integrates with your data warehouses and document sources, and activates the governed semantic layer — so the right data is in scope before any answer is generated.</p>
+      </div>
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- search -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <span class="eyebrow" style="color: var(--brand-accent);">Search · Share · Accelerate</span>
+        <h3 class="heading-sm">Answer Engine</h3>
+        <p>Executes governed queries, surfaces search-ready insights, and delivers answers that can be shared across teams — all traceable to the certified metric definitions in the Smart Semantic Layer.</p>
+      </div>
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- bar-chart-2 -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        </div>
+        <span class="eyebrow" style="color: var(--brand-accent);">Pin · Embed · Resonate</span>
+        <h3 class="heading-sm">Decision Engine</h3>
+        <p>Pins insights to pinboards, embeds governed analytics in external applications, and delivers resonant data experiences — keeping every number anchored to a verified source.</p>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: var(--space-7);">
+      <a href="/platform/agents" class="btn-ghost">Agentic Query Engine</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 05 — Six Core Capabilities
+     Component: BentoGrid (2-column variant via .about-bento;
+     wide cards span 2 — same inline gridColumn pattern as the component).
+     Internal link (spec §5): /platform/semantic-layer on the
+     Smart Semantic Layer card title.
+     ============================================================ -->
+<section id="capabilities" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="capabilities-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color: var(--text-tertiary);">Platform capabilities</span>
+      <h2 id="capabilities-heading" class="display-lg">The six capabilities that make analytics trustworthy.</h2>
+      <p class="body-lg subcopy" style="color: var(--text-secondary);">Each capability is a deliberate response to a gap in the market — not a feature added to hit a checklist.</p>
+    </div>
+
+    <div class="bento-grid about-bento" aria-label="Six core capabilities">
+
+      <!-- Wide · Smart Semantic Layer -->
+      <article class="bento-card bento-large reveal" style="grid-column: span 2;">
+        <div class="bento-large-gradient" aria-hidden="true"></div>
+        <div class="bento-large-content">
+          <div class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+            <!-- brain -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+          </div>
+          <h3 class="display-md" style="color: var(--text-primary);">
+            <a href="/platform/semantic-layer" style="color: inherit; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--brand-accent);">Smart Semantic Layer</a>
+          </h3>
+          <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3); max-width: 60ch;">Automatically learns business definitions and data relationships from user interaction — no upfront LookML or MDX modeling sprint required. Every metric is defined once and applied consistently.</p>
+        </div>
+      </article>
+
+      <!-- Standard · Natural Language to SQL -->
+      <article class="bento-card reveal">
+        <div class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+          <!-- message-square -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3 class="heading-sm" style="color: var(--text-primary);">Natural Language to SQL</h3>
+        <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3);">Plain-English questions translated into precise, governed SQL — checked against the semantic layer rather than free-form generation. Accuracy is structural, not probabilistic.</p>
+      </article>
+
+      <!-- Standard · Autonomous Multi-Step Workflows -->
+      <article class="bento-card reveal">
+        <div class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+          <!-- workflow -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+        </div>
+        <h3 class="heading-sm" style="color: var(--text-primary);">Autonomous Multi-Step Workflows</h3>
+        <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3);">Agents plan and execute analyses — fetch, filter, join, forecast, anomaly-detect, root-cause — without a human checkpoint at every step. The audit trail captures each step.</p>
+      </article>
+
+      <!-- Standard · Predictive & Proactive Analysis -->
+      <article class="bento-card reveal">
+        <div class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+          <!-- trending-up -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3 class="heading-sm" style="color: var(--text-primary);">Predictive &amp; Proactive Analysis</h3>
+        <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3);">Forecasts, anomaly flags, root-cause diagnosis, and proactive alerts so issues surface before they affect business outcomes.</p>
+      </article>
+
+      <!-- Standard · BYOM -->
+      <article class="bento-card reveal">
+        <div class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+          <!-- plug -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>
+        </div>
+        <h3 class="heading-sm" style="color: var(--text-primary);">BYOM — Bring Your Own Model</h3>
+        <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3);">Connect OpenAI, Anthropic, Google, or Meta models and switch as the landscape evolves. Quaeris is not the model gatekeeper — your compliance team is.</p>
+      </article>
+
+      <!-- Wide · Data & Document Agents -->
+      <article class="bento-card bento-large reveal" style="grid-column: span 2;">
+        <div class="bento-large-gradient" aria-hidden="true"></div>
+        <div class="bento-large-content">
+          <div class="icon-box" aria-hidden="true" style="margin-bottom: var(--space-4);">
+            <!-- file-search -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><circle cx="11" cy="14" r="2.5"/><path d="m13 16 2.5 2.5"/></svg>
+          </div>
+          <h3 class="display-md" style="color: var(--text-primary);">Data &amp; Document Agents</h3>
+          <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3); max-width: 60ch;">Extract structured fields from contracts, invoices, and documents — then join with warehouse fact tables in one natural-language, governed query.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 06 — Target Industries
+     Component: SegmentCards (3-up variant via .about-industries-grid).
+     Non-linked on /about — cards become links only if industry routes ship.
+     ============================================================ -->
+<section id="industries" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="industries-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color: var(--text-tertiary);">Where Quaeris is deployed</span>
+      <h2 id="industries-heading" class="display-lg">Built for industries where governance is not optional.</h2>
+      <p class="body-lg subcopy" style="color: var(--text-secondary);">Regulated, complex, data-intensive industries were the design target — not an afterthought.</p>
+    </div>
+
+    <div class="segment-cards-grid about-industries-grid" role="list">
+
+      <article class="segment-card reveal" role="listitem">
+        <span class="segment-index" aria-hidden="true">01</span>
+        <div class="segment-icon-box" aria-hidden="true">
+          <!-- landmark -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Finance</h3>
+        <p class="body-sm segment-desc">Auditable answers on revenue, risk, and compliance metrics — with prompt-level audit trails for SOX and internal controls.</p>
+      </article>
+
+      <article class="segment-card reveal" role="listitem">
+        <span class="segment-index" aria-hidden="true">02</span>
+        <div class="segment-icon-box" aria-hidden="true">
+          <!-- shield -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Insurance</h3>
+        <p class="body-sm segment-desc">Governed queries across claims, actuarial, and underwriting data — unified with policy documents in a single agent workflow.</p>
+      </article>
+
+      <article class="segment-card reveal" role="listitem">
+        <span class="segment-index" aria-hidden="true">03</span>
+        <div class="segment-icon-box" aria-hidden="true">
+          <!-- shopping-cart -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Retail &amp; CPG</h3>
+        <p class="body-sm segment-desc">Merchandising, inventory, and customer analytics from a semantic layer that speaks the language of the business, not the warehouse schema.</p>
+      </article>
+
+      <article class="segment-card reveal" role="listitem">
+        <span class="segment-index" aria-hidden="true">04</span>
+        <div class="segment-icon-box" aria-hidden="true">
+          <!-- activity -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Healthcare</h3>
+        <p class="body-sm segment-desc">Clinical, operational, and financial queries under HIPAA-aligned access controls — every answer scoped to the role that asked.</p>
+      </article>
+
+      <article class="segment-card reveal" role="listitem">
+        <span class="segment-index" aria-hidden="true">05</span>
+        <div class="segment-icon-box" aria-hidden="true">
+          <!-- settings-2 -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Manufacturing</h3>
+        <p class="body-sm segment-desc">Quality, throughput, and supply-chain analytics driven by agents that can join machine logs with ERP fact tables.</p>
+      </article>
+
+      <article class="segment-card reveal" role="listitem">
+        <span class="segment-index" aria-hidden="true">06</span>
+        <div class="segment-icon-box" aria-hidden="true">
+          <!-- hard-hat -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg>
+        </div>
+        <h3 class="heading-sm segment-label">Construction</h3>
+        <p class="body-sm segment-desc">Project margin, subcontractor, and procurement analytics — governed and auditable from field data to executive dashboard.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 07 — Integrations (Data Sources We Connect)
+     Component: NEW:IntegrationLogoGrid (lightweight shell — may live as a
+     local page component in /app/about/, spec Open Question 8).
+     Logo tiles are text wordmarks until real logo assets are sourced
+     ([data-placeholder]). No press/customer/cert logos here (spec §3.07).
+     Internal links (spec §5): /integrations "See all integrations" (ghost,
+     below grid) · /platform/warehouse "Warehouse-native".
+     ============================================================ -->
+<section id="integrations" class="section-pad" style="background: var(--bg-canvas);" aria-labelledby="integrations-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color: var(--text-tertiary);">Warehouse-native by design</span>
+      <h2 id="integrations-heading" class="display-lg">Your data stays in your environment.</h2>
+      <p class="body-lg subcopy" style="color: var(--text-secondary);">Quaeris connects directly to your existing data infrastructure — no data copies, no pipelines to rebuild. Your warehouse is the system of record. Always.</p>
+    </div>
+
+    <div class="about-integrations-panel reveal">
+      <div class="about-integrations-groups">
+        <div>
+          <h3 class="about-integration-group-label">
+            <!-- server -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+            Warehouses
+          </h3>
+          <ul class="about-logo-row" role="list">
+            <li class="about-logo-tile" data-placeholder>Snowflake</li>
+            <li class="about-logo-tile" data-placeholder>Google BigQuery</li>
+            <li class="about-logo-tile" data-placeholder>Databricks</li>
+            <li class="about-logo-tile" data-placeholder>Azure Synapse</li>
+            <li class="about-logo-tile" data-placeholder>Amazon Redshift</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="about-integration-group-label">
+            <!-- file-text -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Document sources
+          </h3>
+          <ul class="about-logo-row" role="list">
+            <li class="about-logo-tile" data-placeholder>Microsoft SharePoint</li>
+            <li class="about-logo-tile" data-placeholder>Google Drive</li>
+          </ul>
+        </div>
+      </div>
+      <div class="about-integration-links">
+        <a href="/integrations" class="btn-ghost">See all integrations</a>
+        <a href="/platform/warehouse" class="btn-ghost">Warehouse-native</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 08 — Proof Signals (Customer & Review Placeholder)
+     Components: StatBlock (3-up on ink via .about-proof-stats) +
+     TestimonialCard (featured single). All figures, the E4E quote, the
+     review badges, and the /trust footnote are [data-placeholder] —
+     spec §4: do not invent; confirm with CS/legal.
+     Internal link (spec §5): /use-cases "See customer outcomes".
+     ============================================================ -->
+<section id="proof-signals" class="section-pad" style="background: var(--bg-ink); position: relative; overflow: hidden;">
+  <div class="container" style="position: relative; z-index: 1;">
+    <h2 class="sr-only">Proof signals</h2>
+
+    <div class="stats-grid about-proof-stats reveal">
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-placeholder aria-label="Placeholder — awaiting verified figure">—</span>
+        <span class="stat-label body-sm">Named enterprise customers</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-placeholder aria-label="Placeholder — awaiting verified figure">—</span>
+        <span class="stat-label body-sm">Industries served</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-placeholder aria-label="Placeholder — awaiting verified figure">—</span>
+        <span class="stat-label body-sm">Integrations available</span>
+      </div>
+    </div>
+    <!-- Footnote link [data-placeholder] until the /trust page exists (spec Open Question 6). -->
+    <p class="about-proof-footnote reveal" data-placeholder>
+      <a href="/trust">Security &amp; compliance details</a>
+    </p>
+
+    <div class="about-proof-testimonial reveal">
+      <!-- Only named customer reference verified in research: Courtney Ramey, E4E.
+           Quote text pending CS approval — do not invent (spec §3.08). -->
+      <div class="testimonial-card">
+        <p class="testimonial-quote" data-placeholder>Approved customer quote pending — pull the exact E4E quote from /use-cases or the customer success team before launch.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">CR</div>
+          <div>
+            <div class="author-name">Courtney Ramey</div>
+            <div class="author-role">E4E</div>
+          </div>
+        </div>
+      </div>
+      <a href="/use-cases" class="btn btn-secondary-dark">See customer outcomes</a>
+    </div>
+
+    <!-- Review badges — all pending review seed campaign (spec §3.08); render via the
+         Veris config testimonials.reviewBadges pattern once scores are live. -->
+    <div class="review-badges reveal" style="margin-top: var(--space-8); margin-bottom: 0;" aria-label="Review platform scores — pending">
+      <div class="review-badge" data-placeholder>
+        <span class="review-badge-text">—</span>
+        <span class="review-badge-platform">G2</span>
+      </div>
+      <div class="review-badge" data-placeholder>
+        <span class="review-badge-text">—</span>
+        <span class="review-badge-platform">Gartner Peer Insights</span>
+      </div>
+      <div class="review-badge" data-placeholder>
+        <span class="review-badge-text">—</span>
+        <span class="review-badge-platform">Capterra</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 09 — Team Section (Structured Placeholder Only)
+     Component: NEW:TeamGrid — renders entirely from a CMS-driven data
+     array. HARD RULE (spec §3.09): zero names, titles, bios, or photos in
+     the implementation; every card below is an empty [data-placeholder]
+     slot for content-ops handoff. Fallback if bios are not approved:
+     replace with EditorialBlock + "We're hiring" ghost CTA → /careers.
+     ============================================================ -->
+<section id="team" class="section-pad" style="background: var(--bg-canvas);" aria-labelledby="team-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color: var(--text-tertiary);">The team</span>
+      <h2 id="team-heading" class="display-lg">Built by people who understand enterprise data.</h2>
+      <p class="body-lg subcopy" style="color: var(--text-secondary);">The Quaeris team combines deep experience in analytics infrastructure, enterprise security, and applied AI — focused on one problem: making data answers trustworthy at scale.</p>
+    </div>
+
+    <div class="about-team-grid" role="list">
+
+      <article class="card reveal" role="listitem" data-placeholder>
+        <div class="about-team-photo" aria-hidden="true">
+          <!-- user (headshot slot) -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span class="about-team-name">Name — pending content ops</span>
+        <span class="about-team-role">Title — pending content ops</span>
+        <a href="#" class="about-team-link" aria-label="LinkedIn profile — pending">
+          <!-- linkedin -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </article>
+
+      <article class="card reveal" role="listitem" data-placeholder>
+        <div class="about-team-photo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span class="about-team-name">Name — pending content ops</span>
+        <span class="about-team-role">Title — pending content ops</span>
+        <a href="#" class="about-team-link" aria-label="LinkedIn profile — pending">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </article>
+
+      <article class="card reveal" role="listitem" data-placeholder>
+        <div class="about-team-photo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span class="about-team-name">Name — pending content ops</span>
+        <span class="about-team-role">Title — pending content ops</span>
+        <a href="#" class="about-team-link" aria-label="LinkedIn profile — pending">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </article>
+
+      <article class="card reveal" role="listitem" data-placeholder>
+        <div class="about-team-photo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span class="about-team-name">Name — pending content ops</span>
+        <span class="about-team-role">Title — pending content ops</span>
+        <a href="#" class="about-team-link" aria-label="LinkedIn profile — pending">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 10 — Mission & Values (Company Principles)
+     Component: IconFeatureGrid (2-col variant via .about-values-grid).
+     Internal links (spec §5): /platform/governance "Governance & Lineage"
+     on the governance card · /platform/audit "Audit Logs" on the
+     auditability card.
+     ============================================================ -->
+<section id="values" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="values-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">What we stand for</span>
+      <h2 id="values-heading" class="display-lg">Governance is a design principle, not a feature flag.</h2>
+    </div>
+
+    <div class="icon-feature-grid about-values-grid">
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- shield-check -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="heading-sm">Governance-first architecture</h3>
+        <p>We do not bolt governance onto an existing product. The Smart Semantic Layer, the audit trail, and the role-based access controls are load-bearing structures — removing any one of them changes what the product is.</p>
+        <a href="/platform/governance" class="btn-ghost" style="align-self: flex-start;">Governance &amp; Lineage</a>
+      </div>
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- sliders-horizontal -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
+        </div>
+        <h3 class="heading-sm">Model neutrality</h3>
+        <p>An enterprise&rsquo;s choice of AI model is a procurement and compliance decision, not a vendor&rsquo;s revenue strategy. BYOM is not a selling point — it is a principle.</p>
+      </div>
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- eye -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3 class="heading-sm">Full auditability</h3>
+        <p>Every question asked, every agent step taken, every answer returned is logged. Prompt-level audit trails are not an enterprise edition feature. They are the default.</p>
+        <a href="/platform/audit" class="btn-ghost" style="align-self: flex-start;">Audit Logs</a>
+      </div>
+      <div class="icon-feature reveal">
+        <div class="icon-box" aria-hidden="true">
+          <!-- globe -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
+        <h3 class="heading-sm">Customer data stays with customers</h3>
+        <p>Quaeris is warehouse-native. Your data never travels to Quaeris infrastructure. This is an architectural commitment, not a contractual promise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 11 — Closing CTA Band
+     Component: CTABand. Spec's gradient/radius cites map to the live
+     tokens: primary CTA uses .btn-primary (var(--cta-bg) gradient fill,
+     var(--radius-cta)); band surface is the component's #cta-band ink
+     treatment with accent glow.
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to evaluate Quaeris?</span>
+      <h2 id="cta-heading" class="display-lg">See a governed answer against your own data.</h2>
+      <p class="body-lg subcopy">Book a 30-minute demo. We connect to your warehouse, walk through the semantic layer, and show you an auditable answer — no slides, no fabricated data.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        <a href="/platform" class="btn btn-secondary-dark">See how the platform works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>

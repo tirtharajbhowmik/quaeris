@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/revenue-ops — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- SEO (port reference, from docs/page-specs/solutions-revenue-ops.md §2):
+     Title: Governed Revenue Analytics for RevOps | Quaeris
+     Meta:  Unified pipeline and forecast metrics across CRM + warehouse. Query revenue KPIs
+            in natural language with governed agents. No conflicting numbers. -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic).
+   Prefix: rops- = /solutions/revenue-ops page area. */
+
+/* — Hero (NEW: RevOpsHero, HeroHome-style SectionHeader variant) — */
+.rops-hero {
+  background: var(--bg-warm);
+  position: relative;
+  overflow: hidden;
+}
+.rops-hero-trust {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+.rops-hero-trust li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.rops-hero-trust svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* — Problem cards (NEW: ProblemSolutionCards — adapted 3-up problem variant) — */
+.rops-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.rops-problem-grid > * { height: 100%; }
+.rops-problem-card { display: flex; flex-direction: column; gap: var(--space-4); height: 100%; }
+.rops-problem-card p { color: var(--text-secondary); flex: 1; }
+
+/* — Use-case bento cards (icon + title + body inside existing .bento-card) — */
+.rops-usecase-card { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.rops-usecase-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; flex: 1; }
+.rops-usecase-card .icon-box { margin-bottom: var(--space-1); }
+
+/* — Comparison matrix (NEW: FeatureMatrixTable) — */
+.rops-compare-wrap {
+  margin-top: var(--space-8);
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-card);
+}
+.rops-compare-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.rops-compare-table th,
+.rops-compare-table td {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.rops-compare-table tbody tr:last-child th,
+.rops-compare-table tbody tr:last-child td { border-bottom: none; }
+.rops-compare-table thead th {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  background: var(--bg-canvas);
+}
+.rops-compare-table tbody th { font-weight: 600; color: var(--text-primary); }
+.rops-compare-table td { color: var(--text-secondary); }
+.rops-compare-col-q { background: var(--brand-accent-soft); }
+.rops-compare-table td.rops-compare-col-q { color: var(--text-primary); font-weight: 500; }
+.rops-compare-table thead th.rops-compare-col-q { color: var(--brand-accent); }
+.rops-compare-note {
+  margin-top: var(--space-6);
+  color: var(--text-secondary);
+  max-width: 68ch;
+}
+
+/* — Heading-level fixes: this page nests these under an H2, so they must be H3
+     (port note: extend the existing .value-prop-text h4 / .faq-mini-card h4 rules). — */
+.value-prop-text h3 { font-size: 16px; font-weight: 600; color: var(--text-on-dark); margin-bottom: var(--space-1); }
+.faq-mini-card h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-3); }
+
+/* — Responsive (new classes only) — */
+@media (max-width: 1024px) {
+  .rops-problem-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .rops-problem-grid { grid-template-columns: 1fr; }
+  .rops-hero-trust { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+}
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     3.1 HERO — NEW: RevOpsHero (custom SectionHeader variant, HeroHome-style)
+     ============================================================ -->
+<section id="rops-hero" class="rops-hero section-pad" aria-labelledby="rops-hero-h1">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-inner reveal">
+      <span class="eyebrow">Revenue &amp; Operations</span>
+      <h1 id="rops-hero-h1" class="hero-h1">Unified revenue pipeline. One source of truth.</h1>
+      <p class="subcopy body-lg">Stop managing conflicting revenue numbers across your CRM and data warehouse. Quaeris agents query governed pipeline metrics in natural language — giving your entire RevOps team the same answer, every time.</p>
+      <div class="hero-buttons btn-stack">
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
+      </div>
+      <ul class="rops-hero-trust">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Works with Snowflake, BigQuery, Redshift, and your data warehouse
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Role-based access enforced at query time
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Zero hallucinated forecast numbers
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.2 PROBLEM STATEMENT — NEW: ProblemSolutionCards (adapted 3-column problem variant)
+     ============================================================ -->
+<section id="problem" class="section-pad" aria-labelledby="problem-h2">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The RevOps Problem</span>
+      <h2 id="problem-h2" class="display-lg">Three numbers, three teams, zero alignment.</h2>
+      <p class="subcopy body-lg">Your revenue team drowns in conflicting pipeline views. CRM says $8M in forecast, the warehouse says $7.2M, and finance says it's $9.1M. Without a single governed pipeline metric, your team burns cycles reconciling spreadsheets instead of closing deals.</p>
+    </div>
+    <div class="rops-problem-grid">
+      <article class="card rops-problem-card reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3 class="heading-sm">Conflicting Pipeline Views</h3>
+        <p class="body-md">Different teams query the same pipeline from different sources — CRM lag, warehouse definitions, cached BI tools. No way to know which number is the source of truth.</p>
+      </article>
+      <article class="card rops-problem-card reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+        </div>
+        <h3 class="heading-sm">Forecast Accuracy Unknown</h3>
+        <p class="body-md">Sales pulls forecasts from the CRM, finance from the warehouse, ops from a legacy dashboard. Reconciliation happens in spreadsheets, days before board meetings.</p>
+      </article>
+      <article class="card rops-problem-card reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3 class="heading-sm">Data Team Bottleneck</h3>
+        <p class="body-md">Every ad-hoc pipeline question escalates to data. RevOps can't self-serve metrics without governance controls, so the request queue grows while forecast deadlines shrink.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.3 HOW QUAERIS SOLVES REVOPS — maps to existing FeatureRow / MethodologySection
+     (anchor target for hero "See how it works")
+     ============================================================ -->
+<section id="how-it-works" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="how-h2">
+  <div class="container">
+    <div class="section-header methodology-header reveal">
+      <span class="eyebrow">Governed RevOps Agents</span>
+      <h2 id="how-h2" class="display-lg">Ask pipeline questions. Get audited answers.</h2>
+      <p class="subcopy body-lg">Quaeris connects your CRM and warehouse into a single semantic layer where agents answer revenue questions in natural language — with every metric certified and every answer traceable.</p>
+    </div>
+
+    <div class="feature-rows-list">
+
+      <!-- Row 1 — Connect -->
+      <article class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 01 — Connect</span>
+          <h3 class="heading-sm feature-row-heading">Connect your CRM and your warehouse</h3>
+          <!-- data-placeholder: confirm which CRM systems are supported at GA before naming specific platforms -->
+          <p class="feature-row-body body-md" data-placeholder>Quaeris joins your CRM's pipeline and forecast data with historical warehouse metrics. No batch syncs, no data duplication — agents query the single source of truth. Setup takes hours, not weeks.</p>
+          <a href="/integrations" class="btn-ghost" data-placeholder>See supported integrations</a>
+        </div>
+        <div class="feature-row-visual">
+          <!-- data-placeholder: sales-ops-integration dashboard screenshot -->
+          <div class="feature-row-img-wrap feature-row-img-fallback" style="color: var(--brand-accent);" data-placeholder>
+            <svg viewBox="0 0 600 400" role="img" aria-label="Sales ops engineer connecting a CRM and Snowflake in Quaeris" preserveAspectRatio="xMidYMid meet">
+              <rect width="600" height="400" fill="currentColor" opacity="0.05"/>
+              <rect x="60" y="70" width="160" height="92" rx="12" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+              <line x1="86" y1="102" x2="194" y2="102" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <line x1="86" y1="124" x2="164" y2="124" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <rect x="60" y="238" width="160" height="92" rx="12" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+              <line x1="86" y1="270" x2="194" y2="270" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <line x1="86" y1="292" x2="164" y2="292" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <path d="M220 116 C 310 116, 310 200, 372 200" fill="none" stroke="currentColor" stroke-width="2" opacity="0.55"/>
+              <path d="M220 284 C 310 284, 310 200, 372 200" fill="none" stroke="currentColor" stroke-width="2" opacity="0.55"/>
+              <circle cx="438" cy="200" r="62" fill="currentColor" opacity="0.12"/>
+              <circle cx="438" cy="200" r="62" fill="none" stroke="currentColor" stroke-width="2" opacity="0.8"/>
+              <path d="M414 200 l16 16 32-32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+            </svg>
+          </div>
+        </div>
+      </article>
+
+      <!-- Row 2 — Define -->
+      <article class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 02 — Define</span>
+          <h3 class="heading-sm feature-row-heading">Certify pipeline and quota metrics</h3>
+          <p class="feature-row-body body-md">Your RevOps team owns the semantic layer: define what 'pipeline' means (bookings only? includes opps? which forecast category?), when 'quota' is attainment vs. plan, how to calculate year-over-year growth. One definition. Used by every agent. No spreadsheet conflicts.</p>
+          <a href="/platform/semantic-layer" class="btn-ghost">Learn about the Smart Semantic Layer</a>
+        </div>
+        <div class="feature-row-visual">
+          <!-- data-placeholder: metric definition UI showing pipeline metric -->
+          <div class="feature-row-img-wrap feature-row-img-fallback" style="color: var(--brand-accent);" data-placeholder>
+            <svg viewBox="0 0 600 400" role="img" aria-label="RevOps analyst defining a certified pipeline metric in Quaeris" preserveAspectRatio="xMidYMid meet">
+              <rect width="600" height="400" fill="currentColor" opacity="0.05"/>
+              <rect x="90" y="56" width="420" height="288" rx="16" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+              <line x1="90" y1="116" x2="510" y2="116" stroke="currentColor" stroke-width="2" opacity="0.35"/>
+              <line x1="120" y1="86" x2="300" y2="86" stroke="currentColor" stroke-width="3" opacity="0.6"/>
+              <line x1="120" y1="152" x2="380" y2="152" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <circle cx="466" cy="152" r="10" fill="currentColor" opacity="0.45"/>
+              <line x1="120" y1="196" x2="340" y2="196" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <circle cx="466" cy="196" r="10" fill="currentColor" opacity="0.45"/>
+              <line x1="120" y1="240" x2="400" y2="240" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <circle cx="466" cy="240" r="10" fill="currentColor" opacity="0.45"/>
+              <rect x="120" y="282" width="150" height="36" rx="10" fill="currentColor" opacity="0.18"/>
+              <path d="M139 300 l8 8 16-16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+            </svg>
+          </div>
+        </div>
+      </article>
+
+      <!-- Row 3 — Query -->
+      <article class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Step 03 — Query</span>
+          <h3 class="heading-sm feature-row-heading">Ask questions in plain language</h3>
+          <p class="feature-row-body body-md">Sales ops ask: 'What's our total forecast versus quota, by region, for Q3?' The agent queries the governed semantic layer and returns an answer in seconds — with sources cited, metric definitions shown, and lineage traceable back to the source CRM records. No hallucinations.</p>
+          <!-- data-placeholder: /demo or #video-demo — confirm demo asset before publishing -->
+          <a href="/contact" class="btn-ghost" data-placeholder>View a demo</a>
+        </div>
+        <div class="feature-row-visual">
+          <!-- data-placeholder: agent query interface showing revenue question -->
+          <div class="feature-row-img-wrap feature-row-img-fallback" style="color: var(--brand-accent);" data-placeholder>
+            <svg viewBox="0 0 600 400" role="img" aria-label="RevOps analyst querying pipeline forecast in Quaeris agent interface" preserveAspectRatio="xMidYMid meet">
+              <rect width="600" height="400" fill="currentColor" opacity="0.05"/>
+              <rect x="310" y="52" width="230" height="64" rx="16" fill="currentColor" opacity="0.14"/>
+              <line x1="334" y1="76" x2="514" y2="76" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+              <line x1="334" y1="94" x2="470" y2="94" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+              <rect x="60" y="148" width="320" height="196" rx="16" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+              <rect x="92" y="240" width="36" height="72" rx="6" fill="currentColor" opacity="0.3"/>
+              <rect x="146" y="216" width="36" height="96" rx="6" fill="currentColor" opacity="0.45"/>
+              <rect x="200" y="188" width="36" height="124" rx="6" fill="currentColor" opacity="0.6"/>
+              <rect x="254" y="170" width="36" height="142" rx="6" fill="currentColor" opacity="0.8"/>
+              <line x1="92" y1="328" x2="290" y2="328" stroke="currentColor" stroke-width="2" opacity="0.35"/>
+              <circle cx="430" cy="300" r="34" fill="none" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+              <path d="M416 300 l10 10 20-20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+            </svg>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.4 KEY CAPABILITIES — maps to existing IconFeatureGrid (4 columns)
+     ============================================================ -->
+<section id="capabilities" class="section-pad" aria-labelledby="capabilities-h2">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">What Governed RevOps Agents Enable</span>
+      <h2 id="capabilities-h2" class="display-lg">Pipeline questions answered, your way.</h2>
+    </div>
+    <div class="icon-feature-grid">
+      <div class="icon-feature reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
+        </div>
+        <h3 class="heading-sm">Multi-source Pipeline Unification</h3>
+        <!-- data-placeholder: list specific CRM sources once GA integrations are confirmed -->
+        <p data-placeholder>Your CRM and warehouse data merge into one semantic layer. Agents query across all connected sources and answer forecast/pipeline questions with a single number.</p>
+      </div>
+      <div class="icon-feature reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <h3 class="heading-sm">Governed Forecast Accuracy</h3>
+        <p>Define forecast accuracy rules in the semantic layer. Agents calculate attainment, track vs. plan, and flag discrepancies — all auditable, all governed, zero ad-hoc.</p>
+      </div>
+      <div class="icon-feature reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <h3 class="heading-sm">Revenue Lineage &amp; Traceability</h3>
+        <p>Every pipeline metric, every forecast number flows back to certified definitions. Click any agent answer and trace it: which CRM record? which business rule? which warehouse table?</p>
+      </div>
+      <div class="icon-feature reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3 class="heading-sm">Role-Based Revenue Access</h3>
+        <p>Define who sees which pipeline: sales sees their regions, finance sees the consolidated forecast, execs see company-wide. Access enforced at agent query time, not dashboard filter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 USE CASES — maps to existing BentoGrid (6 cards, 3×2)
+     ============================================================ -->
+<section id="use-cases" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="use-cases-h2">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Revenue Questions RevOps Asks</span>
+      <h2 id="use-cases-h2" class="display-lg">The questions your agents answer daily.</h2>
+    </div>
+    <div class="bento-grid">
+      <article class="bento-card rops-usecase-card reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3 class="heading-sm">Pipeline Forecast vs. Quota</h3>
+        <p>Compare forecast to quota by territory, rep, and product line. Identify underforecast regions before the deal review and route support proactively.</p>
+      </article>
+      <article class="bento-card rops-usecase-card reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        </div>
+        <h3 class="heading-sm">Bookings Attainment &amp; Run Rate</h3>
+        <p>Query actual bookings, attach to plan by region, and calculate YTD attainment. No spreadsheet pulls — agents answer in real time, showing sources and business rules.</p>
+      </article>
+      <article class="bento-card rops-usecase-card reveal">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3 class="heading-sm">Opp Age &amp; Velocity Analysis</h3>
+        <p>How long do deals sit in each stage? Which stages are bottlenecks? Agents pull aging and velocity from CRM, join with warehouse win/loss history, and surface trends.</p>
+      </article>
+      <!-- Cards 4–6: spec marks title/body/icon as data-placeholder pending editorial confirmation -->
+      <article class="bento-card rops-usecase-card reveal" data-placeholder>
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </div>
+        <h3 class="heading-sm">Upsell &amp; Cross-Sell Pipeline</h3>
+        <p>Surface expansion pipeline by account tier and product line. Agents join CRM opportunity data with warehouse usage history to flag accounts ready for an upsell conversation.</p>
+      </article>
+      <article class="bento-card rops-usecase-card reveal" data-placeholder>
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+        </div>
+        <h3 class="heading-sm">Pricing &amp; Discount Tracking</h3>
+        <p>Track discount depth by rep, segment, and quarter against certified pricing rules. Agents flag deals that exceed approval thresholds before they hit the forecast.</p>
+      </article>
+      <article class="bento-card rops-usecase-card reveal" data-placeholder>
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="heading-sm">Territory &amp; Rep Performance</h3>
+        <p>Compare rep attainment, win rates, and pipeline coverage across territories. Agents answer from certified definitions, so every leaderboard uses the same math.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.6 PROOF: CUSTOMER OUTCOMES — maps to existing CaseStudyCard grid (#proof)
+     ============================================================ -->
+<section id="proof" class="section-pad" aria-labelledby="proof-h2">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Customer Proof</span>
+      <h2 id="proof-h2" class="display-lg">How revenue teams improved with Quaeris.</h2>
+    </div>
+    <div class="case-study-grid">
+
+      <article class="case-study-card reveal">
+        <span class="industry-chip">B2B SaaS</span>
+        <h3 class="heading-sm" data-placeholder>RevOps team at a B2B SaaS scale-up</h3>
+        <p class="cs-outcome" data-placeholder>Unified forecast reporting across EMEA, APAC, and Americas — one certified pipeline number for every region.</p>
+        <div class="cs-stats" data-placeholder>
+          <div class="cs-stat">
+            <span class="cs-stat-num">1</span>
+            <span class="cs-stat-label">Source of truth</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">+22%</span>
+            <span class="cs-stat-label">Forecast accuracy</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">9 hrs/wk</span>
+            <span class="cs-stat-label">Reconciliation saved</span>
+          </div>
+        </div>
+        <p class="cs-how" data-placeholder>Connected their CRM to Snowflake in the semantic layer, certified 15 pipeline metrics, and trained the ops team on natural-language queries.</p>
+        <a href="/case-studies/revops-b2b-saas" class="btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+
+      <article class="case-study-card reveal">
+        <span class="industry-chip">Enterprise SaaS</span>
+        <h3 class="heading-sm" data-placeholder>Global RevOps org at an enterprise SaaS company</h3>
+        <p class="cs-outcome" data-placeholder>Cut ad-hoc pipeline requests to the data team and moved RevOps to governed self-serve queries.</p>
+        <div class="cs-stats" data-placeholder>
+          <div class="cs-stat">
+            <span class="cs-stat-num">−71%</span>
+            <span class="cs-stat-label">Ad-hoc requests</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">1,400</span>
+            <span class="cs-stat-label">Self-serve queries/mo</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">2 FTE</span>
+            <span class="cs-stat-label">Refocused on strategy</span>
+          </div>
+        </div>
+        <p class="cs-how" data-placeholder>Deployed the semantic layer in two weeks, certified 24 revenue metrics, and rolled out role-based access mapped to territory roles.</p>
+        <a href="/case-studies/revops-enterprise-saas" class="btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+
+      <article class="case-study-card reveal">
+        <span class="industry-chip" data-placeholder>Fintech</span>
+        <h3 class="heading-sm" data-placeholder>Revenue operations group at a fintech firm</h3>
+        <p class="cs-outcome" data-placeholder>Went live with governed forecast queries in three weeks — every number auditable for compliance review.</p>
+        <div class="cs-stats" data-placeholder>
+          <div class="cs-stat">
+            <span class="cs-stat-num">3 wks</span>
+            <span class="cs-stat-label">To go live</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">100%</span>
+            <span class="cs-stat-label">Queries logged</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">5</span>
+            <span class="cs-stat-label">Regions unified</span>
+          </div>
+        </div>
+        <p class="cs-how" data-placeholder>Connected BigQuery and the CRM, certified forecast accuracy rules, and enabled prompt + agent audit logs for the compliance team.</p>
+        <a href="/case-studies/revops-fintech" class="btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.7 COMPARISON — NEW: FeatureMatrixTable
+     ============================================================ -->
+<section id="comparison" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="comparison-h2">
+  <div class="container">
+    <div class="section-header center reveal">
+      <h2 id="comparison-h2" class="display-lg">Why Quaeris is built for RevOps.</h2>
+    </div>
+    <div class="rops-compare-wrap reveal">
+      <table class="rops-compare-table">
+        <caption class="sr-only">Capability comparison: Traditional BI vs. ThoughtSpot Spotter vs. Quaeris</caption>
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col">Traditional BI</th>
+            <th scope="col">ThoughtSpot Spotter</th>
+            <th scope="col" class="rops-compare-col-q">Quaeris</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Query CRM + Warehouse together</th>
+            <td>Requires manual data sync</td>
+            <td>Requires ThoughtSpot modeling</td>
+            <td class="rops-compare-col-q">Native, live join</td>
+          </tr>
+          <tr>
+            <th scope="row">Governed semantic layer</th>
+            <td>Manual modeling, weeks to deploy</td>
+            <td>Search-token architecture, fixed</td>
+            <td class="rops-compare-col-q">Auto-learns from prompts, auditable</td>
+          </tr>
+          <tr>
+            <th scope="row">Natural-language pipeline questions</th>
+            <td>No</td>
+            <td>Search-first, limited multi-step</td>
+            <td class="rops-compare-col-q">Full agent reasoning, multi-step</td>
+          </tr>
+          <tr>
+            <th scope="row">Forecast accuracy rules</th>
+            <td>Excel formulas</td>
+            <td>Pre-built only</td>
+            <td class="rops-compare-col-q">Customizable, certified per org</td>
+          </tr>
+          <tr>
+            <th scope="row">Role-based access at query time</th>
+            <td>Dashboard-level only</td>
+            <td>Platform role-based</td>
+            <td class="rops-compare-col-q">Agent enforces at query execution</td>
+          </tr>
+          <tr>
+            <th scope="row">Audit trail for compliance</th>
+            <td>Limited</td>
+            <td>Limited</td>
+            <td class="rops-compare-col-q">Full prompt + agent step audit logs</td>
+          </tr>
+          <tr>
+            <th scope="row">BYOM (bring your own model)</th>
+            <td>No</td>
+            <td>No</td>
+            <td class="rops-compare-col-q">Yes — connect OpenAI, Anthropic, Google, or Meta</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="rops-compare-note body-md reveal">Quaeris doesn't replace your CRM or warehouse — it unifies them. Agents query a governed semantic layer that merges CRM and warehouse data, and every answer is traceable to a certified metric definition. That's why RevOps teams get answers in seconds, not days, and why every number is auditable.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.8 DARK FEATURE: GOVERNANCE & LINEAGE — maps to existing dark-feature module
+     (AIFirstSection-family; ports as a GovernanceLineage variant of DarkFeature)
+     ============================================================ -->
+<section id="dark-feature" class="section-pad" aria-labelledby="governance-h2">
+  <div class="dark-feature-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="dark-feature-grid">
+
+      <div class="reveal">
+        <div class="section-header section-header-dark">
+          <span class="eyebrow">Governed by Design</span>
+          <h2 id="governance-h2" class="display-lg">Every pipeline metric is auditable.</h2>
+          <p class="subcopy body-lg">In regulated industries and large enterprises, revenue reporting carries compliance weight. Quaeris traces every forecast number — which metric definition was used, which CRM record was the source, which business rule applied, and who ran the query. That's real governance.</p>
+        </div>
+        <div class="value-prop-list">
+          <div class="value-prop-row">
+            <span class="value-prop-num">01</span>
+            <div class="value-prop-text">
+              <h3>Certified Metric Definitions</h3>
+              <p>Your RevOps team certifies what 'pipeline' and 'forecast' mean. Agents never generate alternative definitions — they query only the certified ones. Consistency guaranteed, compliance-ready.</p>
+            </div>
+          </div>
+          <div class="value-prop-row">
+            <span class="value-prop-num">02</span>
+            <div class="value-prop-text">
+              <h3>Full Query Lineage</h3>
+              <p>Trace any forecast number: metric definition → CRM query → warehouse join → agent reasoning step → final answer. Auditors see the chain. Finance can verify the math.</p>
+            </div>
+          </div>
+          <div class="value-prop-row">
+            <span class="value-prop-num">03</span>
+            <div class="value-prop-text">
+              <h3>Prompt &amp; Agent Audit Logs</h3>
+              <p>Every question asked, every agent step taken, every metric queried is logged. Who asked what, when, from which CRM record. Compliance reporting is built in.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MetricDashboardMock — illustrative data only; all figures are data-placeholder
+           and must be replaced with research-backed or real-customer values before publishing. -->
+      <div class="metric-dashboard reveal" data-placeholder>
+        <div class="metric-dashboard-header">
+          <span>Governed Revenue Query — Live Session</span>
+          <span class="badge badge-accent">Live</span>
+        </div>
+        <div class="metric-tiles">
+          <div class="metric-tile active">
+            <div class="metric-tile-label">Question answered</div>
+            <div class="metric-tile-value">Forecast vs. quota, Q3</div>
+            <div class="metric-tile-delta">↑ Cites 5 metrics</div>
+          </div>
+          <div class="metric-tile" data-placeholder>
+            <div class="metric-tile-label">Avg. answer time</div>
+            <div class="metric-tile-value">8.4s</div>
+            <div class="metric-tile-delta">−63% vs. ticket queue</div>
+          </div>
+          <div class="metric-tile" data-placeholder>
+            <div class="metric-tile-label">Metrics certified</div>
+            <div class="metric-tile-value">142</div>
+            <div class="metric-tile-delta">+18 this quarter</div>
+          </div>
+          <div class="metric-tile">
+            <div class="metric-tile-label">Access enforced</div>
+            <div class="metric-tile-value">By territory role</div>
+            <div class="metric-tile-delta">All queries logged</div>
+          </div>
+        </div>
+        <div class="mini-chart" style="color: var(--brand-accent);" data-placeholder>
+          <svg viewBox="0 0 320 80" preserveAspectRatio="none" aria-hidden="true" fill="none">
+            <polyline points="0,64 40,58 80,50 120,54 160,42 200,36 240,28 280,24 320,16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="0,70 40,68 80,64 120,66 160,60 200,58 240,54 280,52 320,48" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+          </svg>
+        </div>
+        <p class="chart-caption" data-placeholder>Forecast accuracy trend — illustrative data</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.9 FAQ — maps to existing FAQSection (Accordion)
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-h2">
+  <div class="container">
+    <div class="faq-grid">
+
+      <div class="reveal">
+        <div class="section-header">
+          <span class="eyebrow">Common Questions</span>
+          <h2 id="faq-h2" class="display-lg">Answers for RevOps leaders.</h2>
+          <p class="subcopy body-lg">If your question isn't here, book a demo — we'll walk through your CRM and warehouse setup.</p>
+        </div>
+        <div class="faq-mini-card" data-placeholder>
+          <h3>Talk to a RevOps specialist</h3>
+          <p>We'll map your CRM and warehouse setup, then run a live governed forecast query on a 30-minute call.</p>
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        </div>
+      </div>
+
+      <div class="accordion reveal">
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" id="faq-q1" aria-expanded="true" aria-controls="faq-a1" data-state="open">
+              <span class="accordion-question">Can agents hallucinate revenue numbers?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a1" role="region" aria-labelledby="faq-q1" data-state="open">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">No. Quaeris agents don't generate forecast numbers — they retrieve certified ones from your semantic layer. If a question can't be answered from your governance policies, the agent says so. No hallucinations, no guesses. Every forecast is traceable to a certified metric definition and a source CRM record.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" id="faq-q2" aria-expanded="false" aria-controls="faq-a2" data-state="closed">
+              <span class="accordion-question">How do we define our forecast metrics?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a2" role="region" aria-labelledby="faq-q2" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Your RevOps team owns the semantic layer. You define: what qualifies as 'pipeline' (bookings-only? includes opps?), how to calculate 'forecast' (last-forecast-date field? weighted by probability?), which CRM fields map to which business metrics. Definitions are versioned and audited. Once certified, agents use that definition everywhere.</p>
+          </div>
+        </div>
+
+        <!-- data-placeholder: confirm CRM systems supported at GA before publishing this FAQ -->
+        <div class="accordion-item" data-placeholder>
+          <h3>
+            <button class="accordion-trigger" id="faq-q3" aria-expanded="false" aria-controls="faq-a3" data-state="closed">
+              <span class="accordion-question">Does Quaeris work with our CRM?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a3" role="region" aria-labelledby="faq-q3" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Confirmed warehouse integrations include Snowflake, BigQuery, Redshift, Databricks, and Azure Synapse — agents can query across all connected sources in a single natural-language question. Ask us about your specific CRM on a demo call.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" id="faq-q4" aria-expanded="false" aria-controls="faq-a4" data-state="closed">
+              <span class="accordion-question">Can we enforce row-level access on pipeline data?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a4" role="region" aria-labelledby="faq-q4" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Absolutely. Role-based access is enforced at query time, not at the dashboard level. A regional VP sees only deals in their region. A sales rep sees only their own forecast. A CFO sees the consolidated view. Access rules map to your existing warehouse or IdP roles.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" id="faq-q5" aria-expanded="false" aria-controls="faq-a5" data-state="closed">
+              <span class="accordion-question">What happens if there's a conflict between CRM and warehouse forecast numbers?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a5" role="region" aria-labelledby="faq-q5" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Your semantic layer defines the single source of truth. You choose: does forecast come from the CRM field, the warehouse historical record, or a calculation across both? Once chosen, agents use that rule consistently. Conflicts don't happen — they're architected out.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" id="faq-q6" aria-expanded="false" aria-controls="faq-a6" data-state="closed">
+              <span class="accordion-question">How long does deployment take?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a6" role="region" aria-labelledby="faq-q6" data-state="closed" hidden>
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5);">Most RevOps teams are answering pipeline questions in 2–3 weeks. Week 1: connect your CRM and warehouse, define 10–15 key metrics. Week 2: test agent queries, set up access rules, train ops team. Week 3: go live with broader teams. No data migration needed — agents query your live systems.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.10 CTA BAND — maps to existing CTABand
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-h2">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to unify your revenue metrics?</span>
+      <h2 id="cta-h2" class="display-lg">Stop managing conflicting numbers. Start using one source of truth.</h2>
+      <p class="subcopy body-lg">Book a 30-minute demo. We'll connect to your data warehouse, show you a live governed forecast query, and answer your governance questions.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        <a href="/platform" class="btn btn-secondary-dark">Explore the platform</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3.11 Newsletter + Footer omitted — config-inherited NewsletterBlock + SiteFooter
+     components render here at port time (brand.newsletter / brand.footer). -->
+
+</main>
+
+<script>
+  /* Mockup-only accordion toggle — Radix Accordion (FAQSection component) handles this at port time. */
+  document.querySelectorAll('.accordion-trigger').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      var panel = document.getElementById(btn.getAttribute('aria-controls'));
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.setAttribute('data-state', open ? 'closed' : 'open');
+      panel.hidden = open;
+      panel.setAttribute('data-state', open ? 'closed' : 'open');
+    });
+  });
+</script>
+
+</body>
+</html>

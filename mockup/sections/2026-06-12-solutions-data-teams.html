@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/data-teams — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<!-- ============================================================
+     MOCKUP — /solutions/data-teams (spec: docs/page-specs/solutions-data-teams.md)
+     SEO at port time:
+       <title> AI Analytics for Data Teams — Reduce Request Backlog
+       meta description: Give your data team breathing room. Quaeris enables governed
+       self-serve analytics — shrink ad-hoc queues, empower the business, stay in control.
+       Schema: FAQPage (from the 8 Accordion Q&As), BreadcrumbList sitewide.
+     Component map (spec §3): HeroHome adapted (3.1) · ProblemSolutionCards (3.2) ·
+     StatsBand (3.3) · IconFeatureGrid (3.4) · FeatureRow ×3 dark variant (3.5) ·
+     CaseStudyCard ×3 (3.6) · FAQ Accordion ×8 (3.7) · ThreePillars (3.8) ·
+     ProblemSolutionCards comparison layout (3.9, spec allows custom comparison) ·
+     CTABand (3.10) · NewsletterBlock (3.11). No NEW components required (spec §7).
+     ============================================================ -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic). */
+
+/* --- Data-teams hero: HeroHome text column + governed query-panel visual --- */
+.dt-hero-grid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  .dt-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+
+.dt-query-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.dt-query-q {
+  background: var(--brand-accent-soft);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  align-self: flex-end;
+  max-width: 90%;
+}
+.dt-query-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.dt-query-row strong { color: var(--text-primary); font-weight: 600; }
+.dt-query-ok {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.dt-chip-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.dt-chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* --- 3-up modifier for ProblemSolutionCards (home .ps-grid is 2-up; spec §3.2 is three pairs) --- */
+.ps-grid.dt-ps-grid-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1024px) { .ps-grid.dt-ps-grid-3 { grid-template-columns: 1fr; } }
+
+/* --- Dark variant of FeatureRow (spec §3.5: dark/elevated section) --- */
+.dt-feature-dark { background: var(--bg-ink); position: relative; overflow: hidden; }
+.dt-feature-dark .feature-row-heading { color: var(--text-on-dark); }
+.dt-feature-dark .feature-row-body { color: var(--text-on-dark-dim); }
+.dt-feature-dark .feature-row-img-wrap {
+  background: var(--bg-ink-elevated);
+  border-color: var(--border-on-dark);
+}
+/* Accent text lightened for AA contrast on the ink background (same recipe as .ai-icon) */
+.dt-feature-dark .feature-row-eyebrow,
+.dt-feature-dark .btn-ghost {
+  color: color-mix(in srgb, var(--brand-accent) 55%, var(--text-on-dark));
+}
+
+/* --- Placeholder product shots on dark (swap for real screenshots at port time) --- */
+.dt-shot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background: linear-gradient(135deg, var(--brand-accent-glow), transparent 70%);
+}
+.dt-shot-label { color: var(--text-on-dark-dim); display: block; }
+.dt-shot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  background: var(--bg-ink-elevated);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  color: var(--text-on-dark-dim);
+}
+.dt-shot-row strong { color: var(--text-on-dark); font-weight: 600; }
+.dt-shot-ok {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 18%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* --- Placeholder testimonial line inside case-study cards (spec §3.6 quotes pending) --- */
+.dt-cs-quote {
+  border-left: 2px solid var(--brand-accent);
+  padding-left: var(--space-4);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+
+/* --- MOCKUP-ONLY shims (do NOT port): native <details> stands in for Accordion.tsx (Radix) --- */
+details.accordion-item > summary { list-style: none; }
+details.accordion-item > summary::-webkit-details-marker { display: none; }
+details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     3.1 HERO — HeroHome (reuse, data-team-specific text)
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="dt-hero-grid">
+      <div class="hero-inner reveal">
+        <span class="eyebrow">For Data Teams</span>
+        <h1 id="hero-heading" class="hero-h1">Kill the ad-hoc request queue.</h1>
+        <p class="subcopy body-lg">Business users ask their own questions. Your data team writes the rules, once. Quaeris handles the governance — so you can finally build instead of firefighting.</p>
+        <div class="hero-buttons" style="margin-bottom: 0;">
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        </div>
+      </div>
+      <!-- Spec offers split-screen motive OR abstract governed query panel; exact animation TBD -->
+      <div class="reveal">
+        <div class="dt-query-panel" role="img" aria-label="Governed query panel showing a business user's question answered from certified metrics, with policy check and source citations" data-placeholder>
+          <span class="eyebrow" style="color: var(--text-tertiary);">Quaeris · governed session</span>
+          <p class="dt-query-q">"Why did EMEA pipeline dip last quarter?"</p>
+          <div class="dt-query-row"><span>Policy check · role: <strong>RevOps analyst</strong></span><span class="dt-query-ok">Access granted</span></div>
+          <div class="dt-query-row"><span>Certified metric · <strong>pipeline_value v2.3</strong></span><span class="dt-query-ok">Lineage attached</span></div>
+          <div class="dt-chip-row" aria-hidden="true">
+            <span class="dt-chip">Source: fact_opportunities</span>
+            <span class="dt-chip">Definition: pipeline_value</span>
+            <span class="dt-chip">Rule: fiscal_quarter</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.2 THE PROBLEM — ProblemSolutionCards (reuse, 3-up modifier)
+     ============================================================ -->
+<section id="problem-solution" class="section-pad" aria-labelledby="problem-solution-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>The problem</span>
+      <h2 id="problem-solution-heading" class="display-lg" data-placeholder>Sound familiar?</h2>
+    </div>
+
+    <div class="ps-grid dt-ps-grid-3">
+      <!-- Pair 1: Request Backlog -->
+      <article class="ps-card reveal">
+        <span class="eyebrow" style="color: var(--text-tertiary);">Today</span>
+        <h3 class="heading-sm">Ad-hoc requests are drowning the team</h3>
+        <p class="ps-problem body-md">Every Tuesday it's the same: revenue questions, cohort analyses, ad-hoc forecasts. Your data team is a ticket-processing machine. Strategy? Infrastructure? Hiring? There's no time.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">With Quaeris</span>
+          <h4 class="heading-sm">Self-serve analytics shrinks the queue</h4>
+          <p class="ps-fix-body body-md">Business users ask directly. The semantic layer gates the answers — no dangerous slicing, no mismatched metrics. Your team writes the rules once and scales from there.</p>
+        </div>
+      </article>
+
+      <!-- Pair 2: Metric Chaos -->
+      <article class="ps-card reveal">
+        <span class="eyebrow" style="color: var(--text-tertiary);">Today</span>
+        <h3 class="heading-sm">Every team calculates revenue differently</h3>
+        <p class="ps-problem body-md">Finance says one number, Product says another. Your data team has spent six months reconciling definitions across Tableau, Looker, and three homegrown dashboards. It's never consistent.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">With Quaeris</span>
+          <h4 class="heading-sm">One semantic layer, one source of truth</h4>
+          <p class="ps-fix-body body-md">Define revenue once in the semantic layer. Every self-serve query uses the same definition. When the metric changes, it changes everywhere — audited and visible.</p>
+        </div>
+      </article>
+
+      <!-- Pair 3: Governance Risk -->
+      <article class="ps-card reveal">
+        <span class="eyebrow" style="color: var(--text-tertiary);">Today</span>
+        <h3 class="heading-sm">Self-serve means data leaks and wrong answers</h3>
+        <p class="ps-problem body-md">You can't give business users direct access to your warehouse. There's no row-level security, no audit trail, and when someone exports sensitive data, you find out after the breach.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">With Quaeris</span>
+          <h4 class="heading-sm">Governance enforced at query time</h4>
+          <p class="ps-fix-body body-md">Role-based access controls are baked into the agent layer — users only see what they're permitted to see. Every query is logged. You maintain control while enabling access.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.3 STATS / OUTCOMES BAND — StatsBand (reuse)
+     ============================================================ -->
+<section id="stats-band" class="section-pad" aria-label="Outcomes across deployed organizations">
+  <div class="container">
+    <div class="stats-grid reveal">
+      <div class="stat-block">
+        <span class="stat-num stat-number">87%</span>
+        <span class="stat-label">Reduction in ad-hoc requests</span>
+        <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">Across deployed orgs</p>
+        <span class="stat-delta">Median in first 90 days</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num stat-number">14 min</span>
+        <span class="stat-label">Time to first insight</span>
+        <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">From question to answer</p>
+        <span class="stat-delta">vs. 2-3 day ticket queue</span>
+      </div>
+      <div class="stat-block" data-placeholder>
+        <span class="stat-num stat-number">100%</span>
+        <span class="stat-label">Metric definitions aligned</span>
+        <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">In the semantic layer</p>
+        <span class="stat-delta">Single source of truth</span>
+      </div>
+      <div class="stat-block" data-placeholder>
+        <span class="stat-num stat-number">600+</span>
+        <span class="stat-label">Self-serve users enabled</span>
+        <p class="body-sm" style="color: var(--text-tertiary); margin-top: var(--space-2);">Without a single support ticket</p>
+        <span class="stat-delta">Row-level security enforced</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.4 HOW IT WORKS — IconFeatureGrid (reuse, 4-up)
+     ============================================================ -->
+<section id="how-it-works" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="how-it-works-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 id="how-it-works-heading" class="display-lg">Governed self-serve in four steps</h2>
+      <p class="subcopy body-lg">Your data team sets the boundaries. Business users explore within them. No requests, no bottlenecks, no chaos.</p>
+    </div>
+
+    <div class="icon-feature-grid">
+      <article class="icon-feature reveal">
+        <span class="icon-box">
+          <!-- lucide: lock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <h3 class="heading-sm">Write governance rules once</h3>
+        <p>Your data team defines the semantic layer: certified metrics, business logic, access policies. Role-based controls are baked in. When a metric changes, the whole organization sees the update.</p>
+      </article>
+
+      <article class="icon-feature reveal">
+        <span class="icon-box">
+          <!-- lucide: user-check -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+        </span>
+        <h3 class="heading-sm">Give business users direct access</h3>
+        <p>No more "send me a query." Business users open Quaeris and ask their questions in plain language. Agents reason over your governed semantic layer and return instant answers.</p>
+      </article>
+
+      <article class="icon-feature reveal">
+        <span class="icon-box">
+          <!-- lucide: search -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <h3 class="heading-sm">Every answer is auditable</h3>
+        <p>Users see the metric definitions and data lineage behind every answer. If the revenue number is wrong, you trace it back to the source in one click. Role-based access enforces permissions at query time — no breakglass moments.</p>
+      </article>
+
+      <article class="icon-feature reveal">
+        <span class="icon-box">
+          <!-- lucide: trending-up -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </span>
+        <h3 class="heading-sm">Your team scales without hiring</h3>
+        <p>Self-serve answers 80% of ad-hoc requests. Your data team shifts from ticket-processing to strategy: building forecasts, refining models, mentoring analysts. Finally, focus on the work that moves the business.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 FEATURE SPOTLIGHT — FeatureRow ×3 (reuse, dark variant)
+     ============================================================ -->
+<section id="capabilities" class="dt-feature-dark section-pad" aria-label="Core capabilities">
+  <div class="dark-feature-glow" aria-hidden="true"></div>
+  <div class="container" style="position: relative; z-index: 1;">
+    <div class="feature-rows-list">
+
+      <!-- Feature 1: Smart Semantic Layer (text left, visual right) -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Core Capability 01</span>
+          <h2 class="display-md feature-row-heading">The semantic layer learns as you use it.</h2>
+          <p class="feature-row-body body-md">Quaeris watches how your team uses data. Business definitions, metric relationships, data lineage — the semantic layer auto-learns and surfaces suggestions. You don't have to pre-model everything in YAML. Your team approves, it learns.</p>
+          <a href="/platform/semantic-layer" class="btn btn-ghost">Explore the semantic layer</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="dt-shot" role="img" aria-label="Semantic layer definition panel showing metric suggestions, lineage, and ownership badges" data-placeholder>
+              <span class="eyebrow dt-shot-label">Semantic layer · suggestions</span>
+              <div class="dt-shot-row"><span><strong>net_revenue</strong> · suggested from 412 queries</span><span class="dt-shot-ok">Approve</span></div>
+              <div class="dt-shot-row"><span><strong>churn_rate</strong> · lineage: fact_subscriptions</span><span class="dt-shot-ok">Certified</span></div>
+              <div class="dt-shot-row"><span><strong>arr</strong> · owner: Data Platform</span><span class="dt-shot-ok">Certified</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2: Governed Agents (text right, visual left) -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Core Capability 02</span>
+          <h2 class="display-md feature-row-heading">Agents that cite their sources.</h2>
+          <p class="feature-row-body body-md">Business users ask natural-language questions. Agents translate to SQL, query the semantic layer, and return certified answers — not hallucinations. Every number shows its sources: which metric definition, which table, which business rule. Your team sleeps better.</p>
+          <a href="/contact" class="btn btn-ghost">See a live demo</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder product shot — swap for a real screenshot at port time -->
+            <div class="dt-shot" role="img" aria-label="Agent conversation panel showing a natural-language question answered with metric citations and lineage" data-placeholder>
+              <span class="eyebrow dt-shot-label">Agent session · citations</span>
+              <div class="dt-shot-row"><span>"What was net revenue retention last quarter?"</span></div>
+              <div class="dt-shot-row"><span>Certified metric · <strong>nrr v2.1</strong></span><span class="dt-shot-ok">Definition cited</span></div>
+              <div class="dt-shot-row"><span>Source · <strong>fact_subscriptions</strong></span><span class="dt-shot-ok">Lineage attached</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Access Control (text left, visual right) -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Core Capability 03</span>
+          <h2 class="display-md feature-row-heading">Security enforced at the agent layer.</h2>
+          <p class="feature-row-body body-md">Role-based access policies are applied when the agent runs — not as a dashboard filter. A sales rep asking about customer lifetime value sees only their region's data. A controller asking about expenses sees only company-owned spend. Enforcement is automatic, audited, and consistent.</p>
+          <!-- spec href /blog/governed-analytics-blueprint — blog post pending (spec §6 Q3) -->
+          <a href="/blog/governed-analytics-blueprint" class="btn btn-ghost" data-placeholder>Read the governance blueprint</a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <!-- Placeholder diagram — swap for role-scoped results screenshot at port time -->
+            <div class="dt-shot" role="img" aria-label="Diagram of role-scoped query results: two users asking the same question receive differently scoped answers" data-placeholder>
+              <span class="eyebrow dt-shot-label">Same question · role-scoped answers</span>
+              <div class="dt-shot-row"><span><strong>Sales rep (EMEA)</strong> · customer lifetime value</span><span class="dt-shot-ok">EMEA rows only</span></div>
+              <div class="dt-shot-row"><span><strong>Controller</strong> · expense detail</span><span class="dt-shot-ok">Company-owned spend</span></div>
+              <div class="dt-shot-row"><span><strong>Every query</strong> · audit trail</span><span class="dt-shot-ok">Logged</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.6 REAL OUTCOMES — CaseStudyCard ×3 (reuse)
+     ============================================================ -->
+<section id="case-studies" class="section-pad" aria-labelledby="case-studies-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Real data teams. Real outcomes.</span>
+      <h2 id="case-studies-heading" class="display-lg">What deploying Quaeris looks like</h2>
+      <p class="subcopy body-lg">Three teams, three verticals, three ways self-serve transformed how they work.</p>
+    </div>
+
+    <div class="case-study-grid">
+      <!-- Case Study 1: Financial Services -->
+      <article class="case-study-card reveal">
+        <span class="industry-chip">Financial Services</span>
+        <p class="body-sm" style="color: var(--text-tertiary);" data-placeholder>A leading financial services firm</p>
+        <h3 class="display-md">Reduced ad-hoc requests by 84% while expanding self-serve to 600+ users</h3>
+        <div class="cs-stats">
+          <div class="cs-stat"><span class="cs-stat-num">84%</span><span class="cs-stat-label">fewer ad-hoc requests</span></div>
+          <div class="cs-stat"><span class="cs-stat-num">600+</span><span class="cs-stat-label">self-serve users enabled</span></div>
+          <div class="cs-stat"><span class="cs-stat-num">90</span><span class="cs-stat-label">days to full rollout</span></div>
+        </div>
+        <p class="cs-how">The data team was processing 200+ requests per week from finance, product, and FP&amp;A. They connected Quaeris to their Snowflake warehouse, migrated 120 certified revenue and bookings metrics into the semantic layer, and opened the agent interface to the business. Role-based access was configured by the data team; access enforcement happened automatically. Within 90 days, the ad-hoc queue dropped by 84%. The team shifted from firefighting to building predictive models.</p>
+        <p class="dt-cs-quote" data-placeholder>[Quote pending — Head of Data or VP Analytics testimonial on the shift]</p>
+        <a href="/case-studies/financial-services" class="btn btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+
+      <!-- Case Study 2: B2B SaaS / Analytics -->
+      <article class="case-study-card reveal">
+        <span class="industry-chip">B2B SaaS / Analytics</span>
+        <p class="body-sm" style="color: var(--text-tertiary);" data-placeholder>A B2B SaaS analytics company</p>
+        <h3 class="display-md">Cut time-to-insight from 3 days to 20 minutes</h3>
+        <div class="cs-stats">
+          <div class="cs-stat"><span class="cs-stat-num">20 min</span><span class="cs-stat-label">average time-to-insight</span></div>
+          <div class="cs-stat"><span class="cs-stat-num">3x</span><span class="cs-stat-label">faster than previous ticket workflow</span></div>
+          <div class="cs-stat"><span class="cs-stat-num">0</span><span class="cs-stat-label">hallucinated numbers</span></div>
+        </div>
+        <p class="cs-how">Product and growth teams were waiting 2–3 days for cohort and retention analyses. Every question meant a ticket, a data analyst context switch, and a SQL query. The data team deployed Quaeris across their product and revenue metrics. Now, product managers ask directly and get instant, source-cited answers. The semantic layer validates every query. The data team went from reactive to strategic.</p>
+        <p class="dt-cs-quote" data-placeholder>[Quote pending — Head of Product or Analytics Engineer testimonial]</p>
+        <a href="/case-studies/b2b-saas-analytics" class="btn btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+
+      <!-- Case Study 3: Retail / CPG -->
+      <article class="case-study-card reveal">
+        <span class="industry-chip">Retail / CPG</span>
+        <p class="body-sm" style="color: var(--text-tertiary);" data-placeholder>A multi-region retail organization</p>
+        <h3 class="display-md">Unified conflicting metrics across 6 regional teams</h3>
+        <div class="cs-stats">
+          <div class="cs-stat"><span class="cs-stat-num">6</span><span class="cs-stat-label">regional teams aligned</span></div>
+          <div class="cs-stat"><span class="cs-stat-num">1</span><span class="cs-stat-label">metric definition per KPI</span></div>
+          <div class="cs-stat"><span class="cs-stat-num">11x</span><span class="cs-stat-label">ROI on analytics time</span></div>
+        </div>
+        <p class="cs-how">The organization had six regional BI tools and three legacy data warehouses. Headquarters and regional teams calculated 'revenue' and 'margin' differently. A board report would contradict a regional dashboard. The data team unified everything into a single Quaeris semantic layer with 80 certified definitions. Executives and regional leaders ask the same question and get the same answer. One team retired four conflicting dashboards.</p>
+        <p class="dt-cs-quote" data-placeholder>[Quote pending — CFO, Chief Data Officer, or regional VP testimonial]</p>
+        <a href="/case-studies/retail-cpg" class="btn btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.7 FAQ — FAQ section (reuse) + Accordion (Radix at port time;
+     native <details> here so the static mockup is interactive)
+     ============================================================ -->
+<section id="faq" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-grid">
+      <div>
+        <div class="section-header reveal">
+          <span class="eyebrow">Questions from data leaders</span>
+          <h2 id="faq-heading" class="display-lg">Answers that actually help</h2>
+          <p class="subcopy body-lg">If it's not here, book a demo — we'll walk through your specific setup.</p>
+        </div>
+        <aside class="faq-mini-card reveal" data-placeholder>
+          <h3 class="heading-sm" style="margin-bottom: var(--space-3);">Something specific to your stack?</h3>
+          <p>Bring your warehouse, your metrics, and your rollout questions — we'll answer them live, on your data.</p>
+          <a href="/contact" class="btn btn-ghost">Book a Demo</a>
+        </aside>
+      </div>
+
+      <div class="accordion reveal">
+        <details class="accordion-item" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How do we ensure business users don't create incorrect queries?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">The semantic layer is your guard rail. Users ask questions in plain language; agents translate those questions to SQL against the semantic layer — not raw tables. If a question can't be answered from certified metrics, the agent says so. The semantic layer enforces consistency; your team writes the definitions once.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Doesn't governed self-serve mean we lose control?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">The opposite. Role-based access policies are applied at query time — enforced by the agent, not just by dashboard filters. A regional manager sees only their region's data, automatically. Every query is logged. You have more visibility and control than you do today with ad-hoc ticket requests.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">How long does it take to migrate our metrics into the semantic layer?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Most teams take 1–2 weeks to migrate 100–200 certified metrics. Quaeris auto-discovers metric patterns from your data warehouse and suggests definitions. Your team approves them into the semantic layer. Week one: warehouse connection + pattern discovery. Week two: metric curation and access policy setup. Then you're live.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What if our existing dashboards and reports contradict the semantic layer?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">That's actually common. Most organizations have metric inconsistencies buried across tools. Quaeris surfaces those inconsistencies; your team resolves them once in the semantic layer. Every tool — dashboards, reports, agents — then uses the same definition. You gain consistency while Quaeris is deployed.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can we gradually roll out self-serve, or is it all-or-nothing?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Gradual rollout is standard. Start with one team or one department (e.g., marketing, finance) and a subset of metrics. Quaeris scales as your team adds users and metrics to the semantic layer. There's no flag day.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Do we need a new data warehouse?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">No. Quaeris connects to your existing warehouse — Snowflake, BigQuery, Databricks, Redshift, Synapse. No data migration. Your warehouse is the system of record. Quaeris is a governance and access layer on top.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">What happens if the semantic layer definition is wrong?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Your team can update the definition any time. The semantic layer is versioned. When you change a metric definition, users see a notification that the metric has been updated. All future queries use the new definition. Historical queries are audited, so you can trace why a number changed.</p>
+          </div>
+        </details>
+
+        <details class="accordion-item">
+          <summary class="accordion-trigger">
+            <span class="accordion-question">Can business users still download data for external tools?</span>
+            <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <div class="accordion-content">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 62ch;">Yes — users can export results from Quaeris answers. Exports are tied to the user's role-based permissions; they can only export what they're allowed to see. Every export is logged. You control what gets exported and can audit it.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.8 GOVERNANCE DEEP-DIVE — ThreePillars (reuse)
+     ============================================================ -->
+<section id="governance" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="governance-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Governed by design</span>
+      <h2 id="governance-heading" class="display-lg">How governance stays intact as you scale self-serve</h2>
+      <p class="subcopy body-lg">Self-serve doesn't mean lawless. Here's how Quaeris keeps governance front and center.</p>
+    </div>
+
+    <div class="pillars-grid">
+      <article class="pillar-card reveal">
+        <div class="pillar-img pillar-img-1">
+          <!-- lucide: check-circle -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand-accent);" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div class="pillar-body">
+          <h3 class="display-md">Certified metrics, not wild estimates</h3>
+          <p class="body-md">Business users query your semantic layer — the definitions your data team has certified. No hallucinations, no model drift. Every agent answer is locked to a metric definition your team approved.</p>
+        </div>
+      </article>
+
+      <article class="pillar-card reveal">
+        <div class="pillar-img pillar-img-1">
+          <!-- lucide: eye -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand-accent);" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="pillar-body">
+          <h3 class="display-md">Lineage visible in every answer</h3>
+          <p class="body-md">Every answer shows the metric definition, the source table, the business rule that applied, and the user's access level. Your analysts can audit any result in one click. Compliance auditors get full traces.</p>
+        </div>
+      </article>
+
+      <article class="pillar-card reveal">
+        <div class="pillar-img pillar-img-1">
+          <!-- lucide: lock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand-accent);" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="pillar-body">
+          <h3 class="display-md">Access enforced at runtime</h3>
+          <p class="body-md">Role-based policies are applied when the agent runs. A user with finance permissions can't see product costs. A regional user can't see other regions' data. Enforcement is automatic and audited — no manual row-level filters required.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.9 COMPETITIVE POSITIONING — comparison cards
+     (spec allows SegmentCards OR custom comparison; the
+     problem→answer content shape maps to ProblemSolutionCards'
+     existing .ps-grid/.ps-card classes — mechanical port)
+     ============================================================ -->
+<section id="comparison" class="section-pad" aria-labelledby="comparison-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Why data teams choose Quaeris</span>
+      <h2 id="comparison-heading" class="display-lg">Quaeris vs. the alternatives</h2>
+      <p class="subcopy body-lg">Not all self-serve solutions are created equal. Here's how Quaeris is different.</p>
+    </div>
+
+    <div class="ps-grid">
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">01</span>
+        <h3 class="heading-sm">Self-serve BI dashboards (Tableau, Looker, Power BI)</h3>
+        <p class="ps-problem body-md">Beautiful dashboards don't answer ad-hoc questions. Every question still needs a ticket.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris answer</span>
+          <p class="ps-fix-body body-md">Agents answer ad-hoc questions in seconds. Dashboards stay for scheduled reporting. Both coexist.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">02</span>
+        <h3 class="heading-sm">Unmanaged SQL editors (DBeaver, notebooks, Jupyter)</h3>
+        <p class="ps-problem body-md">Users run arbitrary SQL. Metric chaos. Row-level security is manual. Ad-hoc queries break compliance.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris answer</span>
+          <p class="ps-fix-body body-md">Users ask in plain language; agents translate to governed SQL. Semantic layer enforces consistency. Access is automatic.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">03</span>
+        <h3 class="heading-sm">LLM chatbots on raw data (ChatGPT + your DB, basic prompt-engineering)</h3>
+        <p class="ps-problem body-md">Language models hallucinate numbers. No audit trail. No access control. Results are unreliable.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris answer</span>
+          <p class="ps-fix-body body-md">Agents query governed metrics, not raw tables. Every answer is certified. Full audit trail. Zero hallucinations.</p>
+        </div>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="ps-index" aria-hidden="true">04</span>
+        <h3 class="heading-sm">Hyperscaler-native AI tools (Cortex Analyst, Genie, AWS Q)</h3>
+        <p class="ps-problem body-md">Locked to one warehouse vendor, one model. Governance is bolt-on. Migrating is hard.</p>
+        <div class="ps-fix-box">
+          <span class="ps-fix-label eyebrow">Quaeris answer</span>
+          <p class="ps-fix-body body-md">Warehouse-portable. Model-portable (BYOM). Governance is baked in. Switch vendors without retraining.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.10 CTA BAND — CTABand (reuse)
+     ============================================================ -->
+<section id="cta-band" class="section-pad" aria-labelledby="cta-band-heading">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to shrink the ad-hoc queue?</span>
+      <h2 id="cta-band-heading" class="display-lg">Let your data team breathe.</h2>
+      <p class="subcopy body-lg">Book a 30-minute demo. We'll walk through your warehouse setup, show you the semantic layer in action, and show you governed answers — no slides, no fluff.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        <a href="/case-studies" class="btn btn-secondary-dark">See case studies</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.11 NEWSLETTER — NewsletterBlock (reuse)
+     ============================================================ -->
+<section id="newsletter" class="newsletter-block" aria-labelledby="newsletter-heading">
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <span class="eyebrow">The Governed Analytics Brief</span>
+      <h3 id="newsletter-heading">Weekly insights for data leaders</h3>
+      <p>No generic AI hype. One practical read on governed analytics, semantic layers, and scaling self-serve — every Thursday in your inbox.</p>
+      <form class="newsletter-form" action="#" method="post">
+        <label class="sr-only" for="newsletter-email">Work email</label>
+        <input class="newsletter-input" id="newsletter-email" type="email" name="email" placeholder="your@company.com" autocomplete="email" required />
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+      <p class="newsletter-consent">No spam. Unsubscribe any time. We handle your data per our <a href="/privacy" style="text-decoration: underline; color: inherit;">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>

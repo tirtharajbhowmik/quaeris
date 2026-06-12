@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions — Quaeris</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+
+<!-- PORT-TIME SEO (spec §2) — implemented in the route's metadata, not in this mockup:
+     Title tag:        AI Analytics Solutions for Teams & Industries | Quaeris
+     Meta description: Governed agentic analytics built for data teams, analysts, and executives
+                       across finance, insurance, healthcare, retail, manufacturing, and construction.
+     JSON-LD:          BreadcrumbList (Home > Solutions); WebPage with about → /governed-ai-analytics;
+                       FAQPage (included inline on the FAQ section below). -->
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<style>
+/* PORT: new classes — token-driven; move to globals.css at port time. */
+
+/* --- SolutionsHero (NEW) ------------------------------------------------ */
+.sol-hero { background: var(--bg-warm); overflow: hidden; }
+.sol-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-9);
+  align-items: center;
+}
+.sol-hero-copy .eyebrow { display: block; margin-bottom: var(--space-4); }
+.sol-hero-copy h1 { margin-bottom: var(--space-5); max-width: 20ch; }
+.sol-hero-sub { color: var(--text-secondary); max-width: 54ch; margin-bottom: var(--space-7); }
+.sol-hero-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+.sol-hero-cards > * { height: 100%; }
+.sol-hero-cards .segment-card { padding: var(--space-5) var(--space-4); gap: var(--space-2); }
+@media (max-width: 1024px) {
+  .sol-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+@media (max-width: 480px) {
+  .sol-hero-cards { grid-template-columns: 1fr; }
+}
+
+/* Accent eyebrow (spec: eyebrow color = brand accent). Second selector out-specifies
+   .section-header .eyebrow (tertiary) for section headers. */
+.sol-kicker, .section-header .sol-kicker { color: var(--brand-accent); }
+
+/* --- Problem strip: 3-up variant of the ProblemSolutionCards grid -------- */
+.sol-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.sol-problem-grid > * { height: 100%; }
+@media (max-width: 768px) {
+  .sol-problem-grid { grid-template-columns: 1fr; }
+}
+
+/* --- Shared 3-col routing grid (By team / By industry, SegmentCards) ----- */
+.sol-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.sol-grid-3 > * { height: 100%; }
+@media (max-width: 1024px) { .sol-grid-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px)  { .sol-grid-3 { grid-template-columns: 1fr; } } /* spec note 10: single-column scroll on mobile */
+
+/* --- Check bullet list (team + industry cards) ---------------------------- */
+.sol-check-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: var(--space-2) 0 var(--space-4);
+}
+.sol-check-list li {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.sol-check-list svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+
+/* --- StatBlock dark variant (spec: stat band on ink, stats in white) ------ */
+.sol-stats-dark { background: var(--bg-ink); }
+.sol-stats-dark .stat-number { color: var(--text-on-dark); }
+.sol-stats-dark .stat-label  { color: var(--text-on-dark-dim); }
+.sol-stats-dark .stat-block + .stat-block::before { background: var(--border-on-dark); }
+.sol-stat-desc {
+  display: block;
+  color: var(--text-on-dark);
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: var(--space-1);
+}
+.sol-stats-note {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-on-dark-dim);
+  margin-top: var(--space-5);
+}
+
+/* --- Social proof: 2-up CaseStudyCard grid -------------------------------- */
+.sol-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.sol-proof-grid > * { height: 100%; }
+@media (max-width: 768px) { .sol-proof-grid { grid-template-columns: 1fr; } }
+
+/* --- IntegrationsBadgeStrip (NEW) ----------------------------------------- */
+.sol-integrations {
+  background: var(--bg-surface);
+  padding: var(--space-8) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.sol-integrations-label { text-align: center; display: block; }
+.sol-integrations-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+.sol-integrations-row .industry-chip { font-size: 14px; padding: 10px 20px; white-space: nowrap; }
+.sol-integrations-cta { text-align: center; margin-top: var(--space-5); }
+@media (max-width: 640px) {
+  /* spec: overflow scrolls on mobile */
+  .sol-integrations-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: var(--space-3);
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* --- Feature-row image placeholder (token-tinted, no external images) ------ */
+.sol-img-ph {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: linear-gradient(135deg, var(--brand-accent-soft) 0%, var(--bg-canvas) 70%);
+  color: var(--text-tertiary);
+  font-size: 13px;
+  text-align: center;
+  padding: var(--space-5);
+}
+.sol-img-ph svg { width: 40px; height: 40px; color: var(--brand-accent); opacity: 0.5; }
+
+/* --- Small icon inside ghost CTAs (feature rows) --------------------------- */
+.sol-ico-18 { width: 18px; height: 18px; flex-shrink: 0; }
+</style>
+
+<main id="main">
+
+<!-- ============================================================
+     SECTION 1 — Page Hero
+     NEW:SolutionsHero (spec §3.1). Two-column: copy left, 2×3 mini-card
+     grid right (reuses .segment-card / .segment-icon-box so the port can
+     also evaluate BentoGrid per spec open question 7).
+     ============================================================ -->
+<section id="solutions-hero" class="sol-hero section-pad">
+  <div class="container">
+    <div class="sol-hero-grid">
+      <div class="sol-hero-copy reveal">
+        <span class="eyebrow sol-kicker">Solutions</span>
+        <h1 class="hero-h1">Governed analytics built for your team. Trusted in your industry.</h1>
+        <p class="body-lg sol-hero-sub">Quaeris connects your data warehouse to a governed semantic layer and surfaces trusted, auditable answers — whether you run a data platform, lead analysis, or make decisions. Built for regulated industries where getting the number wrong has consequences.</p>
+        <div class="hero-buttons" style="margin-bottom: 0;">
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+          <a href="/platform" class="btn btn-secondary">See how it works</a>
+        </div>
+      </div>
+
+      <ul class="sol-hero-cards reveal" aria-label="Who Quaeris is built for">
+        <li class="segment-card">
+          <span class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          </span>
+          <span class="heading-sm segment-label">Data Teams</span>
+          <p class="body-sm segment-desc">Control access, cut the ticket queue</p>
+        </li>
+        <li class="segment-card">
+          <span class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </span>
+          <span class="heading-sm segment-label">Analysts</span>
+          <p class="body-sm segment-desc">Self-serve at speed, with full audit</p>
+        </li>
+        <li class="segment-card">
+          <span class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+          </span>
+          <span class="heading-sm segment-label">Executives</span>
+          <p class="body-sm segment-desc">Reliable answers without waiting on reports</p>
+        </li>
+        <li class="segment-card">
+          <span class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+          </span>
+          <span class="heading-sm segment-label">Finance &amp; Insurance</span>
+          <p class="body-sm segment-desc">Governed analytics for audit-ready decisions</p>
+        </li>
+        <li class="segment-card">
+          <span class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
+          </span>
+          <span class="heading-sm segment-label">Healthcare</span>
+          <p class="body-sm segment-desc">HIPAA-compliant insight at the point of need</p>
+        </li>
+        <li class="segment-card">
+          <span class="segment-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>
+          </span>
+          <span class="heading-sm segment-label">Manufacturing &amp; Construction</span>
+          <p class="body-sm segment-desc">Margin and quality analytics from your own data</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — Problem Strip
+     Maps to existing ProblemSolutionCards — reuses .ps-card; 3-up grid
+     variant (.sol-problem-grid) since this page shows three problems
+     side by side. Lavender band = var(--bg-canvas), border var(--border-subtle).
+     ============================================================ -->
+<section id="problems" class="section-pad" style="background: var(--bg-canvas); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow sol-kicker">Why teams choose Quaeris</span>
+      <h2 class="display-lg">The three breakdowns that governed agentic analytics fixes.</h2>
+    </div>
+
+    <div class="sol-problem-grid">
+      <article class="ps-card reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        </span>
+        <h3 class="heading-sm">Conflicting numbers across teams</h3>
+        <p class="body-md" style="color: var(--text-secondary);">Every team has its own definition of revenue, activation rate, or churn. Quaeris's Smart Semantic Layer certifies one definition and enforces it across every agent answer — so the board debate stops.</p>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </span>
+        <h3 class="heading-sm">Analysts buried in ad-hoc requests</h3>
+        <p class="body-md" style="color: var(--text-secondary);">Business users wait days for answers that take minutes to retrieve. Quaeris gives any user a governed natural-language interface to their own data — agents answer; analysts focus on work that compounds.</p>
+      </article>
+
+      <article class="ps-card reveal">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.7 14a6.9 6.9 0 0 0 .3-2V5l-8-3-3.2 1.2"/><path d="m2 2 20 20"/><path d="M4.7 4.7 4 5v7c0 6 8 10 8 10a20.3 20.3 0 0 0 5.62-4.38"/></svg>
+        </span>
+        <h3 class="heading-sm">AI that can't be audited or trusted</h3>
+        <p class="body-md" style="color: var(--text-secondary);">Most AI analytics tools are model-locked and produce outputs with no traceable lineage. Quaeris maintains a prompt-level audit trail and supports BYOM — so your compliance team can verify every answer and swap models as standards evolve.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — By Team (primary routing block)
+     Maps to existing SegmentCards — reuses .segment-card; 3-up grid
+     (.sol-grid-3). Port note: each CTA fires solutions_card_click
+     with { audience } (spec open question 9).
+     ============================================================ -->
+<section id="by-team" class="section-pad" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow sol-kicker">By team</span>
+      <h2 class="display-lg">Built for every person who touches your data.</h2>
+      <p class="subcopy body-lg">Quaeris adapts to where you sit in the analytics workflow — not the other way around.</p>
+    </div>
+
+    <div class="sol-grid-3">
+      <!-- Card A — Data Teams -->
+      <article class="segment-card reveal">
+        <span class="eyebrow sol-kicker">For data teams</span>
+        <h3 class="heading-sm segment-label">Reduce the request backlog. Stay in control.</h3>
+        <p class="body-md segment-desc">Your data team defines the governed semantic layer once. From that point, business users get answers without filing a ticket — while you retain full visibility into every query, every access decision, and every answer produced.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Role-based access enforced at query time, not dashboard filter</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Full prompt-level audit trail for every agent interaction</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Auto-learning Smart Semantic Layer grows without upfront LookML or MDX sprints</li>
+        </ul>
+        <a href="/solutions/data-teams" class="btn btn-ghost">Explore Data Teams</a>
+      </article>
+
+      <!-- Card B — Analysts -->
+      <article class="segment-card reveal">
+        <span class="eyebrow sol-kicker">For analysts</span>
+        <h3 class="heading-sm segment-label">Self-serve at speed. Without sacrificing trust.</h3>
+        <p class="body-md segment-desc">Stop acting as a translation layer between business users and the warehouse. Ask complex, multi-step questions in plain language and receive source-cited answers. Quaeris agents chain forecasts, anomaly detection, and root-cause steps — so your analysis runs further, faster.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Autonomous multi-step workflows: fetch, filter, forecast, root-cause — one query</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Every answer cites the metric definitions and tables it used</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Connect structured warehouse data and unstructured documents in a single query</li>
+        </ul>
+        <a href="/solutions/analysts" class="btn btn-ghost">Explore Analysts</a>
+      </article>
+
+      <!-- Card C — Executives -->
+      <article class="segment-card reveal">
+        <span class="eyebrow sol-kicker">For executives</span>
+        <h3 class="heading-sm segment-label">Reliable answers. Without waiting on reports.</h3>
+        <p class="body-md segment-desc">Ask the question you actually have — not the question a dashboard was pre-built to answer. Quaeris agents retrieve governed answers from your certified semantic layer with role-based access enforced. No hallucinations, no stale exports, no ticket.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Questions answered in seconds against live warehouse data</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Proactive alerts flag anomalies before they reach your inbox as problems</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Every answer is auditable — traceable to its source metric definition</li>
+        </ul>
+        <a href="/solutions/executives" class="btn btn-ghost">Explore Executives</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — Stat Band
+     Maps to existing StatBlock — reuses .stats-grid/.stat-block with a
+     dark-band variant (.sol-stats-dark). In-app the numbers animate as
+     counters; the "0" stat renders as a large 0 with descriptor (spec
+     design note). Three of four stats await verified CS figures.
+     ============================================================ -->
+<section id="outcomes" class="section-pad sol-stats-dark" aria-label="Outcomes across Quaeris deployments">
+  <div class="container">
+    <div class="stats-grid reveal">
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-placeholder>XX%</span>
+        <span class="sol-stat-desc">reduction in ad-hoc requests</span>
+        <span class="stat-label">Across deployed teams</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-placeholder>XX min</span>
+        <span class="stat-label">Median time from question to governed answer</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num stat-number">0</span>
+        <span class="stat-label">Hallucinated numbers — every answer cites its source</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-placeholder>XX weeks</span>
+        <span class="stat-label">Typical time to first governed answer in production</span>
+      </div>
+    </div>
+    <p class="sol-stats-note" data-placeholder>Outcomes across Quaeris-deployed organizations. [data-placeholder: verify stats with CS team before publish]</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — By Industry (secondary routing block)
+     Maps to existing SegmentCards — reuses .segment-card / .segment-icon-box;
+     3×2 grid via .sol-grid-3 (collapses to single column <768px per spec
+     note 10). Port note: CTAs fire solutions_card_click with { industry }.
+     URL convention pending spec open question 1 — using
+     /industries/[industry]-governed-analytics per internal-links table.
+     ============================================================ -->
+<section id="by-industry" class="section-pad" style="background: var(--bg-canvas);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow sol-kicker">By industry</span>
+      <h2 class="display-lg">Governed analytics for regulated industries.</h2>
+      <p class="subcopy body-lg">Generic AI BI tools avoid regulated verticals. Quaeris is built precisely for industries where the number has to be right, auditable, and traceable.</p>
+    </div>
+
+    <div class="sol-grid-3">
+      <!-- Card 1 — Finance -->
+      <article class="segment-card reveal">
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Finance</h3>
+        <p class="body-md segment-desc">Conflicting KPIs across desks, portfolios, and legal entities create audit exposure.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Single certified metric definition per KPI across every reporting entity</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Prompt-level audit trail maps to SOX agent-control requirements [data-placeholder: confirm SOX applicability with legal]</li>
+        </ul>
+        <a href="/industries/finance-governed-analytics" class="btn btn-ghost">Finance analytics</a>
+      </article>
+
+      <!-- Card 2 — Insurance -->
+      <article class="segment-card reveal">
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Insurance</h3>
+        <p class="body-md segment-desc">Claims, underwriting, and actuarial teams work from different extracts of the same data.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Unified governed query across structured warehouse and unstructured policy documents</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>HIPAA-compliant deployment posture for health lines [data-placeholder: confirm HIPAA certification status]</li>
+        </ul>
+        <a href="/industries/insurance-governed-analytics" class="btn btn-ghost">Insurance analytics</a>
+      </article>
+
+      <!-- Card 3 — Retail & CPG -->
+      <article class="segment-card reveal">
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Retail &amp; CPG</h3>
+        <p class="body-md segment-desc">Merchandising, supply chain, and marketing report different revenue numbers to the same executive.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Smart Semantic Layer certifies revenue, margin, and sell-through across all regional teams</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Autonomous multi-step agents connect POS, inventory, and promo data in one query</li>
+        </ul>
+        <a href="/industries/retail-cpg-governed-analytics" class="btn btn-ghost">Retail analytics</a>
+      </article>
+
+      <!-- Card 4 — Healthcare -->
+      <article class="segment-card reveal">
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Healthcare</h3>
+        <p class="body-md segment-desc">Patient, claims, and operational data live in separate systems — and governance requirements make ad-hoc joins risky.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Data &amp; Document Agents unify structured EHR warehouse data with unstructured clinical notes in one governed query</li>
+          <li data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Role-based access and full audit trail aligned to data privacy requirements [data-placeholder: confirm HIPAA certification status]</li>
+        </ul>
+        <a href="/industries/healthcare-governed-analytics" class="btn btn-ghost">Healthcare analytics</a>
+      </article>
+
+      <!-- Card 5 — Manufacturing -->
+      <article class="segment-card reveal">
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Manufacturing</h3>
+        <p class="body-md segment-desc">Quality, OEE, and margin metrics are scattered across PLCs, ERPs, and line-level exports.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Conversational queries against Snowflake / Azure Synapse / Databricks without moving data</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Proactive anomaly detection flags quality issues before they propagate to downstream lines</li>
+        </ul>
+        <a href="/industries/manufacturing-governed-analytics" class="btn btn-ghost">Manufacturing analytics</a>
+      </article>
+
+      <!-- Card 6 — Construction -->
+      <article class="segment-card reveal">
+        <span class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M14 6a6 6 0 0 1 6 6v3"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><rect x="2" y="15" width="20" height="4" rx="1"/></svg>
+        </span>
+        <h3 class="heading-sm segment-label">Construction</h3>
+        <p class="body-md segment-desc">Project margin, subcontractor spend, and schedule data are manually reconciled in spreadsheets long after the window to act.</p>
+        <ul class="sol-check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Natural-language queries across project, financial, and document data in one governed interface</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Autonomous agents surface margin erosion signals as they occur, not at month-end</li>
+        </ul>
+        <a href="/industries/construction-governed-analytics" class="btn btn-ghost">Construction analytics</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — Differentiator Feature Rows
+     Maps to existing FeatureRow — reuses .feature-rows-list / .feature-row /
+     .feature-row-flip. Image slots are token-tinted SVG placeholders
+     (data-placeholder) until UI screenshots exist.
+     ============================================================ -->
+<section id="differentiators" class="section-pad" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom: var(--space-9);">
+      <h2 class="display-lg">Four things Quaeris does that no other platform does together.</h2>
+      <p class="subcopy body-lg">These are the structural differences — not feature checkboxes.</p>
+    </div>
+
+    <div class="feature-rows-list">
+      <!-- Row 1 — BYOM (image left, text right) -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Model independence</span>
+          <h3 class="heading-sm feature-row-heading">Bring Your Own Model. Your compliance team controls which AI runs on your data.</h3>
+          <p class="feature-row-body body-md">Quaeris connects to OpenAI, Anthropic, Google, and Meta models. You choose which model processes your data — and you switch as the landscape evolves. No vendor lock-in means your AI governance policy isn't hostage to a single provider's roadmap. This is BYOM framed as a compliance feature, not a procurement one.</p>
+          <a href="/platform#byom" class="btn btn-ghost">
+            <svg class="sol-ico-18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
+            Learn about BYOM
+          </a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <div class="sol-img-ph" data-placeholder>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+              <span>UI screenshot — model selection panel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2 — Auto-learning Semantic Layer (text left, image right) -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Smart Semantic Layer</span>
+          <h3 class="heading-sm feature-row-heading">A semantic layer that learns your business — without a modeling sprint.</h3>
+          <p class="feature-row-body body-md">Every other semantic layer requires your team to write LookML, dbt metrics, or MDX cube definitions before the first query runs. Quaeris's Smart Semantic Layer learns business definitions and data relationships from user interaction. Setup takes weeks, not quarters — and the layer keeps improving as teams use it.</p>
+          <a href="/platform/semantic-layer" class="btn btn-ghost">
+            <svg class="sol-ico-18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v13"/></svg>
+            Explore the semantic layer
+          </a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <div class="sol-img-ph" data-placeholder>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+              <span>UI screenshot — semantic layer definition panel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 — Prompt-Level Audit Trail (image left, text right) -->
+      <div class="feature-row feature-row-flip reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Governance by design</span>
+          <h3 class="heading-sm feature-row-heading">Every question, every agent step, every answer — logged and traceable.</h3>
+          <p class="feature-row-body body-md">Quaeris maintains a full prompt-level audit trail: who asked what, which agent steps ran, which metric definitions were used, which data was returned. This is the audit story compliance teams need when regulators ask about AI-generated outputs — and it maps directly to EU AI Act obligations and the SOX expansion to AI agents. No other analytics platform publishes this story.</p>
+          <a href="/platform/governance" class="btn btn-ghost">
+            <svg class="sol-ico-18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/><path d="M15 8h-5"/><path d="M15 12h-5"/></svg>
+            See governance controls
+          </a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <div class="sol-img-ph" data-placeholder>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+              <span>UI screenshot — audit log view</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4 — Document + Warehouse Unified Query (text left, image right) -->
+      <div class="feature-row reveal">
+        <div class="feature-row-text">
+          <span class="eyebrow feature-row-eyebrow">Data &amp; Document Agents</span>
+          <h3 class="heading-sm feature-row-heading">Ask questions that span contracts, invoices, and your warehouse — in one query.</h3>
+          <p class="feature-row-body body-md">Document AI tools don't execute SQL. BI platforms don't read PDFs. Quaeris's Data &amp; Document Agents extract structured fields from contracts, invoices, and reports and join them with warehouse fact tables in a single natural-language query. This is the only governed, unified query capability available across both structured and unstructured enterprise data.</p>
+          <a href="/platform/agents" class="btn btn-ghost">
+            <svg class="sol-ico-18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"/><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l5 5v9a2 2 0 0 1-2 2Z"/><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"/></svg>
+            Explore document agents
+          </a>
+        </div>
+        <div class="feature-row-visual">
+          <div class="feature-row-img-wrap">
+            <div class="sol-img-ph" data-placeholder>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+              <span>UI screenshot — document + SQL unified query result</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7 — Social Proof Anchor
+     Maps to existing CaseStudyCard — reuses .case-study-card / .industry-chip /
+     .cs-stats; 2-up grid (.sol-proof-grid). ALL client names and stats are
+     placeholders — do not invent (spec). Launch rule: do NOT ship anonymous
+     cards; if only one customer is cleared, ship one named card (E4E /
+     Courtney Ramey) + a "See all stories" CTA to /use-cases.
+     ============================================================ -->
+<section id="proof" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow sol-kicker">Customer proof</span>
+      <h2 class="display-lg">Real outcomes. Governed answers.</h2>
+      <!-- Spec's subcopy slot reads as an internal content-team note — kept verbatim
+           per spec, marked data-placeholder; replace with visitor-facing subcopy
+           (or remove) before launch. -->
+      <p class="subcopy body-lg" data-placeholder>Six case studies are published on the site. Five are anonymized — only one is named today (E4E / Courtney Ramey). Name each customer before this page launches — unnamed case studies are the primary EEAT gap on quaeris.ai today.</p>
+    </div>
+
+    <div class="sol-proof-grid">
+      <!-- Card 1 -->
+      <article class="case-study-card reveal">
+        <span class="industry-chip" data-placeholder>Financial Services</span>
+        <h3 class="heading-sm" data-placeholder>[Customer name — cleared by CS, not anonymized]</h3>
+        <p class="cs-outcome" data-placeholder>Reduced ad-hoc requests by X% while opening self-serve to Y business users</p>
+        <div class="cs-stats" data-placeholder>
+          <div class="cs-stat">
+            <span class="cs-stat-num">XX%</span>
+            <span class="cs-stat-label">Metric 1</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">XX</span>
+            <span class="cs-stat-label">Metric 2</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">XX</span>
+            <span class="cs-stat-label">Metric 3</span>
+          </div>
+        </div>
+        <a href="/use-cases/" class="btn btn-ghost" data-placeholder>Read the story</a>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="case-study-card reveal">
+        <span class="industry-chip" data-placeholder>Insurance</span>
+        <h3 class="heading-sm" data-placeholder>[Customer name — cleared by CS, not anonymized]</h3>
+        <p class="cs-outcome" data-placeholder>Specific quantified outcome</p>
+        <div class="cs-stats" data-placeholder>
+          <div class="cs-stat">
+            <span class="cs-stat-num">XX%</span>
+            <span class="cs-stat-label">Metric 1</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">XX</span>
+            <span class="cs-stat-label">Metric 2</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat-num">XX</span>
+            <span class="cs-stat-label">Metric 3</span>
+          </div>
+        </div>
+        <a href="/use-cases/" class="btn btn-ghost" data-placeholder>Read the story</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 8 — Integrations Strip
+     NEW:IntegrationsBadgeStrip (spec §3.8). Text pills only — reuses
+     .industry-chip (accent text on accent-soft bg, pill radius) until
+     per-connector SVG assets exist. Overflow scrolls on mobile.
+     Port note (spec open question 8): assess adapting LogoMarquee to
+     render text pills before building a new component.
+     ============================================================ -->
+<section id="integrations" class="sol-integrations" aria-label="Integrations">
+  <div class="container">
+    <span class="eyebrow sol-kicker sol-integrations-label">Works with your existing warehouse and data sources</span>
+    <ul class="sol-integrations-row">
+      <li class="industry-chip">Snowflake</li>
+      <li class="industry-chip">BigQuery</li>
+      <li class="industry-chip">Databricks</li>
+      <li class="industry-chip">Azure Synapse</li>
+      <li class="industry-chip">Amazon Redshift</li>
+      <li class="industry-chip">SharePoint</li>
+      <li class="industry-chip">Google Drive</li>
+    </ul>
+    <div class="sol-integrations-cta">
+      <a href="/integrations" class="btn btn-ghost">See all integrations</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 9 — FAQ
+     Maps to existing Accordion (ui/Accordion.tsx) — reuses .faq-grid /
+     .accordion classes. Items render expanded in this static mockup;
+     Radix Accordion handles open/close at port time. FAQPage JSON-LD below.
+     ============================================================ -->
+<section id="faq" class="section-pad">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="section-header reveal">
+        <span class="eyebrow sol-kicker">Common questions</span>
+        <h2 class="display-lg">Questions about solutions and fit.</h2>
+      </div>
+
+      <div class="accordion reveal">
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" id="faq-q1" aria-expanded="true" aria-controls="faq-a1" data-state="open">
+              <span class="accordion-question">Is Quaeris one product or separate products for each team and industry?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a1" role="region" aria-labelledby="faq-q1" data-state="open">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 65ch;">One platform. The team and industry pages describe how the same governed agentic analytics platform — Context Engine, Answer Engine, Decision Engine — maps to the specific workflows and pain points of each audience. The semantic layer, BYOM model choice, prompt-level audit trail, and Data &amp; Document Agents are available across all deployments. Industry-specific content reflects the compliance posture and data patterns common to that sector.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" id="faq-q2" aria-expanded="true" aria-controls="faq-a2" data-state="open">
+              <span class="accordion-question">Does Quaeris require a data migration or new data warehouse?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a2" role="region" aria-labelledby="faq-q2" data-state="open">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 65ch;">No. Quaeris is warehouse-native. It connects directly to your existing Snowflake, BigQuery, Databricks, Azure Synapse, or Amazon Redshift instance. Your data never leaves your environment. The Smart Semantic Layer is built on top of your existing tables — there is nothing to migrate and no new infrastructure to stand up.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3>
+            <button class="accordion-trigger" id="faq-q3" aria-expanded="true" aria-controls="faq-a3" data-state="open">
+              <span class="accordion-question">How does BYOM work in a regulated industry context?</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="accordion-content" id="faq-a3" role="region" aria-labelledby="faq-q3" data-state="open">
+            <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 65ch;">BYOM (Bring Your Own Model) means your organization connects and governs which AI model processes your prompts and data — OpenAI, Anthropic, Google, or Meta. You are not locked to Quaeris's choice of model vendor. In regulated industries this matters because your compliance team can evaluate each model against your data-processing agreements and switch as regulatory standards evolve. The prompt-level audit trail captures model identity alongside every answer, so the audit record is complete regardless of which model ran. <span data-placeholder>[data-placeholder: confirm specific model certification posture with product team before publish]</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Quaeris one product or separate products for each team and industry?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "One platform. The team and industry pages describe how the same governed agentic analytics platform — Context Engine, Answer Engine, Decision Engine — maps to the specific workflows and pain points of each audience. The semantic layer, BYOM model choice, prompt-level audit trail, and Data & Document Agents are available across all deployments. Industry-specific content reflects the compliance posture and data patterns common to that sector."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Quaeris require a data migration or new data warehouse?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Quaeris is warehouse-native. It connects directly to your existing Snowflake, BigQuery, Databricks, Azure Synapse, or Amazon Redshift instance. Your data never leaves your environment. The Smart Semantic Layer is built on top of your existing tables — there is nothing to migrate and no new infrastructure to stand up."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does BYOM work in a regulated industry context?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BYOM (Bring Your Own Model) means your organization connects and governs which AI model processes your prompts and data — OpenAI, Anthropic, Google, or Meta. You are not locked to Quaeris's choice of model vendor. In regulated industries this matters because your compliance team can evaluate each model against your data-processing agreements and switch as regulatory standards evolve. The prompt-level audit trail captures model identity alongside every answer, so the audit record is complete regardless of which model ran."
+        }
+      }
+    ]
+  }
+  </script>
+</section>
+
+<!-- ============================================================
+     SECTION 10 — CTA Band
+     Maps to existing CTABand — reuses #cta-band / .cta-inner / .cta-buttons
+     exactly (dark ink band, accent eyebrow, gradient primary + dark ghost).
+     ============================================================ -->
+<section id="cta-band" class="section-pad">
+  <div class="cta-band-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Ready to see it in your environment?</span>
+      <h2 class="display-lg">Governed analytics built for the way your team actually works.</h2>
+      <p class="subcopy body-lg">Book a 30-minute demo. We'll connect to your warehouse, configure a governed semantic layer against your data, and show you a live answered query — no slides, no placeholder data.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        <a href="/platform" class="btn btn-secondary-dark">Explore the platform</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>

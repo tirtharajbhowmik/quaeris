@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /case-studies — Quaeris</title>
+<!-- SEO (from spec §2, documented for port time):
+     Page title: Quaeris AI Case Studies | Real Outcomes, Real Data
+     Meta description below. -->
+<meta name="description" content="See how data leaders at financial, insurance, and healthcare companies reduced ad-hoc requests, unified metrics, and deployed governed AI in weeks." />
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — provided by existing SiteHeader/SiteFooter components at port time. -->
+
+<style>
+/* PORT: new classes — move to globals.css at port time (token-driven, brand-agnostic). */
+
+/* ---- /case-studies hero (NEW:CaseStudiesHero) ---- */
+.cstud-hero { background: var(--bg-warm); }
+.cstud-hero .eyebrow { color: var(--brand-accent); }
+.cstud-hero-bar {
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand-accent), transparent);
+  margin-bottom: var(--space-5);
+}
+
+/* ---- Case study grid (CaseStudyCard reuse — additions only) ---- */
+.cstud-stories-grid { margin-top: 0; }
+.cstud-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+/* dt (label) must precede dd (number) in the DOM for valid <dl>;
+   flip visually so the number reads first, per the card design. */
+.cstud-stat dd { order: -1; }
+
+/* ---- Case study detail (NEW:CaseStudyDetail) ---- */
+.cstud-detail { background: var(--bg-surface); }
+.cstud-detail-alt { background: var(--bg-warm); }
+.cstud-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+}
+.cstud-detail-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--weight-display);
+  color: var(--text-primary);
+}
+.cstud-detail-headline {
+  color: var(--text-primary);
+  max-width: 28ch;
+}
+.cstud-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-7);
+  margin-top: var(--space-7);
+}
+.cstud-detail-sub h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+.cstud-detail-sub h3 svg { color: var(--brand-accent); flex-shrink: 0; }
+.cstud-detail-sub p { color: var(--text-secondary); }
+.cstud-detail-stats {
+  display: flex;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+}
+.cstud-detail-stat { display: flex; flex-direction: column; }
+.cstud-detail-stat dd { order: -1; }
+.cstud-quote {
+  margin-top: var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 500px;
+}
+.cstud-quote blockquote {
+  border-left: 2px solid var(--brand-accent);
+  padding-left: var(--space-4);
+}
+.cstud-quote blockquote p {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: var(--weight-display);
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+.cstud-quote-meta { display: flex; flex-direction: column; }
+
+/* ---- Aggregate stats band (StatBlock reuse — <dl> visual flip only) ---- */
+.cstud-aggregate .stat-block { display: flex; flex-direction: column; align-items: center; }
+.cstud-aggregate .stat-block dd { order: -1; }
+
+/* ---- Responsive (new classes only) ---- */
+@media (max-width: 768px) {
+  .cstud-detail-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+  .cstud-detail-stats { gap: var(--space-6); }
+}
+@media (max-width: 640px) {
+  .cstud-card-head { align-items: flex-start; }
+  .cstud-detail-meta { gap: var(--space-3); }
+}
+</style>
+
+<main id="main">
+
+  <!-- ============================================================
+       3.1 HERO + INTRO — NEW:CaseStudiesHero
+       Typography-driven, lavender section bg (--bg-warm), gradient
+       bar above the eyebrow. Spec hex values mapped to tokens.
+       ============================================================ -->
+  <section id="customer-proof" class="section-pad cstud-hero" aria-label="Customer proof">
+    <div class="container">
+      <div class="hero-inner reveal">
+        <div class="cstud-hero-bar" aria-hidden="true"></div>
+        <span class="eyebrow">Customer proof</span>
+        <h1 class="hero-h1">Real outcomes. Real data teams.</h1>
+        <p class="subcopy body-lg">Generic claims don't move data leaders. Here is what deploying Quaeris actually looks like — outcomes from financial services, insurance, healthcare, and manufacturing teams who unified their metrics and answered questions faster.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3.2 CASE STUDIES GRID — CaseStudyCard (reuse from home #proof;
+       extended with .cstud-card-head logo slot + <dl> stats).
+       6 cards; first 3 link to in-page detail blocks, last 3 link
+       away to /case-studies/[slug] (MVP per spec §3.3).
+       ============================================================ -->
+  <section id="stories" class="section-pad" aria-labelledby="stories-heading">
+    <div class="container">
+      <h2 id="stories-heading" class="sr-only">Customer stories</h2>
+      <ul class="case-study-grid cstud-stories-grid" role="list">
+
+        <!-- Card 1 — E4E (only named customer; credibility anchor, positioned first) -->
+        <li class="case-study-card reveal" role="listitem">
+          <div class="cstud-card-head">
+            <span class="industry-chip">Financial Services</span>
+            <span class="trust-logo" data-placeholder>E4E</span>
+          </div>
+          <h3 class="heading-sm">E4E</h3>
+          <p class="cs-outcome" data-placeholder>Reduced ad-hoc analytics requests by 84% in 90 days — without relaxing governance controls.</p>
+          <dl class="cs-stats">
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Fewer requests</dt>
+              <dd class="cs-stat-num">84%</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Self-serve users</dt>
+              <dd class="cs-stat-num">600+</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Days to rollout</dt>
+              <dd class="cs-stat-num">90</dd>
+            </div>
+          </dl>
+          <a href="#e4e-metric-unification" class="btn btn-ghost" aria-label="Read the story for E4E">Read the story</a>
+        </li>
+
+        <!-- Card 2 — A leading financial institution -->
+        <li class="case-study-card reveal" role="listitem">
+          <div class="cstud-card-head">
+            <span class="industry-chip">Financial Services</span>
+          </div>
+          <h3 class="heading-sm">A leading financial institution</h3>
+          <p class="cs-outcome" data-placeholder>Certified one set of metric definitions across six regional teams — and ended conflicting board reports.</p>
+          <dl class="cs-stats">
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Certified metrics</dt>
+              <dd class="cs-stat-num">40+</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Teams unified</dt>
+              <dd class="cs-stat-num">6</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Weeks to deploy</dt>
+              <dd class="cs-stat-num">3</dd>
+            </div>
+          </dl>
+          <a href="#financial-institution" class="btn btn-ghost" aria-label="Read the story for a leading financial institution">Read the story</a>
+        </li>
+
+        <!-- Card 3 — A property management SaaS company -->
+        <li class="case-study-card reveal" role="listitem">
+          <div class="cstud-card-head">
+            <span class="industry-chip">Property Management</span>
+          </div>
+          <h3 class="heading-sm">A property management SaaS company</h3>
+          <p class="cs-outcome" data-placeholder>Rolled out governed self-serve answers to 600+ property managers in three weeks.</p>
+          <dl class="cs-stats">
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Self-serve users</dt>
+              <dd class="cs-stat-num">600+</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Weeks to rollout</dt>
+              <dd class="cs-stat-num">3</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Data copies</dt>
+              <dd class="cs-stat-num">0</dd>
+            </div>
+          </dl>
+          <a href="#property-management-saas" class="btn btn-ghost" aria-label="Read the story for a property management SaaS company">Read the story</a>
+        </li>
+
+        <!-- Card 4 — A large retail bank (collapsed/link-away per spec §3.3) -->
+        <li class="case-study-card reveal" role="listitem">
+          <div class="cstud-card-head">
+            <span class="industry-chip">Retail Banking</span>
+          </div>
+          <h3 class="heading-sm">A large retail bank</h3>
+          <p class="cs-outcome" data-placeholder>Cut time-to-insight from days to minutes while keeping role-based access intact.</p>
+          <dl class="cs-stats">
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Faster answers</dt>
+              <dd class="cs-stat-num">85%</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Governed users</dt>
+              <dd class="cs-stat-num">1,200</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Weeks to deploy</dt>
+              <dd class="cs-stat-num">4</dd>
+            </div>
+          </dl>
+          <a href="/case-studies/retail-bank-time-to-insight" class="btn btn-ghost" aria-label="Read the story for a large retail bank">Read the story</a>
+        </li>
+
+        <!-- Card 5 — A higher education company (collapsed/link-away) -->
+        <li class="case-study-card reveal" role="listitem">
+          <div class="cstud-card-head">
+            <span class="industry-chip">Higher Education</span>
+          </div>
+          <h3 class="heading-sm">A higher education company</h3>
+          <p class="cs-outcome" data-placeholder>Unified enrollment and finance reporting across campuses on one semantic layer.</p>
+          <dl class="cs-stats">
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Campuses unified</dt>
+              <dd class="cs-stat-num">3</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Certified metrics</dt>
+              <dd class="cs-stat-num">50+</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Weeks to deploy</dt>
+              <dd class="cs-stat-num">5</dd>
+            </div>
+          </dl>
+          <a href="/case-studies/higher-education-reporting" class="btn btn-ghost" aria-label="Read the story for a higher education company">Read the story</a>
+        </li>
+
+        <!-- Card 6 — A services SaaS company (collapsed/link-away) -->
+        <li class="case-study-card reveal" role="listitem">
+          <div class="cstud-card-head">
+            <span class="industry-chip">Services SaaS</span>
+          </div>
+          <h3 class="heading-sm">A services SaaS company</h3>
+          <p class="cs-outcome" data-placeholder>Replaced a dashboard backlog with governed natural-language answers for every team.</p>
+          <dl class="cs-stats">
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Fewer dashboard requests</dt>
+              <dd class="cs-stat-num">70%</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Weekly questions</dt>
+              <dd class="cs-stat-num">200+</dd>
+            </div>
+            <div class="cs-stat cstud-stat" data-placeholder>
+              <dt class="cs-stat-label">Weeks to deploy</dt>
+              <dd class="cs-stat-num">2</dd>
+            </div>
+          </dl>
+          <a href="/case-studies/services-saas-self-serve" class="btn btn-ghost" aria-label="Read the story for a services SaaS company">Read the story</a>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3.3 CASE STUDY DETAIL — NEW:CaseStudyDetail (×3 expanded; the
+       remaining 3 link away per spec MVP). Backgrounds alternate
+       white (--bg-surface) / lavender (--bg-warm).
+       ============================================================ -->
+
+  <!-- NEW:CaseStudyDetail — Detail 1: E4E (white bg) -->
+  <section id="e4e-metric-unification" class="section-pad cstud-detail" aria-labelledby="e4e-heading">
+    <div class="container">
+      <header class="cstud-detail-head reveal">
+        <div class="cstud-detail-meta">
+          <span class="industry-chip">Financial Services</span>
+          <span class="trust-logo" data-placeholder>E4E</span>
+          <span class="cstud-detail-name">E4E</span>
+        </div>
+        <h2 id="e4e-heading" class="display-lg cstud-detail-headline" data-placeholder>Reduced ad-hoc analytics requests by 84% in 90 days — without relaxing governance controls.</h2>
+      </header>
+
+      <div class="cstud-detail-grid">
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            The Challenge
+          </h3>
+          <p class="body-md" data-placeholder>Every executive question became a ticket for the data team. The analytics backlog grew faster than the team could hire, and ad-hoc requests crowded out the roadmap.</p>
+        </div>
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            How Quaeris Helped
+          </h3>
+          <p class="body-md" data-placeholder>Quaeris connected to E4E's Snowflake warehouse with no data movement. The team certified 120 metrics in the Smart Semantic Layer across six business teams, and Natural Language to SQL went live for 600+ users under role-based access — rolled out in 90 days.</p>
+        </div>
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            The Result
+          </h3>
+          <p class="body-md" data-placeholder>Ad-hoc requests fell 84% in 90 days. The data team kept full governance control — certified metrics, lineage, and role-based access — while business users self-served.</p>
+        </div>
+      </div>
+
+      <dl class="cstud-detail-stats reveal" aria-label="E4E results">
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Fewer ad-hoc requests</dt>
+          <dd class="stat-num stat-number">84%</dd>
+        </div>
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Self-serve users</dt>
+          <dd class="stat-num stat-number">600+</dd>
+        </div>
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Days to rollout</dt>
+          <dd class="stat-num stat-number">90</dd>
+        </div>
+      </dl>
+
+      <figure class="cstud-quote reveal">
+        <blockquote>
+          <p data-placeholder>"Our analysts were drowning in one-off requests. With Quaeris, the questions still get asked — they just get answered by the agent, against the same certified metrics we govern centrally."</p>
+        </blockquote>
+        <figcaption class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">CR</span>
+          <span class="cstud-quote-meta">
+            <span class="author-name">Courtney Ramey</span>
+            <span class="author-role" data-placeholder>[Role], E4E</span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- NEW:CaseStudyDetail — Detail 2: A leading financial institution (lavender bg) -->
+  <section id="financial-institution" class="section-pad cstud-detail cstud-detail-alt" aria-labelledby="fin-heading">
+    <div class="container">
+      <header class="cstud-detail-head reveal">
+        <div class="cstud-detail-meta">
+          <span class="industry-chip">Financial Services</span>
+          <span class="cstud-detail-name">A leading financial institution</span>
+        </div>
+        <h2 id="fin-heading" class="display-lg cstud-detail-headline" data-placeholder>Certified one set of metric definitions across six regional teams — and ended conflicting board reports.</h2>
+      </header>
+
+      <div class="cstud-detail-grid">
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            The Challenge
+          </h3>
+          <p class="body-md" data-placeholder>Six regional teams using different metric definitions; board reports conflicted monthly. Each month closed with a debate about whose number was right rather than what to do about it.</p>
+        </div>
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            How Quaeris Helped
+          </h3>
+          <p class="body-md" data-placeholder>Quaeris connected to the institution's BigQuery environment and moved metric logic into the Smart Semantic Layer — 40+ certified metrics shared across all six regional teams. Role-based access mapped to existing entitlements for 1,000+ users, and the first governed answers shipped in three weeks.</p>
+        </div>
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            The Result
+          </h3>
+          <p class="body-md">Unified metric definitions eliminated conflicts. Role-based access let the ops team ask questions directly without data-team escalation.</p>
+        </div>
+      </div>
+
+      <dl class="cstud-detail-stats reveal" aria-label="Financial institution results">
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Certified metrics</dt>
+          <dd class="stat-num stat-number">40+</dd>
+        </div>
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Regional teams unified</dt>
+          <dd class="stat-num stat-number">6</dd>
+        </div>
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Weeks to deploy</dt>
+          <dd class="stat-num stat-number">3</dd>
+        </div>
+      </dl>
+
+      <figure class="cstud-quote reveal">
+        <blockquote>
+          <p data-placeholder>"We'd been fighting over metric definitions for two years. Quaeris gave us a single place to certify them — and now every agent answer uses the same number. The board debates stopped."</p>
+        </blockquote>
+        <figcaption class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">JK</span>
+          <span class="cstud-quote-meta">
+            <span class="author-name" data-placeholder>J.K.</span>
+            <span class="author-role" data-placeholder>Head of Data, Kova Finance</span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- NEW:CaseStudyDetail — Detail 3: A property management SaaS company (white bg) -->
+  <section id="property-management-saas" class="section-pad cstud-detail" aria-labelledby="pm-heading">
+    <div class="container">
+      <header class="cstud-detail-head reveal">
+        <div class="cstud-detail-meta">
+          <span class="industry-chip">Property Management</span>
+          <span class="cstud-detail-name">A property management SaaS company</span>
+        </div>
+        <h2 id="pm-heading" class="display-lg cstud-detail-headline" data-placeholder>Governed self-serve answers for 600+ property managers — live in three weeks.</h2>
+      </header>
+
+      <div class="cstud-detail-grid">
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            The Challenge
+          </h3>
+          <p class="body-md" data-placeholder>Customers wanted answers about their own portfolios, but every report ran through a two-person analytics team. Dashboards multiplied; trust in the numbers didn't.</p>
+        </div>
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            How Quaeris Helped
+          </h3>
+          <p class="body-md" data-placeholder>Quaeris connected to the company's Databricks lakehouse alongside its document stores, using Data &amp; Document Agents to answer questions that span both. The Smart Semantic Layer certified 30+ portfolio metrics for 600+ property managers, with role-based access scoped per customer account — live in three weeks.</p>
+        </div>
+        <div class="cstud-detail-sub reveal">
+          <h3 class="heading-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            The Result
+          </h3>
+          <p class="body-md" data-placeholder>Property managers now ask questions in plain English and get governed answers scoped to their own accounts. The analytics team ships product features instead of reports.</p>
+        </div>
+      </div>
+
+      <dl class="cstud-detail-stats reveal" aria-label="Property management SaaS results">
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Self-serve users</dt>
+          <dd class="stat-num stat-number">600+</dd>
+        </div>
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Weeks to rollout</dt>
+          <dd class="stat-num stat-number">3</dd>
+        </div>
+        <div class="cstud-detail-stat" data-placeholder>
+          <dt class="stat-label">Data copies created</dt>
+          <dd class="stat-num stat-number">0</dd>
+        </div>
+      </dl>
+
+      <figure class="cstud-quote reveal">
+        <blockquote>
+          <p data-placeholder>"We shipped governed answers inside our product in three weeks. Our customers ask in plain English; the semantic layer makes sure the numbers are ours."</p>
+        </blockquote>
+        <figcaption class="testimonial-author">
+          <span class="author-avatar" aria-hidden="true">MT</span>
+          <span class="cstud-quote-meta">
+            <span class="author-name" data-placeholder>M.T.</span>
+            <span class="author-role" data-placeholder>VP of Product</span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3.4 STATS SUMMARY — StatBlock (reuse: StatsBand home component,
+       gradient variant). Aggregate values are placeholders per spec.
+       ============================================================ -->
+  <section id="stats-band" class="section-pad" aria-labelledby="stats-heading">
+    <div class="container">
+      <div class="section-header center reveal">
+        <h2 id="stats-heading" class="display-lg" data-placeholder>Consistent results across industries</h2>
+        <p class="subcopy body-lg">Deployed across regulated and high-growth industries, Quaeris consistently delivers governed analytics in weeks, not months — and cuts the data-team request backlog by 80+%.</p>
+      </div>
+      <div class="stats-band-gradient reveal" style="margin-top: var(--space-8);">
+        <dl class="stats-grid-gradient cstud-aggregate">
+          <div class="stat-block" data-placeholder>
+            <dt class="stat-label">Customer companies</dt>
+            <dd class="stat-num stat-number">6+</dd>
+          </div>
+          <div class="stat-block" data-placeholder>
+            <dt class="stat-label">Industries served</dt>
+            <dd class="stat-num stat-number">5</dd>
+          </div>
+          <div class="stat-block" data-placeholder>
+            <dt class="stat-label">Avg. deployment time</dt>
+            <dd class="stat-num stat-number">3 wks</dd>
+          </div>
+          <div class="stat-block" data-placeholder>
+            <dt class="stat-label">Avg. reduction in ad-hoc requests</dt>
+            <dd class="stat-num stat-number">82%</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3.5 CTA BAND — CTABand (reuse: home component, exact classes).
+       Spec's raw CTA gradient maps to var(--cta-bg) via .btn-primary.
+       ============================================================ -->
+  <section id="cta-band" class="section-pad">
+    <div class="cta-band-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="cta-inner reveal">
+        <span class="eyebrow">Ready to deploy?</span>
+        <h2 class="display-lg">See how Quaeris unified metrics and cut time-to-insight.</h2>
+        <p class="subcopy body-lg">Talk to a Quaeris solutions engineer. We'll walk through your warehouse setup, your governance requirements, and show you a live governed answer — against your own data schema if possible.</p>
+        <div class="cta-buttons">
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+          <a href="/platform" class="btn btn-secondary-dark">See all capabilities</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
