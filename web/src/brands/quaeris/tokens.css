@@ -35,6 +35,11 @@
   /* Display weight — PDF headings are Roboto Regular */
   --weight-display: 400;
 
+  /* Hero heading — PDF: H1 Roboto Regular 48px, accent span #8C20A4 */
+  --font-hero:   var(--font-display);
+  --weight-hero: 400;
+  --size-hero:   3rem;
+
   /* Typography */
   --font-display: var(--font-roboto), Arial, sans-serif;
   --font-body:    var(--font-inter), system-ui, -apple-system, sans-serif;

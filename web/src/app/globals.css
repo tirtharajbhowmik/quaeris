@@ -1876,18 +1876,18 @@ ul { list-style: none; }
     radial-gradient(40% 40% at 90% 0%, var(--brand-accent-soft), transparent 70%);
 }
 .hero-h1 {
-  font-family: var(--font-body);
-  font-weight: 800;
-  /* Optimal hero size: 52px / 56.16px line-height. rem for size (scales with root),
-     unitless line-height (best practice) — 1.08 × 52px = 56.16px. */
-  font-size: 3.25rem;
+  /* Hero face/weight/size are brand decisions — see src/brands/<brand>/tokens.css
+     (veris: Inter 800 @52px; quaeris: Roboto 400 @48px per design-guidelines PDF). */
+  font-family: var(--font-hero);
+  font-weight: var(--weight-hero);
+  font-size: var(--size-hero);
   line-height: 1.08;
   letter-spacing: -0.035em;
   color: var(--text-primary);
 }
 @media (max-width: 640px) { .hero-h1 { font-size: 2.25rem; } }
-/* Deeper purple for the accent headline line — higher contrast on white (~6:1 vs ~4.6:1). */
-.hero-h1 .accent-line { display: block; color: var(--brand-accent-hover); }
+/* Accent headline line uses the brand accent (per-brand contrast verified in tokens). */
+.hero-h1 .accent-line { display: block; color: var(--brand-accent); }
 .hero-cta {
   display: inline-flex;
   align-items: center;
@@ -1936,8 +1936,8 @@ ul { list-style: none; }
   margin-bottom: var(--space-4);
 }
 .ai-first-title {
-  font-family: var(--font-body);
-  font-weight: 800;
+  font-family: var(--font-hero);
+  font-weight: var(--weight-hero);
   font-size: clamp(28px, 4vw, 44px);
   line-height: 1.12;
   letter-spacing: -0.02em;

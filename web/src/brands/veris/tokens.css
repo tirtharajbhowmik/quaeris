@@ -35,6 +35,11 @@
   /* Display weight (Fraunces is variable; 450 is intentional) */
   --weight-display: 450;
 
+  /* Hero heading (brand-divergent): Veris hero is Inter 800 at 52px by design */
+  --font-hero:   var(--font-body);
+  --weight-hero: 800;
+  --size-hero:   3.25rem;
+
   /* Typography — next/font variables come from brands/veris/fonts.ts */
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-body:    var(--font-inter), system-ui, -apple-system, sans-serif;
