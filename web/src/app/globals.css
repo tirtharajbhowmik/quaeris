@@ -1268,13 +1268,17 @@ ul { list-style: none; }
   gap: var(--space-7);
 }
 
-.mega-group { display: flex; flex-direction: column; gap: var(--space-4); }
+.mega-group { display: flex; flex-direction: column; gap: var(--space-4); align-items: stretch; }
 .mega-group-heading {
   color: var(--text-tertiary);
   display: block;
   margin-bottom: var(--space-2);
+  /* Align the heading text with the link labels (which sit inside the link's 12px padding). */
+  padding-left: var(--space-3);
 }
-.mega-group ul { display: flex; flex-direction: column; gap: var(--space-1); }
+/* Left-align link rows (override an inherited align-items:center) so they line up with the heading. */
+.mega-group ul { display: flex; flex-direction: column; gap: var(--space-1); align-items: stretch; }
+.mega-group li { align-self: stretch; }
 
 .mega-link {
   display: flex;
