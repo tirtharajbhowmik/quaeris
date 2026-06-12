@@ -10,6 +10,7 @@
     "build:veris": "BRAND=veris node scripts/select-brand.mjs && next build",
     "build:quaeris": "BRAND=quaeris node scripts/select-brand.mjs && next build",
     "start": "next start",
+    "postinstall": "node scripts/select-brand.mjs",
     "typecheck": "node scripts/select-brand.mjs && tsc --noEmit"
   },
   "dependencies": {

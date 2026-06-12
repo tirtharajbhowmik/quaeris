@@ -1,7 +1,7 @@
 // ============================================================
-// BRAND CONFIG — single white-label swap point
-// All placeholder content from the mockup lives here.
-// Components read from this; never hardcode content in JSX.
+// SHARED BRAND-CONFIG TYPES
+// Brand content itself lives in src/brands/<brand>/config.ts.
+// Components import these via the @/config/brand.config shim.
 // ============================================================
 
 export interface NavItem {

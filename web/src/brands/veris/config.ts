@@ -17,6 +17,7 @@ import type {
   PlainNavItem,
   TopNavItem,
   FeatureRowItem,
+  BrandMeta,
 } from "@/config/types";
 
 // ── Image asset map ─────────────────────────────────────────
@@ -55,7 +56,7 @@ export const brand = {
       "Veris is an agentic analytics platform: ask questions in plain language and get trusted, audited answers grounded in your governed semantic layer — directly on your data warehouse.",
     ogDescription:
       "Secure, governed analytics powered by trusted AI agents. Plain-language questions, certified metrics, zero hallucinations.",
-  },
+  } satisfies BrandMeta,
 
   // ── CTA labels ─────────────────────────────────────────────
   cta: {
