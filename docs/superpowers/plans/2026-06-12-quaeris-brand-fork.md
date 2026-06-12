@@ -483,7 +483,7 @@ Then edit ONLY these fields in the copied file's `brand` object:
   },
 ```
 
-All other content (nav, sections, case studies, FAQs) is intentionally inherited as-is — it is already written for governed agentic analytics; a copy-refinement pass is a separate stretch.
+All other content (nav, sections, case studies, FAQs) is intentionally inherited as-is — it is already written for governed agentic analytics; a copy-refinement pass is a separate stretch. **EXCEPTION (USER DECISION, 2026-06-12, supersedes any literal reading): the brand NAME inside inherited copy is identity, not content — every "Veris" string in the quaeris package and in shared components must render as the active brand (config sweep + `brand.name` routing). The Definition-of-Done's `grep -c Veris → 0` on :3101 is authoritative. Likewise the layout.tsx metadata enrichment (metadataBase, OG url/siteName) is sanctioned. Do not revert either again.**
 
 - [ ] **Step 4: Typecheck + build Quaeris**
 
