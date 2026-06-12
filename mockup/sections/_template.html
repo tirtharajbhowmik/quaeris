@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — [section name]</title>
+
+<!-- Fonts: mirror what next/font loads in the app (Roboto for Quaeris display, Inter body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. No copies, no drift.
+     Swap the brand by pointing tokens at ../../web/src/brands/veris/tokens.css -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims — everything here is replaced by the framework at port time. */
+
+  /* next/font variables (the app injects these via fontClasses on <html>) */
+  :root {
+    --font-roboto: "Roboto";
+    --font-fraunces: "Fraunces";
+    --font-inter: "Inter";
+  }
+
+  /* Scroll-reveal elements render visible in static mockups (Reveal.tsx handles this in-app) */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* The browser ignores globals.css's Tailwind at-rules (@import "tailwindcss", @theme) —
+     that's expected; all design-system classes below them are plain CSS and apply fully. */
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     MOCKUP CONTENT — replace everything below with the new section.
+     Rules (from AGENTS.md + ruh-uiux-agent quality bar):
+     • Use existing design-system classes first (.section-pad, .container,
+       .section-header, .card, .btn …) — invent new CSS only when no
+       existing pattern fits, and put it in a <style> block marked
+       "PORT: new classes" so it's obvious what must move to globals.css.
+     • Tokens only — never hardcode brand hex/radius/fonts.
+     • Real copy where known; placeholders marked data-placeholder.
+     • SVG icons only (Lucide outline style), aria-hidden + text labels.
+     • Semantic headings, WCAG AA contrast, 44px touch targets.
+     ============================================================ -->
+
+<section class="section-pad" aria-labelledby="demo-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Example eyebrow</span>
+      <h2 id="demo-heading" class="display-lg">This is the section template.</h2>
+      <p class="subcopy body-lg">
+        Duplicate this file as <code>YYYY-MM-DD-section-name.html</code>, build the new
+        section here with real tokens and classes, review it in the browser, then port.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-top: var(--space-8);">
+      <article class="card">
+        <h3 class="heading-sm">Token-true</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">This card uses the live brand tokens — what you approve here is what ships.</p>
+      </article>
+      <article class="card">
+        <h3 class="heading-sm">Zero drift</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">Styles come from the app's own globals.css and tokens.css, linked directly.</p>
+      </article>
+      <article class="card">
+        <h3 class="heading-sm">Port on approval</h3>
+        <p class="body-sm" style="color: var(--text-secondary);">Once finalized, content moves to brand configs and markup becomes a component.</p>
+      </article>
+    </div>
+
+    <div style="text-align: center; margin-top: var(--space-7);">
+      <a href="#" class="btn btn-primary">Primary CTA</a>
+      <a href="#" class="btn btn-secondary" style="margin-left: var(--space-3);">Secondary</a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
