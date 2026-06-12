@@ -55,7 +55,7 @@ export default function FeatureRow({ item, index }: FeatureRowProps) {
             <rect width="800" height="530" fill="url(#fr-grad)" rx="20" />
             {/* Grid lines */}
             {[106, 212, 318, 424].map((y) => (
-              <line key={y} x1="80" y1={y} x2="720" y2={y} stroke="rgba(103,84,233,0.12)" strokeWidth="1" />
+              <line key={y} x1="80" y1={y} x2="720" y2={y} stroke="var(--brand-accent)" strokeOpacity={0.12} strokeWidth="1" />
             ))}
             {/* Trend line — compound growth curve */}
             <path
@@ -83,8 +83,8 @@ export default function FeatureRow({ item, index }: FeatureRowProps) {
             <text x="630" y="162" textAnchor="middle" fontFamily="system-ui" fontSize="20" fontWeight="700" fill="var(--brand-accent)">5.2×</text>
             <defs>
               <linearGradient id="fr-grad" x1="0" y1="0" x2="800" y2="530" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="rgba(103,84,233,0.06)" />
-                <stop offset="100%" stopColor="rgba(103,84,233,0.14)" />
+                <stop offset="0%" stopColor="var(--brand-accent)" stopOpacity={0.06} />
+                <stop offset="100%" stopColor="var(--brand-accent)" stopOpacity={0.14} />
               </linearGradient>
               <linearGradient id="fr-area" x1="0" y1="0" x2="0" y2="460" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stopColor="var(--brand-accent)" stopOpacity="0.15" />
