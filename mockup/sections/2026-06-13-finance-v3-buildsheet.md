@@ -18,7 +18,7 @@ Next.js `/solutions/finance` route. This file is the source of truth for v3 asse
 | # | Slot | Status | Decision / source |
 |---|------|--------|-------------------|
 | 1 | **Hero** | 🔒 **LOCKED** | Combined hero — see below |
-| 2 | The problem | ⬜ | v1 (3 cards) vs v2 (6 cards, 3×2) |
+| 2 | **The problem** | 🔒 **LOCKED** | v2 "The Leader's Challenge", 6 cards 3×2 — see below |
 | 3 | What it does | ⬜ | v1 FeatureRow ×3 vs v2 Core-Capabilities tabs |
 | 4 | Why Quaeris | ⬜ | v1 IconFeatureGrid ×4 (v1-only) |
 | 5 | Security / compliance | ⬜ | v1 trust-badges ×6 vs v2 "inside your perimeter" comparison table |
@@ -66,5 +66,37 @@ color/easing/duration.
 
 ---
 
+## Slot 2 — The problem · 🔒 LOCKED (2026-06-13)
+
+**Source:** `2026-06-13-solutions-finance-v2.html` — section `#challenge` ("The Leader's Challenge").
+
+**Composition:** centered section header — eyebrow "The Leader's Challenge" → H2 "You have the
+data. *You're still waiting for the answer.*" (accent second line) → subcopy ("The CFO's office
+sits at the intersection of every business system…"). Below: a **6-card grid, 3×2** (`.challenge-grid`
+→ `repeat(3,1fr)`, gap `--space-5`; collapses to 2-up ≤980px, 1-up ≤600px; equal-height cards).
+
+**The 6 cards** (`.card.challenge-card`: icon-box + `h3.heading-sm` + body `p`):
+| Card | Icon (lucide) |
+|---|---|
+| Slow Financial Close | clock |
+| Version-Control Hell | bar-chart |
+| Audit & Compliance Risk | shield |
+| Analyst Bottleneck | user |
+| Forecasting Blind Spots | trending-up |
+| Fragmented Data Systems | database |
+
+### Port notes (for v3 → Next.js)
+- **Component:** reuse a problem-card grid (extends the existing `ProblemSolutionCards`/`IconFeatureGrid`
+  pattern) or a small `ChallengeGrid.tsx`; cards = icon + title + body.
+- **Content → brand config:** the 6 cards (icon key + title + body) and the section header live in
+  `brands/*/config.ts` (`solutions.finance.challenge`), typed in `config/types.ts`.
+- **New CSS → globals.css (token-driven):** `.challenge-grid`, `.challenge-card` (+ its `h3`/`p`).
+  Reuses globals `.card`, `.icon-box`, `.section-header.center`, `.eyebrow`, `.display-lg`,
+  `.accent-line`, `.heading-sm`.
+- Icons: Lucide outline set (matches the rest of the site).
+
+---
+
 ## Next
-Finalize Slot 2 (The problem): compare v1's 3-card vs v2's 6-card treatment in the browser, decide, lock here.
+Finalize Slot 3 (What it does): compare v1's FeatureRow ×3 (Define → Answer → Audit, with UI
+product-shots) vs v2's Core-Capabilities tabs in the browser, decide, lock here.
