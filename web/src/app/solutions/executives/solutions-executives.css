@@ -1,0 +1,144 @@
+/* ============================================================
+   /solutions/executives — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.hero-trust, .icon-feature-grid--3, .ps-grid--3,
+   .segment-cards-grid, .case-study-*, …). Only the page-unique
+   classes remain below.
+   ============================================================ */
+
+/* — Section 02 · Hero — warm bg + diagonal accent line — */
+.exec-hero { background: var(--bg-warm); position: relative; overflow: hidden; }
+.exec-hero-line {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Subtle 2px diagonal accent, top-right to bottom-left. */
+  background: linear-gradient(
+    to bottom left,
+    transparent calc(50% - 1px),
+    var(--border-strong) calc(50% - 1px),
+    var(--border-strong) calc(50% + 1px),
+    transparent calc(50% + 1px)
+  );
+}
+
+/* — Section 05 · Executive use-case tiles (bento-card content) — */
+.exec-usecase-card {
+  background: var(--bg-canvas);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+}
+.exec-usecase-head { display: flex; align-items: center; gap: var(--space-3); }
+.exec-usecase-q {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-primary);
+  flex: 1;
+}
+.exec-usecase-a {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.exec-usecase-a-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+}
+.exec-usecase-a p { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+.exec-usecase-note { color: var(--text-tertiary); font-style: italic; margin-top: var(--space-4); }
+
+/* — Section 06 · Speed Advantage — illustrative query-panel visual — */
+.exec-query-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.exec-query-input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.exec-query-input svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+.exec-query-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.exec-query-metric {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+.exec-query-metric-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-1);
+}
+.exec-query-metric-value {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.exec-query-metric-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--space-1);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-accent);
+}
+.exec-query-metric-badge svg { width: 12px; height: 12px; flex-shrink: 0; }
+.exec-query-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
+}
+.exec-query-meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.exec-query-meta-row svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+.exec-query-caption { font-size: 12px; color: var(--text-tertiary); text-align: center; }
+@media (max-width: 640px) {
+  .exec-query-metrics { grid-template-columns: 1fr; }
+  .exec-query-panel { padding: var(--space-5); }
+}
+
+/* — Section 10 · CTA band gradient accent border top — */
+.exec-cta-topline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--cta-bg);
+}

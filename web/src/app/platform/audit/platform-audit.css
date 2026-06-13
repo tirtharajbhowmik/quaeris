@@ -1,0 +1,57 @@
+/* ============================================================
+   /platform/audit — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here: .product-shot / .product-shot-row / .product-shot-label,
+   .status-pill / .status-pill-allow / .status-pill-deny,
+   .segment-cards-grid--4, .compare-table-wrap / .compare-table /
+   .compare-col-quaeris / .compare-note, .icon-feature-grid, .ps-grid,
+   .metric-dashboard, .section-header-dark, .dark-feature-glow.
+   Only the page-unique classes remain below.
+   ============================================================ */
+
+/* — 3.5 · 2-up variant of the icon feature grid (6 cards, 2-column desktop) — */
+.audit-grid-2 { grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+@media (max-width: 768px) { .audit-grid-2 { grid-template-columns: 1fr; gap: var(--space-5); } }
+.audit-grid-2 > * { height: 100%; }
+
+/* — 3.4 · AuditLogMock (on-dark live audit-log table inside .metric-dashboard) — */
+.audit-log-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-md);
+}
+.audit-log-table {
+  width: 100%;
+  min-width: 960px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.audit-log-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-on-dark-dim);
+  background: color-mix(in srgb, var(--text-on-dark) 4%, transparent);
+  padding: var(--space-3) var(--space-4);
+  white-space: nowrap;
+}
+.audit-log-table td {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--border-on-dark);
+  color: var(--text-on-dark-dim);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.audit-log-table tbody tr { transition: background var(--dur-fast) var(--ease-out); }
+.audit-log-table tbody tr:hover { background: color-mix(in srgb, var(--text-on-dark) 4%, transparent); }
+.audit-log-question { color: var(--text-on-dark); font-weight: 500; }
+.audit-log-num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* — 3.7 · Comparison table sizing override (8 columns need extra width) — */
+.audit-compare-table { min-width: 1080px; font-size: 13px; }
+.audit-compare-table th,
+.audit-compare-table td { padding: var(--space-4); line-height: 1.45; vertical-align: top; }

@@ -1,0 +1,246 @@
+/* ============================================================
+   /pricing — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.section-ink, .section-ink-glow, .hero-trust,
+   .segment-cards-grid, .segment-card, .case-study-card,
+   .stats-grid, .cta-band-glow, .accordion). Only the
+   page-unique classes remain below.
+   ============================================================ */
+
+/* — Section 01 · Page Hero (centered) + billing toggle — */
+.pricing-hero { background: var(--bg-warm); }
+.pricing-hero-inner { max-width: 720px; margin: 0 auto; text-align: center; }
+.pricing-hero-inner .badge { margin-bottom: var(--space-5); }
+.pricing-hero-inner h1 { margin-bottom: var(--space-5); }
+.pricing-hero-sub { color: var(--text-secondary); }
+.pricing-toggle {
+  display: inline-flex;
+  gap: var(--space-1);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1);
+  margin-top: var(--space-5);
+}
+.pricing-toggle-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.pricing-toggle-btn[aria-pressed="true"] { background: var(--brand-accent); color: var(--text-on-dark); }
+.pricing-toggle-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+/* Centered hero variant of the shared .hero-trust strip */
+.pricing-hero .hero-trust {
+  justify-content: center;
+  margin-top: var(--space-7);
+  gap: var(--space-3) var(--space-6);
+}
+.pricing-hero .hero-trust-item {
+  align-items: center;
+  font-weight: 500;
+  max-width: none;
+}
+.pricing-hero .hero-trust-item svg { margin-top: 0; }
+
+/* — Section 02 · Pricing tier grid — */
+.pricing-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  align-items: stretch;
+}
+.pricing-tier-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+}
+.pricing-tier-card--featured {
+  border-top: 4px solid var(--brand-accent);
+  background: var(--bg-warm);
+}
+.pricing-tier-badge {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-5);
+  background: var(--brand-accent);
+  color: var(--text-on-dark);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+}
+.pricing-tier-name { color: var(--text-primary); }
+.pricing-tier-positioning { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+.pricing-tier-price { margin-top: var(--space-2); }
+.pricing-price { display: block; font-size: 17px; font-weight: 600; color: var(--text-primary); line-height: 1.45; }
+.pricing-price-num { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pricing-price-note { font-size: 14px; font-weight: 400; color: var(--text-tertiary); }
+.pricing-tier-sublabel { font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-1); display: block; }
+/* Billing toggle state — default Annual; .pricing-billing-monthly is set on <main> by the toggle */
+.pricing-price-monthly { display: none; }
+.pricing-billing-monthly .pricing-price-annual { display: none; }
+.pricing-billing-monthly .pricing-price-monthly { display: block; }
+.pricing-feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5) 0;
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  flex: 1;
+}
+.pricing-feature-list li {
+  display: flex;
+  gap: var(--space-2);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.pricing-feature-list li svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 3px; }
+.pricing-feature-lead { font-weight: 600; color: var(--text-primary); }
+.pricing-tier-cta { display: flex; flex-direction: column; gap: var(--space-2); margin-top: auto; }
+.pricing-tier-cta .btn { justify-content: center; }
+.pricing-tier-cta .btn-ghost { align-self: center; }
+@media (max-width: 1024px) {
+  .pricing-tier-grid { grid-template-columns: 1fr; max-width: 560px; margin-left: auto; margin-right: auto; }
+  /* On mobile, Professional renders first */
+  .pricing-tier-card--featured { order: -1; }
+}
+
+/* — Section 03 · Stat band (dark — reuses .section-ink) — */
+.pricing-stats-band .marquee-label { color: var(--text-on-dark-dim); }
+.pricing-stats-band .stat-label { color: var(--text-on-dark-dim); }
+.pricing-stats-band .stat-delta {
+  background: none;
+  padding: 0;
+  font-weight: 400;
+  font-size: 13px;
+  color: color-mix(in srgb, var(--text-on-dark) 55%, transparent);
+}
+.pricing-stats-band .stat-block + .stat-block::before { background: var(--border-on-dark); }
+.pricing-stat-unit { font-size: 0.45em; font-weight: 600; letter-spacing: 0; }
+
+/* — Section 04 · Feature matrix — */
+.pricing-matrix-wrap {
+  overflow-x: auto;
+  margin-top: var(--space-7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+.pricing-matrix { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 14px; }
+.pricing-matrix th,
+.pricing-matrix td {
+  padding: var(--space-3) var(--space-4);
+  text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+  color: var(--text-secondary);
+}
+.pricing-matrix thead th {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 15px;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+.pricing-matrix tbody tr { background: var(--bg-surface); }
+.pricing-matrix tbody tr:nth-child(even) { background: var(--bg-canvas); }
+.pricing-matrix-group th {
+  background: var(--bg-warm);
+  color: var(--text-primary);
+  text-align: left;
+}
+.pricing-matrix th[scope="row"],
+.pricing-matrix thead th:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-primary);
+  min-width: 280px;
+  position: sticky;
+  left: 0;
+  background: inherit;
+  z-index: 1;
+  box-shadow: inset -1px 0 0 var(--border-subtle);
+}
+.pricing-matrix thead th:first-child { background: var(--bg-surface); z-index: 2; }
+.pricing-matrix-check svg { width: 18px; height: 18px; color: var(--brand-accent); display: inline-block; vertical-align: middle; }
+.pricing-matrix-minus svg { width: 18px; height: 18px; color: var(--text-tertiary); display: inline-block; vertical-align: middle; }
+.pricing-matrix-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--brand-accent-glow);
+  text-underline-offset: 3px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.pricing-matrix-link:hover { color: var(--brand-accent); }
+.pricing-matrix-cta { text-align: center; margin-top: var(--space-6); }
+
+/* — Section 05 · Use-case cards (3-up warm variant of shared .segment-cards-grid) — */
+.segment-cards-grid.pricing-seg-3 { grid-template-columns: repeat(3, 1fr); }
+.segment-cards-grid.pricing-seg-3 .segment-card { background: var(--bg-warm); }
+@media (max-width: 900px) { .segment-cards-grid.pricing-seg-3 { grid-template-columns: 1fr; } }
+
+/* — Section 06 · Trust and compliance strip — */
+.pricing-trust-strip {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-8) 0;
+}
+.pricing-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: var(--space-6) var(--space-4);
+}
+.pricing-trust-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  border-radius: var(--radius-md);
+}
+.pricing-trust-badge svg { width: 24px; height: 24px; color: var(--brand-accent); flex-shrink: 0; }
+.pricing-trust-label { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.pricing-trust-sub { font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+a.pricing-trust-badge { transition: background var(--dur-fast) var(--ease-out); }
+a.pricing-trust-badge:hover { background: var(--bg-canvas); }
+a.pricing-trust-badge:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+/* Unobtained certifications render muted until activated by CMS flag */
+.pricing-trust-badge--pending { opacity: 0.45; }
+.pricing-trust-badge--pending .pricing-trust-sub { text-decoration: line-through; }
+@media (max-width: 1024px) { .pricing-trust-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 640px)  { .pricing-trust-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* — Section 07 · Case-study row (2-up) — */
+.pricing-case-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+.pricing-case-grid > * { height: 100%; }
+@media (max-width: 768px) { .pricing-case-grid { grid-template-columns: 1fr; } }
+
+/* — Section 08 · FAQ — */
+.pricing-faq-wrap { max-width: 800px; margin: var(--space-8) auto 0; }
+
+/* — Shared responsive polish — */
+@media (max-width: 640px) {
+  .pricing-hero .hero-trust { gap: var(--space-3) var(--space-4); }
+  .pricing-tier-card { padding: var(--space-5); }
+  .pricing-toggle-btn { padding: 0 var(--space-4); }
+}

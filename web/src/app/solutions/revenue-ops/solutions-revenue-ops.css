@@ -1,0 +1,72 @@
+/* ============================================================
+   /solutions/revenue-ops — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.hero-trust, .compare-table-wrap, .compare-table,
+   .compare-col-quaeris, .compare-note, .icon-feature-grid,
+   .bento-grid, .case-study-grid, .ps-grid, .faq-grid, .cta-inner,
+   #dark-feature, .value-prop-list, .metric-dashboard, …). Only the
+   page-unique classes remain below.
+   Prefix: rops- = /solutions/revenue-ops page area.
+   ============================================================ */
+
+/* — Section 3.1 · RevOpsHero (HeroHome-style header on warm bg) — */
+.rops-hero {
+  background: var(--bg-warm);
+  position: relative;
+  overflow: hidden;
+}
+
+/* — Section 3.2 · Problem cards (3-up problem variant) — */
+.rops-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.rops-problem-grid > * { height: 100%; }
+.rops-problem-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+}
+.rops-problem-card p { color: var(--text-secondary); flex: 1; }
+
+/* — Section 3.5 · Use-case bento cards (icon + title + body) — */
+.rops-usecase-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+}
+.rops-usecase-card p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  flex: 1;
+}
+.rops-usecase-card .icon-box { margin-bottom: var(--space-1); }
+
+/* — Heading-level fixes: these blocks nest under an H2 on this page, so the
+     value-prop and faq-mini titles render as H3 (globals styles the H4 form). — */
+.value-prop-text h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-on-dark);
+  margin-bottom: var(--space-1);
+}
+.faq-mini-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+/* — Responsive (page-unique grids only) — */
+@media (max-width: 1024px) {
+  .rops-problem-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .rops-problem-grid { grid-template-columns: 1fr; }
+}

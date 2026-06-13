@@ -1,0 +1,153 @@
+/* ============================================================
+   /solutions — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and base
+   design-system classes (.segment-card, .ps-card, .feature-row*,
+   .case-study-card, .industry-chip, .stats-grid, #cta-band, …) are
+   reused here. Only the page-unique classes remain below.
+   ============================================================ */
+
+/* — Section 01 · SolutionsHero — */
+.sol-hero { background: var(--bg-warm); overflow: hidden; }
+.sol-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-9);
+  align-items: center;
+}
+.sol-hero-copy .eyebrow { display: block; margin-bottom: var(--space-4); }
+.sol-hero-copy h1 { margin-bottom: var(--space-5); max-width: 20ch; }
+.sol-hero-sub { color: var(--text-secondary); max-width: 54ch; margin-bottom: var(--space-7); }
+.sol-hero-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+.sol-hero-cards > * { height: 100%; }
+.sol-hero-cards .segment-card { padding: var(--space-5) var(--space-4); gap: var(--space-2); }
+@media (max-width: 1024px) {
+  .sol-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+@media (max-width: 480px) {
+  .sol-hero-cards { grid-template-columns: 1fr; }
+}
+
+/* Accent eyebrow (spec: eyebrow color = brand accent). Second selector out-specifies
+   .section-header .eyebrow (tertiary) for section headers. */
+.sol-kicker, .section-header .sol-kicker { color: var(--brand-accent); }
+
+/* — Section 02 · Problem strip: 3-up variant of the ProblemSolutionCards grid — */
+.sol-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.sol-problem-grid > * { height: 100%; }
+@media (max-width: 768px) {
+  .sol-problem-grid { grid-template-columns: 1fr; }
+}
+
+/* — Sections 03 & 05 · Shared 3-col routing grid (By team / By industry) — */
+.sol-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.sol-grid-3 > * { height: 100%; }
+@media (max-width: 1024px) { .sol-grid-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px)  { .sol-grid-3 { grid-template-columns: 1fr; } } /* single-column scroll on mobile */
+
+/* — Check bullet list (team + industry cards) — */
+.sol-check-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: var(--space-2) 0 var(--space-4);
+}
+.sol-check-list li {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.sol-check-list svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+
+/* — Section 04 · StatBlock dark variant (stat band on ink, stats in white) — */
+.sol-stats-dark { background: var(--bg-ink); }
+.sol-stats-dark .stat-number { color: var(--text-on-dark); }
+.sol-stats-dark .stat-label  { color: var(--text-on-dark-dim); }
+.sol-stats-dark .stat-block + .stat-block::before { background: var(--border-on-dark); }
+.sol-stat-desc {
+  display: block;
+  color: var(--text-on-dark);
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: var(--space-1);
+}
+.sol-stats-note {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-on-dark-dim);
+  margin-top: var(--space-5);
+}
+
+/* — Section 07 · Social proof: 2-up CaseStudyCard grid — */
+.sol-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.sol-proof-grid > * { height: 100%; }
+@media (max-width: 768px) { .sol-proof-grid { grid-template-columns: 1fr; } }
+
+/* — Section 08 · IntegrationsBadgeStrip — */
+.sol-integrations {
+  background: var(--bg-surface);
+  padding: var(--space-8) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.sol-integrations-label { text-align: center; display: block; }
+.sol-integrations-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+.sol-integrations-row .industry-chip { font-size: 14px; padding: 10px 20px; white-space: nowrap; }
+.sol-integrations-cta { text-align: center; margin-top: var(--space-5); }
+@media (max-width: 640px) {
+  /* overflow scrolls on mobile */
+  .sol-integrations-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: var(--space-3);
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* — Section 06 · Feature-row image placeholder (token-tinted, no external images) — */
+.sol-img-ph {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: linear-gradient(135deg, var(--brand-accent-soft) 0%, var(--bg-canvas) 70%);
+  color: var(--text-tertiary);
+  font-size: 13px;
+  text-align: center;
+  padding: var(--space-5);
+}
+.sol-img-ph svg { width: 40px; height: 40px; color: var(--brand-accent); opacity: 0.5; }
+
+/* — Small icon inside ghost CTAs (feature rows) — */
+.sol-ico-18 { width: 18px; height: 18px; flex-shrink: 0; }

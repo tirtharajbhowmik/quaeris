@@ -1,0 +1,116 @@
+/* ============================================================
+   /platform/semantic-layer — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.compare-table*, .icon-feature-grid--3,
+   .segment-cards-grid--4, .hero-trust, …). Only page-unique
+   classes remain below. Page-area prefix: .sem-.
+   ============================================================ */
+
+/* — Section 0 · Hero trust pills (extends the base .badge) — */
+.sem-badge { gap: var(--space-2); padding: 6px 12px; font-size: 13px; }
+.sem-badge svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* — Section 4 · Comparison footnote (extends shared .compare-note) — */
+.sem-table-note { font-style: italic; max-width: 72ch; }
+.sem-table-note a { color: var(--brand-accent); text-decoration: underline; }
+
+/* — Section 5 · SemanticLayerAnatomy — 3-column certified-metric breakout — */
+.sem-anatomy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.sem-anatomy-grid > * { height: 100%; }
+.sem-spec-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+.sem-spec-list > div { display: flex; flex-direction: column; gap: 2px; }
+.sem-spec-list dt {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.sem-spec-list dd { font-size: 14px; line-height: 1.55; color: var(--text-primary); }
+.sem-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent-deep);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* — Section 7 · Getting-started accordion: narrow column + two-line trigger.
+   Native <details>/<summary> reuses .accordion* wrappers; these rules supply
+   the summary list-marker reset and the open-state chevron rotation that the
+   Radix [data-state] selectors would otherwise provide. — */
+.sem-acc-wrap { max-width: 800px; margin: var(--space-8) auto 0; }
+.sem-acc-item > summary { list-style: none; }
+.sem-acc-item > summary::-webkit-details-marker { display: none; }
+.sem-acc-item > summary::marker { content: ""; }
+.sem-acc-item[open] .accordion-icon { transform: rotate(180deg); }
+.sem-acc-head { display: flex; flex-direction: column; gap: var(--space-1); text-align: left; }
+.sem-acc-head .eyebrow { color: var(--brand-accent); }
+.sem-acc-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+  max-width: 70ch;
+}
+
+/* — Section 8 · Proof: case-study card + standalone testimonial side by side — */
+.sem-proof-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+  align-items: stretch;
+}
+.sem-proof-grid > * { height: 100%; }
+.sem-proof-grid .testimonial-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+}
+.sem-proof-grid .testimonial-quote {
+  display: block;
+  -webkit-line-clamp: unset;
+  flex: 1;
+  font-size: 16px;
+}
+
+/* — Section 9 · Deep-dive editorial background wash — */
+.sem-editorial-bg { background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-canvas) 100%); }
+
+/* — Section 11 · CTABand light variant (warm surface, ink headline) — */
+.sem-cta-light {
+  background: var(--bg-warm);
+  text-align: center;
+  border-top: 1px solid var(--border-subtle);
+}
+.sem-cta-light .cta-inner h2 { color: var(--text-primary); }
+.sem-cta-light .cta-inner .subcopy { color: var(--text-secondary); }
+
+/* — Token-tinted diagram placeholders inside .feature-row-img-wrap — */
+.sem-diagram {
+  color: var(--brand-accent);
+  background: linear-gradient(135deg, var(--brand-accent-soft) 0%, var(--bg-surface) 100%);
+}
+
+@media (max-width: 768px) {
+  .sem-anatomy-grid { grid-template-columns: 1fr; }
+  .sem-proof-grid { grid-template-columns: 1fr; }
+}

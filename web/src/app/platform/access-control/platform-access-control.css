@@ -1,0 +1,207 @@
+/* ============================================================
+   /platform/access-control — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.section-ink, .hero-trust, .icon-feature-grid--3,
+   .compare-table*, .case-study-*, .dark-feature-*, .value-prop-*,
+   .metric-dashboard, …). Only the page-unique classes remain below.
+   Page-area prefix: .acl- (platform/access-control).
+   ============================================================ */
+
+/* — Dark-section divider (between stacked ink sections) — */
+.acl-dark-divider { border-top: 1px solid var(--border-on-dark); }
+
+/* — Section 01 · AccessControlHero — */
+.acl-hero-glow {
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 55vw;
+  height: 55vw;
+  max-width: 640px;
+  max-height: 640px;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 70%);
+  opacity: 0.22;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.acl-hero-inner { position: relative; z-index: 1; max-width: 760px; }
+.acl-hero-inner .eyebrow {
+  display: block;
+  margin-bottom: var(--space-5);
+  color: color-mix(in srgb, var(--brand-accent) 50%, var(--text-on-dark));
+}
+.acl-hero-inner .hero-h1 { color: var(--text-on-dark); margin-bottom: var(--space-5); max-width: 18ch; }
+.acl-hero-inner .subcopy { color: var(--text-on-dark-dim); max-width: 60ch; margin-bottom: var(--space-7); }
+
+/* — Pipeline / flow diagram (hero + role-resolver flow; light modifier for white sections) — */
+.acl-pipeline-frame {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--space-8);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+  padding: var(--space-6);
+  text-align: center;
+}
+.acl-pipeline { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
+.acl-pipe-node { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); text-align: center; min-width: 0; }
+.acl-pipe-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid var(--border-on-dark);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-on-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.acl-pipe-icon svg { width: 22px; height: 22px; }
+.acl-pipe-label { font-size: 12px; font-weight: 600; line-height: 1.35; color: var(--text-on-dark-dim); max-width: 110px; }
+.acl-pipe-gate .acl-pipe-icon {
+  border-color: var(--brand-accent);
+  color: color-mix(in srgb, var(--brand-accent) 55%, var(--text-on-dark));
+  background: var(--brand-accent-soft);
+  box-shadow: 0 0 0 4px var(--brand-accent-glow);
+}
+.acl-pipe-gate .acl-pipe-label { color: var(--text-on-dark); }
+.acl-pipe-arrow { color: var(--text-on-dark-dim); opacity: 0.7; margin-top: 14px; flex-shrink: 0; }
+.acl-pipe-arrow svg { width: 20px; height: 20px; }
+.acl-pipe-arrow-granted { color: var(--brand-accent); opacity: 1; }
+.acl-pipe-block {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--error) 60%, transparent);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  color: var(--text-on-dark-dim);
+}
+.acl-pipe-block svg { width: 16px; height: 16px; color: var(--error); flex-shrink: 0; }
+/* Light variant (used inside white feature-row visuals) */
+.acl-pipeline-light .acl-pipe-icon { border-color: var(--border-strong); background: var(--bg-surface); color: var(--text-secondary); }
+.acl-pipeline-light .acl-pipe-label { color: var(--text-secondary); }
+.acl-pipeline-light .acl-pipe-arrow { color: var(--text-tertiary); }
+.acl-pipeline-light .acl-pipe-gate .acl-pipe-icon {
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  box-shadow: 0 0 0 4px var(--brand-accent-soft);
+}
+.acl-pipeline-light .acl-pipe-gate .acl-pipe-label { color: var(--text-primary); }
+.acl-flow-frame {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-canvas);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-7) var(--space-5);
+}
+
+/* — Section 02 · AccessControlProblemVisual — */
+.acl-ps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); position: relative; z-index: 1; }
+.acl-ps-panel .eyebrow { display: block; margin-bottom: var(--space-3); color: var(--text-on-dark-dim); }
+.acl-ps-panel h2 { color: var(--text-on-dark); margin-bottom: var(--space-6); }
+.acl-checklist { display: flex; flex-direction: column; gap: var(--space-4); }
+.acl-checklist li { display: flex; gap: var(--space-3); align-items: flex-start; font-size: 16px; line-height: 1.6; }
+.acl-checklist svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 3px; }
+.acl-list-problem li { color: var(--text-on-dark-dim); }
+.acl-list-problem svg { color: var(--error); }
+.acl-list-solution li { color: var(--text-on-dark); }
+.acl-list-solution svg { color: var(--success); }
+
+/* — Section 03 · Three pillars (icon-feature reuse + lavender-canvas card tint) — */
+.acl-card-canvas { background: var(--bg-canvas); }
+.acl-pillar-card p { flex: 1; }
+.acl-pillar-card .btn-ghost { margin-top: var(--space-2); align-self: flex-start; }
+
+/* — Section 04 · How it works (dark feature): numbered steps + access-scoped dashboard mock — */
+.acl-steps { list-style: none; padding: 0; margin: 0; }
+.acl-step-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: color-mix(in srgb, var(--brand-accent) 55%, var(--text-on-dark));
+}
+.acl-step-icon svg { width: 20px; height: 20px; }
+/* Mirrors the existing `.value-prop-text h4` rule for correct h3 heading order on this page. */
+.value-prop-text h3 { color: var(--text-on-dark); margin-bottom: var(--space-1); font-size: 16px; font-weight: 600; line-height: 1.4; }
+.acl-query-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  color: var(--text-on-dark);
+  font-size: 14px;
+  margin-bottom: var(--space-5);
+}
+.acl-query-row svg { width: 18px; height: 18px; color: var(--text-on-dark-dim); flex-shrink: 0; }
+.acl-role-badge svg { width: 14px; height: 14px; margin-right: 6px; flex-shrink: 0; }
+.acl-result-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: var(--space-4); }
+.acl-result-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-on-dark-dim);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border-on-dark);
+}
+.acl-result-table td {
+  padding: var(--space-3);
+  color: var(--text-on-dark);
+  border-bottom: 1px solid var(--border-on-dark);
+  font-variant-numeric: tabular-nums;
+}
+.acl-cell-masked { display: inline-flex; align-items: center; gap: 6px; color: var(--text-on-dark-dim); opacity: 0.55; font-style: italic; }
+.acl-cell-masked svg { width: 14px; height: 14px; flex-shrink: 0; }
+.acl-rows-note { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-on-dark-dim); margin-bottom: var(--space-3); }
+.acl-rows-note svg { width: 14px; height: 14px; color: color-mix(in srgb, var(--brand-accent) 55%, var(--text-on-dark)); flex-shrink: 0; }
+
+/* — Section 06 · Use cases (case-study-card variant): outcome checklist — */
+.acl-outcome-list { display: flex; flex-direction: column; gap: var(--space-2); border-top: 1px solid var(--border-subtle); padding-top: var(--space-4); margin-top: auto; }
+.acl-outcome-list li { display: flex; gap: var(--space-2); align-items: flex-start; font-size: 14px; line-height: 1.5; color: var(--text-secondary); }
+.acl-outcome-list svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; color: var(--brand-accent); }
+.acl-usecase-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+
+/* — Section 07 · Policy → SQL code mock (FeatureRow visual) — */
+.acl-code-pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.acl-code-card { background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-5); min-width: 0; }
+.acl-code-label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--space-3); }
+.acl-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--brand-accent-deep);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+.acl-code-inline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent-deep);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+}
+
+/* — Responsive (page-unique classes only) — */
+@media (max-width: 768px) {
+  .acl-ps-grid { grid-template-columns: 1fr; }
+  .acl-code-pair { grid-template-columns: 1fr; }
+  .acl-pipeline { flex-wrap: wrap; justify-content: center; gap: var(--space-4); }
+  .acl-pipe-arrow { display: none; }
+}
+@media (max-width: 640px) {
+  .acl-pipeline-frame { padding: var(--space-5) var(--space-4); }
+}

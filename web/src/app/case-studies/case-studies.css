@@ -1,0 +1,111 @@
+/* ============================================================
+   /case-studies — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and base
+   design-system classes — reused here (.case-study-grid,
+   .case-study-card, .industry-chip, .cs-outcome, .cs-stats,
+   .stats-band-gradient, .cta-band-glow, .hero-inner, …). Only the
+   page-unique classes remain below.
+   ============================================================ */
+
+/* — Section 3.1 · CaseStudiesHero — */
+.cstud-hero { background: var(--bg-warm); }
+.cstud-hero .eyebrow { color: var(--brand-accent); }
+.cstud-hero-bar {
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand-accent), transparent);
+  margin-bottom: var(--space-5);
+}
+
+/* — Section 3.2 · Case study grid (CaseStudyCard reuse — additions only) — */
+.cstud-stories-grid { margin-top: 0; }
+.cstud-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+/* dt (label) must precede dd (number) in the DOM for valid <dl>;
+   flip visually so the number reads first, per the card design. */
+.cstud-stat dd { order: -1; }
+
+/* — Section 3.3 · Case study detail — */
+.cstud-detail { background: var(--bg-surface); }
+.cstud-detail-alt { background: var(--bg-warm); }
+.cstud-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+}
+.cstud-detail-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--weight-display);
+  color: var(--text-primary);
+}
+.cstud-detail-headline {
+  color: var(--text-primary);
+  max-width: 28ch;
+}
+.cstud-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-7);
+  margin-top: var(--space-7);
+}
+.cstud-detail-sub h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+.cstud-detail-sub h3 svg { color: var(--brand-accent); flex-shrink: 0; }
+.cstud-detail-sub p { color: var(--text-secondary); }
+.cstud-detail-stats {
+  display: flex;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+}
+.cstud-detail-stat { display: flex; flex-direction: column; }
+.cstud-detail-stat dd { order: -1; }
+.cstud-quote {
+  margin-top: var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 500px;
+}
+.cstud-quote blockquote {
+  border-left: 2px solid var(--brand-accent);
+  padding-left: var(--space-4);
+}
+.cstud-quote blockquote p {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: var(--weight-display);
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+.cstud-quote-meta { display: flex; flex-direction: column; }
+
+/* — Section 3.4 · Aggregate stats band (StatBlock reuse — <dl> visual flip only) — */
+.cstud-aggregate .stat-block { display: flex; flex-direction: column; align-items: center; }
+.cstud-aggregate .stat-block dd { order: -1; }
+
+/* — Responsive (new classes only) — */
+@media (max-width: 768px) {
+  .cstud-detail-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+  .cstud-detail-stats { gap: var(--space-6); }
+}
+@media (max-width: 640px) {
+  .cstud-card-head { align-items: flex-start; }
+  .cstud-detail-meta { gap: var(--space-3); }
+}

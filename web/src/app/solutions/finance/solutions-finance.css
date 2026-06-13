@@ -1,0 +1,210 @@
+/* ============================================================
+   /solutions/finance — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.hero-trust*, .product-shot*, .status-pill*,
+   .query-user, .ps-grid--3, .segment-cards-grid--6,
+   .icon-feature-grid--3, .compliance-badge, …). Only the
+   page-unique classes remain below.
+   ============================================================ */
+
+/* — Section 3.1 · FinanceHero — text column + placeholder KPI dashboard — */
+.fin-hero-grid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  .fin-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+
+.fin-hero-dash {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.fin-hero-dash-eyebrow { color: var(--text-tertiary); }
+.fin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+@media (max-width: 480px) {
+  .fin-kpi-grid { grid-template-columns: 1fr; }
+}
+.fin-kpi {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.fin-kpi-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+.fin-kpi-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.fin-kpi-delta {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--success);
+  margin-top: var(--space-1);
+}
+.fin-kpi-delta.down { color: var(--error); }
+.fin-hero-chart { color: var(--brand-accent); }
+.fin-hero-chart svg { width: 100%; height: 96px; display: block; }
+
+/* Hero trust strip — icon + bold label + one-line proof (two-line variant
+   not covered by the single-line shared .hero-trust). */
+.fin-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-6);
+}
+@media (max-width: 640px) {
+  .fin-trust-strip { flex-direction: column; gap: var(--space-4); }
+}
+.fin-trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  max-width: 240px;
+}
+.fin-trust-item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.fin-trust-item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+.fin-trust-item span {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* — Section 3.3 · Check-bullet list inside FeatureRow text columns — */
+.fin-bullets { display: flex; flex-direction: column; gap: var(--space-2); }
+.fin-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.fin-bullets svg {
+  width: 16px;
+  height: 16px;
+  color: var(--brand-accent);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* — Section 3.3 · Placeholder product-shot gradient wrapper. The inner rows
+   reuse the shared .product-shot* / .status-pill / .query-user classes. — */
+.fin-shot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background: linear-gradient(135deg, var(--brand-accent-soft), transparent 70%);
+}
+
+/* — Section 3.5 · Use-case card meta labels + outcome callout — */
+.fin-uc-meta {
+  color: var(--text-tertiary);
+  display: block;
+  margin-top: var(--space-2);
+}
+.fin-uc-scenario { flex: 0; }
+.fin-uc-how { color: var(--text-secondary); flex: 1; }
+.fin-uc-outcome {
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.fin-uc-outcome-label {
+  color: var(--brand-accent);
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+.fin-uc-outcome-text { color: var(--text-primary); }
+
+/* — Section 3.6 · Stat block supporting line — */
+.fin-stat-context { color: var(--text-tertiary); margin-top: var(--space-2); }
+
+/* — Section 3.7 · TrustBadgeBlock — compliance badge card grid — */
+.fin-trustblock-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .fin-trustblock-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .fin-trustblock-grid { grid-template-columns: 1fr; } }
+.fin-trustblock-grid > * { height: 100%; }
+.fin-trust-badge {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+}
+.fin-trust-badge p { color: var(--text-secondary); }
+
+/* — Section 3.8 · Static 2×3 testimonial grid (unclamped quotes) — */
+.fin-testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .fin-testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .fin-testimonial-grid { grid-template-columns: 1fr; } }
+.fin-testimonial-grid .testimonial-card {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+}
+.fin-testimonial-grid .testimonial-title { margin-bottom: var(--space-3); }
+.fin-testimonial-grid .testimonial-quote {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+  flex: 1;
+}

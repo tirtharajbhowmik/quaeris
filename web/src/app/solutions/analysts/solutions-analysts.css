@@ -1,0 +1,166 @@
+/* ============================================================
+   /solutions/analysts — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.query-panel, .icon-feature-grid--3,
+   .segment-cards-grid--4, .hero-glow, .hero-purple-wash, …).
+   Only the page-unique classes remain below.
+   ============================================================ */
+
+/* --font-mono is a functional system stack (not a brand font); declared
+   locally so the page's code/console mocks render in a monospace face. */
+:root {
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+/* — Section 01 · Hero — */
+.ana-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  padding: var(--section-pad-y) 0;
+  position: relative;
+  z-index: 1;
+}
+/* Hero query console reuses the shared .query-panel surface; the header here
+   needs a trailing badge, so space the title and badge apart. */
+.ana-hero-panel-header {
+  justify-content: space-between;
+  background: var(--bg-canvas);
+}
+.ana-meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.ana-meta-row svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--success);
+}
+.ana-meta-row.ana-meta-accent svg { color: var(--brand-accent); }
+
+/* — Section 03 · Workflow step mock screenshots (in .feature-row-img-wrap) — */
+.ana-shot {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-canvas);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.ana-shot-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.ana-shot-input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.ana-shot-input svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--brand-accent); }
+.ana-shot-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.ana-shot-row svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; color: var(--success); }
+.ana-shot-row.ana-shot-row-accent svg { color: var(--brand-accent); }
+
+/* — Section 05 · Query walkthrough — */
+.ana-walk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  margin-top: var(--space-8);
+}
+.ana-walk-panel {
+  height: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.ana-walk-panel-canvas { background: var(--bg-canvas); }
+.ana-walk-panel-warm { background: var(--bg-warm); }
+.ana-walk-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: var(--weight-display);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--border-strong);
+}
+.ana-code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.ana-walk-subtext { font-size: 13px; color: var(--text-tertiary); }
+
+/* — Section 10 · Semantic-layer checkmark list — */
+.ana-check-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.ana-check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.ana-check-list svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 3px; color: var(--success); }
+
+/* — Section 07 · Featured case study — */
+.ana-case-featured { max-width: 880px; margin: var(--space-8) auto 0; }
+.ana-case-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+.ana-case-label { display: block; color: var(--text-tertiary); margin-bottom: var(--space-2); }
+.ana-case-label-accent { color: var(--brand-accent); }
+
+/* — Responsive for page-unique classes — */
+@media (max-width: 1024px) {
+  .ana-walk-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .ana-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+  .ana-case-cols { grid-template-columns: 1fr; }
+}

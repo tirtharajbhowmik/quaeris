@@ -1,0 +1,86 @@
+/* ============================================================
+   /platform/governance — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.product-shot*, .status-pill*, .icon-feature-grid--3,
+   .ps-grid, .bento-grid, .stats-band-gradient, .cta-band-glow,
+   .section-header, .case-study-card, .faq-grid, …). Only the
+   page-unique classes remain below.
+   ============================================================ */
+
+/* — Section 3.1 · Governance hero (dark band variant of the section intro) — */
+.gov-hero { background: var(--bg-ink); position: relative; overflow: hidden; }
+.gov-hero-inner { position: relative; z-index: 1; max-width: 760px; }
+.gov-hero-inner .eyebrow { color: var(--brand-accent); display: block; margin-bottom: var(--space-5); }
+.gov-hero-inner h1 { color: var(--text-on-dark); margin-bottom: var(--space-5); max-width: 22ch; }
+.gov-hero-sub { color: var(--text-on-dark-dim); max-width: 60ch; margin-bottom: var(--space-7); }
+
+/* — Section 3.2 · Gradient accent rule on certified-metric cards — */
+.gov-accent-bar {
+  width: 48px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--cta-bg);
+}
+
+/* — Section 3.4 · GovernanceAuditCard (NEW component) — */
+.gov-audit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .gov-audit-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .gov-audit-grid { grid-template-columns: 1fr; } }
+.gov-audit-grid > * { height: 100%; }
+.gov-audit-card { display: flex; flex-direction: column; gap: var(--space-4); height: 100%; }
+.gov-audit-card > p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; flex: 1; }
+.gov-audit-log {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: auto;
+}
+.gov-audit-log-head {
+  background: var(--bg-warm);
+  padding: var(--space-2) var(--space-3);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.gov-audit-log-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.gov-audit-log-row strong { color: var(--text-primary); font-weight: 600; }
+/* Inline allow/deny markers inside the audit-log sample rows. */
+.gov-audit-mark { font-weight: 600; }
+.gov-audit-mark-allow { color: var(--success); }
+.gov-audit-mark-deny { color: var(--error); }
+
+/* — Section 3.5 · Compliance bento modifiers — */
+.gov-bento-accent { border-left: 4px solid var(--brand-accent); }
+.gov-bento-tall { grid-row: span 2; }
+@media (max-width: 640px) { .gov-bento-tall { grid-row: auto; } }
+
+/* — Section 3.9 · ComplianceBadgeGrid (NEW component) — */
+.gov-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .gov-badge-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .gov-badge-grid { grid-template-columns: 1fr; } }
+.gov-badge-grid > * { height: 100%; }
+.gov-badge-card { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.gov-badge-card p { font-size: 14px; line-height: 1.5; }

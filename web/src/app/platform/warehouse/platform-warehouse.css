@@ -1,0 +1,114 @@
+/* ============================================================
+   /platform/warehouse — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.hero-trust, .segment-cards-grid--6, .ps-grid,
+   .case-study-grid, .faq-grid, .metric-dashboard, …). Only the
+   page-unique classes remain below. Page-area prefix: whse-.
+   ============================================================ */
+
+/* — Hero: two-column variant (text left, warehouse-stack diagram right) — */
+.whse-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--space-9);
+  align-items: center;
+  padding: var(--space-8) 0 var(--space-9);
+}
+
+/* — Stack diagram (shared by hero visual + architecture diagram) — */
+.whse-stack { display: flex; flex-direction: column; gap: var(--space-3); }
+.whse-stack-layer {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-4) var(--space-5);
+}
+.whse-stack-base { background: var(--brand-accent-soft); border-color: var(--brand-accent-glow); }
+/* Layer numbers reuse .value-prop-num (existing numbered-index pattern) — no new class. */
+.whse-stack-title { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+.whse-stack-desc  { font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin-top: var(--space-1); }
+.whse-stack-note  { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; margin-top: var(--space-2); }
+.whse-stack-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.whse-stack-arrow svg { width: 14px; height: 14px; }
+.whse-chiprow { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+
+/* — Architecture diagram layout — */
+.whse-arch-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+  margin-top: var(--space-8);
+}
+.whse-arch-side { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* — Check bullet list (connector cards, deployment cards, audit callout) — */
+.whse-check-list { display: flex; flex-direction: column; gap: var(--space-2); }
+.whse-check-list li {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.whse-check-list svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--brand-accent); margin-top: var(--space-1); }
+.segment-card .whse-check-list { flex: 1; }
+
+/* — Connectors: per-card CTA spacing — */
+.whse-card-cta { margin-top: var(--space-2); font-size: 14px; }
+
+/* — Compliance matrix: two-column shell reuses .faq-grid (no new class) — */
+.whse-compliance-list { display: flex; flex-direction: column; gap: var(--space-7); }
+.whse-compliance-item { display: grid; grid-template-columns: auto 1fr; gap: var(--space-5); align-items: start; }
+.whse-compliance-item h3 { margin-bottom: var(--space-2); color: var(--text-primary); }
+.whse-compliance-item p { color: var(--text-secondary); }
+
+/* — Deployment models: 3-up shell reuses .case-study-grid (no new class) — */
+.whse-deploy-card { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-7) var(--space-6); }
+.whse-deploy-icons { display: flex; gap: var(--space-3); }
+.whse-deploy-who { margin-top: auto; border-top: 1px solid var(--border-subtle); padding-top: var(--space-4); }
+.whse-deploy-who p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.whse-deploy-note { margin-top: var(--space-7); max-width: 68ch; }
+
+/* — Audit section (MetricDashboardMock beside copy + lavender callout) — */
+.whse-audit-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+/* Box shell (border-subtle + radius-lg + padding space-6) comes from .card —
+   modifier only adds the lavender bg + stacked layout. */
+.whse-callout {
+  background: var(--bg-warm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.whse-callout-head { display: flex; gap: var(--space-4); align-items: center; }
+
+/* — Responsive — */
+@media (max-width: 768px) {
+  .whse-hero-grid,
+  .whse-arch-grid,
+  .whse-audit-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}

@@ -1,0 +1,116 @@
+/* ============================================================
+   /customers — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and the base
+   design system, and are reused here (.section-pad, .container,
+   .section-header, .feature-row*, .case-study-*, .cs-stat*,
+   .stats-band-gradient, .testimonial-*, .icon-feature-grid,
+   .segment-card*, .segment-cards-grid--6, .review-badges,
+   .faq-grid, .faq-mini-card, .cta-inner, .marquee-*). Only the
+   page-unique classes remain below.
+   ============================================================ */
+
+/* — Section 01 · CustomerHero (dark proof hero) — */
+.cust-hero {
+  background: var(--bg-ink);
+  position: relative;
+  overflow: hidden;
+}
+.cust-hero-glow {
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  max-width: 700px;
+  max-height: 700px;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 70%);
+  opacity: 0.2;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.cust-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+}
+.cust-hero-eyebrow {
+  color: color-mix(in srgb, var(--brand-accent) 45%, var(--text-on-dark));
+  display: block;
+  margin-bottom: var(--space-5);
+}
+.cust-hero .hero-h1 { color: var(--text-on-dark); }
+.cust-hero-sub {
+  color: var(--text-on-dark-dim);
+  max-width: 54ch;
+  margin-bottom: var(--space-7);
+}
+
+/* — Section 02 · CustomerLogoMarquee (dark variant of the base LogoMarquee) — */
+.cust-logo-marquee {
+  background: var(--bg-ink);
+  padding: 0 0 var(--space-9);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-on-dark);
+}
+.cust-logo-marquee .marquee-label { color: var(--text-on-dark-dim); }
+.cust-logo-marquee .marquee-track-wrap::before {
+  background: linear-gradient(to right, var(--bg-ink), transparent);
+}
+.cust-logo-marquee .marquee-track-wrap::after {
+  background: linear-gradient(to left, var(--bg-ink), transparent);
+}
+.cust-logo-marquee .marquee-logo {
+  background: var(--bg-ink-elevated);
+  border: 1px solid var(--border-on-dark);
+  color: var(--text-on-dark);
+  font-family: var(--font-display);
+  font-weight: 500;
+  filter: none;
+  opacity: 0.85;
+}
+.cust-logo-marquee .marquee-logo:hover { opacity: 1; }
+
+/* — Section 04 · CaseStudyGrid — logo + company slot atop the base .case-study-card — */
+.cust-cs-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.cust-cs-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.cust-cs-company {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* — Section 09 · ReviewBadges (banded social-proof strip) — */
+.cust-reviews {
+  background: var(--bg-canvas);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-8) 0;
+  text-align: center;
+}
+.cust-reviews h2 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-6);
+}
+@media (max-width: 640px) {
+  .cust-reviews { padding: var(--space-7) 0; }
+  .cust-reviews .review-badges { flex-direction: column; gap: var(--space-3); }
+}
