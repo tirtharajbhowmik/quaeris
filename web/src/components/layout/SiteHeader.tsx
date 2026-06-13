@@ -354,13 +354,35 @@ export default function SiteHeader() {
         aria-hidden={!mobileOpen}
         aria-modal={mobileOpen}
       >
-        <button
-          className="mobile-nav-close"
-          aria-label="Close menu"
-          onClick={() => setMobileOpen(false)}
-        >
-          <X aria-hidden="true" />
-        </button>
+        {/* Overlay top bar: logo + close, aligned to mirror the site header */}
+        <div className="mobile-nav-header">
+          <a
+            href="/"
+            className="logo-wordmark"
+            aria-label={`${brand.name} — Home`}
+            onClick={() => setMobileOpen(false)}
+          >
+            {brand.logoSrc ? (
+              <img
+                src={brand.logoSrc}
+                alt={brand.name}
+                style={{ height: 28, width: "auto", display: "block" }}
+              />
+            ) : (
+              <>
+                <LogoMark />
+                {brand.name}
+              </>
+            )}
+          </a>
+          <button
+            className="mobile-nav-close"
+            aria-label="Close menu"
+            onClick={() => setMobileOpen(false)}
+          >
+            <X aria-hidden="true" />
+          </button>
+        </div>
 
         <ul className="mobile-nav-list">
           {/* Mega-menu items as accordions */}

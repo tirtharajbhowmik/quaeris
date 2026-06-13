@@ -383,34 +383,52 @@ ul { list-style: none; }
   /* CTA lives in the mobile overlay (pinned bottom) — hide the top-bar copy so
      it never overlaps the logo on small screens. */
   .header-actions .header-cta { display: none; }
+  /* Nav is display:none on mobile, so it leaves the grid — collapse to 2 cols
+     (logo | actions) so the hamburger lands hard right, not in the middle. */
+  .header-inner { grid-template-columns: 1fr auto; }
 }
-/* Mobile nav overlay */
+/* Mobile nav overlay — sits ABOVE the sticky header (z 100) so its own top bar
+   (logo + close) is interactive and the header never bleeds through. */
 .mobile-nav {
   display: none;
   position: fixed;
   inset: 0;
   background: var(--bg-surface);
-  z-index: 99;
-  padding: var(--space-8) var(--space-5) var(--space-7);
+  z-index: 200;
+  padding: 0;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: 0;
 }
 .mobile-nav.open { display: flex; }
 .mobile-nav ul { display: flex; flex-direction: column; gap: var(--space-5); }
 .mobile-nav a { font-size: 18px; font-weight: 500; color: var(--text-primary); }
+/* Overlay top bar — mirrors the site header so logo + close align cleanly */
+.mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  flex-shrink: 0;
+  padding: 0 var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+}
 .mobile-nav-close {
-  position: absolute;
-  top: var(--space-5);
-  right: var(--space-5);
-  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
   color: var(--text-secondary);
   background: none;
   border: none;
   cursor: pointer;
-  min-height: 44px;
-  min-width: 44px;
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
-.mobile-nav-cta { margin-top: auto; }
+.mobile-nav-close:hover { color: var(--text-primary); background: var(--bg-canvas); }
+.mobile-nav-close:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.mobile-nav-close svg { width: 26px; height: 26px; }
+.mobile-nav-cta { margin-top: auto; padding: var(--space-5); }
 
 /* ============================================================
    SECTION 1: HERO
@@ -1333,9 +1351,9 @@ ul { list-style: none; }
   position: fixed;
   inset: 0;
   background: rgba(11,14,30,0.4);
-  z-index: 98;
+  z-index: 150;
 }
-.mobile-nav-list { display: flex; flex-direction: column; gap: 0; overflow-y: auto; flex: 1; }
+.mobile-nav-list { display: flex; flex-direction: column; gap: 0; overflow-y: auto; flex: 1; padding: var(--space-5); }
 
 .mobile-accordion-item { border-bottom: 1px solid var(--border-subtle); }
 .mobile-accordion-trigger {
