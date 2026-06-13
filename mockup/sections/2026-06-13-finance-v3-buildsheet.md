@@ -23,13 +23,13 @@ Next.js `/solutions/finance` route. This file is the source of truth for v3 asse
 | 5 | **Security / compliance** | 🔒 **LOCKED** | v2 "inside your perimeter" + comparison table — see below |
 | 4 | **Why Quaeris** | 🔒 **LOCKED** | 2×2 interactive "Ledger Cards" (v5) — **placed AFTER §5** — see below |
 
-**v3 section order** (note §4 moves after §5 per user): Hero → The problem → What it does → Security/compliance → **Why Quaeris** → (FAQ → Closing CTA → …).
-| 6 | Use cases | ⬜ | v1 SegmentCards ×3 (v1-only) |
-| 7 | Stats | ⬜ | v1 StatBlock ×4 (v1-only) |
-| 8 | Testimonials | ⬜ | v1 ×6 (v1-only) |
+**v3 section order** (final, §4 after §5 per user): Hero → The problem → What it does → Security/compliance → **Why Quaeris** → Use cases → Stats → Testimonials → FAQ → Closing CTA. (Newsletter omitted.)
+| 6 | **Use cases** | 🔒 **LOCKED** | v1 SegmentCards ×3 (month-end / board variance / FP&A) — see below |
+| 7 | **Stats** | 🔒 **LOCKED** | v1 StatBlock ×4 — see below |
+| 8 | **Testimonials** | 🔒 **LOCKED** | v1 ×6 finance-leader quotes — see below |
 | 9 | **FAQ** | 🔒 **LOCKED** | v2 "Questions CFOs ask us. Before they sign." — 7 SEO-rich Q&As — see below |
-| 10 | Closing CTA | ⬜ | v1 dark CTA band vs v2 gradient CTA card |
-| 11 | Newsletter | ⬜ | v1 (v1-only) |
+| 10 | **Closing CTA** | 🔒 **LOCKED** | v2 gradient card "Your next board deck. Answered in minutes." — see below |
+| 11 | Newsletter | ⬜ (optional) | v1-only — not selected |
 
 ---
 
@@ -224,6 +224,42 @@ max-width 760px, first item open).
 
 ---
 
-## Next
-Slot 10 (Closing CTA) — v1 dark band vs v2 gradient card ("Your next board deck. Answered in minutes.").
-Then assemble v3 in the locked order (Hero → Problem → Capabilities → Security → Why → FAQ → CTA …).
+## Slots 6–8, 10 · 🔒 LOCKED (2026-06-13)
+
+These come from v1 (`2026-06-12-solutions-finance.html`) except the CTA (v2). All reuse existing
+homepage components; content → `brands/*/config.ts` under `solutions.finance.*`, typed in `config/types.ts`.
+
+**Slot 6 — Use cases** (`#use-cases`, v1): centered header "From board reporting to month-end close.";
+3 `SegmentCards` (3-up): **Month-End Close Reconciliation** (check-square), **Board Variance Analysis**
+(trending-up), **FP&A Forecast Variance Tracking** (line-chart) — each Scenario → How → Outcome (e.g.
+"Close completed in 2 hours instead of a 1-week ticket cycle"). CSS: existing `.segment-cards-grid` +
+`fin-uc-grid` 3-up modifier, `fin-uc-meta`, `fin-uc-outcome`.
+
+**Slot 7 — Stats** (`#stats-band`, v1): centered "The impact of instant, governed answers."; 4
+`StatBlock` counters (count-up at port): **40** hrs saved per month-end close · **0** hallucinated
+numbers in compliance reports · **3** days faster to board-ready variance · **100%** audit-trail
+coverage. All `data-placeholder`. Reuses `.stats-grid`/`.stat-block`.
+
+**Slot 8 — Testimonials** (`#testimonials`, v1): centered "Finance leaders who trust Quaeris."; **6**
+quote cards in a static 2×3 grid (`fin-testimonial-grid`): Metric Definition Consolidation · Audit
+Confidence · Board-Ready Speed · Forecast Accuracy Tracking · Role-Based Governance · Multi-Currency
+Reconciliation — each quote + initials/role, `[data-placeholder]` (company names TBD). Reuses
+`.testimonial-card` classes (unclamped quotes).
+
+**Slot 10 — Closing CTA** (v2 `#final-cta`): a **purple gradient card** (`.fin-cta-card`) — H2 "Your
+next board deck.<br>Answered in minutes.", body "Stop waiting on your data team. Start asking your
+data directly. Governed, auditable, and in plain English.", one **Book a Demo** button
+(`.btn-on-light`). New CSS → `.fin-cta-card` (token-driven gradient on `--bg-ink`/accent).
+
+### Port notes
+- Components: reuse `SegmentCards`, `StatBlock`, `TestimonialCard`/grid, and a small `CtaCard`
+  (or extend `CTABand` with a gradient-card variant).
+- Stats counters → framer-motion count-up on `useInView`; testimonials static grid (not the homepage marquee).
+- Keep all numbers/quotes `data-placeholder` until real figures/customers are confirmed.
+
+---
+
+## Next — ALL SECTIONS LOCKED ✅
+Assemble **v3** (`2026-06-13-solutions-finance-v3.html`) in order: Hero → Problem → Capabilities →
+Security → Why → Use cases → Stats → Testimonials → FAQ → Closing CTA. Then review on :3200 and port to
+the Next.js `/solutions/finance` route.
