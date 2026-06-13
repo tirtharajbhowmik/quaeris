@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /blog — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* v3 shim: static .reveal sections show correctly without animation. */
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: blog- classes — move to globals.css at port time (token-driven).
+   ============================================================ */
+
+/* ============================================================
+   TOPIC TOKENS — graduate to tokens.css at port time.
+   agentic-ai uses brand-accent-deep family (already on-palette).
+   product uses a violet offset derived from brand-accent.
+   ============================================================ */
+:root {
+  --topic-agentic-dark:  var(--brand-accent-deep);
+  --topic-agentic-light: var(--brand-accent);
+  /* product: offset brand-accent toward a lighter violet using color-mix with itself lightened */
+  --topic-product-dark:  color-mix(in srgb, var(--brand-accent-deep) 80%, var(--brand-accent) 20%);
+  --topic-product-light: color-mix(in srgb, var(--brand-accent) 70%, var(--brand-accent-glow) 30%);
+}
+
+/* ============================================================
+   [1] HERO — purple-wash + large headline + search teaser
+   ============================================================ */
+.blog-hero-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 120% at 60% -10%, var(--brand-accent-glow) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.blog-hero-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.blog-hero-inner .eyebrow {
+  color: var(--brand-accent);
+  margin-bottom: var(--space-4);
+  display: block;
+}
+.blog-hero-inner h1 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-5);
+}
+/* FIX: accent-line inside blog hero (no .hero-h1 ancestor here) */
+.blog-hero-inner .accent-line {
+  display: block;
+  color: var(--brand-accent);
+}
+.blog-hero-inner .subcopy {
+  color: var(--text-secondary);
+  max-width: 58ch;
+  margin: 0 auto var(--space-7);
+}
+
+/* Search bar — decorative (no server in mockup) */
+.blog-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-5);
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.blog-search:focus-within {
+  border-color: var(--brand-accent);
+  box-shadow: 0 0 0 3px var(--brand-accent-soft), var(--shadow-card);
+}
+.blog-search svg { width: 18px; height: 18px; color: var(--text-tertiary); flex-shrink: 0; }
+.blog-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1;
+  min-height: 40px;
+}
+.blog-search-input::placeholder { color: var(--text-tertiary); }
+.blog-search-kbd {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+/* Scrolling topic tags below search */
+.blog-hero-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+.blog-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 5px 13px;
+  transition: color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast);
+  cursor: default;
+}
+.blog-hero-tag:hover {
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-color: color-mix(in srgb, var(--brand-accent) 25%, transparent);
+}
+
+/* ============================================================
+   [2] FEATURED POST — large card, full-width left panel + right side
+   ============================================================ */
+#featured { background: var(--bg-surface); }
+
+.blog-featured-card {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.blog-featured-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+@media (max-width: 860px) {
+  .blog-featured-card { grid-template-columns: 1fr; }
+}
+
+/* Left visual panel — all-UI, no <img> */
+.blog-featured-visual {
+  position: relative;
+  min-height: 380px;
+  background: linear-gradient(145deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-7);
+  overflow: hidden;
+}
+.blog-featured-visual-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* Abstract governance-graph decoration */
+.bfv-nodes {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  opacity: 0.22;
+}
+.blog-featured-visual-label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: var(--radius-pill);
+  padding: 5px 13px;
+  margin-bottom: var(--space-4);
+  width: fit-content;
+}
+.blog-featured-visual-label svg { width: 13px; height: 13px; }
+.blog-featured-visual-headline {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  max-width: 26ch;
+}
+.blog-featured-visual-meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.bfv-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  border: 2px solid rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.bfv-by { font-size: 13px; color: rgba(255,255,255,0.85); }
+.bfv-by strong { color: #fff; font-weight: 600; }
+
+/* Right text panel */
+.blog-featured-body {
+  padding: var(--space-7);
+}
+@media (max-width: 860px) {
+  .blog-featured-body { padding: var(--space-6); }
+  .blog-featured-visual { min-height: 260px; }
+}
+.blog-category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  margin-bottom: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 20%, transparent);
+}
+.blog-featured-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 24px);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-3);
+}
+.blog-featured-excerpt {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+.blog-post-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: 13px;
+  color: var(--text-tertiary);
+  flex-wrap: wrap;
+}
+.blog-post-meta-sep { opacity: 0.4; }
+.blog-post-meta-read { display: inline-flex; align-items: center; gap: 4px; }
+.blog-post-meta-read svg { width: 13px; height: 13px; }
+
+/* ============================================================
+   [3] CATEGORY FILTER — interactive tabs/pills
+   ============================================================ */
+#blog-filter { background: var(--bg-surface); }
+
+.blog-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: var(--space-8);
+}
+.blog-filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-right: var(--space-2);
+  white-space: nowrap;
+}
+.blog-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  min-height: 36px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.blog-filter-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+.blog-filter-pill[aria-pressed="true"] {
+  color: var(--text-on-dark);
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+}
+.blog-filter-pill:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+.blog-filter-count {
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(0,0,0,0.08);
+  border-radius: var(--radius-pill);
+  padding: 1px 6px;
+  min-width: 18px;
+  text-align: center;
+}
+.blog-filter-pill[aria-pressed="true"] .blog-filter-count {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ============================================================
+   [4] POST CARD GRID — 3-column responsive
+   ============================================================ */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+@media (max-width: 1024px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .blog-grid { grid-template-columns: 1fr; } }
+
+.blog-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+  height: 100%;
+}
+.blog-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+/* Filter-out state */
+.blog-card.filtered-out {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.97);
+}
+
+/* Card visual header — topic-color band, all HTML/CSS */
+.blog-card-visual {
+  height: 148px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.blog-card-visual[data-topic="governance"] {
+  background: linear-gradient(135deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+}
+/* FIX: was #0f4c81/#1a6bb5 — now uses brand-accent token family */
+.blog-card-visual[data-topic="agentic-ai"] {
+  background: linear-gradient(135deg, var(--topic-agentic-dark) 0%, var(--topic-agentic-light) 100%);
+}
+/* FIX: was #1a4d3a/hex — now uses var(--success) pair (token already existed for light stop) */
+.blog-card-visual[data-topic="finance"] {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--success) 45%, #000 55%) 0%, var(--success) 100%);
+}
+/* FIX: was #3d2800/#d98e04 — now uses var(--warning) token pair */
+.blog-card-visual[data-topic="engineering"] {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--warning) 40%, #000 60%) 0%, var(--warning) 100%);
+}
+/* FIX: was #3a1055/#7c3aed — now uses named topic tokens defined above */
+.blog-card-visual[data-topic="product"] {
+  background: linear-gradient(135deg, var(--topic-product-dark) 0%, var(--topic-product-light) 100%);
+}
+
+/* Abstract SVG illustration inside card visual */
+.blog-card-visual-icon {
+  opacity: 0.22;
+}
+
+/* Accent line under visual (topic color) */
+.blog-card-visual::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.3);
+}
+
+.blog-card-body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-3);
+}
+
+.blog-card-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+}
+.blog-card-category[data-topic="governance"] {
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+}
+/* FIX: was #1a6bb5/rgba hex — now uses topic token */
+.blog-card-category[data-topic="agentic-ai"] {
+  color: var(--topic-agentic-light);
+  background: color-mix(in srgb, var(--topic-agentic-light) 12%, transparent);
+}
+.blog-card-category[data-topic="finance"] {
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+}
+.blog-card-category[data-topic="engineering"] {
+  color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 12%, transparent);
+}
+/* FIX: was #7c3aed/rgba hex — now uses topic token */
+.blog-card-category[data-topic="product"] {
+  color: var(--topic-product-light);
+  background: color-mix(in srgb, var(--topic-product-light) 12%, transparent);
+}
+
+.blog-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.3vw, 18px);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  flex: 1;
+}
+.blog-card-excerpt {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.blog-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+.blog-card-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.blog-card-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  flex-shrink: 0;
+}
+.blog-card-author-info { display: flex; flex-direction: column; gap: 1px; }
+.blog-card-author-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.blog-card-author-date { font-size: 11px; color: var(--text-tertiary); }
+.blog-card-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.blog-card-read svg { width: 12px; height: 12px; }
+
+/* Empty state when filter matches nothing */
+.blog-empty-state {
+  display: none;
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-10) var(--space-5);
+  color: var(--text-tertiary);
+}
+.blog-empty-state svg { width: 40px; height: 40px; margin: 0 auto var(--space-4); opacity: 0.3; }
+.blog-empty-state p { font-size: 15px; }
+
+/* Staggered card reveal via IntersectionObserver */
+.blog-card.will-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.blog-card.will-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.blog-card.filtered-out.will-reveal { opacity: 0; transform: scale(0.97); }
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-card.will-reveal { opacity: 1; transform: none; }
+  .blog-card.will-reveal.is-visible { transition: none; }
+  .blog-card.filtered-out.will-reveal { opacity: 0; }
+}
+
+/* ============================================================
+   [5] NEWSLETTER SIGNUP — on-brand inline block
+   ============================================================ */
+#blog-newsletter {
+  background: var(--bg-ink);
+  position: relative;
+  overflow: hidden;
+}
+.blog-nl-glow {
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  max-width: 600px;
+  max-height: 600px;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 70%);
+  opacity: 0.15;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.blog-nl-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-9);
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .blog-nl-inner { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+
+.blog-nl-text .eyebrow { color: var(--brand-accent); display: block; margin-bottom: var(--space-3); }
+.blog-nl-text h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.blog-nl-text p { color: var(--text-on-dark-dim); font-size: 15px; line-height: 1.65; }
+.blog-nl-perks { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-5); }
+.blog-nl-perk {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 14px;
+  color: var(--text-on-dark-dim);
+}
+.blog-nl-perk svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+
+.blog-nl-form-wrap {
+  background: var(--bg-ink-elevated);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+.blog-nl-form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-on-dark);
+  margin-bottom: var(--space-4);
+  display: block;
+}
+.blog-nl-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.blog-nl-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.blog-nl-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-on-dark-dim);
+  letter-spacing: 0.5px;
+}
+.blog-nl-input {
+  height: 44px;
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-on-dark);
+  padding: 0 var(--space-4);
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+}
+.blog-nl-input::placeholder { color: rgba(255,255,255,0.3); }
+.blog-nl-input:focus {
+  outline: none;
+  border-color: var(--brand-accent);
+  background: rgba(255,255,255,0.09);
+}
+.blog-nl-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+}
+.blog-nl-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-on-dark-dim);
+  cursor: pointer;
+}
+.blog-nl-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--brand-accent);
+  border-radius: 3px;
+}
+.blog-nl-consent {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.5;
+  margin-top: var(--space-1);
+}
+.blog-nl-success {
+  display: none;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: rgba(26,158,108,0.12);
+  border: 1px solid rgba(26,158,108,0.25);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-on-dark);
+}
+.blog-nl-success svg { width: 20px; height: 20px; color: var(--success); flex-shrink: 0; }
+.blog-nl-success.show { display: flex; }
+.blog-nl-form.hidden { display: none; }
+
+/* Frequency chips */
+.blog-nl-freq {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+.blog-nl-freq-btn {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-on-dark-dim);
+  background: none;
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-pill);
+  padding: 5px 13px;
+  min-height: 32px;
+  cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+}
+.blog-nl-freq-btn[aria-pressed="true"] {
+  color: var(--text-on-dark);
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+}
+.blog-nl-freq-btn:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   [6] CLOSING CTA — matches fin-cta-card convention
+   ============================================================ */
+#blog-cta { background: var(--bg-canvas); }
+
+.blog-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+.blog-cta-glow {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.blog-cta-card h2 {
+  color: var(--text-on-dark);
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 1;
+}
+.blog-cta-card p {
+  color: rgba(255,255,255,0.85);
+  max-width: 54ch;
+  margin: 0 auto var(--space-7);
+  font-size: 16px;
+  line-height: 1.65;
+  position: relative;
+  z-index: 1;
+}
+.blog-cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 480px) {
+  .blog-cta-buttons { flex-direction: column; width: 100%; }
+  .blog-cta-buttons .btn { width: 100%; justify-content: center; }
+  .blog-cta-card { padding: var(--space-7) var(--space-5); }
+}
+
+/* ============================================================
+   [HERO] Hero section bg (override #hero from globals to allow purple wash)
+   ============================================================ */
+#blog-hero {
+  background: var(--bg-surface);
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* ============================================================
+   [ANIM] Featured post animated entry — typewriter + count-up
+   ============================================================ */
+.bfv-typed-wrap {
+  position: absolute;
+  top: var(--space-5);
+  left: var(--space-5);
+  right: var(--space-5);
+  z-index: 2;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.bfv-typed-icon { width: 14px; height: 14px; flex-shrink: 0; }
+.bfv-typed-text { font-size: 13px; font-weight: 500; }
+.bfv-typed-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1em;
+  background: rgba(255,255,255,0.8);
+  margin-left: 1px;
+  vertical-align: -2px;
+  animation: bfv-caret 1s steps(1) infinite;
+}
+.bfv-typed-caret.done { display: none; }
+@keyframes bfv-caret { 50% { opacity: 0; } }
+
+/* ============================================================
+   [STAT] Related stat strip inside featured body
+   ============================================================ */
+.blog-featured-stats {
+  display: flex;
+  gap: var(--space-6);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.bfs-stat { display: flex; flex-direction: column; gap: 2px; }
+.bfs-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.bfs-label { font-size: 11px; color: var(--text-tertiary); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bfv-typed-caret { animation: none; }
+  .blog-nl-freq-btn, .blog-filter-pill { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#blog-hero)
+     Interactive element: animated tag cloud hover + search focus ring
+     ============================================================ -->
+<section id="blog-hero" aria-labelledby="blog-hero-heading">
+  <div class="blog-hero-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="blog-hero-inner reveal">
+      <span class="eyebrow">Blog</span>
+      <h1 id="blog-hero-heading" class="display-lg">Insights on governed,<br><span class="accent-line">agentic analytics</span></h1>
+      <p class="subcopy body-lg">Deep dives on semantic layers, AI-driven analysis, finance-grade governance, and what it means to build analytics your auditors can trust.</p>
+
+      <!-- Search bar (decorative in mockup; JS upgrades at port) -->
+      <div class="blog-search" role="search" aria-label="Search articles">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="blog-search-input" type="search" placeholder="Search articles, topics, authors…" aria-label="Search blog" />
+        <kbd class="blog-search-kbd" aria-label="Press slash to search">⌘K</kbd>
+      </div>
+
+      <div class="blog-hero-tags" aria-label="Popular topics" role="list">
+        <span class="blog-hero-tag" role="listitem">Governed Analytics</span>
+        <span class="blog-hero-tag" role="listitem">Semantic Layer</span>
+        <span class="blog-hero-tag" role="listitem">Agentic AI</span>
+        <span class="blog-hero-tag" role="listitem">Audit &amp; Lineage</span>
+        <span class="blog-hero-tag" role="listitem">Finance Intelligence</span>
+        <span class="blog-hero-tag" role="listitem">Warehouse-Native</span>
+        <span class="blog-hero-tag" role="listitem">MCP</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] FEATURED POST (#featured)
+     Interactive element: typewriter animation on the visual panel label
+     + count-up stats in the body panel
+     ============================================================ -->
+<section id="featured" class="section-pad" aria-labelledby="featured-heading">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom: var(--space-6);">
+      <span class="eyebrow" style="color: var(--text-tertiary);">Featured</span>
+      <h2 id="featured-heading" class="display-md" style="display: none;">Featured Post</h2><!-- a11y — visual is self-describing -->
+    </div>
+
+    <article class="blog-featured-card reveal" data-placeholder aria-label="Featured post placeholder">
+      <!-- Left visual -->
+      <div class="blog-featured-visual">
+        <!-- Typewriter query chip — animated on scroll entry -->
+        <div class="bfv-typed-wrap" aria-hidden="true">
+          <svg class="bfv-typed-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="bfv-typed-text" id="bfv-typed-text"></span><span class="bfv-typed-caret" aria-hidden="true" id="bfv-caret"></span>
+        </div>
+
+        <!-- Abstract SVG graph decoration -->
+        <svg class="bfv-nodes" width="160" height="120" viewBox="0 0 160 120" fill="none" aria-hidden="true">
+          <circle cx="80" cy="60" r="16" stroke="white" stroke-width="1.5"/>
+          <circle cx="24" cy="24" r="8" stroke="white" stroke-width="1.5"/>
+          <circle cx="136" cy="24" r="8" stroke="white" stroke-width="1.5"/>
+          <circle cx="24" cy="96" r="8" stroke="white" stroke-width="1.5"/>
+          <circle cx="136" cy="96" r="8" stroke="white" stroke-width="1.5"/>
+          <line x1="32" y1="24" x2="64" y2="50" stroke="white" stroke-width="1"/>
+          <line x1="128" y1="24" x2="96" y2="50" stroke="white" stroke-width="1"/>
+          <line x1="32" y1="96" x2="64" y2="70" stroke="white" stroke-width="1"/>
+          <line x1="128" y1="96" x2="96" y2="70" stroke="white" stroke-width="1"/>
+          <circle cx="80" cy="60" r="4" fill="white" opacity="0.7"/>
+        </svg>
+
+        <div class="blog-featured-visual-label" aria-hidden="true">
+          <!-- lucide: layers -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+          Governance
+        </div>
+        <h3 class="blog-featured-visual-headline" data-placeholder>Why Your BI Layer is Not Your Semantic Layer: A CFO's Guide to Governed Analytics</h3>
+        <div class="blog-featured-visual-meta">
+          <span class="bfv-avatar" aria-hidden="true" data-placeholder>QR</span>
+          <span class="bfv-by" data-placeholder>By <strong>Quaeris Editorial</strong> · <span data-placeholder>placeholder date</span></span>
+        </div>
+      </div>
+
+      <!-- Right body -->
+      <div class="blog-featured-body">
+        <span class="blog-category-pill">Governance</span>
+        <h2 class="blog-featured-title" data-placeholder>Why Your BI Layer is Not Your Semantic Layer: A CFO's Guide to Governed Analytics</h2>
+        <p class="blog-featured-excerpt" data-placeholder>Most BI tools let you rename a column and call it a metric. That's not governance — it's cosmetics. Real governed analytics enforces a single certified definition across every query, every user, and every tool in your stack. In this piece, we break down why the semantic layer matters, how Quaeris enforces it at query time, and what it means for your audit trail.</p>
+
+        <!-- Count-up stats -->
+        <div class="blog-featured-stats" aria-label="Article quick stats" data-placeholder>
+          <div class="bfs-stat">
+            <span class="bfs-num" data-countup data-target="8" data-suffix=" min">8 min</span>
+            <span class="bfs-label">Read time</span>
+          </div>
+          <div class="bfs-stat">
+            <span class="bfs-num" data-countup data-target="5" data-suffix=" key takeaways">5 key takeaways</span>
+            <span class="bfs-label">Insights</span>
+          </div>
+          <div class="bfs-stat">
+            <span class="bfs-num" data-countup data-target="3" data-suffix=" tools compared">3 tools compared</span>
+            <span class="bfs-label">Comparison</span>
+          </div>
+        </div>
+
+        <div class="blog-post-meta" data-placeholder>
+          <span data-placeholder>placeholder date</span>
+          <span class="blog-post-meta-sep" aria-hidden="true">·</span>
+          <span class="blog-post-meta-read" aria-label="8 minute read">
+            <!-- lucide: clock -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            8 min read
+          </span>
+          <span class="blog-post-meta-sep" aria-hidden="true">·</span>
+          <span data-placeholder>Quaeris Editorial</span>
+        </div>
+        <div style="margin-top: var(--space-5);">
+          <a href="/blog/semantic-layer-cfo-guide" class="btn btn-primary" data-placeholder>
+            Read the article
+            <!-- lucide: arrow-right -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] CATEGORY FILTER + POST GRID (#blog-filter)
+     Interactive element: filter pills (aria-pressed) hide/show cards with
+     CSS transition; IntersectionObserver staggered card reveals
+     ============================================================ -->
+<section id="blog-filter" class="section-pad" aria-labelledby="blog-filter-heading">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom: var(--space-7);">
+      <h2 id="blog-filter-heading" class="display-md">All articles</h2>
+      <p class="subcopy" style="color: var(--text-secondary); margin-top: var(--space-3);">Explore every piece we've published on governed analytics, agentic AI, and the enterprise data stack.</p>
+    </div>
+
+    <!-- Filter pills -->
+    <nav class="blog-filter-bar" aria-label="Filter articles by category">
+      <span class="blog-filter-label" aria-hidden="true">Filter:</span>
+      <button class="blog-filter-pill" aria-pressed="true" data-filter="all">
+        All
+        <span class="blog-filter-count" aria-label="9 articles">9</span>
+      </button>
+      <button class="blog-filter-pill" aria-pressed="false" data-filter="governance">
+        Governance
+        <span class="blog-filter-count" aria-label="3 articles">3</span>
+      </button>
+      <button class="blog-filter-pill" aria-pressed="false" data-filter="agentic-ai">
+        Agentic AI
+        <span class="blog-filter-count" aria-label="2 articles">2</span>
+      </button>
+      <button class="blog-filter-pill" aria-pressed="false" data-filter="finance">
+        Finance
+        <span class="blog-filter-count" aria-label="2 articles">2</span>
+      </button>
+      <button class="blog-filter-pill" aria-pressed="false" data-filter="engineering">
+        Engineering
+        <span class="blog-filter-count" aria-label="1 article">1</span>
+      </button>
+      <button class="blog-filter-pill" aria-pressed="false" data-filter="product">
+        Product
+        <span class="blog-filter-count" aria-label="1 article">1</span>
+      </button>
+    </nav>
+
+    <!-- Post grid -->
+    <div class="blog-grid" id="blog-grid" role="list" aria-live="polite" aria-label="Article list">
+
+      <!-- Card 1: Governance -->
+      <article class="blog-card will-reveal" role="listitem" data-category="governance" data-placeholder>
+        <div class="blog-card-visual" data-topic="governance" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <rect x="10" y="28" width="52" height="34" rx="6" stroke="white" stroke-width="2"/>
+            <path d="M36 10 L58 24 L14 24 Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="28" y="44" width="16" height="18" rx="2" stroke="white" stroke-width="1.5"/>
+            <line x1="36" y1="28" x2="36" y2="44" stroke="white" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="governance">Governance</span>
+          <h3 class="blog-card-title" data-placeholder>The Certified Metric Registry: How to Stop Conflicting Definitions from Killing Your Board Deck</h3>
+          <p class="blog-card-excerpt" data-placeholder>When revenue means three different things in three reports, the real problem isn't the data — it's the absence of a governed definition layer that all tools query. Here's the architecture that fixes it.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="6 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              6 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2: Agentic AI -->
+      <article class="blog-card will-reveal" role="listitem" data-category="agentic-ai" data-placeholder>
+        <div class="blog-card-visual" data-topic="agentic-ai" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <circle cx="36" cy="36" r="18" stroke="white" stroke-width="2"/>
+            <circle cx="36" cy="36" r="6" fill="white" opacity="0.7"/>
+            <path d="M36 18 L36 10M36 54 L36 62M18 36 L10 36M54 36 L62 36" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M23 23 L17 17M49 23 L55 17M23 49 L17 55M49 49 L55 55" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="agentic-ai">Agentic AI</span>
+          <h3 class="blog-card-title" data-placeholder>What "Agentic Analytics" Actually Means — and Why Most Vendors Are Getting It Wrong</h3>
+          <p class="blog-card-excerpt" data-placeholder>Calling any chatbot that runs SQL "agentic" muddies the category. True agentic analytics autonomously plans multi-step analyses, enforces governance at each step, and surfaces an auditable chain of reasoning. Here's the spec.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="9 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              9 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3: Finance -->
+      <article class="blog-card will-reveal" role="listitem" data-category="finance" data-placeholder>
+        <div class="blog-card-visual" data-topic="finance" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <path d="M10 52 L22 38 L32 45 L46 28 L62 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 52 L22 38 L32 45 L46 28 L62 18 L62 58 L10 58 Z" fill="white" opacity="0.12"/>
+            <line x1="10" y1="58" x2="62" y2="58" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="finance">Finance</span>
+          <h3 class="blog-card-title" data-placeholder>From Days to Minutes: How FP&amp;A Teams Are Closing Faster with AI-Assisted Variance Analysis</h3>
+          <p class="blog-card-excerpt" data-placeholder>Manual variance analysis is one of the last great inefficiencies in finance. In this post, we explore how governed agentic analysis surfaces root causes across GL accounts instantly — without trading accuracy for speed.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="7 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              7 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4: Engineering -->
+      <article class="blog-card will-reveal" role="listitem" data-category="engineering" data-placeholder>
+        <div class="blog-card-visual" data-topic="engineering" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <rect x="12" y="20" width="48" height="32" rx="4" stroke="white" stroke-width="2"/>
+            <path d="M24 32 L32 38 L24 44" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="36" y1="44" x2="48" y2="44" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="22" y1="58" x2="50" y2="58" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="36" y1="52" x2="36" y2="58" stroke="white" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="engineering">Engineering</span>
+          <h3 class="blog-card-title" data-placeholder>Building a Warehouse-Native Semantic Layer: Architecture Decisions That Matter</h3>
+          <p class="blog-card-excerpt" data-placeholder>Push-down computation, late-binding views, and query translation all sound like implementation details — until they determine whether your semantic layer survives real production workloads. We share the decisions we made building Quaeris.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Engineering</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="11 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              11 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 5: Governance -->
+      <article class="blog-card will-reveal" role="listitem" data-category="governance" data-placeholder>
+        <div class="blog-card-visual" data-topic="governance" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <path d="M36 8 L52 18 L52 42 C52 52 44 60 36 64 C28 60 20 52 20 42 L20 18 Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28 36 L33 41 L44 30" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="governance">Governance</span>
+          <h3 class="blog-card-title" data-placeholder>Audit Lineage Is Not a Feature — It's the Foundation: Rethinking Analytics Infrastructure</h3>
+          <p class="blog-card-excerpt" data-placeholder>Most analytics teams bolt on lineage after the fact. We argue it should be the load-bearing wall of every analytics platform — and explain exactly how Quaeris bakes it in from query time, not as an afterthought.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="8 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              8 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 6: Product -->
+      <article class="blog-card will-reveal" role="listitem" data-category="product" data-placeholder>
+        <div class="blog-card-visual" data-topic="product" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <rect x="10" y="14" width="52" height="36" rx="5" stroke="white" stroke-width="2"/>
+            <line x1="10" y1="26" x2="62" y2="26" stroke="white" stroke-width="1.5"/>
+            <circle cx="18" cy="20" r="2" fill="white" opacity="0.6"/>
+            <circle cx="26" cy="20" r="2" fill="white" opacity="0.6"/>
+            <circle cx="34" cy="20" r="2" fill="white" opacity="0.6"/>
+            <rect x="16" y="32" width="18" height="10" rx="2" stroke="white" stroke-width="1.3"/>
+            <line x1="40" y1="34" x2="56" y2="34" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+            <line x1="40" y1="38" x2="52" y2="38" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+            <line x1="10" y1="58" x2="62" y2="58" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="36" y1="50" x2="36" y2="58" stroke="white" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="product">Product</span>
+          <h3 class="blog-card-title" data-placeholder>Introducing the Quaeris MCP Connector: Bring Your Governed Semantic Layer to Any AI Agent</h3>
+          <p class="blog-card-excerpt" data-placeholder>The Model Context Protocol changes how AI agents interact with enterprise data. Our new MCP connector lets any compliant agent query Quaeris's governed semantic layer — with full lineage and role-based access enforced at every call.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Product</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="5 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              5 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 7: Finance -->
+      <article class="blog-card will-reveal" role="listitem" data-category="finance" data-placeholder>
+        <div class="blog-card-visual" data-topic="finance" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <rect x="14" y="14" width="14" height="44" rx="2" stroke="white" stroke-width="1.5"/>
+            <rect x="30" y="24" width="14" height="34" rx="2" stroke="white" stroke-width="1.5"/>
+            <rect x="46" y="18" width="14" height="40" rx="2" stroke="white" stroke-width="1.5"/>
+            <line x1="8" y1="58" x2="64" y2="58" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="finance">Finance</span>
+          <h3 class="blog-card-title" data-placeholder>Rolling Forecast vs Static Budget: Why the Winning Finance Teams Use Both — and Let AI Fill the Gap</h3>
+          <p class="blog-card-excerpt" data-placeholder>The static annual budget is a snapshot from a world that no longer exists by Q2. But rolling forecasts without governance breed uncontrolled assumptions. We look at how agentic analytics reconciles both approaches.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="7 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              7 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 8: Agentic AI -->
+      <article class="blog-card will-reveal" role="listitem" data-category="agentic-ai" data-placeholder>
+        <div class="blog-card-visual" data-topic="agentic-ai" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <rect x="14" y="22" width="44" height="28" rx="6" stroke="white" stroke-width="2"/>
+            <path d="M22 36 L30 36M42 36 L50 36" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="36" cy="36" r="5" stroke="white" stroke-width="1.5"/>
+            <path d="M28 58 L36 50 L44 58" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="agentic-ai">Agentic AI</span>
+          <h3 class="blog-card-title" data-placeholder>The "Last-Mile Governance" Problem: Why AI Agents Need a Permission-Enforced Semantic Layer, Not Just Access to Your Warehouse</h3>
+          <p class="blog-card-excerpt" data-placeholder>Giving an AI agent raw warehouse credentials is a governance disaster. The right architecture puts a permission-aware semantic layer between the agent and the data — ensuring every AI answer respects role, row, and field-level rules.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Engineering</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="10 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              10 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 9: Governance -->
+      <article class="blog-card will-reveal" role="listitem" data-category="governance" data-placeholder>
+        <div class="blog-card-visual" data-topic="governance" aria-hidden="true">
+          <svg class="blog-card-visual-icon" width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+            <circle cx="36" cy="24" r="10" stroke="white" stroke-width="2"/>
+            <circle cx="18" cy="50" r="8" stroke="white" stroke-width="1.5"/>
+            <circle cx="54" cy="50" r="8" stroke="white" stroke-width="1.5"/>
+            <line x1="28" y1="32" x2="22" y2="43" stroke="white" stroke-width="1.5"/>
+            <line x1="44" y1="32" x2="48" y2="43" stroke="white" stroke-width="1.5"/>
+            <line x1="26" y1="50" x2="46" y2="50" stroke="white" stroke-width="1.5" stroke-dasharray="3 3"/>
+          </svg>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-card-category" data-topic="governance">Governance</span>
+          <h3 class="blog-card-title" data-placeholder>Role-Based Data Access in 2026: Why Row-Level Security Alone Is Not Enough for Enterprise Analytics</h3>
+          <p class="blog-card-excerpt" data-placeholder>Row-level security is table stakes. True enterprise data governance enforces permissions at the semantic layer — per metric, per dimension, per user context — so controllers and managers never see each other's numbers even through the same dashboard.</p>
+          <div class="blog-card-footer" data-placeholder>
+            <div class="blog-card-author">
+              <div class="blog-card-avatar" aria-hidden="true">QR</div>
+              <div class="blog-card-author-info">
+                <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
+                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+              </div>
+            </div>
+            <span class="blog-card-read" aria-label="6 minute read">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              6 min
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Empty state -->
+      <div class="blog-empty-state" id="blog-empty" aria-live="polite" role="status">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <p>No articles in this category yet. <a href="#" class="btn-ghost" style="display:inline;font-size:inherit;" data-reset-filter>View all articles</a></p>
+      </div>
+
+    </div><!-- /.blog-grid -->
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] NEWSLETTER SIGNUP (#blog-newsletter)
+     Interactive element: frequency toggle buttons (aria-pressed),
+     inline form with live validation feedback + success state
+     ============================================================ -->
+<section id="blog-newsletter" aria-labelledby="blog-nl-heading">
+  <div class="blog-nl-glow" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="blog-nl-inner">
+      <!-- Left text -->
+      <div class="blog-nl-text reveal">
+        <span class="eyebrow">Newsletter</span>
+        <h2 id="blog-nl-heading" class="display-md">Stay current on governed analytics</h2>
+        <p>The best articles from the Quaeris blog, distilled for analytics leaders and data teams. No filler, no hype — just signal on governed AI, semantic layers, and enterprise analytics best practices.</p>
+        <ul class="blog-nl-perks">
+          <li class="blog-nl-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            In-depth articles on agentic analytics and governance
+          </li>
+          <li class="blog-nl-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Semantic layer patterns and engineering deep-dives
+          </li>
+          <li class="blog-nl-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Finance and CFO-facing analytics use cases
+          </li>
+          <li class="blog-nl-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Unsubscribe any time — no dark patterns
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right form card -->
+      <div class="blog-nl-form-wrap reveal" style="--d:120ms">
+        <span class="blog-nl-form-label" id="blog-nl-form-label">Subscribe to Quaeris Insights</span>
+
+        <!-- Frequency toggle -->
+        <div style="margin-bottom: var(--space-4);">
+          <p style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: var(--space-2);">Delivery frequency</p>
+          <div class="blog-nl-freq" role="group" aria-label="Select delivery frequency">
+            <button class="blog-nl-freq-btn" aria-pressed="true" data-freq="weekly">Weekly digest</button>
+            <button class="blog-nl-freq-btn" aria-pressed="false" data-freq="biweekly">Bi-weekly</button>
+            <button class="blog-nl-freq-btn" aria-pressed="false" data-freq="monthly">Monthly</button>
+          </div>
+        </div>
+
+        <form class="blog-nl-form" id="blog-nl-form" aria-labelledby="blog-nl-form-label" novalidate>
+          <div class="blog-nl-field">
+            <label for="nl-name">First name</label>
+            <input class="blog-nl-input" type="text" id="nl-name" name="name" placeholder="Jane" autocomplete="given-name" required />
+          </div>
+          <div class="blog-nl-field">
+            <label for="nl-email">Work email <span aria-hidden="true" style="color:var(--error)">*</span></label>
+            <input class="blog-nl-input" type="email" id="nl-email" name="email" placeholder="jane@company.com" autocomplete="email" required aria-required="true" />
+          </div>
+
+          <!-- Interest checkboxes -->
+          <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: var(--space-1);">Topics of interest</div>
+          <div class="blog-nl-checkboxes" role="group" aria-label="Select topics of interest">
+            <label class="blog-nl-checkbox">
+              <input type="checkbox" name="topic" value="governance" checked />
+              Governance &amp; Semantic Layer
+            </label>
+            <label class="blog-nl-checkbox">
+              <input type="checkbox" name="topic" value="agentic-ai" />
+              Agentic AI &amp; Analytics
+            </label>
+            <label class="blog-nl-checkbox">
+              <input type="checkbox" name="topic" value="finance" />
+              Finance &amp; CFO Use Cases
+            </label>
+            <label class="blog-nl-checkbox">
+              <input type="checkbox" name="topic" value="engineering" />
+              Engineering Deep-Dives
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:var(--space-2);">
+            Subscribe — it's free
+          </button>
+          <p class="blog-nl-consent" id="nl-consent">By subscribing you agree to our Privacy Policy. Unsubscribe at any time.</p>
+        </form>
+
+        <div class="blog-nl-success" id="blog-nl-success" role="status" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>You're subscribed! Look out for your first issue soon.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] CLOSING CTA (#blog-cta)
+     Interactive element: hover shimmer pulse on CTA card
+     ============================================================ -->
+<section id="blog-cta" class="section-pad" aria-labelledby="blog-cta-heading">
+  <div class="container">
+    <div class="blog-cta-card reveal">
+      <div class="blog-cta-glow" aria-hidden="true"></div>
+      <h2 id="blog-cta-heading" class="display-lg">Ready to see governed analytics<br>in action?</h2>
+      <p>Quaeris brings a certified semantic layer, agentic AI, and audit-grade lineage to your enterprise data — warehouse-native, no proprietary storage required.</p>
+      <div class="blog-cta-buttons">
+        <a href="/contact" class="btn btn-on-dark">Book a live demo</a>
+        <a href="/platform" class="btn btn-secondary-dark">Explore the platform</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     VANILLA JS — all gated + reduced-motion safe
+     Per-component IIFEs; framer-motion replaces transitions at port time.
+     ============================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── Reduced-motion flag ── */
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── Scroll reveal (universal .reveal) ── */
+  if (!prefersReduced && 'IntersectionObserver' in window) {
+    var reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(function (el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity 450ms cubic-bezier(0.16,1,0.3,1), transform 450ms cubic-bezier(0.16,1,0.3,1)';
+    });
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          /* FIX: honour --d stagger token if present on the element */
+          var delay = getComputedStyle(e.target).getPropertyValue('--d').trim();
+          if (delay) { e.target.style.transitionDelay = delay; }
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          ro.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(function (el) { ro.observe(el); });
+  }
+
+  /* ── Blog card staggered reveal ── */
+  if (!prefersReduced && 'IntersectionObserver' in window) {
+    var cards = document.querySelectorAll('.blog-card.will-reveal');
+    var cardObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var idx = Array.from(cards).indexOf(e.target);
+          var delay = (idx % 3) * 80;
+          e.target.style.transitionDelay = delay + 'ms';
+          e.target.classList.add('is-visible');
+          cardObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    cards.forEach(function (c) { cardObs.observe(c); });
+  } else {
+    document.querySelectorAll('.blog-card.will-reveal').forEach(function (c) {
+      c.classList.add('is-visible');
+    });
+  }
+
+  /* ── Category filter ── */
+  var filterPills = document.querySelectorAll('.blog-filter-pill');
+  var blogCards   = document.querySelectorAll('#blog-grid .blog-card');
+  var emptyState  = document.getElementById('blog-empty');
+
+  function applyFilter(cat) {
+    var visible = 0;
+    blogCards.forEach(function (card) {
+      var match = cat === 'all' || card.dataset.category === cat;
+      if (match) {
+        card.classList.remove('filtered-out');
+        visible++;
+      } else {
+        card.classList.add('filtered-out');
+      }
+    });
+    emptyState.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  filterPills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      filterPills.forEach(function (p) { p.setAttribute('aria-pressed', 'false'); });
+      pill.setAttribute('aria-pressed', 'true');
+      applyFilter(pill.dataset.filter);
+    });
+  });
+
+  /* Reset filter link inside empty state */
+  var resetBtn = document.querySelector('[data-reset-filter]');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      filterPills.forEach(function (p) { p.setAttribute('aria-pressed', 'false'); });
+      var allPill = document.querySelector('[data-filter="all"]');
+      if (allPill) allPill.setAttribute('aria-pressed', 'true');
+      applyFilter('all');
+    });
+  }
+
+  /* ── Featured post — typewriter animation on card visual ── */
+  var typedEl = document.getElementById('bfv-typed-text');
+  var caretEl = document.getElementById('bfv-caret');
+  if (typedEl && caretEl && !prefersReduced) {
+    var query = 'Show variance by GL account for Q3';
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        obs.disconnect();
+        var i = 0;
+        function type() {
+          if (i <= query.length) {
+            typedEl.textContent = query.slice(0, i);
+            i++;
+            setTimeout(type, 45 + Math.random() * 35);
+          } else {
+            caretEl.classList.add('done');
+          }
+        }
+        setTimeout(type, 600);
+      });
+    }, { threshold: 0.3 });
+    var featCard = document.querySelector('.blog-featured-card');
+    if (featCard) obs.observe(featCard);
+  } else if (typedEl) {
+    typedEl.textContent = 'Show variance by GL account for Q3';
+    if (caretEl) caretEl.classList.add('done');
+  }
+
+  /* ── Count-up on featured stats ── */
+  var countupEls = document.querySelectorAll('[data-countup]');
+  if (countupEls.length && !prefersReduced) {
+    var cuObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        cuObs.unobserve(e.target);
+        var el     = e.target;
+        var target = parseInt(el.dataset.target, 10) || 0;
+        var suffix = el.dataset.suffix || '';
+        var dur    = 900;
+        var start  = performance.now();
+        function tick(now) {
+          var progress = Math.min((now - start) / dur, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var val = Math.round(target * eased);
+          el.textContent = val + suffix;
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.5 });
+    countupEls.forEach(function (el) { cuObs.observe(el); });
+  }
+
+  /* ── Newsletter frequency toggle ── */
+  var freqBtns = document.querySelectorAll('.blog-nl-freq-btn');
+  freqBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      freqBtns.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+    });
+  });
+
+  /* ── Newsletter form submit (mockup: prevents default, shows success) ── */
+  var nlForm    = document.getElementById('blog-nl-form');
+  var nlSuccess = document.getElementById('blog-nl-success');
+  if (nlForm && nlSuccess) {
+    nlForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      /* Basic client-side email check */
+      var emailInput = document.getElementById('nl-email');
+      if (!emailInput.value || !emailInput.value.includes('@')) {
+        emailInput.focus();
+        emailInput.style.borderColor = 'var(--error)';
+        return;
+      }
+      emailInput.style.borderColor = '';
+      nlForm.classList.add('hidden');
+      nlSuccess.classList.add('show');
+    });
+    /* Clear error state on input */
+    var emailInput2 = document.getElementById('nl-email');
+    if (emailInput2) {
+      emailInput2.addEventListener('input', function () {
+        emailInput2.style.borderColor = '';
+      });
+    }
+  }
+
+})();
+</script>
+
+</body>
+</html>

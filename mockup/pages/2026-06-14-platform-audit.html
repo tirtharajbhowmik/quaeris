@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/audit — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: aud- prefix — /platform/audit page component CSS.
+   Move to globals.css at port time (token-driven).
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — audit hero, governance-first, 2-col grid
+   ============================================================ */
+.aud-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+@media (max-width: 900px) { .aud-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+.aud-trust-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-6);
+  margin-top: var(--space-7);
+}
+@media (max-width: 640px) { .aud-trust-strip { grid-template-columns: 1fr; } }
+.aud-trust-item { display: flex; align-items: flex-start; gap: var(--space-3); }
+.aud-trust-item svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+.aud-trust-item strong { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.aud-trust-item span { display: block; font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+
+/* --- Hero right: audit trail mini-card --- */
+.aud-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.aud-card-head { display: flex; align-items: center; justify-content: space-between; }
+.aud-card-dots { display: flex; gap: 6px; }
+.aud-card-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+.aud-card-title { font-size: 13px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1.5px; }
+.aud-card-bar {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill); padding: var(--space-3) var(--space-4);
+  font-size: 14px; color: var(--text-primary); font-weight: 500;
+}
+.aud-card-bar svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+/* audit chain steps in hero card */
+.aud-chain { display: flex; flex-direction: column; gap: 0; position: relative; padding-left: var(--space-6); }
+.aud-chain::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--border-subtle); border-radius: 2px; }
+.aud-step { position: relative; display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-2) 0; }
+.aud-step-dot {
+  position: absolute; left: calc(-1 * var(--space-6) + 1px); top: 8px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg-surface); border: 2px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color var(--dur-base), background var(--dur-base);
+}
+.aud-step-dot svg { width: 8px; height: 8px; color: var(--text-on-dark); opacity: 0; }
+.aud-step.ok .aud-step-dot { background: var(--success); border-color: var(--success); }
+.aud-step.ok .aud-step-dot svg { opacity: 1; }
+.aud-step.active .aud-step-dot { background: var(--brand-accent); border-color: var(--brand-accent); animation: aud-pulse-dot 1.8s var(--ease-out) infinite; }
+.aud-step.active .aud-step-dot svg { opacity: 1; }
+@keyframes aud-pulse-dot { 0%,100% { box-shadow: 0 0 0 0 rgba(147,51,234,0); } 60% { box-shadow: 0 0 0 5px rgba(147,51,234,0.18); } }
+.aud-step-body { display: flex; flex-direction: column; }
+.aud-step-label { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+.aud-step-meta { font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.aud-step-tag {
+  margin-left: auto; flex-shrink: 0; align-self: center;
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 10px; font-weight: 700; border-radius: var(--radius-pill); padding: 2px 7px;
+}
+.aud-step-tag.ok { color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); }
+.aud-step-tag.live { color: var(--brand-accent); background: var(--brand-accent-soft); }
+
+.aud-card-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.aud-stat-cell { text-align: center; }
+.aud-stat-cell b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.aud-stat-cell span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aud-step.active .aud-step-dot { animation: none !important; }
+}
+
+/* ============================================================
+   [2] PROBLEM / SOLUTION — 4 two-col problem/solution cards
+   ============================================================ */
+.aud-ps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); margin-top: var(--space-8); }
+@media (max-width: 900px) { .aud-ps-grid { grid-template-columns: 1fr; } }
+.aud-ps-card { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); align-items: start; }
+@media (max-width: 640px) { .aud-ps-card { grid-template-columns: 1fr; } }
+/* hover accent reveal on the solution side */
+.aud-ps-card .aud-ps-side.sol { border-radius: var(--radius-md); padding: var(--space-3); margin: calc(-1 * var(--space-3)); transition: background var(--dur-base) var(--ease-out); }
+.aud-ps-card:hover .aud-ps-side.sol { background: color-mix(in srgb, var(--success) 6%, transparent); }
+.aud-ps-side { display: flex; flex-direction: column; gap: var(--space-3); }
+.aud-ps-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+.aud-ps-label.prob { color: var(--error); }
+.aud-ps-label.sol { color: var(--success); }
+.aud-ps-icon { width: 36px; height: 36px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.aud-ps-icon.prob { background: color-mix(in srgb, var(--error) 9%, transparent); }
+.aud-ps-icon.sol { background: color-mix(in srgb, var(--success) 9%, transparent); }
+.aud-ps-icon svg { width: 18px; height: 18px; }
+.aud-ps-icon.prob svg { color: var(--error); }
+.aud-ps-icon.sol svg { color: var(--success); }
+.aud-ps-side h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); line-height: 1.35; margin-top: var(--space-2); }
+.aud-ps-side p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.aud-ps-divider { width: 1px; background: var(--border-subtle); align-self: stretch; }
+@media (max-width: 640px) { .aud-ps-divider { width: 100%; height: 1px; } }
+
+/* ============================================================
+   [3] AUDIT TRAIL ARCHITECTURE — 4 FeatureRow steps (alternating)
+   ============================================================ */
+.aud-fr { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center; }
+@media (max-width: 900px) { .aud-fr { grid-template-columns: 1fr; gap: var(--space-6); } }
+.aud-fr.reverse { }
+@media (min-width: 901px) { .aud-fr.reverse .aud-fr-visual { order: -1; } }
+.aud-fr + .aud-fr { margin-top: var(--space-9); }
+.aud-fr-text .eyebrow { color: var(--brand-accent); display: block; margin-bottom: var(--space-3); }
+.aud-fr-text h3 { color: var(--text-primary); margin-bottom: var(--space-4); }
+.aud-fr-text p { color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+.aud-fr-text .btn-ghost { display: inline-flex; margin-top: var(--space-5); }
+
+/* visual panel — mini code/log card */
+.aud-fr-visual {
+  background: var(--bg-ink); border-radius: var(--radius-lg);
+  padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4);
+  box-shadow: 0 20px 50px -15px rgba(0,0,0,0.35);
+  min-height: 220px;
+}
+.aud-fr-visual-head { display: flex; align-items: center; gap: var(--space-3); }
+.aud-win-dots { display: flex; gap: 5px; }
+.aud-win-dots i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+.aud-win-dot-r { background: var(--win-dot-red); }
+.aud-win-dot-a { background: var(--win-dot-amber); }
+.aud-win-dot-g { background: var(--win-dot-green); }
+.aud-win-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.45); }
+.aud-log-row { display: flex; align-items: flex-start; gap: var(--space-3); border-bottom: 1px solid var(--border-on-dark); padding: var(--space-3) 0; transition: opacity var(--dur-base) var(--ease-out) var(--d,0ms), transform var(--dur-base) var(--ease-out) var(--d,0ms); }
+.aud-log-row:last-child { border-bottom: none; }
+/* stagger entrance: rows slide up from rest position when their parent .reveal becomes visible */
+.aud-fr-visual:not(.is-visible) .aud-log-row { opacity: 0; transform: translateY(6px); }
+.aud-fr-visual.is-visible .aud-log-row { opacity: 1; transform: none; }
+.aud-log-key { font-size: 11px; color: var(--code-tok-kw); font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 80px; }
+.aud-log-val { font-size: 12px; color: var(--code-base); font-family: "SF Mono", "Fira Code", monospace; line-height: 1.5; word-break: break-all; }
+.aud-log-val .hi { color: var(--code-tok-str); }
+.aud-log-val .fn { color: var(--code-tok-fn); }
+.aud-log-val .nu { color: var(--code-tok-nu); }
+
+/* ============================================================
+   [4] LIVE AUDIT LOG TABLE MOCKUP
+   ============================================================ */
+.aud-log-table-wrap {
+  overflow-x: auto; border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card);
+  background: var(--bg-surface);
+}
+.aud-log-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px; }
+.aud-log-table thead { background: var(--bg-canvas); }
+.aud-log-table th { padding: var(--space-3) var(--space-4); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); text-align: left; border-bottom: 1px solid var(--border-subtle); white-space: nowrap; }
+.aud-log-table td { padding: var(--space-3) var(--space-4); color: var(--text-secondary); border-bottom: 1px solid var(--border-subtle); vertical-align: middle; line-height: 1.4; }
+.aud-log-table tbody tr:last-child td { border-bottom: none; }
+.aud-log-table tbody tr { transition: background var(--dur-fast); }
+.aud-log-table tbody tr:hover { background: var(--bg-canvas); }
+.aud-log-ts { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-tertiary); white-space: nowrap; }
+.aud-log-user { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+.aud-log-user small { display: block; font-size: 11px; font-weight: 400; color: var(--text-tertiary); }
+.aud-log-q { color: var(--text-primary); max-width: 200px; }
+.aud-status-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; border-radius: var(--radius-pill); padding: 3px 9px; white-space: nowrap; }
+.aud-status-chip.ok { color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); }
+.aud-status-chip.denied { color: var(--error); background: color-mix(in srgb, var(--error) 9%, transparent); }
+.aud-status-chip svg { width: 11px; height: 11px; }
+.aud-log-metrics { font-size: 12px; max-width: 180px; color: var(--text-secondary); }
+.aud-log-access { font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text-tertiary); max-width: 150px; }
+.aud-log-time { font-variant-numeric: tabular-nums; font-size: 12px; text-align: right; white-space: nowrap; }
+.aud-log-caption { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-4); text-align: center; line-height: 1.55; }
+
+/* live indicator bar above table */
+.aud-log-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); margin-bottom: var(--space-5); flex-wrap: wrap; }
+.aud-live-badge { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 12px; font-weight: 600; color: var(--success); }
+.aud-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); animation: aud-live 2s ease-in-out infinite; }
+@keyframes aud-live { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.aud-filter-row { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.aud-filter-btn {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  color: var(--text-secondary); background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-pill);
+  padding: 5px 12px; min-height: 32px; cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+}
+.aud-filter-btn:hover { color: var(--text-primary); border-color: var(--border-strong); }
+.aud-filter-btn.active { color: var(--brand-accent); border-color: var(--brand-accent); background: var(--brand-accent-soft); }
+.aud-filter-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) { .aud-live-dot { animation: none !important; } }
+
+/* ============================================================
+   [5] CAPABILITIES GRID — 6 icon feature cards, 3-col
+   ============================================================ */
+.aud-cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin-top: var(--space-8); }
+@media (max-width: 900px) { .aud-cap-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .aud-cap-grid { grid-template-columns: 1fr; } }
+.aud-cap-card { display: flex; flex-direction: column; gap: var(--space-3); transition: opacity var(--dur-base) var(--ease-out) var(--d,0ms), transform var(--dur-base) var(--ease-out) var(--d,0ms); }
+.aud-cap-card .icon-box { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background var(--dur-base) var(--ease-out); }
+.aud-cap-card .icon-box svg { width: 22px; height: 22px; color: var(--brand-accent); transition: color var(--dur-base) var(--ease-out); }
+.aud-cap-card:hover .icon-box { background: var(--brand-accent); }
+.aud-cap-card:hover .icon-box svg { color: var(--text-on-dark); }
+.aud-cap-card h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.aud-cap-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ============================================================
+   [6] USE CASE CARDS — 4 colored segment cards
+   ============================================================ */
+.aud-uc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); margin-top: var(--space-8); }
+@media (max-width: 900px) { .aud-uc-grid { grid-template-columns: 1fr; } }
+.aud-uc-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+  padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.aud-uc-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); }
+.aud-uc-card-head { display: flex; align-items: flex-start; gap: var(--space-4); }
+.aud-uc-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.aud-uc-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+.aud-uc-card h3 { font-size: 17px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.aud-uc-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+.aud-uc-card a.btn-ghost { font-size: 14px; margin-top: auto; }
+
+/* ============================================================
+   [7] COMPARISON TABLE — 7-col BI comparison
+   ============================================================ */
+.aud-compare-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); background: var(--bg-surface); }
+.aud-compare-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 820px; }
+.aud-compare-table thead { background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent)); }
+.aud-compare-table thead th { padding: var(--space-4); font-size: 12px; font-weight: 700; color: var(--text-on-dark); text-align: center; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.12); }
+.aud-compare-table thead th:first-child { text-align: left; border-right: 1px solid rgba(255,255,255,0.15); }
+.aud-compare-table thead th.aud-col-us { background: rgba(255,255,255,0.16); }
+.aud-compare-table tbody tr { border-bottom: 1px solid var(--border-subtle); transition: background var(--dur-fast); }
+.aud-compare-table tbody tr:last-child { border-bottom: none; }
+.aud-compare-table tbody tr:hover { background: var(--bg-canvas); }
+.aud-compare-table td { padding: var(--space-3) var(--space-4); color: var(--text-secondary); text-align: center; border-right: 1px solid var(--border-subtle); vertical-align: middle; font-size: 12px; line-height: 1.4; }
+.aud-compare-table td:first-child { text-align: left; font-weight: 600; color: var(--text-primary); font-size: 13px; }
+.aud-compare-table td:last-child { border-right: none; }
+.aud-compare-table .aud-col-us { background: var(--brand-accent-soft); }
+.aud-check { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: color-mix(in srgb, var(--success) 12%, transparent); }
+.aud-check svg { width: 12px; height: 12px; color: var(--success); }
+.aud-partial { font-size: 11px; color: var(--text-tertiary); }
+.aud-no { color: var(--text-tertiary); }
+.aud-compare-foot { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-4); line-height: 1.55; }
+
+/* ============================================================
+   [8] FAQ ACCORDION
+   ============================================================ */
+.aud-faq { max-width: 760px; margin: 0 auto; margin-top: var(--space-8); display: flex; flex-direction: column; gap: var(--space-2); }
+.aud-faq details.accordion-item { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-surface); transition: box-shadow var(--dur-base) var(--ease-out); overflow: hidden; }
+.aud-faq details.accordion-item[open] { box-shadow: var(--shadow-card); }
+.aud-faq details.accordion-item > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-5); cursor: pointer; font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.4; min-height: 44px; }
+.aud-faq details.accordion-item > summary:hover { color: var(--brand-accent); }
+.aud-faq details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: -2px; }
+.aud-faq .accordion-icon { width: 20px; height: 20px; color: var(--text-tertiary); flex-shrink: 0; transition: transform var(--dur-base) var(--ease-out), color var(--dur-fast); }
+.aud-faq details.accordion-item[open] .accordion-icon { color: var(--brand-accent); }
+.aud-faq .accordion-body { padding: 0 var(--space-5) var(--space-5); font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
+
+/* ============================================================
+   [9] CTA BAND
+   ============================================================ */
+.aud-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg); padding: var(--space-9) var(--space-7);
+  text-align: center; color: var(--text-on-dark); box-shadow: var(--shadow-card);
+}
+.aud-cta-card .eyebrow { color: rgba(255,255,255,0.7); margin-bottom: var(--space-3); display: block; }
+.aud-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.aud-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.aud-cta-buttons { display: flex; align-items: center; justify-content: center; gap: var(--space-4); flex-wrap: wrap; }
+
+/* ============================================================
+   [10] NEWSLETTER BLOCK
+   ============================================================ */
+.aud-newsletter {
+  background: var(--bg-warm); border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle); padding: var(--space-8) var(--space-7);
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center;
+}
+@media (max-width: 768px) { .aud-newsletter { grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-6); } }
+.aud-newsletter .eyebrow { color: var(--brand-accent); margin-bottom: var(--space-3); display: block; }
+.aud-newsletter h2 { color: var(--text-primary); margin-bottom: var(--space-4); font-size: clamp(22px,2.5vw,28px); }
+.aud-newsletter p { color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+.aud-nl-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.aud-nl-input-row { display: flex; gap: var(--space-2); }
+.aud-nl-input {
+  flex: 1; padding: 12px var(--space-4); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-cta); font-family: var(--font-body); font-size: 15px;
+  color: var(--text-primary); background: var(--bg-surface);
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.aud-nl-input::placeholder { color: var(--text-tertiary); }
+.aud-nl-input:focus { outline: none; border-color: var(--brand-accent); box-shadow: 0 0 0 3px var(--brand-accent-soft); }
+.aud-nl-consent { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; }
+.aud-nl-consent a { color: var(--brand-accent); text-decoration: underline; }
+
+/* hero purple wash (reuse from globals hero pattern) */
+.hero-purple-wash {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 60% at 60% 40%, var(--brand-accent-soft) 0%, transparent 70%);
+  z-index: 0;
+}
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#hero) — audit trail hero, governance-first
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading" style="position:relative;overflow:hidden;">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="aud-hero-grid">
+
+      <!-- LEFT — text + trust strip -->
+      <div class="hero-inner reveal">
+        <span class="eyebrow" style="color:var(--text-tertiary);">Governance by design</span>
+        <h1 id="hero-heading" class="display-xl" style="font-family:var(--font-display);font-weight:400;letter-spacing:-0.02em;line-height:1.1;margin-top:var(--space-3);">
+          Every question.<br>Every answer.<br><span style="color:var(--brand-accent);">Full audit trail.</span>
+        </h1>
+        <p class="subcopy body-lg" style="color:var(--text-secondary);margin-top:var(--space-5);max-width:56ch;">
+          Business users ask in plain language. Agents query the semantic layer. Role-based access is enforced. And every step — from question to metric to warehouse — is logged, traceable, and auditable. Quaeris makes AI analytics transparent.
+        </p>
+        <div class="hero-buttons" style="display:flex;gap:var(--space-4);margin-top:var(--space-6);flex-wrap:wrap;">
+          <a href="/contact" class="btn btn-primary">Schedule an audit demo</a>
+          <a href="/platform/governance" class="btn btn-secondary">See how it works</a>
+        </div>
+        <ul class="aud-trust-strip" aria-label="Key governance guarantees">
+          <li class="aud-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <p><strong>Prompt-level audit</strong><span>Every question logged — exact text, user, timestamp</span></p>
+          </li>
+          <li class="aud-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <p><strong>Metric-to-table lineage</strong><span>Click any number to see full chain of custody</span></p>
+          </li>
+          <li class="aud-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <p><strong>Query-time enforcement</strong><span>Role policies applied at execution — not just the UI</span></p>
+          </li>
+          <li class="aud-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <p><strong>Exportable for SOX / HIPAA</strong><span>Compliance-ready audit reports on demand</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT — animated audit trail mini-card -->
+      <div class="reveal">
+        <div class="aud-card" role="img" aria-label="Illustrative Quaeris audit trail: a user question flows through four steps — question capture, query translation, access control, and answer delivery — all logged and traceable." data-placeholder>
+          <div class="aud-card-head">
+            <span class="aud-card-title">Live audit trail</span>
+            <span class="aud-card-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </div>
+          <div class="aud-card-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span id="aud-query-text">Revenue vs. plan by region</span>
+          </div>
+          <!-- 4-step audit chain -->
+          <div class="aud-chain" aria-label="Audit steps">
+            <div class="aud-step ok">
+              <span class="aud-step-dot" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <div class="aud-step-body">
+                <span class="aud-step-label">Question captured</span>
+                <span class="aud-step-meta">2026-06-14 · 14:32:18 UTC · [user-role-placeholder]</span>
+              </div>
+              <span class="aud-step-tag ok">Logged</span>
+            </div>
+            <div class="aud-step ok">
+              <span class="aud-step-dot" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <div class="aud-step-body">
+                <span class="aud-step-label">Query translated + lineage mapped</span>
+                <span class="aud-step-meta">Booked Revenue · Plan Amount · Regional Sales Org</span>
+              </div>
+              <span class="aud-step-tag ok">Logged</span>
+            </div>
+            <div class="aud-step ok">
+              <span class="aud-step-dot" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <div class="aud-step-body">
+                <span class="aud-step-label">Access enforced — rows filtered</span>
+                <span class="aud-step-meta">Region IN ['US', 'EMEA'] per role policy</span>
+              </div>
+              <span class="aud-step-tag ok">Allowed</span>
+            </div>
+            <div class="aud-step active">
+              <span class="aud-step-dot" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <div class="aud-step-body">
+                <span class="aud-step-label">Answer delivered with provenance</span>
+                <span class="aud-step-meta">1.4s · Full chain of custody attached</span>
+              </div>
+              <span class="aud-step-tag live">Live</span>
+            </div>
+          </div>
+          <div class="aud-card-stats">
+            <div class="aud-stat-cell"><b>100%</b><span>Traceable</span></div>
+            <div class="aud-stat-cell"><b>1.4s</b><span>Query time</span></div>
+            <div class="aud-stat-cell"><b>Immutable</b><span>Log record</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] THE PROBLEM: WHY AUDIT TRAILS MATTER (#problem)
+     ProblemSolutionCards — 4 two-col problem/solution blocks
+     Interactive: hover reveals solution panel with slide transition
+     ============================================================ -->
+<section id="problem" class="section-pad" aria-labelledby="problem-heading" style="background:var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The problem</span>
+      <h2 id="problem-heading" class="display-lg">Why audit trails matter</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary);margin-top:var(--space-4);">Most AI analytics platforms are black boxes. Compliance officers, data leaders, and auditors are left without evidence when questions arise.</p>
+    </div>
+
+    <div class="aud-ps-grid">
+
+      <!-- Card 1: AI Black Box -->
+      <article class="card aud-ps-card reveal" aria-label="Problem: AI Black Box, Solution: Quaeris logs every agent step">
+        <div class="aud-ps-side">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="aud-ps-icon prob" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            </span>
+            <span class="aud-ps-label prob">Problem</span>
+          </div>
+          <h3>AI Black Box</h3>
+          <p>Most AI analytics platforms treat agents as black boxes. You see an answer — but not the reasoning, not which metrics were queried, not whether the user had access to that data.</p>
+        </div>
+        <div class="aud-ps-divider" aria-hidden="true"></div>
+        <div class="aud-ps-side sol">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="aud-ps-icon sol" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <span class="aud-ps-label sol">Quaeris</span>
+          </div>
+          <h3>Every agent step logged</h3>
+          <p>Quaeris logs every agent step. The system records which business rules were applied, which semantic layer definitions were used, and whether row-level access controls permitted the result. No hidden reasoning.</p>
+        </div>
+      </article>
+
+      <!-- Card 2: Orphaned Metrics -->
+      <article class="card aud-ps-card reveal" aria-label="Problem: Orphaned Metrics, Solution: Quaeris surfaces metric lineage">
+        <div class="aud-ps-side">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="aud-ps-icon prob" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </span>
+            <span class="aud-ps-label prob">Problem</span>
+          </div>
+          <h3>Orphaned Metrics</h3>
+          <p>Compliance teams need proof of which numbers came from which tables, which business rules generated them, and who approved those rules. Standard BI tools show a dashboard — not the provenance.</p>
+        </div>
+        <div class="aud-ps-divider" aria-hidden="true"></div>
+        <div class="aud-ps-side sol">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="aud-ps-icon sol" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <span class="aud-ps-label sol">Quaeris</span>
+          </div>
+          <h3>Full metric lineage per answer</h3>
+          <p>Every Quaeris answer surfaces the exact metric definitions it used. Traces back to the semantic layer version, the data table, the transformation rules, and the owner approval. Click any number and see the full chain.</p>
+        </div>
+      </article>
+
+      <!-- Card 3: Access Control Theater -->
+      <article class="card aud-ps-card reveal" aria-label="Problem: Access Control Theater, Solution: Quaeris enforces at query time">
+        <div class="aud-ps-side">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="aud-ps-icon prob" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </span>
+            <span class="aud-ps-label prob">Problem</span>
+          </div>
+          <h3>Access Control Theater</h3>
+          <p>Role-based access on dashboards is a filter — a UI layer. Executives can screenshot restricted data or pivot on unintended dimensions. Governance theater doesn't satisfy auditors.</p>
+        </div>
+        <div class="aud-ps-divider" aria-hidden="true"></div>
+        <div class="aud-ps-side sol">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="aud-ps-icon sol" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <span class="aud-ps-label sol">Quaeris</span>
+          </div>
+          <h3>Enforced at execution, not the UI</h3>
+          <p>Quaeris enforces access at query time. Role policies are applied when the agent executes — not when the user views the result. Users cannot see data their role forbids, period. And every query attempt is logged.</p>
+        </div>
+      </article>
+
+      <!-- Card 4: Who Asked What? -->
+      <article class="card aud-ps-card reveal" aria-label="Problem: No answer history, Solution: Quaeris maintains complete audit log">
+        <div class="aud-ps-side">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="aud-ps-icon prob" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </span>
+            <span class="aud-ps-label prob">Problem</span>
+          </div>
+          <h3>Who Asked What?</h3>
+          <p>When a number in the boardroom turns out to be wrong, compliance needs to know: who asked? when? with what intent? which model assumptions did they use? Standard analytics tools have no answer history.</p>
+        </div>
+        <div class="aud-ps-divider" aria-hidden="true"></div>
+        <div class="aud-ps-side sol">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="aud-ps-icon sol" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <span class="aud-ps-label sol">Quaeris</span>
+          </div>
+          <h3>Complete question history, searchable</h3>
+          <p>Quaeris maintains a complete audit log of every question asked — by whom, when, which data they accessed, which metrics were returned, whether they're supposed to see it. Searchable, timestamped, exportable for compliance workflows.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] AUDIT TRAIL ARCHITECTURE (#architecture)
+     FeatureRow — 4 alternating steps, each with a dark code/log visual
+     Interactive: code log rows animate in on scroll via JS reveal
+     ============================================================ -->
+<section id="architecture" class="section-pad" aria-labelledby="arch-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 id="arch-heading" class="display-lg">The audit trail architecture</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary);margin-top:var(--space-4);">Four steps. Every query. Logged automatically, with zero instrumentation required from your team.</p>
+    </div>
+
+    <!-- Step 1 — Question Capture -->
+    <div class="aud-fr reveal" style="margin-top:var(--space-9);">
+      <div class="aud-fr-text">
+        <span class="eyebrow">Step 01 — Question Capture</span>
+        <h3 class="display-md" style="margin-top:var(--space-3);">Every question logged, exactly as asked.</h3>
+        <p style="margin-top:var(--space-4);">When a user types "Revenue vs. plan by region," Quaeris records: the exact text, the user's identity, the timestamp, their role/team, and the warehouse they're querying. The question enters the audit log immediately — before the agent even processes it. No guessing what was asked. No reconstructing intent from logs.</p>
+        <a href="/platform/governance" class="btn-ghost" style="margin-top:var(--space-5);display:inline-flex;">Learn about prompt audit</a>
+      </div>
+      <div class="aud-fr-visual" aria-label="Audit log entry for question capture" role="img">
+        <div class="aud-fr-visual-head">
+          <span class="aud-win-dots" aria-hidden="true"><i class="aud-win-dot-r"></i><i class="aud-win-dot-a"></i><i class="aud-win-dot-g"></i></span>
+          <span class="aud-win-label">audit_log · question_capture</span>
+        </div>
+        <div class="aud-log-row" style="--d:0ms">
+          <span class="aud-log-key">event</span>
+          <span class="aud-log-val"><span class="hi">"question.captured"</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:60ms">
+          <span class="aud-log-key">question</span>
+          <span class="aud-log-val"><span class="hi">"Revenue vs. plan by region"</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:120ms">
+          <span class="aud-log-key">user_id</span>
+          <span class="aud-log-val"><span class="fn">[user-id-placeholder]</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:180ms">
+          <span class="aud-log-key">role</span>
+          <span class="aud-log-val"><span class="fn">[user-role-placeholder]</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:240ms">
+          <span class="aud-log-key">timestamp</span>
+          <span class="aud-log-val"><span class="nu">2026-06-14T14:32:18.041Z</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:300ms">
+          <span class="aud-log-key">warehouse</span>
+          <span class="aud-log-val"><span class="fn">snowflake.prod</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 — Query Translation & Lineage -->
+    <div class="aud-fr reverse reveal">
+      <div class="aud-fr-text">
+        <span class="eyebrow">Step 02 — Query Translation &amp; Lineage</span>
+        <h3 class="display-md" style="margin-top:var(--space-3);">AI-to-SQL translation is visible and auditable.</h3>
+        <p style="margin-top:var(--space-4);">The agent translates the plain-language question into SQL against the semantic layer. Quaeris logs: the generated SQL, which semantic layer definitions were consulted, which business rules were applied, and the query execution time. If the agent needed to make assumptions — "revenue" → the Booked Revenue metric, not Pipeline Revenue — those assumptions are logged and surfaced.</p>
+        <a href="/platform/semantic-layer" class="btn-ghost" style="margin-top:var(--space-5);display:inline-flex;">Explore the semantic layer</a>
+      </div>
+      <div class="aud-fr-visual" aria-label="Audit log entry for query translation and lineage" role="img">
+        <div class="aud-fr-visual-head">
+          <span class="aud-win-dots" aria-hidden="true"><i class="aud-win-dot-r"></i><i class="aud-win-dot-a"></i><i class="aud-win-dot-g"></i></span>
+          <span class="aud-win-label">audit_log · query_translation</span>
+        </div>
+        <div class="aud-log-row" style="--d:0ms">
+          <span class="aud-log-key">event</span>
+          <span class="aud-log-val"><span class="hi">"query.translated"</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:60ms">
+          <span class="aud-log-key">sql</span>
+          <span class="aud-log-val" style="font-size:11px;"><span class="fn">SELECT region, SUM(booked_revenue),<br>SUM(plan_amount) FROM …</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:120ms">
+          <span class="aud-log-key">metrics</span>
+          <span class="aud-log-val"><span class="hi">["Booked Revenue", "Plan Amount"]</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:180ms">
+          <span class="aud-log-key">sl_version</span>
+          <span class="aud-log-val"><span class="nu">v2.14.3 · 2026-06-10</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:240ms">
+          <span class="aud-log-key">assumptions</span>
+          <span class="aud-log-val"><span class="fn">revenue → Booked (not Pipeline)</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 — Access Control Enforcement -->
+    <div class="aud-fr reveal">
+      <div class="aud-fr-text">
+        <span class="eyebrow">Step 03 — Access Control Enforcement</span>
+        <h3 class="display-md" style="margin-top:var(--space-3);">Role policies enforced at query execution.</h3>
+        <p style="margin-top:var(--space-4);">Before the query runs, Quaeris evaluates the user's row-level security policies against the warehouse. The system logs: which rows the user requested, which rows their role permits, and whether the query was allowed or denied. If allowed, which row-level filters were applied. Every access decision is auditable — compliant auditors can verify that a director-level user never saw frontline-employee data.</p>
+        <a href="/platform/access-control" class="btn-ghost" style="margin-top:var(--space-5);display:inline-flex;">See access control in action</a>
+      </div>
+      <div class="aud-fr-visual" aria-label="Audit log entry for access control enforcement" role="img">
+        <div class="aud-fr-visual-head">
+          <span class="aud-win-dots" aria-hidden="true"><i class="aud-win-dot-r"></i><i class="aud-win-dot-a"></i><i class="aud-win-dot-g"></i></span>
+          <span class="aud-win-label">audit_log · access_decision</span>
+        </div>
+        <div class="aud-log-row" style="--d:0ms">
+          <span class="aud-log-key">event</span>
+          <span class="aud-log-val"><span class="hi">"access.evaluated"</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:60ms">
+          <span class="aud-log-key">decision</span>
+          <span class="aud-log-val" style="color:var(--win-dot-green);font-weight:700;">ALLOWED</span>
+        </div>
+        <div class="aud-log-row" style="--d:120ms">
+          <span class="aud-log-key">policy</span>
+          <span class="aud-log-val"><span class="fn">RLS: Region IN ['US','EMEA']</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:180ms">
+          <span class="aud-log-key">rows_req</span>
+          <span class="aud-log-val"><span class="nu">all regions</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:240ms">
+          <span class="aud-log-key">rows_permitted</span>
+          <span class="aud-log-val"><span class="nu">US, EMEA only</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:300ms">
+          <span class="aud-log-key">rows_denied</span>
+          <span class="aud-log-val" style="color:var(--error);">APAC, LATAM (role policy)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 — Answer Delivery & Provenance -->
+    <div class="aud-fr reverse reveal">
+      <div class="aud-fr-text">
+        <span class="eyebrow">Step 04 — Answer Delivery &amp; Provenance</span>
+        <h3 class="display-md" style="margin-top:var(--space-3);">Results returned with full source citation.</h3>
+        <p style="margin-top:var(--space-4);">The agent returns the answer to the user. Quaeris logs: the result set, the execution time, the user's response (did they refine the query?), and a complete chain of custody. Every number in the answer is clickable — users can trace "Revenue = $2.4M" back to the exact metric definition, the table query, the transformation rules, and the owner certification. Auditors can download the full provenance report for any answer.</p>
+        <a href="/resources/sample-audit-report" class="btn-ghost" style="margin-top:var(--space-5);display:inline-flex;" data-placeholder>View an audit report</a>
+      </div>
+      <div class="aud-fr-visual" aria-label="Audit log entry for answer delivery and provenance" role="img">
+        <div class="aud-fr-visual-head">
+          <span class="aud-win-dots" aria-hidden="true"><i class="aud-win-dot-r"></i><i class="aud-win-dot-a"></i><i class="aud-win-dot-g"></i></span>
+          <span class="aud-win-label">audit_log · answer_delivered</span>
+        </div>
+        <div class="aud-log-row" style="--d:0ms">
+          <span class="aud-log-key">event</span>
+          <span class="aud-log-val"><span class="hi">"answer.delivered"</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:60ms">
+          <span class="aud-log-key">exec_ms</span>
+          <span class="aud-log-val"><span class="nu">1_403</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:120ms">
+          <span class="aud-log-key">result_rows</span>
+          <span class="aud-log-val"><span class="nu">8</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:180ms">
+          <span class="aud-log-key">provenance_id</span>
+          <span class="aud-log-val"><span class="fn">prov_a8f3c112</span></span>
+        </div>
+        <div class="aud-log-row" style="--d:240ms">
+          <span class="aud-log-key">chain_cert</span>
+          <span class="aud-log-val" style="color:var(--win-dot-green);">COMPLETE · exportable</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] LIVE AUDIT LOG TABLE MOCKUP (#audit-log)
+     MetricDashboardMock variant — illustrative live audit log
+     Interactive: filter buttons (All / Allowed / Denied) toggle row visibility
+     ============================================================ -->
+<section id="audit-log" class="section-pad" aria-labelledby="log-heading" style="background:var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Live audit log</span>
+      <h2 id="log-heading" class="display-lg">What your audit log looks like</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary);margin-top:var(--space-4);">Every interaction, every access decision, every metric used — logged in real time. This is an illustrative mockup of the Quaeris audit log UI.</p>
+    </div>
+
+    <div style="margin-top:var(--space-8);" class="reveal">
+      <div class="aud-log-toolbar">
+        <span class="aud-live-badge" aria-label="Live log stream">
+          <span class="aud-live-dot" aria-hidden="true"></span>
+          Live stream — 2,847 events today
+        </span>
+        <div class="aud-filter-row" role="group" aria-label="Filter audit log rows">
+          <button class="aud-filter-btn active" aria-pressed="true" data-filter="all">All events</button>
+          <button class="aud-filter-btn" aria-pressed="false" data-filter="allowed">Allowed only</button>
+          <button class="aud-filter-btn" aria-pressed="false" data-filter="denied">Denied only</button>
+        </div>
+      </div>
+
+      <div class="aud-log-table-wrap">
+        <table class="aud-log-table" aria-label="Illustrative Quaeris audit log entries">
+          <thead>
+            <tr>
+              <th scope="col">Timestamp</th>
+              <th scope="col">User</th>
+              <th scope="col">Question</th>
+              <th scope="col">Status</th>
+              <th scope="col">Metrics Used</th>
+              <th scope="col">Data Access</th>
+              <th scope="col">Time</th>
+            </tr>
+          </thead>
+          <tbody id="aud-log-tbody">
+            <tr data-status="allowed">
+              <td class="aud-log-ts">2026-06-12<br>14:32:18</td>
+              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>Head of Analytics</small></td>
+              <td class="aud-log-q">Revenue vs. plan by region</td>
+              <td><span class="aud-status-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Allowed</span></td>
+              <td class="aud-log-metrics">Booked Revenue, Plan Amount, Regional Sales Org</td>
+              <td class="aud-log-access">Region IN ['US', 'EMEA']</td>
+              <td class="aud-log-time">1.4s</td>
+            </tr>
+            <tr data-status="allowed">
+              <td class="aud-log-ts">2026-06-12<br>14:28:03</td>
+              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>Finance Manager</small></td>
+              <td class="aud-log-q">Commission accrual forecast</td>
+              <td><span class="aud-status-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Allowed</span></td>
+              <td class="aud-log-metrics">Accrual Rate, Headcount Forecast</td>
+              <td class="aud-log-access">Department = 'Sales'</td>
+              <td class="aud-log-time">2.1s</td>
+            </tr>
+            <tr data-status="denied">
+              <td class="aud-log-ts">2026-06-12<br>14:15:44</td>
+              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>Sales Rep</small></td>
+              <td class="aud-log-q">Churn by contract value</td>
+              <td><span class="aud-status-chip denied"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Denied</span></td>
+              <td class="aud-log-metrics" style="color:var(--text-tertiary);">N/A</td>
+              <td class="aud-log-access" style="color:var(--error);font-size:11px;">Access denied: Strategic Contracts restricted</td>
+              <td class="aud-log-time" style="color:var(--text-tertiary);">—</td>
+            </tr>
+            <tr data-status="allowed">
+              <td class="aud-log-ts">2026-06-12<br>14:12:09</td>
+              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>Sales Director</small></td>
+              <td class="aud-log-q">Pipeline by stage and manager</td>
+              <td><span class="aud-status-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Allowed</span></td>
+              <td class="aud-log-metrics">Pipeline Weighted, Stage Duration</td>
+              <td class="aud-log-access">Manager IN [own team]</td>
+              <td class="aud-log-time">0.9s</td>
+            </tr>
+            <tr data-status="allowed">
+              <td class="aud-log-ts">2026-06-12<br>14:09:55</td>
+              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>CFO</small></td>
+              <td class="aud-log-q">Explain why MRR dropped YoY</td>
+              <td><span class="aud-status-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Allowed</span></td>
+              <td class="aud-log-metrics">MRR, Expansion, Churn, Discount Rate</td>
+              <td class="aud-log-access">Warehouse filtering per role</td>
+              <td class="aud-log-time">3.2s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="aud-log-caption" data-placeholder>Illustrative live audit log — for demonstration only. Real deployments log millions of interactions per month, all queryable and exportable.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+/* Audit log filter — gated, reduced-motion safe */
+(function() {
+  var btns = document.querySelectorAll('.aud-filter-btn');
+  var rows = document.querySelectorAll('#aud-log-tbody tr');
+  if (!btns.length || !rows.length) return;
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var f = btn.dataset.filter;
+      btns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+      btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
+      rows.forEach(function(row) {
+        if (f === 'all') { row.hidden = false; }
+        else { row.hidden = row.dataset.status !== f; }
+      });
+    });
+  });
+})();
+</script>
+
+<script>
+/* Architecture log-row stagger reveal — gated, reduced-motion safe */
+(function() {
+  if (!window.IntersectionObserver) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.aud-fr-visual').forEach(function(el) { el.classList.add('is-visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.aud-fr-visual').forEach(function(el) { obs.observe(el); });
+})();
+</script>
+
+<!-- ============================================================
+     [5] KEY AUDIT CAPABILITIES (#capabilities)
+     IconFeatureGrid — 6 icon cards, 3-col desktop
+     Interactive: staggered scroll-reveal entrance per card
+     ============================================================ -->
+<section id="capabilities" class="section-pad" aria-labelledby="cap-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Platform capabilities</span>
+      <h2 id="cap-heading" class="display-lg">Key audit capabilities</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary);margin-top:var(--space-4);">Built into the platform. No configuration required. Every feature is logged automatically from the first query.</p>
+    </div>
+
+    <div class="aud-cap-grid">
+
+      <article class="card aud-cap-card reveal" style="--d:0ms">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        </span>
+        <h3>Role-based access control</h3>
+        <p>Every query enforces the user's role policies. Access decisions are logged. Users cannot see data their role forbids — enforced at query execution, not just the UI.</p>
+      </article>
+
+      <article class="card aud-cap-card reveal" style="--d:80ms">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </span>
+        <h3>Complete question history</h3>
+        <p>Every question asked is logged with timestamp, user, intent, and outcome. Searchable audit log — compliance teams can answer "Who asked about customer churn?" in seconds.</p>
+      </article>
+
+      <article class="card aud-cap-card reveal" style="--d:160ms">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </span>
+        <h3>Metric-to-table lineage</h3>
+        <p>Every answer traces back to metric definitions, business rules, source tables, and transformations. One click: see the full chain of custody for any number.</p>
+      </article>
+
+      <article class="card aud-cap-card reveal" style="--d:240ms">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </span>
+        <h3>Proof of data access</h3>
+        <p>Quaeris logs which specific rows each user accessed, which rows were filtered out, and why. Row-level security is auditable — not just a dashboard filter.</p>
+      </article>
+
+      <article class="card aud-cap-card reveal" style="--d:320ms">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </span>
+        <h3>Exportable audit reports</h3>
+        <p>Generate timestamped, signed audit reports for compliance workflows. SOX, HIPAA, EU AI Act — format the report to match your audit requirements.</p>
+      </article>
+
+      <article class="card aud-cap-card reveal" style="--d:400ms">
+        <span class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>
+        <h3>Access denial logs</h3>
+        <p>Denied queries are logged as thoroughly as allowed ones. Compliance teams see every attempt to access restricted data — and proof it was blocked.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [6] USE CASES: WHO NEEDS AUDIT TRAILS (#use-cases)
+     SegmentCards — 4 colored cards, 2-col desktop
+     Interactive: hover lift + accent border + icon fill transition
+     ============================================================ -->
+<section id="use-cases" class="section-pad" aria-labelledby="uc-heading" style="background:var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Use cases</span>
+      <h2 id="uc-heading" class="display-lg">Who needs audit trails</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary);margin-top:var(--space-4);">Governance requirements differ by role and regulation — but the underlying need is the same: proof that AI analytics is controlled, traceable, and compliant.</p>
+    </div>
+
+    <div class="aud-uc-grid">
+
+      <!-- Card 1: Finance & Audit Teams -->
+      <article class="aud-uc-card reveal">
+        <div class="aud-uc-card-head">
+          <span class="aud-uc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+          </span>
+          <div>
+            <span style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--brand-accent);">Finance &amp; Audit</span>
+            <h3>SOX Compliance &amp; Financial Audits</h3>
+          </div>
+        </div>
+        <p>Auditors need to trace every number in board materials back to source data. Quaeris gives you: question, assumption, metric, table, owner certification, access control. Satisfy auditors without blocking analytics velocity.</p>
+        <a href="/resources/sox-ai-analytics-checklist" class="btn-ghost" data-placeholder>Read the SOX guide</a>
+      </article>
+
+      <!-- Card 2: Data Governance Leaders -->
+      <article class="aud-uc-card reveal">
+        <div class="aud-uc-card-head">
+          <span class="aud-uc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+          </span>
+          <div>
+            <span style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--brand-accent);">Data Governance</span>
+            <h3>Metric Governance &amp; Lineage</h3>
+          </div>
+        </div>
+        <p>Data leaders own the semantic layer. Quaeris audit logs show you which metrics each question used, which business rules applied, and which users accessed sensitive metrics. Governance becomes visible, not theoretical.</p>
+        <a href="/platform/semantic-layer" class="btn-ghost">Learn about semantic lineage</a>
+      </article>
+
+      <!-- Card 3: Chief Data Officers / Privacy Teams -->
+      <article class="aud-uc-card reveal">
+        <div class="aud-uc-card-head">
+          <span class="aud-uc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </span>
+          <div>
+            <span style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--brand-accent);">CDO / Privacy Teams</span>
+            <h3>Data Privacy &amp; EU AI Act</h3>
+          </div>
+        </div>
+        <p>EU AI Act requires audit trails for high-risk AI. GDPR requires data-access logging. Quaeris logs every query at the row level. Prove compliance with automated audit exports.</p>
+        <a href="/resources/eu-ai-act-analytics-assessment" class="btn-ghost" data-placeholder>See the EU AI Act checklist</a>
+      </article>
+
+      <!-- Card 4: Healthcare & Insurance Compliance -->
+      <article class="aud-uc-card reveal">
+        <div class="aud-uc-card-head">
+          <span class="aud-uc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          </span>
+          <div>
+            <span style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--brand-accent);">Healthcare &amp; Insurance</span>
+            <h3>HIPAA &amp; Regulated Industry AI</h3>
+          </div>
+        </div>
+        <p>Sensitive industries need to prove that AI agents respect access controls. Quaeris enforces role-based access at query time and logs every access attempt. Healthcare and insurance teams can deploy agentic AI without audit risk.</p>
+        <a href="/resources/hipaa-ai-analytics-guide" class="btn-ghost" data-placeholder>View the HIPAA readiness guide</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [7] COMPARISON: AUDIT TRAIL ACROSS BI PLATFORMS (#compare)
+     ComparisonTable — Quaeris vs Tableau/Power BI/Looker/ThoughtSpot/Sigma/Domo
+     Interactive: hover highlights rows; sticky Quaeris column highlighted
+     ============================================================ -->
+<section id="compare" class="section-pad" aria-labelledby="compare-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Platform comparison</span>
+      <h2 id="compare-heading" class="display-lg">Audit trail across BI platforms</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary);margin-top:var(--space-4);">Not all audit trails are equal. Compare how Quaeris's governance-by-design approach differs from incumbent BI and competing AI analytics platforms.</p>
+    </div>
+
+    <div style="margin-top:var(--space-8);" class="reveal">
+      <div class="aud-compare-wrap">
+        <table class="aud-compare-table" aria-label="Audit trail capability comparison: Quaeris vs Tableau, Power BI, Looker, ThoughtSpot, Sigma, Domo">
+          <thead>
+            <tr>
+              <th scope="col">Capability</th>
+              <th scope="col" class="aud-col-us">Quaeris</th>
+              <th scope="col">Tableau</th>
+              <th scope="col">Power BI</th>
+              <th scope="col">Looker</th>
+              <th scope="col">ThoughtSpot</th>
+              <th scope="col">Sigma</th>
+              <th scope="col">Domo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Question logging</strong></td>
+              <td class="aud-col-us"><span class="aud-check" aria-label="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><br><span style="font-size:11px;color:var(--brand-accent);font-weight:600;">Per-user, full text, timestamped</span></td>
+              <td><span class="aud-partial">Dashboard usage only</span></td>
+              <td><span class="aud-partial">Per-user, limited</span></td>
+              <td><span class="aud-partial">Query audit limited</span></td>
+              <td><span class="aud-partial">Search token logging</span></td>
+              <td><span class="aud-partial">Basic activity log</span></td>
+              <td><span class="aud-partial">Basic activity log</span></td>
+            </tr>
+            <tr>
+              <td><strong>Metric-to-table lineage</strong></td>
+              <td class="aud-col-us"><span class="aud-check" aria-label="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><br><span style="font-size:11px;color:var(--brand-accent);font-weight:600;">Auto-surfaced per answer</span></td>
+              <td><span class="aud-partial">Dashboard-level only</span></td>
+              <td><span class="aud-partial">Model-level, not answer</span></td>
+              <td><span class="aud-partial">LookML dependencies</span></td>
+              <td><span class="aud-partial">Worksheet-level</span></td>
+              <td><span class="aud-partial">Basic lineage</span></td>
+              <td><span class="aud-partial">Basic lineage</span></td>
+            </tr>
+            <tr>
+              <td><strong>Row-level access enforcement</strong></td>
+              <td class="aud-col-us"><span class="aud-check" aria-label="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><br><span style="font-size:11px;color:var(--brand-accent);font-weight:600;">Query-time enforcement</span></td>
+              <td><span class="aud-partial">Filter-based (UI layer)</span></td>
+              <td><span class="aud-partial">Model &amp; RLS</span></td>
+              <td><span class="aud-partial">LookML RLS</span></td>
+              <td><span class="aud-partial">Search-token scoped</span></td>
+              <td><span class="aud-partial">Dashboard-level</span></td>
+              <td><span class="aud-partial">Access model</span></td>
+            </tr>
+            <tr>
+              <td><strong>AI reasoning logged</strong></td>
+              <td class="aud-col-us"><span class="aud-check" aria-label="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><br><span style="font-size:11px;color:var(--brand-accent);font-weight:600;">SQL, assumptions, rules</span></td>
+              <td><span class="aud-no">N/A (no AI)</span></td>
+              <td><span class="aud-partial">Copilot actions hidden</span></td>
+              <td><span class="aud-partial">Conversational logs limited</span></td>
+              <td><span class="aud-partial">Reasoning opaque</span></td>
+              <td><span class="aud-partial">Agent steps hidden</span></td>
+              <td><span class="aud-partial">AI opaque</span></td>
+            </tr>
+            <tr>
+              <td><strong>Access denial audit trail</strong></td>
+              <td class="aud-col-us"><span class="aud-check" aria-label="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><br><span style="font-size:11px;color:var(--brand-accent);font-weight:600;">Full logging</span></td>
+              <td><span class="aud-no">Not logged</span></td>
+              <td><span class="aud-partial">Logged, limited</span></td>
+              <td><span class="aud-no">Not clearly logged</span></td>
+              <td><span class="aud-no">Not transparent</span></td>
+              <td><span class="aud-no">Not transparent</span></td>
+              <td><span class="aud-no">Not transparent</span></td>
+            </tr>
+            <tr>
+              <td><strong>Exportable compliance reports</strong></td>
+              <td class="aud-col-us"><span class="aud-check" aria-label="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><br><span style="font-size:11px;color:var(--brand-accent);font-weight:600;">SOX / HIPAA / EU AI Act ready</span></td>
+              <td><span class="aud-partial">Manual export only</span></td>
+              <td><span class="aud-partial">Manual export only</span></td>
+              <td><span class="aud-partial">Manual export only</span></td>
+              <td><span class="aud-partial">Manual export only</span></td>
+              <td><span class="aud-partial">Manual export only</span></td>
+              <td><span class="aud-partial">Manual export only</span></td>
+            </tr>
+            <tr>
+              <td><strong>Warehouse-native logging</strong></td>
+              <td class="aud-col-us"><span class="aud-check" aria-label="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><br><span style="font-size:11px;color:var(--brand-accent);font-weight:600;">Warehouse queries logged</span></td>
+              <td><span class="aud-partial">Cloud-based, query-hidden</span></td>
+              <td><span class="aud-partial">Cloud-based, hidden</span></td>
+              <td><span class="aud-partial">Cloud-based, hidden</span></td>
+              <td><span class="aud-partial">Elastic-based</span></td>
+              <td><span class="aud-partial">Cloud-based, hidden</span></td>
+              <td><span class="aud-partial">Cloud-based, hidden</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="aud-compare-foot" data-placeholder>Comparison based on public documentation as of Q2 2026. Actual capabilities vary by version and deployment model. [data-placeholder: to be verified against current competitor docs]</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [8] FAQ: AUDIT TRAIL SPECIFICS (#faq)
+     FAQSection — 6 accordion Q&As, native <details> element
+     Interactive: native expand/collapse accordion with animated icon rotation
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading" style="background:var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Common questions</span>
+      <h2 id="faq-heading" class="display-lg">FAQ: Audit trail specifics</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary);margin-top:var(--space-4);">Everything compliance officers, data leaders, and auditors ask before deploying Quaeris in a regulated environment.</p>
+    </div>
+
+    <div class="aud-faq" role="list">
+
+      <details class="accordion-item" role="listitem">
+        <summary>
+          How granular is the audit trail?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-body">
+          Every user action is logged: the exact question text, the user's identity, the timestamp down to milliseconds, their role/team context, which warehouse they queried, the generated SQL, which metrics were accessed, and the result. If access was denied, that's logged too. Logs are immutable and timestamped.
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary>
+          Can I export audit logs for my SOX auditor?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-body">
+          Yes. Quaeris provides an audit export tool that generates compliance-ready reports: full query history, access decisions, metric lineage, denied attempts, and user identity. Export as PDF, CSV, or in formats your auditor specifies. Reports are timestamped and signed.
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary>
+          How long are audit logs retained?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-body">
+          Audit retention policies are configurable. Enterprise deployments typically retain 1–2 years online; older logs can be archived to cold storage per your compliance requirements. <span data-placeholder>[data-placeholder: verify retention policy details with product team]</span>
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary>
+          Can users delete their questions from the audit log?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-body">
+          No. Audit logs are immutable once written. Users cannot delete or modify their questions or access history. Only admins with explicit audit-log governance permissions can export or filter logs — and those administrative actions are themselves logged.
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary>
+          Does Quaeris log if someone tried to access data they're not permitted to see?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-body">
+          Yes. Every access denial is logged with the same level of detail as allowed queries: who tried, what they asked for, when, and why the request was denied (which role policy blocked it). This is essential for security audits and detecting attempted access violations.
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary>
+          How is the audit log connected to the semantic layer?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="accordion-body">
+          When a query runs, Quaeris logs: the plain-language question, the semantic layer version used (with version timestamp), which metrics were queried, which business rules were applied. Auditors can trace any answer back to the exact semantic-layer snapshot that produced it — useful if metric definitions change.
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [9] CTA BAND (#cta)
+     CTABand — purple gradient card, centered, with two action buttons
+     Interactive: button hover lift + shadow; decorative animated ring
+     ============================================================ -->
+<section id="cta" class="section-pad" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="aud-cta-card reveal" style="position:relative;overflow:hidden;">
+      <!-- Decorative animated ring, aria-hidden -->
+      <div class="aud-cta-ring" aria-hidden="true" style="position:absolute;top:-60px;right:-60px;width:260px;height:260px;border-radius:50%;border:2px solid rgba(255,255,255,0.08);pointer-events:none;animation:aud-ring-pulse 4s ease-in-out infinite;"></div>
+      <div class="aud-cta-ring" aria-hidden="true" style="position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;border-radius:50%;border:2px solid rgba(255,255,255,0.06);pointer-events:none;animation:aud-ring-pulse 5s ease-in-out 1s infinite;"></div>
+      <style>@keyframes aud-ring-pulse { 0%,100%{opacity:0.4;transform:scale(1);}50%{opacity:1;transform:scale(1.04);}} @media (prefers-reduced-motion: reduce){.aud-cta-ring{animation:none !important;}}</style>
+
+      <span class="eyebrow">Demonstrate to your auditors</span>
+      <h2 id="cta-heading" class="display-lg" style="color:var(--text-on-dark);margin-bottom:var(--space-4);position:relative;z-index:1;">See your audit trail in action.</h2>
+      <p style="position:relative;z-index:1;">Book a 20-minute demo. We'll walk through a sample audit log, show you how a compliant query flows through access control, lineage, and retention — then answer your governance questions. No fluff, all answers.</p>
+      <div class="aud-cta-buttons" style="position:relative;z-index:1;">
+        <a href="/contact" class="btn btn-on-dark">Schedule audit demo</a>
+        <a href="/resources/quaeris-audit-trail-guide" class="btn btn-secondary-dark" data-placeholder>Download the audit guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [10] NEWSLETTER BLOCK (#newsletter)
+     NewsletterBlock — two-col: copy left, form right
+     Interactive: email input focus state + inline JS form validation on submit
+     ============================================================ -->
+<section id="newsletter" class="section-pad" aria-labelledby="nl-heading" style="background:var(--bg-warm);">
+  <div class="container">
+    <div class="aud-newsletter reveal">
+      <div>
+        <span class="eyebrow">Stay updated on governance</span>
+        <h2 id="nl-heading">Weekly insights on governed AI analytics.</h2>
+        <p>Every Thursday: practical tips on audit-ready AI, semantic governance, and compliance-first analytics architectures. No hype, no fluff — just what works.</p>
+      </div>
+      <div class="aud-nl-form">
+        <label for="aud-nl-email" style="font-size:14px;font-weight:600;color:var(--text-primary);">Work email</label>
+        <div class="aud-nl-input-row">
+          <input
+            id="aud-nl-email"
+            type="email"
+            class="aud-nl-input"
+            placeholder="you@company.com"
+            autocomplete="email"
+            aria-required="true"
+            aria-describedby="aud-nl-consent"
+          />
+          <button type="button" class="btn btn-primary" id="aud-nl-submit" style="flex-shrink:0;white-space:nowrap;">Subscribe</button>
+        </div>
+        <p class="aud-nl-consent" id="aud-nl-consent">
+          No spam. Unsubscribe any time. We handle your data per our <a href="/privacy">Privacy Policy</a>.
+        </p>
+        <p id="aud-nl-msg" role="status" aria-live="polite" style="font-size:13px;font-weight:600;color:var(--success);display:none;"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* Newsletter inline validation — small IIFE, gated */
+(function() {
+  var btn = document.getElementById('aud-nl-submit');
+  var input = document.getElementById('aud-nl-email');
+  var msg = document.getElementById('aud-nl-msg');
+  if (!btn || !input || !msg) return;
+  btn.addEventListener('click', function() {
+    var val = input.value.trim();
+    if (!val || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      input.style.borderColor = 'var(--error)';
+      input.focus();
+      msg.style.display = 'none';
+      return;
+    }
+    input.style.borderColor = 'var(--success)';
+    msg.style.color = 'var(--success)';
+    msg.textContent = 'You\'re subscribed. First issue lands next Thursday.';
+    msg.style.display = 'block';
+    btn.disabled = true;
+    btn.textContent = 'Subscribed';
+  });
+  input.addEventListener('input', function() {
+    input.style.borderColor = '';
+    msg.style.display = 'none';
+    if (btn.disabled) { btn.disabled = false; btn.textContent = 'Subscribe'; }
+  });
+})();
+</script>
+
+</main>
+</body>
+</html>

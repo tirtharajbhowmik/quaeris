@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /resources — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* Static sections are visible WITHOUT animation */
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: res- (Resources hub) — move to globals.css at port time.
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — Resources hub hero with animated search-term rotation
+   ============================================================ */
+.res-hero {
+  background: var(--bg-surface);
+  position: relative;
+  overflow: hidden;
+}
+.res-hero-glow {
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 60vw;
+  max-width: 900px;
+  max-height: 600px;
+  background: radial-gradient(ellipse, var(--brand-accent) 0%, transparent 65%);
+  opacity: 0.07;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.res-hero-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.res-hero-inner .eyebrow {
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+  display: block;
+}
+.res-hero-inner h1 { color: var(--text-primary); margin-bottom: var(--space-5); }
+.res-hero-inner .subcopy {
+  color: var(--text-secondary);
+  max-width: 58ch;
+  margin: 0 auto var(--space-7);
+}
+
+/* Animated rotating topic pills */
+.res-topic-ticker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-5);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  min-height: 48px;
+}
+.res-topic-ticker svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+.res-topic-slot {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  height: 1.4em;
+  vertical-align: middle;
+  min-width: 220px;
+}
+.res-topic-word {
+  position: absolute;
+  left: 0; top: 0; width: 100%;
+  color: var(--brand-accent);
+  font-weight: 600;
+  transition: transform var(--dur-slow) var(--ease-out), opacity var(--dur-slow) var(--ease-out);
+  white-space: nowrap;
+}
+.res-topic-word.active  { opacity: 1; transform: translateY(0); }
+.res-topic-word.above   { opacity: 0; transform: translateY(-120%); }
+.res-topic-word.below   { opacity: 0; transform: translateY(120%); }
+
+/* ============================================================
+   [2] FILTER TABS + RESOURCE CARD GRID
+   ============================================================ */
+
+/* Filter tab bar */
+.res-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: var(--space-7);
+}
+.res-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 8px 20px;
+  min-height: 40px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  user-select: none;
+}
+.res-filter-btn:hover { color: var(--text-primary); border-color: var(--border-strong); }
+.res-filter-btn[aria-pressed="true"] {
+  color: var(--text-on-dark);
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+  box-shadow: 0 2px 12px var(--brand-accent-glow);
+}
+.res-filter-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.res-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  padding: 0 5px;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.res-filter-btn[aria-pressed="true"] .res-filter-count {
+  background: rgba(255,255,255,0.25);
+  color: var(--text-on-dark);
+}
+
+/* Resource card grid */
+.res-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+@media (max-width: 1024px) { .res-card-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .res-card-grid { grid-template-columns: 1fr; } }
+
+/* Individual resource card */
+.res-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.res-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-3px); border-color: var(--border-strong); }
+
+/* Card visual banner (all-CSS / SVG, no photos) */
+.res-card-banner {
+  position: relative;
+  height: 140px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+}
+.res-card-banner.alt-a { background: linear-gradient(135deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%); }
+.res-card-banner.alt-b { background: linear-gradient(135deg, var(--brand-accent) 0%, var(--brand-accent-deep) 100%); }
+.res-card-banner.alt-c { background: linear-gradient(160deg, var(--brand-accent-deep) 30%, var(--brand-accent) 100%); }
+/* Decorative SVG inside the banner */
+.res-card-banner-deco {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.18;
+}
+.res-card-banner-deco svg { width: 100px; height: 100px; }
+/* Type pill overlaid on banner */
+.res-type-pill {
+  position: absolute;
+  bottom: var(--space-3);
+  left: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-on-dark);
+  background: rgba(0,0,0,0.30);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.res-type-pill svg { width: 12px; height: 12px; }
+
+/* Card body */
+.res-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--space-5);
+  gap: var(--space-3);
+}
+.res-card-title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+.res-card-blurb {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  flex: 1;
+}
+.res-card-meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.res-card-meta svg { width: 12px; height: 12px; }
+.res-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand-accent);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: gap var(--dur-fast) var(--ease-out), color var(--dur-fast);
+  text-decoration: none;
+}
+.res-card-cta svg { width: 14px; height: 14px; transition: transform var(--dur-fast) var(--ease-out); }
+.res-card-cta:hover { color: var(--brand-accent-deep); gap: 8px; }
+.res-card-cta:hover svg { transform: translateX(3px); }
+.res-card-cta:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; border-radius: 3px; }
+
+/* Hidden state for filtered-out cards */
+.res-card.filtered-out {
+  display: none;
+}
+
+/* Fix: hero ticker clip on narrow viewports (<=420px).
+   The ticker is display:inline-flex with a hard min-width:220px on the slot,
+   which causes it to overflow the container below ~390px.
+   Allow the slot to shrink and the pill to wrap at very small sizes. */
+@media (max-width: 420px) {
+  .res-topic-ticker {
+    flex-wrap: wrap;
+    max-width: 100%;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+  .res-topic-slot {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+}
+
+/* Stagger entrance */
+.res-grid-section.js-anim .res-card {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--ri-d, 0ms),
+              transform var(--dur-slow) var(--ease-out) var(--ri-d, 0ms),
+              box-shadow var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
+}
+.res-grid-section.js-anim .res-card.ri-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .res-grid-section.js-anim .res-card { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [3] FEATURED RESOURCE — large card with inline read-time bar
+   ============================================================ */
+.res-featured-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+.res-featured-card:hover { box-shadow: var(--shadow-card-hover); }
+@media (max-width: 860px) { .res-featured-card { grid-template-columns: 1fr; } }
+
+.res-featured-visual {
+  position: relative;
+  min-height: 360px;
+  background: linear-gradient(150deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--space-7);
+  overflow: hidden;
+}
+@media (max-width: 860px) { .res-featured-visual { min-height: 260px; } }
+
+/* Abstract data-viz decoration inside featured banner */
+.res-feat-deco {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.res-feat-deco svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.12;
+}
+.res-feat-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-on-dark);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  margin-bottom: var(--space-4);
+}
+.res-feat-badge svg { width: 13px; height: 13px; }
+.res-feat-headline {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 30px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text-on-dark);
+  max-width: 28ch;
+}
+
+/* Featured card body */
+.res-featured-body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-7);
+  gap: var(--space-5);
+}
+.res-featured-label { color: var(--text-tertiary); }
+.res-featured-body h3 {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.res-featured-body p { color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+
+/* Animated read-time progress bar */
+.res-read-track {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.res-read-label { font-size: 12px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
+.res-read-label b { color: var(--brand-accent); }
+.res-read-rail { height: 6px; background: var(--border-subtle); border-radius: var(--radius-pill); overflow: hidden; }
+.res-read-fill {
+  height: 100%;
+  width: 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  transition: width 1.4s var(--ease-out);
+}
+.res-read-fill.visible { width: 65%; } /* 65% through estimated at intro point */
+
+.res-feat-chapters { display: flex; flex-direction: column; gap: var(--space-2); }
+.res-feat-chapter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.res-feat-chapter:last-child { border-bottom: none; }
+.res-feat-ch-num { font-size: 11px; font-weight: 700; color: var(--text-tertiary); font-variant-numeric: tabular-nums; width: 20px; flex-shrink: 0; }
+.res-feat-ch-title { flex: 1; font-weight: 500; color: var(--text-primary); }
+.res-feat-ch-time { font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+
+.res-featured-actions { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; margin-top: auto; }
+
+/* ============================================================
+   [4] NEWSLETTER — email capture with animated send confirmation
+   ============================================================ */
+.res-newsletter {
+  background: linear-gradient(150deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-7);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+@media (max-width: 860px) { .res-newsletter { grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-7) var(--space-5); } }
+
+.res-newsletter-deco {
+  position: absolute;
+  right: -80px;
+  top: -80px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  pointer-events: none;
+}
+.res-newsletter-deco-2 {
+  position: absolute;
+  left: 40%;
+  bottom: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+
+.res-nl-copy { position: relative; z-index: 1; }
+.res-nl-copy .eyebrow { color: rgba(255,255,255,0.7); margin-bottom: var(--space-3); display: block; }
+.res-nl-copy h2 { color: var(--text-on-dark); font-size: clamp(24px, 3vw, 36px); margin-bottom: var(--space-3); }
+.res-nl-copy p { color: var(--text-on-dark-dim); font-size: 15px; line-height: 1.6; max-width: 44ch; }
+
+.res-nl-form { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--space-4); }
+.res-nl-input-row { display: flex; gap: var(--space-3); }
+@media (max-width: 480px) { .res-nl-input-row { flex-direction: column; } }
+.res-nl-input {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-cta);
+  outline: none;
+  min-height: 44px;
+  transition: border-color var(--dur-fast);
+}
+.res-nl-input:focus { border-color: var(--brand-accent); }
+.res-nl-input::placeholder { color: var(--text-tertiary); }
+.res-nl-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 12px 24px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brand-accent-deep);
+  background: var(--bg-surface);
+  border: none;
+  border-radius: var(--radius-cta);
+  cursor: pointer;
+  min-height: 44px;
+  white-space: nowrap;
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.res-nl-submit:hover { background: var(--bg-canvas); transform: translateY(-1px); }
+.res-nl-submit:focus-visible { outline: 2px solid var(--text-on-dark); outline-offset: 2px; }
+.res-nl-submit svg { width: 16px; height: 16px; }
+.res-nl-fine { font-size: 12px; color: rgba(255,255,255,0.55); }
+/* Success state */
+.res-nl-success {
+  display: none;
+  align-items: center;
+  gap: var(--space-4);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-on-dark);
+}
+.res-nl-success.shown { display: flex; }
+.res-nl-success svg { width: 20px; height: 20px; color: var(--text-on-dark); flex-shrink: 0; }
+
+/* ============================================================
+   [5] CLOSING CTA — reuse fin-cta-card pattern
+   ============================================================ */
+.res-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.res-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.res-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.res-cta-card .btn-on-light {
+  background: var(--bg-surface);
+  color: var(--brand-accent-deep);
+  padding: 12px 28px;
+  border-radius: var(--radius-cta);
+  font-weight: 600;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background var(--dur-fast), transform var(--dur-fast);
+  text-decoration: none;
+}
+.res-cta-card .btn-on-light:hover { background: var(--bg-canvas); transform: translateY(-1px); }
+
+/* ============================================================
+   hero-purple-wash (from finance hero — purple gradient wash behind hero)
+   ============================================================ */
+.hero-purple-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, var(--brand-accent-soft) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Stats row in resource section */
+.res-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-top: var(--space-7);
+}
+.res-stat-item { text-align: center; }
+.res-stat-item b { display: block; font-size: clamp(24px, 3vw, 32px); font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.res-stat-item span { display: block; font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#res-hero)
+     Interactive: animated topic-ticker cycling through resource subjects
+     ============================================================ -->
+<section id="res-hero" class="res-hero section-pad" aria-labelledby="res-hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container">
+    <div class="res-hero-inner reveal">
+      <span class="eyebrow">Resources</span>
+      <h1 id="res-hero-heading" class="display-xl">
+        Learn how governed<br>agentic analytics works.
+      </h1>
+      <p class="subcopy body-lg">
+        Guides, webinars, reports, and customer stories — all grounded in how Quaeris delivers
+        audit-ready answers from your warehouse, without data ever leaving your perimeter.
+      </p>
+
+      <!-- Animated topic ticker -->
+      <div class="res-topic-ticker" aria-label="Explore resources about:">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Explore resources about&nbsp;</span>
+        <span class="res-topic-slot" aria-hidden="true">
+          <span class="res-topic-word active">governed analytics</span>
+          <span class="res-topic-word below">semantic layers</span>
+          <span class="res-topic-word below">audit &amp; lineage</span>
+          <span class="res-topic-word below">agentic AI</span>
+          <span class="res-topic-word below">warehouse-native</span>
+          <span class="res-topic-word below">finance intelligence</span>
+        </span>
+      </div>
+
+      <!-- Stats row -->
+      <div class="res-stat-row">
+        <div class="res-stat-item" data-placeholder>
+          <b class="res-count-num" data-target="40">40</b>
+          <span>Resources published</span>
+        </div>
+        <div class="res-stat-item" data-placeholder>
+          <b class="res-count-num" data-target="12">12</b>
+          <span>In-depth guides</span>
+        </div>
+        <div class="res-stat-item" data-placeholder>
+          <b class="res-count-num" data-target="8">8</b>
+          <span>On-demand webinars</span>
+        </div>
+        <div class="res-stat-item" data-placeholder>
+          <b class="res-count-num" data-target="6">6</b>
+          <span>Original research reports</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] RESOURCE FILTER + CARD GRID (#res-grid)
+     Interactive: type filter tabs (All / Guides / Webinars / Reports / Customer stories)
+     filter a 9-card mixed grid with staggered animated reveal.
+     ============================================================ -->
+<section id="res-grid" class="res-grid-section section-pad" aria-labelledby="res-grid-heading" style="background: var(--bg-canvas);">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom: var(--space-7);">
+      <span class="eyebrow">All Resources</span>
+      <h2 id="res-grid-heading" class="display-lg">
+        Browse by type.
+      </h2>
+      <p class="subcopy body-lg">Every guide, webinar, and report is grounded in real Quaeris architecture — no generic AI content.</p>
+    </div>
+
+    <!-- Filter tab bar -->
+    <div class="res-filter-bar" role="group" aria-label="Filter resources by type">
+      <button class="res-filter-btn" aria-pressed="true"  data-filter="all">All <span class="res-filter-count">12</span></button>
+      <button class="res-filter-btn" aria-pressed="false" data-filter="guide">Guides <span class="res-filter-count">4</span></button>
+      <button class="res-filter-btn" aria-pressed="false" data-filter="webinar">Webinars <span class="res-filter-count">3</span></button>
+      <button class="res-filter-btn" aria-pressed="false" data-filter="report">Reports <span class="res-filter-count">3</span></button>
+      <button class="res-filter-btn" aria-pressed="false" data-filter="story">Customer Stories <span class="res-filter-count">2</span></button>
+    </div>
+
+    <!-- Resource card grid -->
+    <div class="res-card-grid" role="list" aria-label="Resource cards" id="res-card-grid">
+
+      <!-- Card 1 — Guide -->
+      <article class="res-card" data-type="guide" role="listitem">
+        <div class="res-card-banner alt-a">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="20" width="80" height="10" rx="5" fill="white"/>
+              <rect x="10" y="38" width="60" height="8" rx="4" fill="white"/>
+              <rect x="10" y="54" width="70" height="8" rx="4" fill="white"/>
+              <rect x="10" y="70" width="45" height="8" rx="4" fill="white"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+            Guide
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>The Enterprise Guide to Governed Agentic Analytics</h3>
+          <p class="res-card-blurb" data-placeholder>A step-by-step walkthrough of how to deploy agentic analytics on your existing warehouse while keeping data residency, audit trails, and role-based access intact.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>18 min read</span>
+          </p>
+          <a href="/resources/guide" class="res-card-cta" data-placeholder>
+            Read the guide
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 2 — Webinar -->
+      <article class="res-card" data-type="webinar" role="listitem">
+        <div class="res-card-banner alt-b">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="30" stroke="white" stroke-width="4"/>
+              <polygon points="42,38 66,50 42,62" fill="white"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Webinar
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>Live Demo: Semantic Layer + MCP in 30 Minutes</h3>
+          <p class="res-card-blurb" data-placeholder>Watch how finance teams connect their warehouse, define certified metrics, and get audit-trail answers from natural-language questions — all in a single session.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>32 min on-demand</span>
+          </p>
+          <a href="/resources/webinar" class="res-card-cta" data-placeholder>
+            Watch now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 3 — Report -->
+      <article class="res-card" data-type="report" role="listitem">
+        <div class="res-card-banner alt-c">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="10,80 30,55 50,65 70,35 90,20" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <circle cx="70" cy="35" r="6" fill="white"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+            Report
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>State of Agentic Analytics in Finance — 2026</h3>
+          <p class="res-card-blurb" data-placeholder>Original survey research across enterprise finance teams: adoption rates, governance gaps, and the data quality issues blocking AI analytics from board-level trust.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>24 page PDF</span>
+          </p>
+          <a href="/resources/report" class="res-card-cta" data-placeholder>
+            Download report
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 4 — Customer Story -->
+      <article class="res-card" data-type="story" role="listitem">
+        <div class="res-card-banner alt-a">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="40" r="20" stroke="white" stroke-width="4"/>
+              <path d="M20 80 Q50 60 80 80" stroke="white" stroke-width="4" fill="none"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Customer Story
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>How a Global FP&amp;A Team Cut Month-End Close by 3 Days</h3>
+          <p class="res-card-blurb" data-placeholder>A controller team used Quaeris to replace a 5-day manual reconciliation cycle with a single governed query — with full GL lineage exported for the auditors.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>8 min read</span>
+          </p>
+          <a href="/resources/story" class="res-card-cta" data-placeholder>
+            Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 5 — Guide -->
+      <article class="res-card" data-type="guide" role="listitem">
+        <div class="res-card-banner alt-b">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="15" y="15" width="30" height="30" rx="6" stroke="white" stroke-width="4"/>
+              <rect x="55" y="15" width="30" height="30" rx="6" stroke="white" stroke-width="4"/>
+              <rect x="35" y="55" width="30" height="30" rx="6" stroke="white" stroke-width="4"/>
+              <line x1="30" y1="45" x2="50" y2="55" stroke="white" stroke-width="3"/>
+              <line x1="70" y1="45" x2="50" y2="55" stroke="white" stroke-width="3"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+            Guide
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>Building a Semantic Layer for Warehouse-Native Analytics</h3>
+          <p class="res-card-blurb" data-placeholder>A practical guide to defining, versioning, and governing certified metrics directly above Snowflake, BigQuery, or Databricks — without copying data.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>22 min read</span>
+          </p>
+          <a href="/resources/guide" class="res-card-cta" data-placeholder>
+            Read the guide
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 6 — Webinar -->
+      <article class="res-card" data-type="webinar" role="listitem">
+        <div class="res-card-banner alt-c">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="15" width="80" height="55" rx="8" stroke="white" stroke-width="4"/>
+              <line x1="30" y1="70" x2="30" y2="85" stroke="white" stroke-width="3"/>
+              <line x1="70" y1="70" x2="70" y2="85" stroke="white" stroke-width="3"/>
+              <line x1="20" y1="85" x2="80" y2="85" stroke="white" stroke-width="3"/>
+              <polygon points="38,32 65,42 38,52" fill="white"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Webinar
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>Audit-Ready AI: How to Keep Every Answer Traceable</h3>
+          <p class="res-card-blurb" data-placeholder>A 45-minute session walking through Quaeris's lineage architecture: how query lineage is automatically captured from question to GL root, and exported for regulators.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>45 min on-demand</span>
+          </p>
+          <a href="/resources/webinar" class="res-card-cta" data-placeholder>
+            Watch now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 7 — Report -->
+      <article class="res-card" data-type="report" role="listitem">
+        <div class="res-card-banner alt-a">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="30" cy="50" r="18" stroke="white" stroke-width="4"/>
+              <circle cx="70" cy="50" r="18" stroke="white" stroke-width="4"/>
+              <ellipse cx="50" cy="50" rx="10" ry="18" fill="white" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+            Report
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>The Data Governance Maturity Model for AI-Ready Enterprises</h3>
+          <p class="res-card-blurb" data-placeholder>A five-stage framework for assessing whether your organization's metric definitions, lineage practices, and access controls are ready to underpin agentic AI safely.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>18 page PDF</span>
+          </p>
+          <a href="/resources/report" class="res-card-cta" data-placeholder>
+            Download report
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 8 — Guide -->
+      <article class="res-card" data-type="guide" role="listitem">
+        <div class="res-card-banner alt-b">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 15 L85 30 L85 60 Q85 78 50 88 Q15 78 15 60 L15 30 Z" stroke="white" stroke-width="4" fill="none"/>
+              <path d="M35 50 L45 60 L65 40" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+            Guide
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>SOX, EU AI Act, and Your Analytics Stack: A Compliance Playbook</h3>
+          <p class="res-card-blurb" data-placeholder>How to map your AI analytics deployment against SOX §302/§404, EU AI Act Article 13 transparency obligations, and SOC 2 Type II requirements — with a reusable checklist.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>15 min read</span>
+          </p>
+          <a href="/resources/guide" class="res-card-cta" data-placeholder>
+            Read the guide
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 9 — Webinar -->
+      <article class="res-card" data-type="webinar" role="listitem">
+        <div class="res-card-banner alt-c">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="50" y1="10" x2="50" y2="90" stroke="white" stroke-width="3"/>
+              <line x1="10" y1="50" x2="90" y2="50" stroke="white" stroke-width="3"/>
+              <circle cx="50" cy="50" r="25" stroke="white" stroke-width="4"/>
+              <ellipse cx="50" cy="50" rx="12" ry="25" stroke="white" stroke-width="3"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Webinar
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>MCP Protocol + Quaeris: Connecting Enterprise Tools to Your Semantic Layer</h3>
+          <p class="res-card-blurb" data-placeholder>A technical walkthrough of how Quaeris exposes a certified MCP endpoint — enabling agents in Slack, Notion, and Excel to query governed answers from your warehouse.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>40 min on-demand</span>
+          </p>
+          <a href="/resources/webinar" class="res-card-cta" data-placeholder>
+            Watch now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 10 — Report -->
+      <article class="res-card" data-type="report" role="listitem">
+        <div class="res-card-banner alt-a">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="60" width="12" height="25" rx="3" fill="white"/>
+              <rect x="38" y="45" width="12" height="40" rx="3" fill="white"/>
+              <rect x="56" y="30" width="12" height="55" rx="3" fill="white"/>
+              <rect x="74" y="15" width="12" height="70" rx="3" fill="white"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+            Report
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>Enterprise AI Analytics: Build vs Buy vs Govern</h3>
+          <p class="res-card-blurb" data-placeholder>A cost and risk analysis of the three paths enterprise analytics teams take — building custom LLM pipelines, buying off-the-shelf tools, or deploying a governed platform above the warehouse.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>20 page PDF</span>
+          </p>
+          <a href="/resources/report" class="res-card-cta" data-placeholder>
+            Download report
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 11 — Customer Story -->
+      <article class="res-card" data-type="story" role="listitem">
+        <div class="res-card-banner alt-b">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 70 Q30 30 50 45 Q70 60 85 20" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <circle cx="85" cy="20" r="6" fill="white"/>
+              <circle cx="50" cy="45" r="5" fill="white"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Customer Story
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>Board-Level Variance Analysis in 60 Seconds: A CFO's Story</h3>
+          <p class="res-card-blurb" data-placeholder>A CFO describes the board meeting moment that changed how their finance team runs analytics — from a two-day SQL sprint to a governed Quaeris query answered live in the room.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>6 min read</span>
+          </p>
+          <a href="/resources/story" class="res-card-cta" data-placeholder>
+            Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 12 — Guide -->
+      <article class="res-card" data-type="guide" role="listitem">
+        <div class="res-card-banner alt-c">
+          <div class="res-card-banner-deco" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="35" stroke="white" stroke-width="4"/>
+              <line x1="50" y1="15" x2="50" y2="50" stroke="white" stroke-width="4"/>
+              <line x1="50" y1="50" x2="72" y2="65" stroke="white" stroke-width="4"/>
+              <circle cx="50" cy="50" r="5" fill="white"/>
+            </svg>
+          </div>
+          <span class="res-type-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+            Guide
+          </span>
+        </div>
+        <div class="res-card-body">
+          <h3 class="res-card-title" data-placeholder>Agentic Analytics vs BI Tools: When to Use Each</h3>
+          <p class="res-card-blurb" data-placeholder>A decision framework for data and analytics leaders evaluating where governed agentic analytics fits alongside their existing Tableau, Power BI, or Looker investment.</p>
+          <p class="res-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-placeholder>12 min read</span>
+          </p>
+          <a href="/resources/guide" class="res-card-cta" data-placeholder>
+            Read the guide
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+    </div><!-- /res-card-grid -->
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] FEATURED RESOURCE (#res-featured)
+     Interactive: animated read-time progress bar that fills on scroll-into-view;
+     chapter list with staggered reveal.
+     ============================================================ -->
+<section id="res-featured" class="section-pad" aria-labelledby="res-featured-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom: var(--space-7);">
+      <span class="eyebrow">Featured Resource</span>
+      <h2 id="res-featured-heading" class="display-lg">
+        Our most comprehensive guide.
+      </h2>
+    </div>
+
+    <div class="res-featured-card">
+      <!-- Left: visual -->
+      <div class="res-featured-visual">
+        <div class="res-feat-deco" aria-hidden="true">
+          <svg viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- Abstract data flow lines -->
+            <circle cx="200" cy="150" r="120" stroke="white" stroke-width="2"/>
+            <circle cx="200" cy="150" r="80" stroke="white" stroke-width="1.5"/>
+            <circle cx="200" cy="150" r="40" stroke="white" stroke-width="1"/>
+            <line x1="200" y1="30" x2="200" y2="270" stroke="white" stroke-width="1.5"/>
+            <line x1="80" y1="150" x2="320" y2="150" stroke="white" stroke-width="1.5"/>
+            <line x1="115" y1="65" x2="285" y2="235" stroke="white" stroke-width="1"/>
+            <line x1="285" y1="65" x2="115" y2="235" stroke="white" stroke-width="1"/>
+            <!-- Data nodes -->
+            <circle cx="200" cy="150" r="12" fill="white"/>
+            <circle cx="200" cy="30" r="7" fill="white"/>
+            <circle cx="320" cy="150" r="7" fill="white"/>
+            <circle cx="200" cy="270" r="7" fill="white"/>
+            <circle cx="80" cy="150" r="7" fill="white"/>
+            <!-- Flow lines below -->
+            <path d="M60 340 Q200 310 340 360" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M60 380 Q200 350 340 400" stroke="white" stroke-width="1.5" fill="none"/>
+            <path d="M60 420 Q200 395 340 440" stroke="white" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <span class="res-feat-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          In-depth guide · 45 min read
+        </span>
+        <h3 class="res-feat-headline" data-placeholder>The Complete Blueprint for Governed Agentic Analytics</h3>
+      </div>
+
+      <!-- Right: body -->
+      <div class="res-featured-body">
+        <span class="eyebrow res-featured-label" data-placeholder>Deep-dive guide</span>
+        <h3 data-placeholder>From semantic layer to board-ready answer: how to deploy AI analytics your auditors will trust.</h3>
+        <p data-placeholder>This guide walks through every layer of a governed agentic analytics deployment: warehouse-native architecture, semantic layer design, certified metric versioning, role-based access, audit lineage, and MCP integration. Written for CDOs, heads of analytics, and data engineering leads.</p>
+
+        <!-- Animated read-time progress bar -->
+        <div class="res-read-track" aria-label="Estimated reading progress for this guide">
+          <div class="res-read-label">
+            <span>Estimated read time</span>
+            <b>45 min</b>
+          </div>
+          <div class="res-read-rail" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" aria-label="65% of content previewed in this summary">
+            <div class="res-read-fill" id="res-read-fill"></div>
+          </div>
+        </div>
+
+        <!-- Chapter list with staggered reveal -->
+        <div class="res-feat-chapters" id="res-feat-chapters" aria-label="Guide chapters">
+          <div class="res-feat-chapter" data-placeholder>
+            <span class="res-feat-ch-num">01</span>
+            <span class="res-feat-ch-title">Why governance is the prerequisite for agentic AI</span>
+            <span class="res-feat-ch-time">8 min</span>
+          </div>
+          <div class="res-feat-chapter" data-placeholder>
+            <span class="res-feat-ch-num">02</span>
+            <span class="res-feat-ch-title">Designing a warehouse-native semantic layer</span>
+            <span class="res-feat-ch-time">10 min</span>
+          </div>
+          <div class="res-feat-chapter" data-placeholder>
+            <span class="res-feat-ch-num">03</span>
+            <span class="res-feat-ch-title">Certified metric versioning and ownership</span>
+            <span class="res-feat-ch-time">9 min</span>
+          </div>
+          <div class="res-feat-chapter" data-placeholder>
+            <span class="res-feat-ch-num">04</span>
+            <span class="res-feat-ch-title">Audit lineage: from question to source system</span>
+            <span class="res-feat-ch-time">10 min</span>
+          </div>
+          <div class="res-feat-chapter" data-placeholder>
+            <span class="res-feat-ch-num">05</span>
+            <span class="res-feat-ch-title">MCP integration and multi-tool orchestration</span>
+            <span class="res-feat-ch-time">8 min</span>
+          </div>
+        </div>
+
+        <div class="res-featured-actions">
+          <a href="/resources/guide" class="btn btn-primary" data-placeholder>Download the full guide</a>
+          <a href="/contact" class="btn btn-secondary" data-placeholder>Talk to an expert</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] NEWSLETTER (#res-newsletter)
+     Interactive: animated email-submission with JS confirmation message.
+     ============================================================ -->
+<section id="res-newsletter" class="section-pad" aria-labelledby="res-nl-heading">
+  <div class="container">
+    <div class="res-newsletter reveal">
+      <div class="res-newsletter-deco" aria-hidden="true"></div>
+      <div class="res-newsletter-deco-2" aria-hidden="true"></div>
+
+      <!-- Copy -->
+      <div class="res-nl-copy">
+        <span class="eyebrow">Stay informed</span>
+        <h2 id="res-nl-heading" class="display-md">New resources, monthly.</h2>
+        <p>Get the latest guides, reports, and webinar invitations from the Quaeris team. Governed analytics, delivered to your inbox — no filler.</p>
+      </div>
+
+      <!-- Form -->
+      <div class="res-nl-form">
+        <form id="res-nl-form-el" novalidate aria-label="Newsletter sign-up">
+          <div class="res-nl-input-row">
+            <label for="res-nl-email" class="sr-only">Email address</label>
+            <input
+              id="res-nl-email"
+              class="res-nl-input"
+              type="email"
+              placeholder="your.email@company.com"
+              autocomplete="email"
+              required
+              aria-required="true"
+            />
+            <button type="submit" class="res-nl-submit">
+              Subscribe
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg>
+            </button>
+          </div>
+          <p class="res-nl-fine">By subscribing you agree to our privacy policy. Unsubscribe any time.</p>
+        </form>
+        <div class="res-nl-success" id="res-nl-success" role="status" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>You're subscribed. Expect the next issue in your inbox shortly.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] CLOSING CTA (#res-cta)
+     ============================================================ -->
+<section id="res-cta" class="section-pad" aria-labelledby="res-cta-heading">
+  <div class="container">
+    <div class="res-cta-card reveal">
+      <h2 id="res-cta-heading" class="display-lg">Ready to see governed<br>agentic analytics live?</h2>
+      <p class="body-lg">Every resource on this page describes the same architecture you can deploy on your warehouse today. Book a demo and see it answer your actual questions.</p>
+      <a href="/contact" class="btn btn-on-light">Book a demo</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPTS — vanilla IIFEs; motion gated behind JS flag + reduced-motion safe.
+     ============================================================ -->
+
+<!-- [1] HERO: topic-ticker rotation + count-up stats -->
+<script>
+(function () {
+  /* --- Topic ticker --- */
+  const words = Array.from(document.querySelectorAll('.res-topic-word'));
+  if (words.length > 1) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+    if (reduce) return; // static first word is fine
+    function advance() {
+      words[current].className = 'res-topic-word above';
+      current = (current + 1) % words.length;
+      words[current].className = 'res-topic-word active';
+      // preload next as below
+      const next = (current + 1) % words.length;
+      words[next].className = 'res-topic-word below';
+    }
+    // Start all as below except first
+    words.forEach((w, i) => { if (i !== 0) w.className = 'res-topic-word below'; });
+    setInterval(advance, 2600);
+  }
+
+  /* --- Count-up stats (triggered on intersection) --- */
+  const nums = Array.from(document.querySelectorAll('.res-count-num'));
+  if (!nums.length) return;
+  const reduce2 = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function countUp(el) {
+    const target = parseInt(el.dataset.target, 10) || 0;
+    if (reduce2) { el.textContent = target; return; }
+    const dur = 900, start = performance.now();
+    el.textContent = '0';
+    (function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick); else el.textContent = target;
+    })(start);
+  }
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { countUp(e.target); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    nums.forEach(n => io.observe(n));
+  } else {
+    nums.forEach(n => { n.textContent = n.dataset.target; });
+  }
+})();
+</script>
+
+<!-- [2] RESOURCE GRID: filter tabs + staggered card entrance -->
+<script>
+(function () {
+  const section = document.querySelector('.res-grid-section');
+  const grid = document.getElementById('res-card-grid');
+  const btns = Array.from(document.querySelectorAll('.res-filter-btn'));
+  if (!section || !grid || !btns.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Cards indexed by type
+  const cards = Array.from(grid.querySelectorAll('.res-card'));
+  cards.forEach((c, i) => c.style.setProperty('--ri-d', (i % 3) * 80 + 'ms'));
+
+  function applyFilter(filter) {
+    btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.filter === filter ? 'true' : 'false'));
+    let visible = 0;
+    cards.forEach(c => {
+      const match = filter === 'all' || c.dataset.type === filter;
+      c.classList.toggle('filtered-out', !match);
+      if (match) { c.style.setProperty('--ri-d', visible * 80 + 'ms'); visible++; }
+    });
+    // Re-trigger entrance animation
+    if (!reduce) {
+      section.classList.remove('js-anim');
+      void section.offsetWidth;
+      section.classList.add('js-anim');
+      requestAnimationFrame(() => {
+        cards.forEach(c => { if (!c.classList.contains('filtered-out')) c.classList.add('ri-visible'); });
+      });
+    }
+  }
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+  });
+
+  // Scroll-triggered entrance
+  if (!reduce) {
+    section.classList.add('js-anim');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            cards.forEach((c, i) => setTimeout(() => c.classList.add('ri-visible'), i * 60));
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.08 });
+      io.observe(section);
+    } else {
+      cards.forEach(c => c.classList.add('ri-visible'));
+    }
+  }
+})();
+</script>
+
+<!-- [3] FEATURED RESOURCE: read-progress bar + chapter stagger -->
+<script>
+(function () {
+  const fill = document.getElementById('res-read-fill');
+  const chapters = Array.from(document.querySelectorAll('#res-feat-chapters .res-feat-chapter'));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Chapter stagger reveal
+  if (!reduce) {
+    chapters.forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateX(-8px)'; c.style.transition = 'opacity 350ms var(--ease-out), transform 350ms var(--ease-out)'; });
+  }
+
+  if (!fill) return;
+  if (reduce) { fill.classList.add('visible'); chapters.forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; }); return; }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          // Animate fill bar
+          requestAnimationFrame(() => fill.classList.add('visible'));
+          // Stagger chapters
+          chapters.forEach((c, i) => setTimeout(() => {
+            c.style.opacity = '1'; c.style.transform = 'none';
+          }, 300 + i * 100));
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    io.observe(fill.closest('.res-featured-card'));
+  } else {
+    fill.classList.add('visible');
+    chapters.forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+  }
+})();
+</script>
+
+<!-- [4] NEWSLETTER: form submission confirmation -->
+<script>
+(function () {
+  const form = document.getElementById('res-nl-form-el');
+  const success = document.getElementById('res-nl-success');
+  const input = document.getElementById('res-nl-email');
+  if (!form || !success || !input) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!input.value || !input.checkValidity()) {
+      input.focus();
+      return;
+    }
+    // Animate out form, show confirmation
+    form.style.transition = 'opacity 250ms';
+    form.style.opacity = '0';
+    setTimeout(() => {
+      form.style.display = 'none';
+      success.classList.add('shown');
+    }, 260);
+  });
+})();
+</script>
+
+<!-- [5] SCROLL REVEAL — global .reveal handler for sections that use it -->
+<script>
+(function () {
+  const reveals = Array.from(document.querySelectorAll('.reveal'));
+  if (!reveals.length) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    reveals.forEach(r => { r.style.opacity = '1'; r.style.transform = 'none'; });
+    return;
+  }
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => io.observe(r));
+  } else {
+    reveals.forEach(r => r.classList.add('visible'));
+  }
+})();
+</script>
+
+</body>
+</html>

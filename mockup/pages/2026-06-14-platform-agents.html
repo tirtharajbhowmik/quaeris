@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/agents — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* static reveal: sections without JS animation are visible immediately */
+  .reveal { opacity: 1; transform: none; }
+  /* accent-line used across display headings (scoped to .hero-h1 in globals.css; extend here) */
+  .accent-line { display: inline; color: var(--brand-accent); }
+  /* visually-hidden a11y utility (not in globals.css yet) */
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: pag- (platform-agents) — move to globals.css at port time.
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — pag-hero
+   Two-column: left = text + trust + video CTA; right = animated
+   agent query card (typewriter → skeleton → answer with lineage).
+   ============================================================ */
+
+.pag-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 900px) { .pag-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+/* purple wash behind hero */
+.hero-purple-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 70% 40%, var(--brand-accent-glow), transparent 70%);
+  pointer-events: none;
+}
+
+/* trust pointer strip */
+.pag-trust-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-5) var(--space-6);
+  margin-top: var(--space-7);
+}
+@media (max-width: 640px) { .pag-trust-strip { grid-template-columns: 1fr; } }
+.pag-trust-item { display: flex; align-items: flex-start; gap: var(--space-3); }
+.pag-trust-item svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+.pag-trust-item strong { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.pag-trust-item span { display: block; font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+
+/* video CTA pill */
+.pag-video-pill {
+  display: inline-flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-surface); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill); padding: 10px 20px 10px 12px;
+  font-size: 14px; font-weight: 600; color: var(--text-primary);
+  cursor: pointer; transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+  min-height: 44px; text-decoration: none;
+}
+.pag-video-pill:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-1px); }
+.pag-video-pill:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.pag-play-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--cta-bg); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pag-play-icon svg { width: 13px; height: 13px; color: var(--text-on-dark); margin-left: 2px; }
+
+/* agent query card (right side of hero) */
+.pag-agent-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex; flex-direction: column; gap: var(--space-4);
+}
+.pag-card-head { display: flex; align-items: center; justify-content: space-between; }
+.pag-card-dots { display: flex; gap: 6px; }
+.pag-card-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+.pag-card-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: var(--brand-accent);
+  background: var(--brand-accent-soft); border-radius: var(--radius-pill); padding: 3px 10px;
+}
+.pag-card-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-accent); }
+
+.pag-query-bar {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill); padding: var(--space-3) var(--space-4);
+  font-size: 14px; color: var(--text-primary); font-weight: 500; overflow: hidden;
+}
+.pag-query-bar svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+.pag-query-text { white-space: pre; }
+.pag-caret { display: inline-block; width: 1.5px; height: 1em; background: var(--brand-accent); margin-left: 2px; vertical-align: -2px; animation: pag-caret 1s steps(1) infinite; }
+.pag-caret.hidden { display: none; }
+@keyframes pag-caret { 50% { opacity: 0; } }
+
+/* loading skeleton */
+.pag-loading { display: none; flex-direction: column; gap: var(--space-3); }
+.pag-analysis.is-loading .pag-loading { display: flex; }
+.pag-analysis.is-loading .pag-answer-title,
+.pag-analysis.is-loading .pag-answer-row { display: none; }
+.pag-status { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.pag-spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--brand-accent-soft); border-top-color: var(--brand-accent); animation: pag-spin .7s linear infinite; }
+@keyframes pag-spin { to { transform: rotate(360deg); } }
+.pag-skel-rows { display: flex; flex-direction: column; gap: var(--space-3); }
+.pag-skel-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-subtle); }
+.pag-skel { position: relative; overflow: hidden; height: 12px; border-radius: var(--radius-pill); background: var(--border-subtle); }
+.pag-skel::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: pag-shimmer 1.1s var(--ease-out) infinite; }
+.pag-skel-label { flex: 1; max-width: 55%; }
+.pag-skel-val { width: 70px; }
+@keyframes pag-shimmer { 100% { transform: translateX(100%); } }
+
+/* answer results */
+.pag-answer-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.pag-answer-row {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-2);
+  font-size: 14px; color: var(--text-secondary);
+}
+.pag-answer-row:last-child { border-bottom: none; padding-bottom: 0; }
+.pag-answer-val { font-weight: 700; font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 4px; color: var(--text-primary); }
+.pag-answer-val.positive { color: var(--success); }
+.pag-answer-val.negative { color: var(--error); }
+
+/* lineage strip */
+.pag-lineage-strip {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
+  font-size: 12px; color: var(--text-tertiary);
+  background: var(--brand-accent-soft); border-radius: var(--radius-md); padding: var(--space-3);
+}
+.pag-lineage-strip svg { width: 14px; height: 14px; color: var(--brand-accent); }
+.pag-card-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.pag-card-stat { text-align: center; }
+.pag-card-stat b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); }
+.pag-card-stat span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+.pag-replay {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: none; cursor: pointer; font-family: var(--font-body);
+  font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+  padding: 3px 8px; border-radius: var(--radius-pill);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.pag-replay svg { width: 13px; height: 13px; }
+.pag-replay:hover { color: var(--brand-accent); background: var(--brand-accent-soft); }
+.pag-replay:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pag-caret, .pag-spinner, .pag-skel::after { animation: none !important; }
+}
+
+/* ============================================================
+   [2] WORKFLOW — pag-workflow
+   Three-step numbered cards with connecting arrow. CSS hover lift.
+   ============================================================ */
+
+.pag-workflow-steps {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr 40px 1fr;
+  align-items: center;
+  gap: 0;
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) {
+  .pag-workflow-steps { grid-template-columns: 1fr; gap: var(--space-5); }
+  .pag-workflow-arrow { display: none; }
+}
+.pag-workflow-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  height: 100%;
+  display: flex; flex-direction: column; gap: var(--space-4);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+  cursor: default;
+}
+.pag-workflow-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-3px); border-color: var(--brand-accent); }
+.pag-workflow-num {
+  font-family: var(--font-display); font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--brand-accent);
+}
+.pag-workflow-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; }
+.pag-workflow-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+.pag-workflow-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-tertiary); }
+.pag-workflow-card h3 { color: var(--text-primary); }
+.pag-workflow-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+.pag-workflow-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: var(--success);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+  border-radius: var(--radius-pill); padding: 3px 10px; align-self: flex-start; margin-top: auto;
+}
+.pag-workflow-tag svg { width: 12px; height: 12px; }
+.pag-workflow-arrow {
+  display: flex; align-items: center; justify-content: center; color: var(--border-strong);
+}
+.pag-workflow-arrow svg { width: 20px; height: 20px; }
+
+/* ============================================================
+   [3] PROBLEM / SOLUTION — pag-ps
+   Two-column contrast: problem (warm bg, warning) vs solution (accent).
+   ============================================================ */
+
+.pag-ps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 860px) { .pag-ps-grid { grid-template-columns: 1fr; } }
+
+.pag-problem-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--error);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-4);
+}
+.pag-solution-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-4);
+  color: var(--text-on-dark);
+}
+.pag-ps-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+}
+.pag-problem-card .pag-ps-label { color: var(--error); }
+.pag-solution-card .pag-ps-label { color: rgba(255,255,255,0.7); }
+.pag-ps-heading { font-size: 18px; font-weight: 600; line-height: 1.35; }
+.pag-problem-card .pag-ps-heading { color: var(--text-primary); }
+.pag-solution-card .pag-ps-heading { color: var(--text-on-dark); }
+.pag-ps-body { font-size: 15px; line-height: 1.65; }
+.pag-problem-card .pag-ps-body { color: var(--text-secondary); }
+.pag-solution-card .pag-ps-body { color: var(--text-on-dark-dim); }
+.pag-ps-impact {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  font-size: 14px; line-height: 1.55; padding: var(--space-4);
+  border-radius: var(--radius-md);
+}
+.pag-problem-card .pag-ps-impact { background: color-mix(in srgb, var(--error) 8%, transparent); color: var(--text-secondary); }
+.pag-solution-card .pag-ps-impact { background: rgba(255,255,255,0.12); color: var(--text-on-dark-dim); }
+.pag-ps-impact svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+.pag-problem-card .pag-ps-impact svg { color: var(--error); }
+.pag-solution-card .pag-ps-impact svg { color: var(--text-on-dark); }
+
+/* ============================================================
+   [4] CAPABILITIES — pag-caps
+   3×2 icon feature grid with hover lift + staggered entrance.
+   ============================================================ */
+
+.pag-caps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .pag-caps-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .pag-caps-grid { grid-template-columns: 1fr; } }
+.pag-cap-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-4);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.pag-cap-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); border-color: var(--brand-accent); }
+.pag-cap-card h3 { color: var(--text-primary); }
+.pag-cap-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+
+/* JS entrance */
+.pag-caps.js .pag-cap-card { opacity: 0; transform: translateY(14px); transition: opacity var(--dur-slow) var(--ease-out) var(--d,0ms), transform var(--dur-slow) var(--ease-out) var(--d,0ms), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out); }
+.pag-caps.js .pag-cap-card.entered { opacity: 1; transform: none; }
+
+/* ============================================================
+   [5] COMPETITIVE MATRIX — pag-matrix
+   Scrollable comparison table. Quaeris column highlighted.
+   ============================================================ */
+
+.pag-matrix-wrap { overflow-x: auto; margin-top: var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); }
+.pag-matrix-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 680px; }
+.pag-matrix-table th, .pag-matrix-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+.pag-matrix-table th { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); background: var(--bg-canvas); }
+.pag-matrix-table th.pag-col-q { background: var(--brand-accent-soft); color: var(--brand-accent); }
+.pag-matrix-table td.pag-col-q { background: color-mix(in srgb, var(--brand-accent-soft) 50%, transparent); font-weight: 600; color: var(--text-primary); }
+.pag-matrix-table tr:last-child td { border-bottom: none; }
+.pag-matrix-table tbody tr:hover td { background: var(--bg-canvas); }
+.pag-matrix-table tbody tr:hover td.pag-col-q { background: var(--brand-accent-soft); }
+.pag-matrix-feature { color: var(--text-primary); font-weight: 500; }
+.pag-cell-yes { display: inline-flex; align-items: center; gap: 5px; color: var(--success); font-weight: 600; }
+.pag-cell-yes svg { width: 14px; height: 14px; }
+.pag-cell-no { color: var(--text-tertiary); }
+.pag-cell-partial { color: var(--warning); font-size: 13px; }
+
+/* ============================================================
+   [6] AGENT EXAMPLE SHOWCASE — pag-example
+   Annotated step-by-step walkthrough: tab buttons + content panel.
+   ============================================================ */
+
+.pag-example-tabs {
+  display: flex; gap: var(--space-2); flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: var(--space-7);
+}
+.pag-example-tab {
+  position: relative; background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  color: var(--text-secondary); padding: 0 4px var(--space-4);
+  transition: color var(--dur-fast);
+}
+.pag-example-tab:hover { color: var(--text-primary); }
+.pag-example-tab[aria-selected="true"] { color: var(--brand-accent); }
+.pag-example-tab:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 4px; border-radius: 4px; }
+.pag-example-tab-bar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 2px; background: var(--brand-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-fast) var(--ease-out); }
+.pag-example-tab[aria-selected="true"] .pag-example-tab-bar { transform: scaleX(1); }
+
+.pag-example-panel { display: none; }
+.pag-example-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-7); align-items: start; }
+@media (max-width: 860px) { .pag-example-panel.active { grid-template-columns: 1fr; } }
+
+.pag-example-annotation {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-card);
+  display: flex; flex-direction: column; gap: var(--space-4);
+}
+.pag-example-step-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--brand-accent); }
+.pag-example-code {
+  background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: var(--space-4);
+  font-family: monospace; font-size: 13px; color: var(--text-secondary);
+  line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+}
+.pag-example-detail { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+.pag-example-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 600; color: var(--success);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+  border-radius: var(--radius-pill); padding: 4px 12px; align-self: flex-start;
+}
+.pag-example-badge svg { width: 13px; height: 13px; }
+
+.pag-example-sidebar { display: flex; flex-direction: column; gap: var(--space-4); }
+.pag-example-meta-card {
+  background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: var(--space-4);
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.pag-example-meta-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-tertiary); }
+.pag-example-meta-val { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.pag-example-meta-sub { font-size: 13px; color: var(--text-secondary); }
+
+/* ============================================================
+   [7] USE CASES — pag-roles
+   2×2 segment cards per role. Hover reveals example question.
+   ============================================================ */
+
+.pag-roles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 740px) { .pag-roles-grid { grid-template-columns: 1fr; } }
+.pag-role-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  box-shadow: var(--shadow-card); overflow: hidden; position: relative;
+  display: flex; flex-direction: column; gap: var(--space-4);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.pag-role-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+.pag-role-head { display: flex; align-items: center; gap: var(--space-3); }
+.pag-role-card h3 { color: var(--text-primary); }
+.pag-role-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+.pag-role-question {
+  background: var(--brand-accent-soft); border: 1px solid color-mix(in srgb, var(--brand-accent) 20%, transparent);
+  border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+  font-size: 13px; font-style: italic; color: var(--brand-accent-deep);
+  display: flex; align-items: flex-start; gap: var(--space-2);
+}
+.pag-role-question svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+
+/* ============================================================
+   [8] STATS / GOVERNANCE — pag-stats
+   Four metric blocks with count-up + dashboard mock card.
+   ============================================================ */
+
+.pag-stats-section { background: var(--bg-canvas); }
+.pag-stats-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-9);
+  align-items: center;
+}
+@media (max-width: 860px) { .pag-stats-inner { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+.pag-stats-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0; border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-card);
+}
+.pag-stat-cell {
+  padding: var(--space-6); text-align: center; background: var(--bg-surface);
+  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.pag-stat-cell:nth-child(2n) { border-right: none; }
+.pag-stat-cell:nth-child(3), .pag-stat-cell:nth-child(4) { border-bottom: none; }
+.pag-stat-number {
+  display: block; font-family: var(--font-body); font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700; letter-spacing: -0.02em; color: var(--brand-accent); font-variant-numeric: tabular-nums;
+}
+.pag-stat-label { color: var(--text-primary); font-weight: 600; font-size: 14px; margin-top: var(--space-1); }
+.pag-stat-sub { color: var(--text-tertiary); font-size: 12px; margin-top: 2px; }
+
+/* dashboard mock */
+.pag-dash-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden;
+}
+.pag-dash-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-canvas);
+}
+.pag-dash-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.pag-dash-live { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--success); }
+.pag-dash-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); animation: pag-pulse 2s ease-in-out infinite; }
+@keyframes pag-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.pag-dash-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+.pag-dash-metric {
+  padding: var(--space-5) var(--space-5);
+  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; flex-direction: column; gap: var(--space-1);
+}
+.pag-dash-metric:nth-child(2n) { border-right: none; }
+.pag-dash-metric:nth-child(3), .pag-dash-metric:nth-child(4) { border-bottom: none; }
+.pag-dash-metric-num { font-size: 22px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.pag-dash-metric-label { font-size: 12px; color: var(--text-tertiary); }
+.pag-dash-metric-num.ok { color: var(--success); }
+
+@media (prefers-reduced-motion: reduce) { .pag-dash-live-dot { animation: none !important; } }
+
+/* ============================================================
+   [9] FAQ — pag-faq
+   Accordion with animated chevron. Reuses details/summary pattern.
+   ============================================================ */
+
+.pag-faq { max-width: 760px; margin: 0 auto; }
+.accordion-item {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.accordion-item summary {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-4); padding: var(--space-5) 0;
+  font-size: 16px; font-weight: 600; color: var(--text-primary);
+  cursor: pointer; list-style: none; min-height: 44px;
+  transition: color var(--dur-fast);
+}
+.accordion-item summary:hover { color: var(--brand-accent); }
+.accordion-item summary:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: 4px; }
+.accordion-icon {
+  width: 20px; height: 20px; flex-shrink: 0; color: var(--text-tertiary);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+.accordion-item[open] summary { color: var(--brand-accent); }
+.accordion-body { padding: 0 0 var(--space-5); font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
+
+/* ============================================================
+   [10] CUSTOMER PROOF — pag-proof
+   3-column case study cards.
+   ============================================================ */
+
+.pag-proof-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5); margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .pag-proof-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .pag-proof-grid { grid-template-columns: 1fr; } }
+.pag-proof-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: var(--space-4);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.pag-proof-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+.pag-proof-industry {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--brand-accent); background: var(--brand-accent-soft);
+  padding: 3px 10px; border-radius: var(--radius-pill); align-self: flex-start;
+}
+.pag-proof-card h3 { color: var(--text-primary); font-size: 17px; font-weight: 600; line-height: 1.4; }
+.pag-proof-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+.pag-proof-stats { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-1); }
+.pag-proof-stat {
+  background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill); padding: 4px 12px;
+  font-size: 12px; font-weight: 700; color: var(--text-primary); white-space: nowrap;
+}
+.pag-proof-cta {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 14px; font-weight: 600; color: var(--brand-accent);
+  margin-top: auto; padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  background: none; border-left: none; border-right: none; border-bottom: none;
+  cursor: pointer; font-family: var(--font-body);
+  transition: gap var(--dur-fast) var(--ease-out);
+}
+.pag-proof-cta:hover { gap: var(--space-3); }
+.pag-proof-cta svg { width: 14px; height: 14px; }
+
+/* ============================================================
+   [11] CTA BAND + NEWSLETTER — pag-cta / pag-nl
+   Dark gradient CTA band + newsletter signup.
+   ============================================================ */
+
+.pag-cta-band {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg); padding: var(--space-9) var(--space-7);
+  text-align: center; color: var(--text-on-dark);
+}
+.pag-cta-band h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.pag-cta-band p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.pag-cta-btns { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; }
+@media (max-width: 480px) { .pag-cta-btns { flex-direction: column; align-items: center; } }
+
+.pag-nl-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-7) var(--space-8);
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8);
+  align-items: center; box-shadow: var(--shadow-card); margin-top: var(--space-8);
+}
+@media (max-width: 760px) { .pag-nl-card { grid-template-columns: 1fr; gap: var(--space-6); } }
+.pag-nl-form { display: flex; flex-direction: column; gap: var(--space-3); }
+.pag-nl-input-row { display: flex; gap: var(--space-2); }
+.pag-nl-input {
+  flex: 1; border: 1px solid var(--border-strong); border-radius: var(--radius-cta);
+  padding: 12px var(--space-4); font-family: var(--font-body); font-size: 15px;
+  color: var(--text-primary); background: var(--bg-canvas); min-height: 44px;
+  outline: none; transition: border-color var(--dur-fast);
+}
+.pag-nl-input:focus { border-color: var(--brand-accent); }
+.pag-nl-input::placeholder { color: var(--text-tertiary); }
+.pag-nl-consent { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; }
+
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#hero)
+     Interactive: agent query card — typewriter → skeleton → answer
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="pag-hero-grid">
+
+      <!-- LEFT: text + trust + video CTA -->
+      <div class="hero-inner reveal">
+        <span class="eyebrow">The Agentic Query Engine</span>
+        <h1 id="hero-heading" class="display-xl">Ask. We answer. <span class="accent-line">Sources cited.</span></h1>
+        <p class="subcopy body-lg">Quaeris agents turn plain-language questions into governed, audited answers. No hallucinations. No guessing. Every number traces back to a certified metric in your semantic layer.</p>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">Book a demo</a>
+          <a href="#agent-example" class="pag-video-pill" aria-label="Watch a 2-minute demo (placeholder)" data-placeholder>
+            <span class="pag-play-icon" aria-hidden="true">
+              <!-- lucide: play -->
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </span>
+            Watch a 2-minute demo
+          </a>
+        </div>
+        <ul class="pag-trust-strip" aria-label="Key capabilities">
+          <li class="pag-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <p><strong>Zero hallucinations</strong><span>Answers retrieved from certified metrics, never generated</span></p>
+          </li>
+          <li class="pag-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <p><strong>Full audit trail</strong><span>Who asked, what was returned, and why — logged automatically</span></p>
+          </li>
+          <li class="pag-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <p><strong>Role-gated access</strong><span>Users see only what their warehouse role permits — enforced at query time</span></p>
+          </li>
+          <li class="pag-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <p><strong>Plain-language input</strong><span>No SQL required. Any business user can ask and get a governed answer</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT: animated agent query card -->
+      <div class="reveal">
+        <div class="pag-agent-card" role="img"
+          aria-label="Agent answering: What was revenue last quarter by region? Shows Q3 revenue by region with source lineage. Placeholder data."
+          data-placeholder>
+          <div class="pag-card-head">
+            <span class="eyebrow" style="color:var(--text-tertiary)">Agent Query</span>
+            <span style="display:flex;align-items:center;gap:var(--space-3)">
+              <button type="button" class="pag-replay" aria-label="Re-run the agent query">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+                Re-run
+              </button>
+              <span class="pag-card-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+          <div class="pag-query-bar">
+            <!-- lucide: search -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="pag-query-text" data-text='"What was revenue last quarter by region?"'>"What was revenue last quarter by region?"</span><span class="pag-caret hidden" aria-hidden="true"></span>
+          </div>
+          <div class="pag-analysis">
+            <div class="pag-loading" aria-hidden="true">
+              <div class="pag-status">
+                <span class="pag-spinner"></span>
+                <span class="pag-status-text">Mapping to semantic layer…</span>
+              </div>
+              <div class="pag-skel-rows">
+                <div class="pag-skel-row"><span class="pag-skel pag-skel-label"></span><span class="pag-skel pag-skel-val"></span></div>
+                <div class="pag-skel-row"><span class="pag-skel pag-skel-label"></span><span class="pag-skel pag-skel-val"></span></div>
+                <div class="pag-skel-row"><span class="pag-skel pag-skel-label"></span><span class="pag-skel pag-skel-val"></span></div>
+              </div>
+            </div>
+            <span class="pag-answer-title">Q3 Revenue by Region (vs. Plan)</span>
+            <div class="pag-answer-row"><span>West</span><span class="pag-answer-val positive" data-num="1.2" data-prefix="$" data-suffix="M +8%">$1.2M <small>+8%</small></span></div>
+            <div class="pag-answer-row"><span>East</span><span class="pag-answer-val" data-num="0.98" data-prefix="$" data-suffix="M on target">$0.98M <small>on target</small></span></div>
+            <div class="pag-answer-row"><span>Central</span><span class="pag-answer-val negative" data-num="0.72" data-prefix="$" data-suffix="M −3%">$0.72M <small>−3%</small></span></div>
+            <div class="pag-answer-row"><span>South</span><span class="pag-answer-val negative" data-num="0.31" data-prefix="$" data-suffix="M −11%">$0.31M <small>−11%</small></span></div>
+          </div>
+          <div class="pag-lineage-strip">
+            <!-- lucide: check-circle -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong style="color:var(--text-secondary)">Sources verified:</strong> Revenue metric v3.2 · warehouse.revenue_metrics · Role: full access</span>
+          </div>
+          <div class="pag-card-stats">
+            <div class="pag-card-stat"><b>Zero</b><span>Hallucinations</span></div>
+            <div class="pag-card-stat"><b>14s</b><span>Avg answer</span></div>
+            <div class="pag-card-stat"><b>100%</b><span>Audited</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] THREE-STEP WORKFLOW (#agent-workflow)
+     Interactive: hover on each card lifts + border accent.
+     ============================================================ -->
+<section id="agent-workflow" class="section-pad" aria-labelledby="workflow-heading" style="background:var(--bg-canvas)">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How agents work</span>
+      <h2 id="workflow-heading" class="display-lg">Three steps. <span class="accent-line">Zero hallucinations.</span></h2>
+      <p class="subcopy body-lg">Every Quaeris agent answer follows a governed, auditable execution path — from question to source in seconds.</p>
+    </div>
+
+    <div class="pag-workflow-steps" role="list" aria-label="Agent execution steps">
+
+      <!-- Step 1 -->
+      <article class="pag-workflow-card reveal" role="listitem">
+        <div style="display:flex;align-items:center;gap:var(--space-3)">
+          <div class="pag-workflow-icon" aria-hidden="true">
+            <!-- lucide: search -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
+          <span class="pag-workflow-num">Step 01</span>
+        </div>
+        <span class="pag-workflow-eyebrow">Parse &amp; Govern</span>
+        <h3 class="heading-sm">Question → Intent</h3>
+        <p>User types a business question in plain language. The agent parses intent, maps the question to available metrics in your semantic layer, and routes it to the correct agent workflow. No free-form SQL generation.</p>
+        <span class="pag-workflow-tag" aria-label="Governance check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Semantic layer mapped
+        </span>
+      </article>
+
+      <!-- Arrow -->
+      <div class="pag-workflow-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </div>
+
+      <!-- Step 2 -->
+      <article class="pag-workflow-card reveal" role="listitem">
+        <div style="display:flex;align-items:center;gap:var(--space-3)">
+          <div class="pag-workflow-icon" aria-hidden="true">
+            <!-- lucide: database -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          </div>
+          <span class="pag-workflow-num">Step 02</span>
+        </div>
+        <span class="pag-workflow-eyebrow">Query &amp; Verify</span>
+        <h3 class="heading-sm">Metric → Answer</h3>
+        <p>The agent queries only certified, role-gated metrics from your warehouse. It verifies the query shape against your semantic layer before execution. If a question can't be answered, the agent says so rather than hallucinating.</p>
+        <span class="pag-workflow-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Query validated
+        </span>
+      </article>
+
+      <!-- Arrow -->
+      <div class="pag-workflow-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </div>
+
+      <!-- Step 3 -->
+      <article class="pag-workflow-card reveal" role="listitem">
+        <div style="display:flex;align-items:center;gap:var(--space-3)">
+          <div class="pag-workflow-icon" aria-hidden="true">
+            <!-- lucide: file-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+          </div>
+          <span class="pag-workflow-num">Step 03</span>
+        </div>
+        <span class="pag-workflow-eyebrow">Cite &amp; Audit</span>
+        <h3 class="heading-sm">Answer → Source</h3>
+        <p>The agent returns a precise answer with full source lineage: which metric definitions were used, which business rules applied, and which warehouse table was queried. Every answer is logged for compliance audit.</p>
+        <span class="pag-workflow-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Audit log created
+        </span>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] HALLUCINATION PROBLEM SOLVED (#hallucination)
+     Interactive: two-card contrast — hover highlights left vs right.
+     ============================================================ -->
+<section id="hallucination" class="section-pad" aria-labelledby="hallucination-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The hallucination problem solved</span>
+      <h2 id="hallucination-heading" class="display-lg">Most AI analytics tools <span class="accent-line">generate answers.</span><br>Quaeris agents retrieve them.</h2>
+    </div>
+
+    <div class="pag-ps-grid">
+      <!-- Problem -->
+      <article class="pag-problem-card reveal" aria-label="The problem: AI hallucinations in analytics">
+        <span class="pag-ps-label">The Problem</span>
+        <h3 class="pag-ps-heading">Hallucinations happen when AI models guess numbers from training data instead of querying governed sources.</h3>
+        <p class="pag-ps-body">Every other conversational BI tool relies on LLM creativity — it's fast but unreliable. When the model doesn't know an answer, it makes one up. Users don't know the difference between a retrieved fact and a fabricated one.</p>
+        <div class="pag-ps-impact">
+          <!-- lucide: alert-triangle -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+          <span><strong>Business impact:</strong> conflicting numbers reported to the board, failed audits, lost trust in the data team.</span>
+        </div>
+      </article>
+
+      <!-- Solution -->
+      <article class="pag-solution-card reveal" aria-label="The Quaeris solution: governed retrieval">
+        <span class="pag-ps-label">The Quaeris Difference</span>
+        <h3 class="pag-ps-heading">Agents don't generate answers — they retrieve them from your certified semantic layer.</h3>
+        <p class="pag-ps-body">If a metric isn't defined, the agent says "I don't know" instead of guessing. Every number is grounded in a source. No training-data hallucinations. No free-form SQL. Just governed, auditable answers every time.</p>
+        <div class="pag-ps-impact">
+          <!-- lucide: check-circle -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span><strong>Trust restored:</strong> full lineage, full audit trail, zero hallucinations. Confidence-ready for board presentations.</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] SIX AGENT CAPABILITIES (#capabilities)
+     Interactive: JS staggered entrance (pag-caps.js class gate).
+     ============================================================ -->
+<section id="capabilities" class="section-pad pag-stats-section" aria-labelledby="caps-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">What agents can do</span>
+      <h2 id="caps-heading" class="display-lg">Autonomous multi-step analysis. <span class="accent-line">Governed from the start.</span></h2>
+      <p class="subcopy body-lg">Six core capabilities, each constrained by your semantic layer. Agents don't go rogue — they're governed at every step.</p>
+    </div>
+
+    <div class="pag-caps pag-caps-grid" id="pag-caps-grid">
+      <article class="pag-cap-card" style="--d:0ms" aria-labelledby="cap1-h">
+        <div class="icon-box" aria-hidden="true">
+          <!-- lucide: wand-2 -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 4-8 8"/><path d="M5 12 3 21l9-2"/><path d="m18 3 3 3"/><path d="m17 8 2 2"/><path d="m8 17 2 2"/></svg>
+        </div>
+        <h3 id="cap1-h" class="heading-sm">Natural Language to Governed SQL</h3>
+        <p>Users ask questions in plain English. Agents translate to SQL constrained by your semantic layer — no model-generated code. Every query is validated against certified metrics before execution.</p>
+      </article>
+
+      <article class="pag-cap-card" style="--d:80ms" aria-labelledby="cap2-h">
+        <div class="icon-box" aria-hidden="true">
+          <!-- lucide: zap -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3 id="cap2-h" class="heading-sm">Multi-Step Autonomous Workflows</h3>
+        <p>Agents don't stop at a single query. They plan and execute fetch-filter-join-forecast sequences without human input. Anomaly detected? Agents root-cause automatically. Forecast needed? Done in one prompt.</p>
+      </article>
+
+      <article class="pag-cap-card" style="--d:160ms" aria-labelledby="cap3-h">
+        <div class="icon-box" aria-hidden="true">
+          <!-- lucide: trending-up -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3 id="cap3-h" class="heading-sm">Predictive &amp; Proactive Analysis</h3>
+        <p>Agents forecast trends, flag anomalies, and diagnose root causes without being asked. A revenue dip is flagged before the executive standup. A warehouse query slowdown is surfaced before users notice.</p>
+      </article>
+
+      <article class="pag-cap-card" style="--d:240ms" aria-labelledby="cap4-h">
+        <div class="icon-box" aria-hidden="true">
+          <!-- lucide: shield-check -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 id="cap4-h" class="heading-sm">Governed at Every Step</h3>
+        <p>Role-based access, data residency, audit trails — enforced at query time, not dashboard time. Users see only the data their role permits. Every answer is logged with who asked, what was returned, and why.</p>
+      </article>
+
+      <article class="pag-cap-card" style="--d:320ms" aria-labelledby="cap5-h">
+        <div class="icon-box" aria-hidden="true">
+          <!-- lucide: layers -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        </div>
+        <h3 id="cap5-h" class="heading-sm">Smart Semantic Layer Learning</h3>
+        <p>The semantic layer isn't static. It learns from agent interactions. Users define metrics once; agents use them everywhere. New business logic? Update the semantic layer once; all agent answers reflect the change immediately.</p>
+      </article>
+
+      <article class="pag-cap-card" style="--d:400ms" aria-labelledby="cap6-h">
+        <div class="icon-box" aria-hidden="true">
+          <!-- lucide: brain -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg>
+        </div>
+        <h3 id="cap6-h" class="heading-sm">Autonomous Root-Cause Diagnosis</h3>
+        <p>Revenue down 12%? Agents automatically investigate across regions, cohorts, campaigns, and product lines to find the driver — then surface the diagnosis with confidence scores. Manual troubleshooting replaced by agent rigor.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] COMPETITIVE MATRIX (#compare)
+     Interactive: hover on rows highlights; Quaeris column pinned with accent.
+     ============================================================ -->
+<section id="compare" class="section-pad" aria-labelledby="compare-heading" style="background:var(--bg-canvas)">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How we compare</span>
+      <h2 id="compare-heading" class="display-lg">How Quaeris agents <span class="accent-line">compare</span></h2>
+      <p class="subcopy body-lg">Most conversational BI tools bolt AI onto a dashboard. Quaeris builds agents on a governed semantic layer.</p>
+    </div>
+
+    <div class="pag-matrix-wrap reveal" role="region" aria-label="Feature comparison table" aria-describedby="compare-note">
+      <table class="pag-matrix-table">
+        <caption class="visually-hidden">Quaeris vs. ThoughtSpot Spotter, Snowflake Cortex Analyst, AWS Q, and Looker AI</caption>
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col" class="pag-col-q">Quaeris</th>
+            <th scope="col">ThoughtSpot Spotter</th>
+            <th scope="col">Cortex Analyst</th>
+            <th scope="col">AWS Q</th>
+            <th scope="col">Looker AI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pag-matrix-feature">Plain-language questions</td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes</span></td>
+            <td><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes</span></td>
+            <td><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes</span></td>
+            <td><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes</span></td>
+            <td><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes</span></td>
+          </tr>
+          <tr>
+            <td class="pag-matrix-feature">Answers cited to metrics</td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes — every answer</span></td>
+            <td><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+          </tr>
+          <tr>
+            <td class="pag-matrix-feature">Governed semantic layer</td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Auto-learns</span></td>
+            <td><span class="pag-cell-partial">Manual modeling</span></td>
+            <td><span class="pag-cell-partial">Requires YAML</span></td>
+            <td><span class="pag-cell-partial">Manual config</span></td>
+            <td><span class="pag-cell-partial">Requires LookML</span></td>
+          </tr>
+          <tr>
+            <td class="pag-matrix-feature">Zero hallucinations</td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Guaranteed</span></td>
+            <td><span class="pag-cell-partial">Mostly</span></td>
+            <td><span class="pag-cell-no">High risk</span></td>
+            <td><span class="pag-cell-no">High risk</span></td>
+            <td><span class="pag-cell-no">High risk</span></td>
+          </tr>
+          <tr>
+            <td class="pag-matrix-feature">BYOM (pick your LLM)</td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Swap anytime</span></td>
+            <td><span class="pag-cell-no">Model-locked</span></td>
+            <td><span class="pag-cell-no">Warehouse-locked</span></td>
+            <td><span class="pag-cell-no">AWS-locked</span></td>
+            <td><span class="pag-cell-no">Google-locked</span></td>
+          </tr>
+          <tr>
+            <td class="pag-matrix-feature">Multi-step agent workflows</td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Full fetch/filter/join/forecast</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+          </tr>
+          <tr>
+            <td class="pag-matrix-feature">Autonomous anomaly detection</td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes</span></td>
+            <td><span class="pag-cell-no">No</span></td>
+            <td><span class="pag-cell-no">No</span></td>
+            <td><span class="pag-cell-no">No</span></td>
+            <td><span class="pag-cell-no">No</span></td>
+          </tr>
+          <tr>
+            <td class="pag-matrix-feature">Full audit trail (who/what/why)</td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Yes — prompt + steps</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+            <td><span class="pag-cell-partial">Limited</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p id="compare-note" class="body-sm" style="color:var(--text-tertiary);text-align:center;margin-top:var(--space-4)" data-placeholder>Comparison based on publicly available product documentation. Data current as of Q2 2026. <a href="/compare" style="color:var(--brand-accent);text-decoration:underline">See detailed comparisons →</a></p>
+  </div>
+</section>
+
+<!-- ============================================================
+     [6] AGENT EXAMPLE SHOWCASE (#agent-example)
+     Interactive: tabbed step walkthrough with annotation panels.
+     ============================================================ -->
+<section id="agent-example" class="section-pad" aria-labelledby="example-heading" style="background:var(--bg-canvas)">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">See it in action</span>
+      <h2 id="example-heading" class="display-lg">Revenue by region — <span class="accent-line">step by step</span></h2>
+      <p class="subcopy body-lg">User question: <em>"What was revenue last quarter by region, and which regions missed their plan?"</em> Follow the agent's execution path below.</p>
+    </div>
+
+    <div class="reveal" style="margin-top:var(--space-8)">
+      <!-- Tab bar -->
+      <div class="pag-example-tabs" role="tablist" aria-label="Agent execution steps">
+        <button class="pag-example-tab" role="tab" aria-selected="true" aria-controls="ex-panel-1" id="ex-tab-1">
+          <span>01 Intent Parse</span>
+          <span class="pag-example-tab-bar" aria-hidden="true"></span>
+        </button>
+        <button class="pag-example-tab" role="tab" aria-selected="false" aria-controls="ex-panel-2" id="ex-tab-2">
+          <span>02 Metric Lookup</span>
+          <span class="pag-example-tab-bar" aria-hidden="true"></span>
+        </button>
+        <button class="pag-example-tab" role="tab" aria-selected="false" aria-controls="ex-panel-3" id="ex-tab-3">
+          <span>03 Query Execution</span>
+          <span class="pag-example-tab-bar" aria-hidden="true"></span>
+        </button>
+        <button class="pag-example-tab" role="tab" aria-selected="false" aria-controls="ex-panel-4" id="ex-tab-4">
+          <span>04 Answer + Lineage</span>
+          <span class="pag-example-tab-bar" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- Panel 1 -->
+      <div class="pag-example-panel active" id="ex-panel-1" role="tabpanel" aria-labelledby="ex-tab-1">
+        <div class="pag-example-annotation">
+          <span class="pag-example-step-label">Step 01 — Intent Parse</span>
+          <h3 class="heading-sm">Agent detects intent and maps to semantic layer</h3>
+          <div class="pag-example-code">intent          = metric-retrieval
+metric          = revenue
+dimension       = region
+time-filter     = last-quarter
+analysis-type   = vs-plan
+entities-found  = 3 / 3 matched in semantic layer</div>
+          <p class="pag-example-detail">All entities are mapped to certified metrics in the semantic layer. The agent does not proceed to generate SQL until mapping is confirmed complete.</p>
+          <span class="pag-example-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Mapping complete — 0 ambiguous entities
+          </span>
+        </div>
+        <div class="pag-example-sidebar">
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Agent step</span>
+            <span class="pag-example-meta-val">Intent Classification</span>
+            <span class="pag-example-meta-sub">NLP parse → semantic entity match</span>
+          </div>
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Governance check</span>
+            <span class="pag-example-meta-val" style="color:var(--success)">Passed</span>
+            <span class="pag-example-meta-sub">All metrics exist in certified semantic layer</span>
+          </div>
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Hallucination risk</span>
+            <span class="pag-example-meta-val" style="color:var(--success)">None</span>
+            <span class="pag-example-meta-sub">Agent will not proceed if mapping fails</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="pag-example-panel" id="ex-panel-2" role="tabpanel" aria-labelledby="ex-tab-2" hidden>
+        <div class="pag-example-annotation">
+          <span class="pag-example-step-label">Step 02 — Metric Lookup</span>
+          <h3 class="heading-sm">Agent retrieves certified metric definition</h3>
+          <div class="pag-example-code">metric          = "Revenue"
+definition      = SUM(transactions.amount
+                  WHERE status='completed')
+                  BY region
+version         = 3.2 (current, verified 2026-06-01)
+access-check    = PASS — user has ALL_REGIONS role
+certified-by    = Data Engineering (2026-06-01)</div>
+          <p class="pag-example-detail">The agent retrieves the certified Revenue metric definition from the semantic layer. Version 3.2 is the current approved definition. The user's role grants full regional access.</p>
+          <span class="pag-example-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Metric v3.2 — certified, access granted
+          </span>
+        </div>
+        <div class="pag-example-sidebar">
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Metric</span>
+            <span class="pag-example-meta-val">Revenue (v3.2)</span>
+            <span class="pag-example-meta-sub">Last certified: 2026-06-01</span>
+          </div>
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Access policy</span>
+            <span class="pag-example-meta-val" style="color:var(--success)">ALL_REGIONS</span>
+            <span class="pag-example-meta-sub">Role enforced at query time</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="pag-example-panel" id="ex-panel-3" role="tabpanel" aria-labelledby="ex-tab-3" hidden>
+        <div class="pag-example-annotation">
+          <span class="pag-example-step-label">Step 03 — Query Execution</span>
+          <h3 class="heading-sm">Agent constructs and executes governed query</h3>
+          <div class="pag-example-code">SELECT
+  region,
+  revenue,
+  plan,
+  revenue - plan AS variance
+FROM warehouse.revenue_metrics
+WHERE period = 'q3-2026'
+  AND role_allows_visibility = true
+ORDER BY variance ASC;
+
+-- Result: 4 regions returned
+-- 1 region blocked by access policy (not this user)</div>
+          <p class="pag-example-detail">SQL is generated internally and validated against the semantic layer. The user never sees or edits the SQL — governance is enforced by the agent, not trusted to the user.</p>
+          <span class="pag-example-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Query validated — executed in 14s
+          </span>
+        </div>
+        <div class="pag-example-sidebar">
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Warehouse</span>
+            <span class="pag-example-meta-val">Snowflake</span>
+            <span class="pag-example-meta-sub">warehouse.revenue_metrics</span>
+          </div>
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Execution time</span>
+            <span class="pag-example-meta-val">14 seconds</span>
+            <span class="pag-example-meta-sub">Avg. time to audited answer</span>
+          </div>
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Access enforcement</span>
+            <span class="pag-example-meta-val" style="color:var(--success)">1 region blocked</span>
+            <span class="pag-example-meta-sub">Row-level security applied automatically</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4 -->
+      <div class="pag-example-panel" id="ex-panel-4" role="tabpanel" aria-labelledby="ex-tab-4" hidden>
+        <div class="pag-example-annotation">
+          <span class="pag-example-step-label">Step 04 — Answer with Lineage</span>
+          <h3 class="heading-sm">Agent returns answer with full source citation</h3>
+          <p class="pag-example-detail" style="background:var(--brand-accent-soft);border-radius:var(--radius-md);padding:var(--space-4);border-left:3px solid var(--brand-accent);font-style:italic">"Last quarter, all regions combined achieved $3.23M revenue. West overperformed by 8%; Central underperformed by 3%; East hit target; South missed by 11%."</p>
+          <p class="pag-example-detail">This answer cites the Revenue metric (v3.2), uses 3 warehouse tables (transactions, regions, plans), and applies role-based access for region visibility.</p>
+          <span class="pag-example-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Full audit trail — <a href="/platform/governance" style="color:var(--brand-accent);text-decoration:underline">View trace →</a>
+          </span>
+        </div>
+        <div class="pag-example-sidebar">
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Metric cited</span>
+            <span class="pag-example-meta-val">Revenue v3.2</span>
+          </div>
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Tables used</span>
+            <span class="pag-example-meta-val">3 warehouse tables</span>
+          </div>
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Hallucinations</span>
+            <span class="pag-example-meta-val" style="color:var(--success)">Zero</span>
+          </div>
+          <div class="pag-example-meta-card">
+            <span class="pag-example-meta-label">Audit record</span>
+            <span class="pag-example-meta-val" style="color:var(--brand-accent)">Created</span>
+            <span class="pag-example-meta-sub">Logged with user, role, and answer</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [7] USE CASES BY ROLE (#roles)
+     Interactive: hover reveals example question bubble.
+     ============================================================ -->
+<section id="roles" class="section-pad" aria-labelledby="roles-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Who benefits</span>
+      <h2 id="roles-heading" class="display-lg">Agents work for <span class="accent-line">your whole team</span></h2>
+      <p class="subcopy body-lg">Every role gets governed self-serve access — without compromising the semantic layer your data team owns.</p>
+    </div>
+
+    <div class="pag-roles-grid">
+
+      <article class="pag-role-card reveal" aria-labelledby="role1-h">
+        <div class="pag-role-head">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: users -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 id="role1-h" class="heading-sm">Data Analyst</h3>
+        </div>
+        <p>Self-serve exploratory analysis without writing SQL. Agents handle the query mechanics; analysts focus on interpretation and action.</p>
+        <div class="pag-role-question">
+          <!-- lucide: message-circle -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+          <span>"Show me cohort churn by acquisition channel for new users signing up in Q2"</span>
+        </div>
+      </article>
+
+      <article class="pag-role-card reveal" aria-labelledby="role2-h">
+        <div class="pag-role-head">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: briefcase -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <h3 id="role2-h" class="heading-sm">Business User</h3>
+        </div>
+        <p>Instant answers to business questions — no tickets, no waiting. Governed answers without needing to understand the underlying data model.</p>
+        <div class="pag-role-question">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+          <span>"How much revenue came from our top 10 customers last month?"</span>
+        </div>
+      </article>
+
+      <article class="pag-role-card reveal" aria-labelledby="role3-h">
+        <div class="pag-role-head">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: trending-up -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </div>
+          <h3 id="role3-h" class="heading-sm">Executive</h3>
+        </div>
+        <p>Proactive insights without waiting on reports. Agents surface anomalies before the standup and flag underperformance before it becomes a board issue.</p>
+        <div class="pag-role-question">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+          <span>"Which product had the biggest month-over-month growth?"</span>
+        </div>
+      </article>
+
+      <article class="pag-role-card reveal" aria-labelledby="role4-h">
+        <div class="pag-role-head">
+          <div class="icon-box" aria-hidden="true">
+            <!-- lucide: code -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3 id="role4-h" class="heading-sm">Data Engineer</h3>
+        </div>
+        <p>Governance enforcement and semantic layer ownership. Agents expose metric usage patterns, flag definition inconsistencies, and help prioritize semantic layer expansion.</p>
+        <div class="pag-role-question">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+          <span>"Which metrics are being queried most, and are definitions consistent?"</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [8] TRUST & GOVERNANCE STATS (#governance)
+     Interactive: count-up on scroll (JS gated) + live dashboard mock.
+     ============================================================ -->
+<section id="governance" class="section-pad pag-stats-section" aria-labelledby="gov-heading" style="background:var(--bg-warm)">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Governance at scale</span>
+      <h2 id="gov-heading" class="display-lg">Numbers that reflect a <span class="accent-line">different approach</span></h2>
+    </div>
+
+    <div class="pag-stats-inner reveal" style="margin-top:var(--space-8)">
+      <!-- Left: 4 stat cells -->
+      <div class="pag-stats-grid" aria-label="Key governance metrics">
+        <div class="pag-stat-cell">
+          <span class="pag-stat-number" aria-live="polite" data-count="0" data-suffix="">0</span>
+          <div class="pag-stat-label">Hallucinated answers</div>
+          <div class="pag-stat-sub">Every answer grounded in certified metrics</div>
+        </div>
+        <div class="pag-stat-cell">
+          <span class="pag-stat-number" aria-live="polite" data-count="87" data-suffix="%">87%</span>
+          <div class="pag-stat-label">Reduction in ad-hoc requests</div>
+          <div class="pag-stat-sub">Within 90 days of deployment</div>
+        </div>
+        <div class="pag-stat-cell">
+          <span class="pag-stat-number" aria-live="polite" data-count="14" data-suffix="s">14s</span>
+          <div class="pag-stat-label">Avg. answer time</div>
+          <div class="pag-stat-sub">From question to audited answer</div>
+        </div>
+        <div class="pag-stat-cell">
+          <span class="pag-stat-number" aria-live="polite" data-count="100" data-suffix="%">100%</span>
+          <div class="pag-stat-label">Queries audited</div>
+          <div class="pag-stat-sub">Full trace from question to source</div>
+        </div>
+      </div>
+
+      <!-- Right: dashboard mock -->
+      <div>
+        <div class="pag-dash-card" role="img" aria-label="Agent governance dashboard showing questions answered, metrics cited, access violations, and audit records. Placeholder data." data-placeholder>
+          <div class="pag-dash-header">
+            <span class="pag-dash-title">Agent Governance Dashboard</span>
+            <span class="pag-dash-live">
+              <span class="pag-dash-live-dot" aria-hidden="true"></span>
+              Live
+            </span>
+          </div>
+          <div class="pag-dash-metrics">
+            <div class="pag-dash-metric">
+              <span class="pag-dash-metric-num" data-count="1247">1,247</span>
+              <span class="pag-dash-metric-label">Questions answered</span>
+            </div>
+            <div class="pag-dash-metric">
+              <span class="pag-dash-metric-num" data-count="142">142</span>
+              <span class="pag-dash-metric-label">Metrics cited</span>
+            </div>
+            <div class="pag-dash-metric">
+              <span class="pag-dash-metric-num ok">0</span>
+              <span class="pag-dash-metric-label">Access violations</span>
+            </div>
+            <div class="pag-dash-metric">
+              <span class="pag-dash-metric-num" data-count="1247">1,247</span>
+              <span class="pag-dash-metric-label">Audit records — <a href="/platform/governance" style="color:var(--brand-accent);text-decoration:underline;font-size:11px">View all →</a></span>
+            </div>
+          </div>
+        </div>
+        <p class="body-sm" style="color:var(--text-tertiary);margin-top:var(--space-3);text-align:center" data-placeholder>Dashboard metrics are illustrative. <a href="/contact" style="color:var(--brand-accent);text-decoration:underline">Book a demo</a> to see your data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [9] FAQ (#faq)
+     Interactive: native <details> accordion with animated chevron.
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading" style="background:var(--bg-canvas)">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Common questions</span>
+      <h2 id="faq-heading" class="display-lg">Your questions <span class="accent-line">answered</span></h2>
+    </div>
+
+    <div class="pag-faq reveal" style="margin-top:var(--space-8)">
+
+      <details class="accordion-item" id="faq-1">
+        <summary aria-expanded="false">
+          What happens if an agent can't answer a question?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">The agent says "I don't have enough information to answer that" rather than guessing. It surfaces which metrics or data sources would be needed. Your data team then evaluates whether to expand the semantic layer. Silence is better than hallucination.</div>
+      </details>
+
+      <details class="accordion-item" id="faq-2">
+        <summary>
+          Can agents replace our BI team?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">No — agents complement your BI team. They handle exploratory, ad-hoc questions. Your dashboards, reports, and scheduled jobs continue to serve structured reporting. Agents are the self-serve layer on top of the semantic layer your data team owns.</div>
+      </details>
+
+      <details class="accordion-item" id="faq-3">
+        <summary>
+          How do you prevent unauthorized data access?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Role-based access policies are enforced at query time, not at the dashboard layer. When an agent executes a query, it applies the user's warehouse role and access permissions. Users see only the data their role permits — no workarounds, no filter bypasses. <a href="/platform/access-control" style="color:var(--brand-accent);text-decoration:underline">See role-based access controls →</a></div>
+      </details>
+
+      <details class="accordion-item" id="faq-4">
+        <summary>
+          What LLMs do agents support?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Bring your own. GPT-4, Claude, Gemini, Meta Llama — agents work with any LLM. Your compliance team picks the model and vendor. You're never locked in. Swap LLMs anytime without redeploying agents or the semantic layer.</div>
+      </details>
+
+      <details class="accordion-item" id="faq-5">
+        <summary>
+          How long does it take to deploy agents?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Most teams have agents running against a live warehouse within two weeks. Week one is warehouse integration and semantic layer migration. Week two is user onboarding and access policy setup. No data movement required — agents query your warehouse in place.</div>
+      </details>
+
+      <details class="accordion-item" id="faq-6">
+        <summary>
+          What warehouses do agents support?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Snowflake, BigQuery, Databricks, Redshift, Azure Synapse, and more. All major warehouses. The agent doesn't care which warehouse you use — it's warehouse-agnostic. <a href="/platform/warehouse" style="color:var(--brand-accent);text-decoration:underline">See supported warehouses →</a></div>
+      </details>
+
+      <details class="accordion-item" id="faq-7">
+        <summary>
+          Can agents handle real-time data?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Yes — agents query your warehouse in real time. If your warehouse ingests streaming data, agents see it immediately. No caching, no lag.</div>
+      </details>
+
+      <details class="accordion-item" id="faq-8">
+        <summary>
+          Do agents generate SQL code for users to review?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">No — agents execute queries directly against your warehouse. SQL is generated internally and validated against your semantic layer, but users don't see or edit the SQL. The agent handles the execution; you control the governance through the semantic layer.</div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [10] CUSTOMER PROOF (#proof)
+     Interactive: hover lifts card; stat pills on each card.
+     ============================================================ -->
+<section id="proof" class="section-pad" aria-labelledby="proof-heading" style="background:var(--bg-warm)">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Trusted by data leaders</span>
+      <h2 id="proof-heading" class="display-lg">Results that <span class="accent-line">speak for themselves</span></h2>
+      <p class="subcopy body-lg">Three teams that deployed Quaeris agents and measured the outcome.</p>
+    </div>
+
+    <div class="pag-proof-grid">
+
+      <article class="pag-proof-card reveal" aria-labelledby="proof1-h">
+        <span class="pag-proof-industry">Financial Services</span>
+        <h3 id="proof1-h" data-placeholder>[Customer name — Financial Services]</h3>
+        <p>Reduced ad-hoc analytics requests by 84% while expanding self-serve access to 600+ business users — without relaxing governance. Connected agents to Snowflake, migrated 120 certified metrics, deployed with row-level security.</p>
+        <div class="pag-proof-stats">
+          <span class="pag-proof-stat">84% fewer requests</span>
+          <span class="pag-proof-stat">600+ self-serve users</span>
+          <span class="pag-proof-stat">90 days to rollout</span>
+        </div>
+        <button class="pag-proof-cta" type="button" aria-label="Read the Financial Services case study (placeholder)" data-placeholder>
+          Read the case study
+          <!-- lucide: arrow-right -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </article>
+
+      <article class="pag-proof-card reveal" aria-labelledby="proof2-h">
+        <span class="pag-proof-industry">B2B SaaS</span>
+        <h3 id="proof2-h" data-placeholder>[Customer name — B2B SaaS]</h3>
+        <p>Cut time-to-insight from 3 days to under 20 minutes — eliminating the request backlog that had blocked product launches. Agents answer product-usage and pipeline questions with sources cited in every response.</p>
+        <div class="pag-proof-stats">
+          <span class="pag-proof-stat">20 min avg answer time</span>
+          <span class="pag-proof-stat">3× faster than tickets</span>
+          <span class="pag-proof-stat">0 hallucinations</span>
+        </div>
+        <button class="pag-proof-cta" type="button" aria-label="Read the B2B SaaS case study (placeholder)" data-placeholder>
+          Read the case study
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </article>
+
+      <article class="pag-proof-card reveal" aria-labelledby="proof3-h">
+        <span class="pag-proof-industry">Retail / CPG</span>
+        <h3 id="proof3-h" data-placeholder>[Customer name — Retail/CPG]</h3>
+        <p>Unified conflicting metric definitions across 6 regional teams — giving executives a single, consistent view. Audited 300+ metric variants, consolidated to 80 certified definitions, retired four legacy BI dashboards.</p>
+        <div class="pag-proof-stats">
+          <span class="pag-proof-stat">6 teams aligned</span>
+          <span class="pag-proof-stat">1 definition per KPI</span>
+          <span class="pag-proof-stat">11× ROI</span>
+        </div>
+        <button class="pag-proof-cta" type="button" aria-label="Read the Retail/CPG case study (placeholder)" data-placeholder>
+          Read the case study
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [11] CTA BAND + NEWSLETTER (#cta)
+     Interactive: newsletter input focus ring; form submit.
+     ============================================================ -->
+<section id="cta" class="section-pad" aria-labelledby="cta-heading">
+  <div class="container">
+
+    <!-- CTA band -->
+    <div class="pag-cta-band reveal">
+      <span class="eyebrow" style="color:rgba(255,255,255,0.7)">Ready to deploy?</span>
+      <h2 id="cta-heading" class="display-lg" style="margin-top:var(--space-3)">Stop waiting on ad-hoc requests.<br>Start asking agents.</h2>
+      <p>Book a demo. We'll walk through your warehouse setup, show you how agents work with your data, and deliver a live governed answer in 30 minutes.</p>
+      <div class="pag-cta-btns">
+        <a href="/contact" class="btn btn-on-dark">Book a demo</a>
+        <a href="/docs" class="btn btn-secondary-dark">See documentation</a>
+      </div>
+    </div>
+
+    <!-- Newsletter card -->
+    <div class="pag-nl-card reveal">
+      <div>
+        <span class="eyebrow" style="color:var(--brand-accent)">The Governed Analytics Brief</span>
+        <h3 class="display-md" style="margin-top:var(--space-3);margin-bottom:var(--space-3)">Weekly insights on agentic AI and enterprise trust.</h3>
+        <p class="body-md" style="color:var(--text-secondary)">One practical read on governed analytics, agents, and semantic layers — every Thursday. No generic AI hype. Just rigorous patterns from data leaders deploying agents at scale.</p>
+      </div>
+      <div class="pag-nl-form">
+        <label for="nl-email" class="body-sm" style="font-weight:600;color:var(--text-primary)">Subscribe to the brief</label>
+        <div class="pag-nl-input-row">
+          <input
+            type="email" id="nl-email" name="email"
+            class="pag-nl-input" placeholder="your@company.com"
+            autocomplete="email" required
+            aria-label="Your work email address"
+          />
+          <button type="submit" class="btn btn-primary" style="white-space:nowrap">Subscribe</button>
+        </div>
+        <p class="pag-nl-consent">No spam. Unsubscribe anytime. We handle your data per our <a href="/privacy" style="color:var(--brand-accent);text-decoration:underline">Privacy Policy</a>.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     JAVASCRIPT — gated IIFEs, one per component.
+     Reduced-motion safe. Correct without JS.
+     ============================================================ -->
+
+<!-- Hero agent card: typewriter → skeleton → answer -->
+<script>
+(function() {
+  'use strict';
+  var card = document.querySelector('.pag-agent-card');
+  if (!card) return;
+  var queryEl = card.querySelector('.pag-query-text');
+  var caretEl = card.querySelector('.pag-caret');
+  var analysisEl = card.querySelector('.pag-analysis');
+  var statusTextEl = card.querySelector('.pag-status-text');
+  var replayBtn = card.querySelector('.pag-replay');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var steps = ['Mapping to semantic layer…', 'Validating role access…', 'Executing query…', 'Citing sources…'];
+  var stepIdx = 0;
+  var stepTimer = null;
+
+  function runTypewriter(text, cb) {
+    if (reduced) { queryEl.textContent = text; if (cb) cb(); return; }
+    queryEl.textContent = '';
+    caretEl.classList.remove('hidden');
+    var i = 0;
+    var t = setInterval(function() {
+      queryEl.textContent += text[i];
+      i++;
+      if (i >= text.length) { clearInterval(t); setTimeout(function() { caretEl.classList.add('hidden'); if (cb) cb(); }, 300); }
+    }, 38);
+  }
+
+  function runLoading(cb) {
+    analysisEl.classList.add('is-loading');
+    stepIdx = 0;
+    if (statusTextEl) statusTextEl.textContent = steps[0];
+    stepTimer = setInterval(function() {
+      stepIdx++;
+      if (stepIdx < steps.length && statusTextEl) statusTextEl.textContent = steps[stepIdx];
+    }, 600);
+    setTimeout(function() { clearInterval(stepTimer); analysisEl.classList.remove('is-loading'); if (cb) cb(); }, reduced ? 0 : 2600);
+  }
+
+  function run() {
+    var fullText = queryEl.dataset.text || queryEl.textContent;
+    runTypewriter(fullText, function() { setTimeout(function() { runLoading(function() {}); }, 400); });
+  }
+
+  // Autorun on first intersection
+  if ('IntersectionObserver' in window && !reduced) {
+    var ran = false;
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting && !ran) { ran = true; obs.disconnect(); setTimeout(run, 600); }
+    }, { threshold: 0.3 });
+    obs.observe(card);
+  }
+
+  if (replayBtn) replayBtn.addEventListener('click', run);
+}());
+</script>
+
+<!-- Scroll reveal for .reveal elements -->
+<script>
+(function() {
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+  var reveals = document.querySelectorAll('.reveal');
+  reveals.forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 450ms cubic-bezier(0.16,1,0.3,1), transform 450ms cubic-bezier(0.16,1,0.3,1)';
+  });
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function(el) { obs.observe(el); });
+  } else {
+    reveals.forEach(function(el) { el.style.opacity = '1'; el.style.transform = 'none'; });
+  }
+}());
+</script>
+
+<!-- Capabilities staggered entrance -->
+<script>
+(function() {
+  'use strict';
+  var grid = document.getElementById('pag-caps-grid');
+  if (!grid) return;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+  grid.classList.add('pag-caps', 'js');
+  var cards = grid.querySelectorAll('.pag-cap-card');
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        obs.disconnect();
+        cards.forEach(function(c) { setTimeout(function() { c.classList.add('entered'); }, parseInt(c.style.getPropertyValue('--d')) || 0); });
+      }
+    }, { threshold: 0.15 });
+    obs.observe(grid);
+  } else {
+    cards.forEach(function(c) { c.classList.add('entered'); });
+  }
+}());
+</script>
+
+<!-- Agent example tabbed walkthrough -->
+<script>
+(function() {
+  'use strict';
+  var tabs = document.querySelectorAll('.pag-example-tab');
+  var panels = document.querySelectorAll('.pag-example-panel');
+  if (!tabs.length) return;
+
+  function activate(idx) {
+    tabs.forEach(function(t, i) {
+      var active = i === idx;
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+      t.setAttribute('tabindex', active ? '0' : '-1');
+    });
+    panels.forEach(function(p, i) {
+      var active = i === idx;
+      p.classList.toggle('active', active);
+      if (active) { p.removeAttribute('hidden'); } else { p.setAttribute('hidden', ''); }
+    });
+  }
+
+  tabs.forEach(function(tab, idx) {
+    tab.addEventListener('click', function() { activate(idx); });
+    tab.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight') { activate((idx + 1) % tabs.length); tabs[(idx + 1) % tabs.length].focus(); }
+      if (e.key === 'ArrowLeft') { activate((idx - 1 + tabs.length) % tabs.length); tabs[(idx - 1 + tabs.length) % tabs.length].focus(); }
+    });
+    tab.setAttribute('tabindex', idx === 0 ? '0' : '-1');
+  });
+}());
+</script>
+
+<!-- Count-up for stat numbers on scroll -->
+<script>
+(function() {
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = document.querySelectorAll('[data-count]');
+  if (!els.length) return;
+
+  function countUp(el) {
+    var target = parseInt(el.dataset.count, 10);
+    var suffix = el.dataset.suffix || '';
+    if (reduced || target === 0) { el.textContent = target + suffix; return; }
+    var start = 0; var dur = 1400; var step = 16;
+    var t = setInterval(function() {
+      start += Math.ceil(target / (dur / step));
+      if (start >= target) { clearInterval(t); el.textContent = target + suffix; return; }
+      el.textContent = start + suffix;
+    }, step);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { countUp(e.target); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    els.forEach(function(el) { obs.observe(el); });
+  } else {
+    els.forEach(function(el) { countUp(el); });
+  }
+}());
+</script>
+
+<!-- Accordion ARIA sync (native <details> + aria-expanded) -->
+<script>
+(function() {
+  'use strict';
+  var items = document.querySelectorAll('.accordion-item');
+  items.forEach(function(item) {
+    var summary = item.querySelector('summary');
+    if (!summary) return;
+    item.addEventListener('toggle', function() {
+      summary.setAttribute('aria-expanded', item.open ? 'true' : 'false');
+    });
+  });
+}());
+</script>
+
+</body>
+</html>

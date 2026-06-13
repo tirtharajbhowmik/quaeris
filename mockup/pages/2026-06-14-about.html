@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /about — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  /* native <details> stands in for Accordion.tsx (Radix) — do NOT port */
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* Static-section reveal shim — non-scripted sections are visible without animation */
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: ab- (About page) — move to globals.css at port time.
+   All color via tokens only — no hardcoded hex.
+   ============================================================ */
+
+/* ============================================================
+   [A1] ABOUT HERO — mission statement, centered, no CTA
+   ============================================================ */
+.ab-hero-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+.ab-hero-inner .eyebrow { display: block; margin-bottom: var(--space-4); }
+.ab-hero-inner h1 { margin-bottom: var(--space-5); }
+.ab-hero-inner .subcopy { max-width: 60ch; margin: 0 auto; color: var(--text-secondary); } /* [A1-fix] spec §01: hero subcopy must use --text-secondary */
+
+/* Animated tagline reveal (ab-ink) — each word fades+rises in sequence */
+.ab-tagline-word {
+  display: inline-block;
+  opacity: 1; /* static fallback */
+  transform: none;
+}
+.ab-hero.js .ab-tagline-word {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.ab-hero.js.played .ab-tagline-word { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-hero.js .ab-tagline-word { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [A2] COMPANY IDENTITY STRIP — CompanyIdentityStrip (new)
+   ============================================================ */
+.ab-identity-strip {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.ab-identity-strip .container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 0;
+}
+.ab-identity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-8);
+  border-right: 1px solid var(--border-subtle);
+  flex: 1;
+  min-width: 240px;
+  transition: background var(--dur-fast);
+}
+.ab-identity-item:last-child { border-right: none; }
+.ab-identity-item:hover { background: var(--bg-canvas); }
+@media (max-width: 768px) {
+  .ab-identity-item { border-right: none; border-bottom: 1px solid var(--border-subtle); }
+  .ab-identity-item:last-child { border-bottom: none; }
+}
+.ab-identity-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+}
+.ab-identity-icon svg { width: 20px; height: 20px; color: var(--brand-accent); }
+.ab-identity-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+.ab-identity-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+/* ============================================================
+   [A3] PROBLEM FRAMING — ProblemSolutionCards (new)
+   Two columns: 3 problem cards left + 3 solution cards right
+   ============================================================ */
+.ab-prob-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+  align-items: start;
+}
+@media (max-width: 900px) { .ab-prob-grid { grid-template-columns: 1fr; } }
+
+.ab-prob-col-head {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  border-bottom: 2px solid var(--border-subtle);
+  margin-bottom: var(--space-5);
+}
+.ab-prob-col-head svg { width: 18px; height: 18px; }
+.ab-prob-col-head span { font-family: var(--font-body); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
+.ab-prob-col-head.problem { color: var(--error); }
+.ab-prob-col-head.solution { color: var(--success); }
+.ab-prob-col-head.problem svg { color: var(--error); }
+.ab-prob-col-head.solution svg { color: var(--success); }
+
+.ab-prob-cards { display: flex; flex-direction: column; gap: var(--space-4); }
+.ab-prob-card {
+  display: flex; align-items: flex-start; gap: var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  transition: box-shadow var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast);
+}
+.ab-prob-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+.ab-prob-card.solution { border-left: 3px solid var(--success); }
+.ab-prob-card.problem  { border-left: 3px solid var(--error); }
+.ab-prob-card-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+}
+.ab-prob-card.problem .ab-prob-card-icon { background: color-mix(in srgb, var(--error) 10%, transparent); }
+.ab-prob-card.solution .ab-prob-card-icon { background: color-mix(in srgb, var(--success) 10%, transparent); }
+.ab-prob-card.problem .ab-prob-card-icon svg { color: var(--error); width: 18px; height: 18px; }
+.ab-prob-card.solution .ab-prob-card-icon svg { color: var(--success); width: 18px; height: 18px; }
+.ab-prob-card-body {}
+.ab-prob-card-body h4 { font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-1); }
+.ab-prob-card-body p { font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+
+/* Problem-card stagger entrance */
+.ab-prob.js .ab-prob-card {
+  opacity: 0; transform: translateX(-12px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d,0ms), transform var(--dur-slow) var(--ease-out) var(--d,0ms),
+              box-shadow var(--dur-fast), border-color var(--dur-fast);
+}
+.ab-prob.js .ab-prob-card.solution { transform: translateX(12px); }
+.ab-prob.js .ab-prob-card.entered { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-prob.js .ab-prob-card { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [A4] THREE ENGINES — IconFeatureGrid, 3-column
+   ============================================================ */
+.ab-engines-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .ab-engines-grid { grid-template-columns: 1fr; } }
+
+.ab-engine-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-base), transform var(--dur-base), border-color var(--dur-base);
+  position: relative;
+  overflow: hidden;
+}
+.ab-engine-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--brand-accent);
+}
+.ab-engine-eyebrow {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  margin-bottom: var(--space-3);
+  display: block;
+}
+.ab-engine-icon {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--brand-accent-deep), var(--brand-accent));
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--space-4);
+}
+.ab-engine-icon svg { width: 24px; height: 24px; color: var(--text-on-dark); }
+.ab-engine-title { font-family: var(--font-display); font-size: 20px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-3); }
+.ab-engine-body { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+/* Animated glow blob on hover */
+.ab-engine-card::before {
+  content: "";
+  position: absolute; inset: -40%; z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--brand-accent-soft), transparent 70%);
+  opacity: 0; transform: scale(0.6);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  pointer-events: none;
+}
+.ab-engine-card:hover::before { opacity: 1; transform: scale(1); }
+.ab-engine-card > * { position: relative; z-index: 1; }
+
+/* Engine stagger */
+.ab-engines.js .ab-engine-card {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d,0ms), transform var(--dur-slow) var(--ease-out) var(--d,0ms),
+              box-shadow var(--dur-base), border-color var(--dur-base);
+}
+.ab-engines.js .ab-engine-card.entered { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-engines.js .ab-engine-card { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [A5] SIX CAPABILITIES — BentoGrid (2-col with wide items)
+   ============================================================ */
+.ab-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 768px) { .ab-bento-grid { grid-template-columns: 1fr; } }
+.ab-bento-wide { grid-column: 1 / -1; }
+
+.ab-bento-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  display: flex; flex-direction: column; gap: var(--space-3);
+  transition: box-shadow var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast);
+}
+.ab-bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--brand-accent);
+}
+.ab-bento-wide.ab-bento-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-5);
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .ab-bento-wide.ab-bento-card { grid-template-columns: 1fr; }
+}
+.ab-bento-card-icon {
+  width: 44px; height: 44px; flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--dur-fast);
+}
+.ab-bento-card:hover .ab-bento-card-icon { background: var(--brand-accent); }
+.ab-bento-card-icon svg { width: 22px; height: 22px; color: var(--brand-accent); transition: color var(--dur-fast); }
+.ab-bento-card:hover .ab-bento-card-icon svg { color: var(--text-on-dark); }
+.ab-bento-card-title { font-family: var(--font-display); font-size: 17px; font-weight: 500; color: var(--text-primary); }
+.ab-bento-card-body { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+
+/* Bento entrance */
+.ab-bento.js .ab-bento-card {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d,0ms), transform var(--dur-slow) var(--ease-out) var(--d,0ms),
+              box-shadow var(--dur-fast), border-color var(--dur-fast);
+}
+.ab-bento.js .ab-bento-card.entered { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-bento.js .ab-bento-card { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [A6] SEGMENT CARDS — SegmentCards (reused kit class)
+   ============================================================ */
+.ab-segment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 960px) { .ab-segment-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 580px)  { .ab-segment-grid { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   [A7] INTEGRATION LOGO GRID — IntegrationLogoGrid (new)
+   ============================================================ */
+.ab-integrations-container {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7);
+  margin-top: var(--space-8);
+}
+.ab-integrations-group { margin-bottom: var(--space-7); }
+.ab-integrations-group:last-child { margin-bottom: 0; }
+.ab-integrations-group-head {
+  display: flex; align-items: center; gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+.ab-integrations-group-head svg { width: 18px; height: 18px; color: var(--brand-accent); }
+.ab-integrations-group-head span {
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.ab-integrations-divider { height: 1px; background: var(--border-subtle); margin-bottom: var(--space-6); }
+.ab-integrations-logos {
+  display: flex; flex-wrap: wrap; gap: var(--space-4);
+}
+.ab-logo-tile {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  min-width: 140px;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
+  cursor: default;
+}
+.ab-logo-tile:hover {
+  border-color: var(--brand-accent);
+  box-shadow: 0 2px 12px -4px var(--brand-accent-glow);
+  transform: translateY(-2px);
+}
+.ab-logo-tile svg { width: 20px; height: 20px; color: var(--brand-accent); flex-shrink: 0; }
+.ab-logo-tile span { font-family: var(--font-body); font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.ab-integrations-footer {
+  margin-top: var(--space-6);
+  text-align: center;
+}
+.ab-integrations-footer a {
+  font-family: var(--font-body);
+  font-size: 14px; font-weight: 600;
+  color: var(--brand-accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-accent) 30%, transparent);
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+.ab-integrations-footer a:hover {
+  color: var(--brand-accent-hover);
+  border-color: var(--brand-accent);
+}
+.ab-integrations-footer a:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: 2px; }
+
+/* Logo-tile stagger entrance */
+.ab-integrations-section.js .ab-logo-tile {
+  opacity: 0; transform: scale(0.94);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d,0ms), transform var(--dur-slow) var(--ease-out) var(--d,0ms),
+              border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.ab-integrations-section.js .ab-logo-tile.entered { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-integrations-section.js .ab-logo-tile { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [A8] PROOF SIGNALS — dark stat band + testimonial
+   ============================================================ */
+.ab-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+@media (max-width: 768px) { .ab-stats-grid { grid-template-columns: 1fr; } }
+
+.ab-stat-card {
+  text-align: center;
+  padding: var(--space-5);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-lg);
+}
+.ab-stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  color: var(--text-on-dark);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: var(--space-2);
+}
+.ab-stat-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-on-dark-dim);
+  line-height: 1.45;
+}
+
+.ab-testimonial-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7);
+  max-width: 800px;
+  margin: 0 auto var(--space-6);
+}
+.ab-testimonial-quote {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--text-on-dark);
+  font-style: italic;
+  margin-bottom: var(--space-5);
+}
+.ab-testimonial-author {
+  display: flex; align-items: center; gap: var(--space-4);
+}
+.ab-testimonial-initials {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  color: var(--text-on-dark);
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ab-testimonial-name { font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--text-on-dark); }
+.ab-testimonial-role { font-family: var(--font-body); font-size: 13px; color: var(--text-on-dark-dim); }
+
+.ab-review-badges {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+.ab-review-badge {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  min-width: 130px;
+}
+.ab-review-badge-name { font-family: var(--font-body); font-size: 12px; font-weight: 700; color: var(--text-on-dark-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.ab-review-badge-val { font-family: var(--font-body); font-size: 11px; color: var(--text-on-dark-dim); font-style: italic; }
+.ab-proof-link { display: block; text-align: center; margin-top: var(--space-5); font-family: var(--font-body); font-size: 13px; color: var(--text-on-dark-dim); }
+.ab-proof-link a { color: var(--text-on-dark-dim); text-decoration: underline; text-underline-offset: 3px; }
+.ab-proof-link a:hover { color: var(--text-on-dark); }
+
+/* Count-up: numbers start at 0 when JS runs */
+.ab-proof.js .ab-stat-num.counting { font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-proof.js .ab-stat-num.counting { transition: none !important; }
+}
+
+/* ============================================================
+   [A9] TEAM / EDITORIAL BLOCK — fallback (bios not approved)
+   ============================================================ */
+.ab-team-editorial {
+  max-width: 640px;
+  margin: var(--space-8) auto 0;
+  text-align: center;
+}
+.ab-team-editorial p { font-size: 17px; line-height: 1.65; color: var(--text-secondary); margin-bottom: var(--space-6); }
+.ab-team-editorial a { margin-top: var(--space-2); }
+
+/* TeamGrid placeholder slots (hidden by default, shown if content-ops populates data) */
+.ab-team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 960px) { .ab-team-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .ab-team-grid { grid-template-columns: 1fr; } }
+.ab-team-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-align: center;
+  transition: box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+.ab-team-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+.ab-team-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--border-subtle);
+  margin: 0 auto var(--space-3);
+  display: flex; align-items: center; justify-content: center;
+}
+.ab-team-avatar svg { width: 28px; height: 28px; color: var(--text-tertiary); }
+.ab-team-name { font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--text-primary); }
+.ab-team-title { font-family: var(--font-body); font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+.ab-team-linkedin { margin-top: var(--space-3); display: inline-flex; align-items: center; justify-content: center; color: var(--brand-accent); }
+.ab-team-linkedin svg { width: 16px; height: 16px; }
+.ab-team-linkedin:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ============================================================
+   [A10] INTERACTIVE TIMELINE — company story (ab-* new)
+   Click/keyboard to step through Quaeris founding arc
+   ============================================================ */
+.ab-timeline {
+  position: relative;
+  margin-top: var(--space-9);
+}
+.ab-timeline-spine {
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: var(--border-subtle);
+  transform: translateX(-50%);
+}
+.ab-timeline-progress {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(180deg, var(--brand-accent-deep), var(--brand-accent));
+  transition: height 0.7s var(--ease-out);
+}
+.ab-timeline-events {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  position: relative;
+}
+.ab-timeline-event {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+.ab-timeline-event:nth-child(even) .ab-tl-content { grid-column: 3; }
+.ab-timeline-event:nth-child(even) .ab-tl-dot { grid-column: 2; }
+.ab-timeline-event:nth-child(even) .ab-tl-spacer { grid-column: 1; }
+@media (max-width: 700px) {
+  .ab-timeline-spine { left: 20px; transform: none; }
+  .ab-timeline-event { grid-template-columns: 40px 1fr; gap: var(--space-4); }
+  .ab-timeline-event:nth-child(even) .ab-tl-content { grid-column: 2; }
+  .ab-timeline-event:nth-child(even) .ab-tl-dot { grid-column: 1; }
+  .ab-timeline-event:nth-child(even) .ab-tl-spacer { display: none; }
+  .ab-tl-spacer { display: none; }
+}
+.ab-tl-spacer {}
+.ab-tl-dot {
+  display: flex; align-items: center; justify-content: center;
+  padding-top: 4px;
+}
+.ab-tl-dot-inner {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  border: 2px solid var(--bg-surface);
+  box-shadow: 0 0 0 3px var(--border-subtle);
+  transition: background var(--dur-base), box-shadow var(--dur-base), transform var(--dur-base);
+  flex-shrink: 0;
+}
+.ab-timeline-event.active .ab-tl-dot-inner,
+.ab-timeline-event.done .ab-tl-dot-inner {
+  background: var(--brand-accent);
+  box-shadow: 0 0 0 4px var(--brand-accent-soft);
+}
+.ab-timeline-event.active .ab-tl-dot-inner { transform: scale(1.25); }
+.ab-tl-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+.ab-tl-content:hover { border-color: var(--brand-accent); transform: translateY(-2px); }
+.ab-timeline-event.active .ab-tl-content { border-color: var(--brand-accent); box-shadow: 0 0 0 3px var(--brand-accent-soft), var(--shadow-card); }
+.ab-tl-content:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: var(--radius-lg); }
+.ab-tl-date { font-family: var(--font-body); font-size: 12px; font-weight: 700; color: var(--brand-accent); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: var(--space-2); display: block; }
+.ab-tl-title { font-family: var(--font-display); font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-2); }
+.ab-tl-body { font-size: 14px; line-height: 1.6; color: var(--text-secondary); max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.5s var(--ease-out), opacity var(--dur-base) var(--ease-out); }
+.ab-timeline-event.active .ab-tl-body { max-height: 200px; opacity: 1; }
+
+/* JS gated: events start hidden, stagger in */
+.ab-timeline.js .ab-timeline-event {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d,0ms), transform var(--dur-slow) var(--ease-out) var(--d,0ms);
+}
+.ab-timeline.js .ab-timeline-event.entered { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-timeline.js .ab-timeline-event { transition: none !important; opacity: 1 !important; transform: none !important; }
+  .ab-tl-body { transition: none !important; }
+}
+
+/* ============================================================
+   [A11] VALUES / PRINCIPLES GRID — 2×2
+   ============================================================ */
+.ab-values-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 768px) { .ab-values-grid { grid-template-columns: 1fr; } }
+
+.ab-value-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast);
+}
+.ab-value-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--brand-accent);
+}
+.ab-value-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--space-4);
+  transition: background var(--dur-fast);
+}
+.ab-value-icon svg { width: 22px; height: 22px; color: var(--brand-accent); transition: color var(--dur-fast); }
+.ab-value-card:hover .ab-value-icon { background: var(--brand-accent); }
+.ab-value-card:hover .ab-value-icon svg { color: var(--text-on-dark); }
+.ab-value-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--text-primary); margin-bottom: var(--space-3); }
+.ab-value-body { font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+
+/* Values entrance */
+.ab-values.js .ab-value-card {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d,0ms), transform var(--dur-slow) var(--ease-out) var(--d,0ms),
+              box-shadow var(--dur-fast), border-color var(--dur-fast);
+}
+.ab-values.js .ab-value-card.entered { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-values.js .ab-value-card { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [A12] CLOSING CTA — reuses fin-cta-card from finance-v3
+   ============================================================ */
+.fin-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.fin-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.fin-cta-card .ab-cta-sub { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.fin-cta-card .ab-cta-eyebrow { color: rgba(255,255,255,0.7); display: block; margin-bottom: var(--space-4); }
+.fin-cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); }
+.fin-cta-card .btn-cta-primary {
+  background: var(--bg-surface); color: var(--brand-accent-deep);
+  padding: 12px 28px; border-radius: var(--radius-cta); font-family: var(--font-body); font-weight: 600;
+  font-size: 15px; min-height: 44px; border: none; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center;
+  transition: box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+.fin-cta-card .btn-cta-primary:hover { box-shadow: 0 4px 20px -4px rgba(0,0,0,0.25); transform: translateY(-1px); }
+.fin-cta-card .btn-cta-primary:focus-visible { outline: 2px solid var(--text-on-dark); outline-offset: 3px; }
+.fin-cta-card .btn-cta-ghost {
+  background: transparent; color: var(--text-on-dark);
+  border: 1px solid rgba(255,255,255,0.45); padding: 11px 28px;
+  border-radius: var(--radius-cta); font-family: var(--font-body); font-weight: 600;
+  font-size: 15px; min-height: 44px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center;
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+}
+.fin-cta-card .btn-cta-ghost:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.7); }
+.fin-cta-card .btn-cta-ghost:focus-visible { outline: 2px solid var(--text-on-dark); outline-offset: 3px; }
+
+/* ============================================================
+   [PH] PLACEHOLDER AFFORDANCE — spec §08 / content-ops gate
+   Any element with [data-placeholder] signals unverified data.
+   Stat cards, review badges, and testimonial cards get dashed
+   borders + reduced opacity so they cannot be read as hard metrics.
+   The .ab-placeholder-tag inline label makes it explicit at a glance.
+   ============================================================ */
+[data-placeholder] { position: relative; }
+
+.ab-stat-card[data-placeholder],
+.ab-review-badge[data-placeholder],
+.ab-testimonial-card[data-placeholder] {
+  border-style: dashed;
+  opacity: .78;
+}
+
+/* Small inline tag injected into each placeholder stat/badge */
+.ab-placeholder-tag {
+  display: block;
+  margin-top: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-dim);
+  opacity: .75;
+}
+
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     SECTION 01 — Page Hero (Mission Statement)
+     ab-hero: centered, no CTA, word-by-word ink reveal
+     ============================================================ -->
+<section id="about-hero" class="ab-hero section-pad" aria-labelledby="about-hero-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="ab-hero-inner reveal">
+      <span class="eyebrow">Founded in San Francisco · seek@quaeris.ai</span>
+      <h1 id="about-hero-heading" class="hero-h1">
+        <span class="ab-tagline-word" style="--d:0ms">Secure,</span>&#32;<span class="ab-tagline-word" style="--d:80ms">Governed</span>&#32;<span class="ab-tagline-word" style="--d:160ms">Analytics.</span>&#32;<span class="ab-tagline-word" style="--d:280ms">Powered</span>&#32;<span class="ab-tagline-word" style="--d:360ms">by</span>&#32;<span class="ab-tagline-word" style="--d:420ms">Trusted</span>&#32;<span class="ab-tagline-word accent-line" style="--d:500ms">Agents.</span>
+      </h1>
+      <p class="subcopy body-lg">
+        Quaeris exists because the enterprise deserved an analytics platform where AI answers are audited, where the model is your choice, and where data governance is a design principle — not a checkbox bolted on at the end.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 02 — Company Identity Strip
+     CompanyIdentityStrip (new): 3 factual signals, hover highlight
+     ============================================================ -->
+<section id="company-identity" class="ab-identity-strip" aria-label="Company identity signals">
+  <div class="container" style="padding-top:0; padding-bottom:0;">
+
+    <div class="ab-identity-item">
+      <span class="ab-identity-icon" aria-hidden="true">
+        <!-- lucide: map-pin -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      </span>
+      <div>
+        <span class="ab-identity-label">Headquarters</span>
+        <span class="ab-identity-value">Mission &amp; 3rd, San Francisco, CA 94103</span>
+      </div>
+    </div>
+
+    <div class="ab-identity-item">
+      <span class="ab-identity-icon" aria-hidden="true">
+        <!-- lucide: mail -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </span>
+      <div>
+        <span class="ab-identity-label">General inquiries</span>
+        <span class="ab-identity-value"><a href="mailto:seek@quaeris.ai" style="color:inherit;text-decoration:none;">seek@quaeris.ai</a></span>
+      </div>
+    </div>
+
+    <div class="ab-identity-item">
+      <span class="ab-identity-icon" aria-hidden="true">
+        <!-- lucide: shield-check -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+      </span>
+      <div>
+        <span class="ab-identity-label">Mission</span>
+        <span class="ab-identity-value">Governed Agentic Analytics</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 03 — Why Quaeris Exists (Problem Framing)
+     Two columns: problem cards + solution cards, stagger in
+     ============================================================ -->
+<section id="why-exists" class="section-pad ab-prob" aria-labelledby="prob-heading" style="background: var(--bg-canvas);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The problem we set out to solve</span>
+      <h2 id="prob-heading" class="display-lg">Enterprise AI analytics had a<br><span class="accent-line">governance deficit.</span></h2>
+      <p class="subcopy body-lg">Every major analytics vendor was racing to add AI. Almost none of them asked: who audits the answers? Who chooses the model? How does a regulated company trust a response it cannot trace?</p>
+    </div>
+
+    <div class="ab-prob-grid">
+      <!-- LEFT: Problems -->
+      <div>
+        <div class="ab-prob-col-head problem">
+          <!-- lucide: x-circle -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+          <span>The gaps we found</span>
+        </div>
+        <div class="ab-prob-cards">
+          <div class="ab-prob-card problem" style="--d:0ms">
+            <span class="ab-prob-card-icon">
+              <!-- lucide: lock-open -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="11" height="11" x="11" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+            </span>
+            <div class="ab-prob-card-body">
+              <h4>Ungoverned answers</h4>
+              <p>AI answers generated from language model weights rather than certified, auditable metric definitions. No traceability. No compliance story.</p>
+            </div>
+          </div>
+          <div class="ab-prob-card problem" style="--d:80ms">
+            <span class="ab-prob-card-icon">
+              <!-- lucide: link -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </span>
+            <div class="ab-prob-card-body">
+              <h4>Model lock-in</h4>
+              <p>Every hyperscaler tied the AI layer to their own model. Snowflake to Cortex. Microsoft to Azure OpenAI. Procurement choice became compliance risk.</p>
+            </div>
+          </div>
+          <div class="ab-prob-card problem" style="--d:160ms">
+            <span class="ab-prob-card-icon">
+              <!-- lucide: file-x -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9.5 12.5 5 5"/><path d="m14.5 12.5-5 5"/></svg>
+            </span>
+            <div class="ab-prob-card-body">
+              <h4>Structured-only blindspot</h4>
+              <p>Documents and data warehouses lived in entirely separate stacks. No product unified a SharePoint contract with a Snowflake fact table in a single governed query.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Solutions -->
+      <div>
+        <div class="ab-prob-col-head solution">
+          <!-- lucide: check-circle -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+          <span>How Quaeris responds</span>
+        </div>
+        <div class="ab-prob-cards">
+          <div class="ab-prob-card solution" style="--d:40ms">
+            <span class="ab-prob-card-icon">
+              <!-- lucide: shield-check -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <div class="ab-prob-card-body">
+              <h4>Governed answers from day one</h4>
+              <p>Every Quaeris answer is grounded in the Smart Semantic Layer — auto-learned, auditable metric definitions your team controls, not the model.</p>
+            </div>
+          </div>
+          <div class="ab-prob-card solution" style="--d:120ms">
+            <span class="ab-prob-card-icon">
+              <!-- lucide: sliders-horizontal -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
+            </span>
+            <div class="ab-prob-card-body">
+              <h4>BYOM: your model, your compliance team's choice</h4>
+              <p>Connect OpenAI, Anthropic, Google, or Meta models and switch as the landscape evolves. The model is your procurement decision, not ours.</p>
+            </div>
+          </div>
+          <div class="ab-prob-card solution" style="--d:200ms">
+            <span class="ab-prob-card-icon">
+              <!-- lucide: layers -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+            </span>
+            <div class="ab-prob-card-body">
+              <h4>Documents and warehouse data in one governed query</h4>
+              <p>Data Agents unify structured warehouse tables and unstructured documents — contracts, invoices, reports — in a single natural-language query with a single audit trail.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 04 — Three-Engine Architecture
+     IconFeatureGrid, 3-col; hover glow + stagger entrance
+     ============================================================ -->
+<section id="three-engines" class="section-pad ab-engines" aria-labelledby="engines-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How the platform is built</span>
+      <h2 id="engines-heading" class="display-lg">Three engines.<br><span class="accent-line">One governed system.</span></h2>
+      <p class="subcopy body-lg">The Quaeris platform is not a chatbot placed in front of a BI tool. It is a purpose-built three-engine information architecture where governance is enforced at every layer.</p>
+    </div>
+
+    <div class="ab-engines-grid">
+      <!-- Context Engine -->
+      <article class="ab-engine-card" style="--d:0ms">
+        <span class="ab-engine-eyebrow">Ask · Integrate · Activate</span>
+        <div class="ab-engine-icon" aria-hidden="true">
+          <!-- lucide: cpu -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
+        </div>
+        <h3 class="ab-engine-title">Context Engine</h3>
+        <p class="ab-engine-body">Interprets natural-language questions, integrates with your data warehouses and document sources, and activates the governed semantic layer — so the right data is in scope before any answer is generated.</p>
+      </article>
+
+      <!-- Answer Engine -->
+      <article class="ab-engine-card" style="--d:100ms">
+        <span class="ab-engine-eyebrow">Search · Share · Accelerate</span>
+        <div class="ab-engine-icon" aria-hidden="true">
+          <!-- lucide: search -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <h3 class="ab-engine-title">Answer Engine</h3>
+        <p class="ab-engine-body">Executes governed queries, surfaces search-ready insights, and delivers answers that can be shared across teams — all traceable to the certified metric definitions in the <a href="/platform/semantic-layer" style="color:var(--brand-accent);">Smart Semantic Layer</a>.</p>
+      </article>
+
+      <!-- Decision Engine -->
+      <article class="ab-engine-card" style="--d:200ms">
+        <span class="ab-engine-eyebrow">Pin · Embed · Resonate</span>
+        <div class="ab-engine-icon" aria-hidden="true">
+          <!-- lucide: bar-chart-2 -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        </div>
+        <h3 class="ab-engine-title">Decision Engine</h3>
+        <p class="ab-engine-body">Pins insights to pinboards, embeds governed analytics in external applications, and delivers resonant data experiences — keeping every number anchored to a verified source.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 05 — Six Core Capabilities (BentoGrid)
+     2-col bento; 2 wide cards; hover icon swap + stagger entrance
+     ============================================================ -->
+<section id="capabilities" class="section-pad ab-bento" aria-labelledby="caps-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Platform capabilities</span>
+      <h2 id="caps-heading" class="display-lg">The six capabilities that make<br><span class="accent-line">analytics trustworthy.</span></h2>
+      <p class="subcopy body-lg">Each capability is a deliberate response to a gap in the market — not a feature added to hit a checklist.</p>
+    </div>
+
+    <div class="ab-bento-grid">
+      <!-- Wide: Smart Semantic Layer -->
+      <article class="ab-bento-card ab-bento-wide" style="--d:0ms">
+        <div class="ab-bento-card-icon" aria-hidden="true">
+          <!-- lucide: brain -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div>
+          <h3 class="ab-bento-card-title"><a href="/platform/semantic-layer" style="color:inherit;text-decoration:none;">Smart Semantic Layer</a></h3>
+          <p class="ab-bento-card-body">Automatically learns business definitions and data relationships from user interaction — no upfront LookML or MDX modeling sprint required. Every metric is defined once and applied consistently across every team, every report, every answer.</p>
+        </div>
+      </article>
+
+      <!-- Standard: NL to SQL -->
+      <article class="ab-bento-card" style="--d:80ms">
+        <div class="ab-bento-card-icon" aria-hidden="true">
+          <!-- lucide: message-square -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3 class="ab-bento-card-title">Natural Language to SQL</h3>
+        <p class="ab-bento-card-body">Plain-English questions translated into precise, governed SQL — checked against the semantic layer rather than free-form generation. Accuracy is structural, not probabilistic.</p>
+      </article>
+
+      <!-- Standard: Multi-step Workflows -->
+      <article class="ab-bento-card" style="--d:120ms">
+        <div class="ab-bento-card-icon" aria-hidden="true">
+          <!-- lucide: workflow -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg>
+        </div>
+        <h3 class="ab-bento-card-title"><a href="/platform/agents" style="color:inherit;text-decoration:none;">Autonomous Multi-Step Workflows</a></h3>
+        <p class="ab-bento-card-body">Agents plan and execute analyses — fetch, filter, join, forecast, anomaly-detect, root-cause — without a human checkpoint at every step. The audit trail captures each step.</p>
+      </article>
+
+      <!-- Standard: Predictive -->
+      <article class="ab-bento-card" style="--d:160ms">
+        <div class="ab-bento-card-icon" aria-hidden="true">
+          <!-- lucide: trending-up -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3 class="ab-bento-card-title">Predictive &amp; Proactive Analysis</h3>
+        <p class="ab-bento-card-body">Forecasts, anomaly flags, root-cause diagnosis, and proactive alerts so issues surface before they affect business outcomes.</p>
+      </article>
+
+      <!-- Standard: BYOM -->
+      <article class="ab-bento-card" style="--d:200ms">
+        <div class="ab-bento-card-icon" aria-hidden="true">
+          <!-- lucide: plug -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8H6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2Z"/></svg>
+        </div>
+        <h3 class="ab-bento-card-title">BYOM — Bring Your Own Model</h3>
+        <p class="ab-bento-card-body">Connect OpenAI, Anthropic, Google, or Meta models and switch as the landscape evolves. Quaeris is not the model gatekeeper — your compliance team is.</p>
+      </article>
+
+      <!-- Wide: Document Agents -->
+      <article class="ab-bento-card ab-bento-wide" style="--d:240ms">
+        <div class="ab-bento-card-icon" aria-hidden="true">
+          <!-- lucide: file-search -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"/><path d="m9 18-1.5-1.5"/><circle cx="5" cy="14" r="3"/></svg>
+        </div>
+        <div>
+          <h3 class="ab-bento-card-title">Data &amp; Document Agents</h3>
+          <p class="ab-bento-card-body">Extract structured fields from contracts, invoices, and documents — then join with warehouse fact tables in one natural-language, governed query. Structured and unstructured data unified without a separate pipeline.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 06 — Target Industries
+     SegmentCards (kit pattern), 3×2 grid; hover micro-interactions
+     ============================================================ -->
+<section id="industries" class="section-pad" aria-labelledby="industries-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Where Quaeris is deployed</span>
+      <h2 id="industries-heading" class="display-lg">Built for industries where<br><span class="accent-line">governance is not optional.</span></h2>
+      <p class="subcopy body-lg">Regulated, complex, data-intensive industries were the design target — not an afterthought.</p>
+    </div>
+
+    <div class="ab-segment-grid">
+
+      <article class="card reveal" style="display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-6);transition:box-shadow var(--dur-fast),border-color var(--dur-fast),transform var(--dur-fast);">
+        <span class="icon-box">
+          <!-- lucide: landmark -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+        </span>
+        <h3 class="heading-sm">Finance</h3>
+        <p class="body-sm" style="color:var(--text-secondary);">Auditable answers on revenue, risk, and compliance metrics — with prompt-level audit trails for SOX and internal controls.</p>
+      </article>
+
+      <article class="card reveal" style="display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-6);transition:box-shadow var(--dur-fast),border-color var(--dur-fast),transform var(--dur-fast);">
+        <span class="icon-box">
+          <!-- lucide: shield -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        </span>
+        <h3 class="heading-sm">Insurance</h3>
+        <p class="body-sm" style="color:var(--text-secondary);">Governed queries across claims, actuarial, and underwriting data — unified with policy documents in a single agent workflow.</p>
+      </article>
+
+      <article class="card reveal" style="display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-6);transition:box-shadow var(--dur-fast),border-color var(--dur-fast),transform var(--dur-fast);">
+        <span class="icon-box">
+          <!-- lucide: shopping-cart -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        </span>
+        <h3 class="heading-sm">Retail &amp; CPG</h3>
+        <p class="body-sm" style="color:var(--text-secondary);">Merchandising, inventory, and customer analytics from a semantic layer that speaks the language of the business, not the warehouse schema.</p>
+      </article>
+
+      <article class="card reveal" style="display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-6);transition:box-shadow var(--dur-fast),border-color var(--dur-fast),transform var(--dur-fast);">
+        <span class="icon-box">
+          <!-- lucide: activity -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </span>
+        <h3 class="heading-sm">Healthcare</h3>
+        <p class="body-sm" style="color:var(--text-secondary);">Clinical, operational, and financial queries under HIPAA-aligned access controls — every answer scoped to the role that asked.</p>
+      </article>
+
+      <article class="card reveal" style="display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-6);transition:box-shadow var(--dur-fast),border-color var(--dur-fast),transform var(--dur-fast);">
+        <span class="icon-box">
+          <!-- lucide: settings-2 -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+        </span>
+        <h3 class="heading-sm">Manufacturing</h3>
+        <p class="body-sm" style="color:var(--text-secondary);">Quality, throughput, and supply-chain analytics driven by agents that can join machine logs with ERP fact tables.</p>
+      </article>
+
+      <article class="card reveal" style="display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-6);transition:box-shadow var(--dur-fast),border-color var(--dur-fast),transform var(--dur-fast);">
+        <span class="icon-box">
+          <!-- lucide: hard-hat -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6h0"/><path d="M14 6h0a6 6 0 0 1 6 6v3"/></svg>
+        </span>
+        <h3 class="heading-sm">Construction</h3>
+        <p class="body-sm" style="color:var(--text-secondary);">Project margin, subcontractor, and procurement analytics — governed and auditable from field data to executive dashboard.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 07 — Integrations (IntegrationLogoGrid, new)
+     Logo tiles with staggered entrance on scroll
+     ============================================================ -->
+<section id="integrations" class="section-pad ab-integrations-section" aria-labelledby="integrations-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Warehouse-native by design</span>
+      <h2 id="integrations-heading" class="display-lg">Your data stays in<br><span class="accent-line">your environment.</span></h2>
+      <p class="subcopy body-lg">Quaeris connects directly to your existing data infrastructure — no data copies, no pipelines to rebuild. Your warehouse is the system of record. <a href="/platform/warehouse" style="color:var(--brand-accent);">Always.</a></p>
+    </div>
+
+    <div class="ab-integrations-container">
+
+      <!-- Warehouses group -->
+      <div class="ab-integrations-group">
+        <div class="ab-integrations-group-head">
+          <!-- lucide: server -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+          <span>Data warehouses</span>
+        </div>
+        <div class="ab-integrations-logos">
+          <div class="ab-logo-tile" style="--d:0ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            <span>Snowflake</span>
+          </div>
+          <div class="ab-logo-tile" style="--d:60ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            <span>Google BigQuery</span>
+          </div>
+          <div class="ab-logo-tile" style="--d:120ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            <span>Databricks</span>
+          </div>
+          <div class="ab-logo-tile" style="--d:180ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            <span>Azure Synapse</span>
+          </div>
+          <div class="ab-logo-tile" style="--d:240ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Amazon Redshift</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ab-integrations-divider"></div>
+
+      <!-- Document sources group -->
+      <div class="ab-integrations-group">
+        <div class="ab-integrations-group-head">
+          <!-- lucide: file-text -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+          <span>Document sources</span>
+        </div>
+        <div class="ab-integrations-logos">
+          <div class="ab-logo-tile" style="--d:300ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
+            <span>Microsoft SharePoint</span>
+          </div>
+          <div class="ab-logo-tile" style="--d:360ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+            <span>Google Drive</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ab-integrations-footer">
+      <a href="/integrations">See all integrations →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 08 — Proof Signals (dark band: stats + testimonial)
+     Count-up stats on scroll, placeholder testimonial + review badges
+     ============================================================ -->
+<section id="proof-signals" class="section-pad ab-proof" aria-labelledby="proof-heading" style="background: var(--bg-ink);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color:rgba(255,255,255,0.6);">Proof signals</span>
+      <h2 id="proof-heading" class="display-lg" style="color:var(--text-on-dark);">Analytics teams trust<br><span style="background: linear-gradient(90deg, var(--brand-accent-soft) 0%, transparent 100%); -webkit-background-clip:text; color:var(--text-on-dark);">governed answers.</span></h2>
+    </div>
+
+    <div class="ab-stats-grid">
+      <div class="ab-stat-card" data-placeholder>
+        <span class="ab-stat-num" data-num="6" data-suffix="" aria-live="polite">6</span>
+        <span class="ab-stat-label">Regulated industries served in production</span>
+        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+      </div>
+      <div class="ab-stat-card" data-placeholder>
+        <span class="ab-stat-num" data-num="7" data-suffix="" aria-live="polite">7</span>
+        <span class="ab-stat-label">Data platform integrations available</span>
+        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+      </div>
+      <div class="ab-stat-card" data-placeholder>
+        <span class="ab-stat-num" data-num="100" data-suffix="%" aria-live="polite">100%</span>
+        <span class="ab-stat-label">Audit-trail coverage on every governed query</span>
+        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+      </div>
+    </div>
+
+    <!-- Featured testimonial (E4E / Courtney Ramey — quote pending CS clearance) -->
+    <div class="ab-testimonial-card" data-placeholder>
+      <p class="ab-testimonial-quote" data-placeholder>
+        "[Approved quote from Courtney Ramey, E4E — pull from CS team before publication. Do not invent.]"
+      </p>
+      <div class="ab-testimonial-author">
+        <span class="ab-testimonial-initials" aria-hidden="true">CR</span>
+        <div>
+          <p class="ab-testimonial-name">Courtney Ramey</p>
+          <p class="ab-testimonial-role">E4E <span data-placeholder>[Title pending]</span></p>
+          <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review badges — all placeholder pending seed campaign -->
+    <div class="ab-review-badges">
+      <div class="ab-review-badge" data-placeholder>
+        <span class="ab-review-badge-name">G2</span>
+        <span class="ab-review-badge-val">Rating pending</span>
+        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+      </div>
+      <div class="ab-review-badge" data-placeholder>
+        <span class="ab-review-badge-name">Gartner Peer Insights</span>
+        <span class="ab-review-badge-val">Rating pending</span>
+        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+      </div>
+      <div class="ab-review-badge" data-placeholder>
+        <span class="ab-review-badge-name">Capterra</span>
+        <span class="ab-review-badge-val">Rating pending</span>
+        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+      </div>
+    </div>
+
+    <p class="ab-proof-link" data-placeholder>
+      <a href="/use-cases">See customer outcomes →</a>
+      &nbsp;·&nbsp;
+      <a href="/trust">Security &amp; compliance details</a> <span data-placeholder>(link when /trust is live)</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 09 — Team (Fallback EditorialBlock + TeamGrid slots)
+     Fallback used: team bios not yet approved.
+     Content-ops handoff: populate ab-team-grid from CMS array.
+     ============================================================ -->
+<section id="team" class="section-pad" aria-labelledby="team-heading" style="background: var(--bg-canvas);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The team</span>
+      <h2 id="team-heading" class="display-lg">Built by people who understand<br><span class="accent-line">enterprise data.</span></h2>
+    </div>
+
+    <!-- Fallback editorial block (ship until bios approved) -->
+    <div class="ab-team-editorial">
+      <p>The Quaeris team combines deep experience in analytics infrastructure, enterprise security, and applied AI — focused on one problem: making data answers trustworthy at scale.</p>
+      <a href="/careers" class="btn btn-secondary">We're hiring</a>
+    </div>
+
+    <!-- TeamGrid placeholder slots — hidden until CMS data is supplied -->
+    <!-- CONTENT-OPS HANDOFF: Replace the editorial block above with this grid once team
+         member names, titles, and headshot URLs are approved for publication. Each card
+         is driven by a CMS array — never hard-code names here. -->
+    <div class="ab-team-grid" aria-label="Team members" style="display:none;" aria-hidden="true">
+      <!-- Slot 1 -->
+      <div class="ab-team-card" data-placeholder>
+        <div class="ab-team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <p class="ab-team-name" data-placeholder>[Name]</p>
+        <p class="ab-team-title" data-placeholder>[Title]</p>
+        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+      <!-- Slot 2 -->
+      <div class="ab-team-card" data-placeholder>
+        <div class="ab-team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <p class="ab-team-name" data-placeholder>[Name]</p>
+        <p class="ab-team-title" data-placeholder>[Title]</p>
+        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+      <!-- Slot 3 -->
+      <div class="ab-team-card" data-placeholder>
+        <div class="ab-team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <p class="ab-team-name" data-placeholder>[Name]</p>
+        <p class="ab-team-title" data-placeholder>[Title]</p>
+        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+      <!-- Slot 4 -->
+      <div class="ab-team-card" data-placeholder>
+        <div class="ab-team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <p class="ab-team-name" data-placeholder>[Name]</p>
+        <p class="ab-team-title" data-placeholder>[Title]</p>
+        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 10 — Mission & Values (Company Principles)
+     IconFeatureGrid, 2×2; hover icon invert + stagger
+     ============================================================ -->
+<section id="values" class="section-pad ab-values" aria-labelledby="values-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">What we stand for</span>
+      <h2 id="values-heading" class="display-lg">Governance is a design principle,<br><span class="accent-line">not a feature flag.</span></h2>
+    </div>
+
+    <div class="ab-values-grid">
+
+      <!-- Governance-first -->
+      <article class="ab-value-card" style="--d:0ms">
+        <div class="ab-value-icon" aria-hidden="true">
+          <!-- lucide: shield-check -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="ab-value-title">Governance-first architecture</h3>
+        <p class="ab-value-body">We do not bolt governance onto an existing product. The <a href="/platform/semantic-layer" style="color:var(--brand-accent);">Smart Semantic Layer</a>, the audit trail, and the role-based access controls are load-bearing structures — removing any one of them changes what the product is.</p>
+      </article>
+
+      <!-- Model neutrality -->
+      <article class="ab-value-card" style="--d:80ms">
+        <div class="ab-value-icon" aria-hidden="true">
+          <!-- lucide: sliders-horizontal -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
+        </div>
+        <h3 class="ab-value-title">Model neutrality</h3>
+        <p class="ab-value-body">An enterprise's choice of AI model is a procurement and compliance decision, not a vendor's revenue strategy. BYOM is not a selling point — it is a principle.</p>
+      </article>
+
+      <!-- Full auditability -->
+      <article class="ab-value-card" style="--d:160ms">
+        <div class="ab-value-icon" aria-hidden="true">
+          <!-- lucide: eye -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3 class="ab-value-title">Full auditability</h3>
+        <p class="ab-value-body">Every question asked, every <a href="/platform/agents" style="color:var(--brand-accent);">agent step</a> taken, every answer returned is logged. <a href="/platform/audit" style="color:var(--brand-accent);">Prompt-level audit trails</a> are not an enterprise edition feature. They are the default.</p>
+      </article>
+
+      <!-- Warehouse-native -->
+      <article class="ab-value-card" style="--d:240ms">
+        <div class="ab-value-icon" aria-hidden="true">
+          <!-- lucide: globe -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
+        <h3 class="ab-value-title">Customer data stays with customers</h3>
+        <p class="ab-value-body">Quaeris is <a href="/platform/warehouse" style="color:var(--brand-accent);">warehouse-native</a>. Your data never travels to Quaeris infrastructure. This is an architectural commitment, not a contractual promise.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION — Interactive Company Timeline (ab-timeline, new)
+     Click/keyboard to step through milestones; spine grows
+     ============================================================ -->
+<section id="company-timeline" class="section-pad" aria-labelledby="timeline-heading" style="background: var(--bg-surface);">
+  <div class="container" style="max-width: 900px;">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Our story</span>
+      <h2 id="timeline-heading" class="display-lg">How Quaeris came to be built.</h2>
+      <p class="subcopy body-md" style="color:var(--text-secondary);">Click any milestone to expand.</p>
+    </div>
+
+    <div class="ab-timeline" role="list" aria-label="Company milestones" id="ab-timeline-root">
+      <div class="ab-timeline-spine" aria-hidden="true">
+        <div class="ab-timeline-progress" id="ab-tl-progress"></div>
+      </div>
+
+      <div class="ab-timeline-events">
+
+        <!-- Event 1 -->
+        <div class="ab-timeline-event active" role="listitem" style="--d:0ms" data-tl-event>
+          <div class="ab-tl-spacer"></div>
+          <div class="ab-tl-dot" aria-hidden="true"><div class="ab-tl-dot-inner"></div></div>
+          <div class="ab-tl-content" role="button" tabindex="0" aria-expanded="true" aria-label="The governance problem — click to expand">
+            <span class="ab-tl-date">The origin</span>
+            <p class="ab-tl-title">The governance problem was clear before the solution was.</p>
+            <p class="ab-tl-body">Enterprise analytics teams were building on AI tools that returned answers without lineage. For regulated industries, that wasn't an inconvenience — it was a blocker. The question Quaeris was founded to answer: can you make an AI analytics answer as auditable as a signed financial statement?</p>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="ab-timeline-event" role="listitem" style="--d:80ms" data-tl-event>
+          <div class="ab-tl-content" role="button" tabindex="0" aria-expanded="false" aria-label="Semantic layer — click to expand">
+            <span class="ab-tl-date">The first design decision</span>
+            <p class="ab-tl-title">Governance had to be the foundation, not a feature.</p>
+            <p class="ab-tl-body">The Smart Semantic Layer was the first architectural choice — not the last. Rather than layering governance over a BI tool or an LLM, Quaeris built the semantic layer as the load-bearing structure every answer would flow through. Auto-learned. Version-controlled. Auditable by default.</p>
+          </div>
+          <div class="ab-tl-dot" aria-hidden="true"><div class="ab-tl-dot-inner"></div></div>
+          <div class="ab-tl-spacer"></div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="ab-timeline-event" role="listitem" style="--d:160ms" data-tl-event>
+          <div class="ab-tl-spacer"></div>
+          <div class="ab-tl-dot" aria-hidden="true"><div class="ab-tl-dot-inner"></div></div>
+          <div class="ab-tl-content" role="button" tabindex="0" aria-expanded="false" aria-label="BYOM — click to expand">
+            <span class="ab-tl-date">The model-neutrality commitment</span>
+            <p class="ab-tl-title">BYOM wasn't a product differentiator. It was a principled refusal.</p>
+            <p class="ab-tl-body">As hyperscalers tied their AI analytics layers to their own model stacks, Quaeris made the opposite choice: connect to any model, switch at any time, own the compliance decision entirely. BYOM became a structural commitment before it became a marketing message.</p>
+          </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div class="ab-timeline-event" role="listitem" style="--d:240ms" data-tl-event>
+          <div class="ab-tl-content" role="button" tabindex="0" aria-expanded="false" aria-label="Document agents — click to expand">
+            <span class="ab-tl-date">Expanding the governed surface</span>
+            <p class="ab-tl-title">The warehouse was not enough. Documents had to be governed too.</p>
+            <p class="ab-tl-body">Finance teams found that half their data lived in contracts, invoices, and reports — not in the warehouse. Document Agents extended the governed semantic layer to unstructured sources, enabling a single audit-traced query across both. No second pipeline. No second compliance story.</p>
+          </div>
+          <div class="ab-tl-dot" aria-hidden="true"><div class="ab-tl-dot-inner"></div></div>
+          <div class="ab-tl-spacer"></div>
+        </div>
+
+        <!-- Event 5 -->
+        <div class="ab-timeline-event" role="listitem" style="--d:320ms" data-tl-event>
+          <div class="ab-tl-spacer"></div>
+          <div class="ab-tl-dot" aria-hidden="true"><div class="ab-tl-dot-inner"></div></div>
+          <div class="ab-tl-content" role="button" tabindex="0" aria-expanded="false" aria-label="MCP and today — click to expand">
+            <span class="ab-tl-date">Today — San Francisco, CA</span>
+            <p class="ab-tl-title">Governed agentic analytics, deployed in regulated industries.</p>
+            <p class="ab-tl-body">From San Francisco's Mission &amp; 3rd, the Quaeris platform runs across Finance, Insurance, Healthcare, Retail, Manufacturing, and Construction. MCP-ready. Warehouse-native. Audit-first. The mission hasn't changed — only the number of industries that need it has grown.</p>
+          </div>
+        </div>
+
+      </div><!-- /ab-timeline-events -->
+    </div><!-- /ab-timeline -->
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 11 — Closing CTA Band
+     fin-cta-card (reused); primary + secondary CTAs
+     ============================================================ -->
+<section id="final-cta" class="section-pad" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="fin-cta-card reveal">
+      <span class="ab-cta-eyebrow eyebrow">Ready to evaluate Quaeris?</span>
+      <h2 id="cta-heading" class="display-lg">See a governed answer against your own data.</h2>
+      <p class="ab-cta-sub body-lg">Book a 30-minute demo. We connect to your warehouse, walk through the semantic layer, and show you an auditable answer — no slides, no fabricated data.</p>
+      <div class="fin-cta-actions">
+        <a href="/contact" class="btn-cta-primary">Book a Demo</a>
+        <a href="/platform" class="btn-cta-ghost">See how the platform works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     Organization JSON-LD schema (per spec §6.7 — critical SEO gap fix)
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Quaeris, Inc.",
+  "url": "https://quaeris.ai",
+  "email": "seek@quaeris.ai",
+  "telephone": "+1-980-476-3737",
+  "description": "Quaeris builds secure, governed analytics powered by trusted agents — warehouse-native, BYOM, audit-trail by default.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "95 Third Street, 2nd Floor",
+    "addressLocality": "San Francisco",
+    "addressRegion": "CA",
+    "postalCode": "94103",
+    "addressCountry": "US"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "seek@quaeris.ai",
+    "contactType": "customer support"
+  },
+  "sameAs": []
+}
+</script>
+
+<!-- ============================================================
+     SCRIPTS — each a small vanilla IIFE on IntersectionObserver,
+     reduced-motion safe, final static state correct without JS.
+     ============================================================ -->
+
+<!-- [1] HERO — word-by-word ink reveal -->
+<script>
+(function () {
+  var hero = document.querySelector('.ab-hero');
+  if (!hero) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  hero.classList.add('js');
+  if (reduce) { hero.classList.add('played'); return; }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting) { hero.classList.add('played'); io.disconnect(); }
+    });
+  }, { threshold: 0.4 });
+  io.observe(hero);
+  // safety: play after 400ms even if never intersects (above-fold)
+  setTimeout(function () { hero.classList.add('played'); }, 400);
+})();
+</script>
+
+<!-- [2] PROBLEM FRAMING — stagger cards in from both sides -->
+<script>
+(function () {
+  var section = document.querySelector('.ab-prob');
+  if (!section) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('js');
+  var cards = Array.from(section.querySelectorAll('.ab-prob-card'));
+  function enter() {
+    cards.forEach(function (c, i) {
+      if (reduce) { c.classList.add('entered'); return; }
+      setTimeout(function () { c.classList.add('entered'); }, i * 80);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { enter(); io.disconnect(); } });
+    }, { threshold: 0.15 });
+    io.observe(section);
+  } else { enter(); }
+})();
+</script>
+
+<!-- [3] THREE ENGINES — stagger card entrance -->
+<script>
+(function () {
+  var section = document.querySelector('.ab-engines');
+  if (!section) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('js');
+  var cards = Array.from(section.querySelectorAll('.ab-engine-card'));
+  function enter() {
+    cards.forEach(function (c, i) {
+      if (reduce) { c.classList.add('entered'); return; }
+      setTimeout(function () { c.classList.add('entered'); }, i * 100);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { enter(); io.disconnect(); } });
+    }, { threshold: 0.15 });
+    io.observe(section);
+  } else { enter(); }
+})();
+</script>
+
+<!-- [4] BENTO CAPABILITIES — stagger entrance -->
+<script>
+(function () {
+  var section = document.querySelector('.ab-bento');
+  if (!section) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('js');
+  var cards = Array.from(section.querySelectorAll('.ab-bento-card'));
+  function enter() {
+    cards.forEach(function (c, i) {
+      if (reduce) { c.classList.add('entered'); return; }
+      setTimeout(function () { c.classList.add('entered'); }, i * 80);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { enter(); io.disconnect(); } });
+    }, { threshold: 0.1 });
+    io.observe(section);
+  } else { enter(); }
+})();
+</script>
+
+<!-- [5] INTEGRATION LOGO GRID — staggered scale-in -->
+<script>
+(function () {
+  var section = document.querySelector('.ab-integrations-section');
+  if (!section) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('js');
+  var tiles = Array.from(section.querySelectorAll('.ab-logo-tile'));
+  function enter() {
+    tiles.forEach(function (t, i) {
+      if (reduce) { t.classList.add('entered'); return; }
+      setTimeout(function () { t.classList.add('entered'); }, i * 55);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { enter(); io.disconnect(); } });
+    }, { threshold: 0.2 });
+    io.observe(section);
+  } else { enter(); }
+})();
+</script>
+
+<!-- [6] PROOF SIGNALS — count-up stats on scroll -->
+<script>
+(function () {
+  var section = document.querySelector('.ab-proof');
+  if (!section) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('js');
+  var nums = Array.from(section.querySelectorAll('.ab-stat-num[data-num]'));
+  function fmt(el, v) {
+    var n = el.dataset.suffix === '%' ? Math.round(v) : Math.round(v);
+    return String(n) + (el.dataset.suffix || '');
+  }
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = fmt(el, target); return; }
+    var start = performance.now();
+    el.textContent = fmt(el, 0);
+    (function tick(now) {
+      var t = Math.min(1, (now - start) / dur);
+      el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick); else el.textContent = fmt(el, target);
+    })(start);
+  }
+  function enter() {
+    nums.forEach(function (el) { countUp(el, parseFloat(el.dataset.num), 1100); });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { enter(); io.disconnect(); } });
+    }, { threshold: 0.3 });
+    io.observe(section);
+  } else { enter(); }
+})();
+</script>
+
+<!-- [7] INTERACTIVE TIMELINE — click/keyboard + growing spine -->
+<script>
+(function () {
+  var root = document.getElementById('ab-timeline-root');
+  if (!root) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  root.classList.add('js');
+  var events = Array.from(root.querySelectorAll('[data-tl-event]'));
+  var progress = document.getElementById('ab-tl-progress');
+  var spine = root.querySelector('.ab-timeline-spine');
+
+  // Stagger in
+  function enterAll() {
+    events.forEach(function (ev, i) {
+      if (reduce) { ev.classList.add('entered'); return; }
+      setTimeout(function () { ev.classList.add('entered'); }, i * 100);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { enterAll(); io.disconnect(); } });
+    }, { threshold: 0.1 });
+    io.observe(root);
+  } else { enterAll(); }
+
+  function updateProgress(activeIndex) {
+    if (!progress || !spine) return;
+    if (activeIndex < 0) { progress.style.height = '0%'; return; }
+    var spineH = spine.offsetHeight;
+    if (!spineH) return;
+    var activeEl = events[activeIndex];
+    var dotEl = activeEl.querySelector('.ab-tl-dot-inner');
+    if (!dotEl) return;
+    var dotTop = dotEl.getBoundingClientRect().top - spine.getBoundingClientRect().top;
+    var frac = Math.min(1, Math.max(0, (dotTop + 8) / spineH));
+    progress.style.height = (frac * 100) + '%';
+  }
+
+  function activate(target) {
+    events.forEach(function (ev) {
+      var btn = ev.querySelector('[role="button"]');
+      var isTarget = ev === target;
+      ev.classList.toggle('active', isTarget);
+      ev.classList.toggle('done', events.indexOf(ev) < events.indexOf(target));
+      if (btn) btn.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
+    });
+    updateProgress(events.indexOf(target));
+  }
+
+  events.forEach(function (ev) {
+    var btn = ev.querySelector('[role="button"]');
+    if (!btn) return;
+    btn.addEventListener('click', function () { activate(ev); });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(ev); }
+    });
+  });
+
+  // Initial active (first event)
+  if (events[0]) activate(events[0]);
+})();
+</script>
+
+<!-- [8] VALUES — stagger entrance -->
+<script>
+(function () {
+  var section = document.querySelector('.ab-values');
+  if (!section) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('js');
+  var cards = Array.from(section.querySelectorAll('.ab-value-card'));
+  function enter() {
+    cards.forEach(function (c, i) {
+      if (reduce) { c.classList.add('entered'); return; }
+      setTimeout(function () { c.classList.add('entered'); }, i * 90);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { enter(); io.disconnect(); } });
+    }, { threshold: 0.15 });
+    io.observe(section);
+  } else { enter(); }
+})();
+</script>
+
+</body>
+</html>

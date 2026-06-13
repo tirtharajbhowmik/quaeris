@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /customers — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* Static sections are visible without animation */
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: cust- prefix — move to globals.css at port time.
+   /customers page — Customer proof hub.
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — CustomerHero (dark ink bg, logo marquee below CTA)
+   ============================================================ */
+.cust-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 72ch;
+  margin: 0 auto;
+  text-align: center;
+}
+.cust-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--brand-accent-soft);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-accent);
+  margin-bottom: var(--space-5);
+}
+.cust-hero-badge svg { width: 14px; height: 14px; color: var(--brand-accent); }
+
+/* ============================================================
+   [2] LOGO MARQUEE — scrolling ticker with CSS animation
+   ============================================================ */
+.cust-marquee-section {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-7) 0;
+  overflow: hidden;
+}
+.cust-marquee-label {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: var(--space-5);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.cust-marquee-track {
+  display: flex;
+  gap: var(--space-9);
+  width: max-content;
+  animation: cust-scroll 32s linear infinite;
+  will-change: transform;
+}
+.cust-marquee-track:hover { animation-play-state: paused; }
+@keyframes cust-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .cust-marquee-track { animation: none !important; }
+}
+.cust-logo-slot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-canvas);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.cust-logo-slot:hover { border-color: var(--brand-accent); box-shadow: var(--shadow-card); }
+.cust-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cust-logo-icon svg { width: 16px; height: 16px; color: var(--brand-accent); }
+
+/* ============================================================
+   [3] HOW THEY WON — FeatureRow (3 outcome rows)
+   ============================================================ */
+.cust-row-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-9);
+  align-items: center;
+}
+.cust-row-grid.reverse { direction: rtl; }
+.cust-row-grid.reverse > * { direction: ltr; }
+@media (max-width: 900px) {
+  .cust-row-grid, .cust-row-grid.reverse { grid-template-columns: 1fr; direction: ltr; gap: var(--space-6); }
+}
+.cust-row-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-accent); margin-bottom: var(--space-3); display: block; }
+.cust-row-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+}
+.cust-row-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+}
+.cust-row-stat svg { width: 13px; height: 13px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* visual card for FeatureRow */
+.cust-row-visual {
+  background: linear-gradient(145deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  color: var(--text-on-dark);
+  box-shadow: 0 20px 50px -16px var(--brand-accent-glow);
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.cust-row-vis-head { font-size: 13px; font-weight: 700; color: var(--text-on-dark); display: flex; align-items: center; justify-content: space-between; }
+.cust-row-vis-chip {
+  font-size: 11px; font-weight: 600; background: rgba(255,255,255,0.16);
+  border-radius: var(--radius-pill); padding: 3px 10px;
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--text-on-dark);
+}
+.cust-vis-bar-row { display: flex; flex-direction: column; gap: 5px; }
+.cust-vis-bar-top { display: flex; align-items: baseline; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.75); }
+.cust-vis-bar-top b { color: var(--text-on-dark); font-variant-numeric: tabular-nums; font-size: 13px; }
+.cust-vis-bar-track { height: 8px; border-radius: var(--radius-pill); background: rgba(255,255,255,0.18); overflow: hidden; }
+.cust-vis-bar-fill { height: 100%; border-radius: var(--radius-pill); background: var(--text-on-dark); width: var(--w, 60%); }
+/* JS animates width on scroll */
+.cust-rows-js .cust-vis-bar-fill { width: 0; transition: width 1s var(--ease-out); transition-delay: var(--d, 0ms); }
+.cust-rows-js.played .cust-vis-bar-fill { width: var(--w, 60%); }
+@media (prefers-reduced-motion: reduce) {
+  .cust-rows-js .cust-vis-bar-fill { transition: none !important; width: var(--w, 60%) !important; }
+}
+
+/* ============================================================
+   [4] CASE STUDY GRID — CaseStudyCard 3×2
+   ============================================================ */
+.cust-cs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .cust-cs-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .cust-cs-grid { grid-template-columns: 1fr; } }
+.cust-cs-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base);
+}
+.cust-cs-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); }
+.cust-cs-header {
+  background: var(--bg-canvas);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.cust-cs-company { display: flex; align-items: center; gap: var(--space-3); }
+.cust-cs-logo-box {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.cust-cs-logo-box svg { width: 18px; height: 18px; color: var(--brand-accent); }
+.cust-cs-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+.cust-cs-industry {
+  font-size: 11px; font-weight: 600; color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+}
+.cust-cs-body { padding: var(--space-5); flex: 1; display: flex; flex-direction: column; gap: var(--space-4); }
+.cust-cs-headline { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.45; }
+.cust-cs-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
+}
+.cust-cs-metric { text-align: center; }
+.cust-cs-metric b { display: block; font-size: 17px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.cust-cs-metric span { display: block; font-size: 10px; color: var(--text-tertiary); margin-top: 2px; line-height: 1.3; }
+.cust-cs-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 600; color: var(--brand-accent);
+  text-decoration: none; margin-top: auto;
+  transition: gap var(--dur-fast);
+}
+.cust-cs-link:hover { gap: 10px; }
+.cust-cs-link:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: 3px; }
+.cust-cs-link svg { width: 15px; height: 15px; }
+.cust-cs-caption {
+  text-align: center;
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 70ch;
+  margin: var(--space-7) auto 0;
+  line-height: 1.65;
+}
+
+/* ============================================================
+   [5] STAT BAND — count-up on scroll, 4 stats
+   ============================================================ */
+.cust-stat-band {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  color: var(--text-on-dark);
+}
+.cust-stat-band .stats-grid { margin-top: 0; }
+.cust-stat-band .stat-block { text-align: center; }
+.cust-stat-band .stat-num { color: var(--text-on-dark); }
+.cust-stat-band .stat-label { color: rgba(255,255,255,0.80); }
+.cust-stat-band .body-sm { color: rgba(255,255,255,0.60); }
+.cust-stat-pretext {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.70);
+  margin-bottom: var(--space-7);
+}
+
+/* ============================================================
+   [6] TESTIMONIALS — dual-row auto-scroll marquee
+   ============================================================ */
+.cust-testi-outer { overflow: hidden; display: flex; flex-direction: column; gap: var(--space-4); }
+.cust-testi-row { display: flex; gap: var(--space-4); width: max-content; }
+.cust-testi-row.row-fwd { animation: cust-tscroll-fwd 40s linear infinite; }
+.cust-testi-row.row-rev { animation: cust-tscroll-rev 44s linear infinite; }
+.cust-testi-row:hover { animation-play-state: paused; }
+@keyframes cust-tscroll-fwd { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes cust-tscroll-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .cust-testi-row { animation: none !important; flex-wrap: wrap; width: auto; }
+}
+.cust-testi-card {
+  flex-shrink: 0;
+  width: 340px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: box-shadow var(--dur-fast);
+}
+.cust-testi-card:hover { box-shadow: var(--shadow-card-hover); }
+.cust-testi-stars { display: flex; gap: 2px; }
+.cust-testi-stars svg { width: 14px; height: 14px; fill: var(--brand-accent); color: var(--brand-accent); }
+.cust-testi-quote {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  font-style: italic;
+  flex: 1;
+}
+.cust-testi-author { display: flex; align-items: center; gap: var(--space-3); }
+.cust-testi-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.cust-testi-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.cust-testi-role { font-size: 12px; color: var(--text-tertiary); }
+
+/* ============================================================
+   [7] DEPLOYMENT PATH — 4-step icon grid with hover state
+   ============================================================ */
+.cust-deploy-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+  position: relative;
+}
+@media (max-width: 980px) { .cust-deploy-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .cust-deploy-grid { grid-template-columns: 1fr; } }
+/* connector line between steps */
+.cust-deploy-grid::before {
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: calc(25% - 4px);
+  right: calc(25% - 4px);
+  height: 2px;
+  background: var(--border-subtle);
+  z-index: 0;
+}
+@media (max-width: 980px) { .cust-deploy-grid::before { display: none; } }
+.cust-deploy-card {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: border-color var(--dur-base), box-shadow var(--dur-base), transform var(--dur-base);
+}
+.cust-deploy-card:hover { border-color: var(--brand-accent); box-shadow: var(--shadow-card-hover); transform: translateY(-3px); }
+.cust-deploy-step-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+}
+.cust-deploy-icon {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--dur-base);
+}
+.cust-deploy-card:hover .cust-deploy-icon { background: var(--brand-accent); }
+.cust-deploy-icon svg { width: 22px; height: 22px; color: var(--brand-accent); transition: color var(--dur-base); }
+.cust-deploy-card:hover .cust-deploy-icon svg { color: var(--text-on-dark); }
+.cust-deploy-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.cust-deploy-body { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.cust-deploy-meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+}
+.cust-deploy-meta svg { width: 12px; height: 12px; color: var(--brand-accent); }
+
+/* ============================================================
+   [8] INDUSTRY SEGMENT CARDS — 6-card grid
+   ============================================================ */
+.cust-seg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 980px) { .cust-seg-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .cust-seg-grid { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   [9] REVIEW BADGES — social proof band
+   ============================================================ */
+.cust-review-band {
+  background: var(--bg-canvas);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-8) 0;
+}
+.cust-review-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+.cust-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-7);
+  min-width: 200px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+.cust-badge:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+.cust-badge-name { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: var(--text-tertiary); text-transform: uppercase; }
+.cust-badge-stars { display: flex; gap: 3px; }
+.cust-badge-stars svg { width: 18px; height: 18px; fill: var(--brand-accent); color: var(--brand-accent); }
+.cust-badge-score { font-size: 28px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1; }
+.cust-badge-count { font-size: 12px; color: var(--text-tertiary); }
+
+/* ============================================================
+   [10] FAQ — accordion (reused accordion-* classes from globals)
+   ============================================================ */
+.cust-faq { max-width: 760px; margin: 0 auto; }
+
+/* ============================================================
+   [11] CTA BAND
+   ============================================================ */
+.cust-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.cust-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.cust-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.cust-cta-card .btn-on-light {
+  background: var(--bg-surface); color: var(--brand-accent-deep);
+  padding: 12px 28px; border-radius: var(--radius-cta); font-weight: 600; min-height: 44px;
+}
+.cust-cta-btns { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+.cust-cta-secondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.30);
+  color: var(--text-on-dark);
+  font-size: 15px; font-weight: 600;
+  padding: 12px 24px;
+  border-radius: var(--radius-cta);
+  min-height: 44px;
+  text-decoration: none;
+  transition: background var(--dur-fast);
+}
+.cust-cta-secondary:hover { background: rgba(255,255,255,0.22); }
+.cust-cta-secondary:focus-visible { outline: 2px solid rgba(255,255,255,0.8); outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#hero) — CustomerHero: dark ink bg, centered
+     Interactive: hero badge pulses on load; buttons have hover states
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="cust-hero-inner reveal">
+      <div class="cust-hero-badge" aria-label="Real proof">
+        <!-- lucide: award -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        Real proof
+      </div>
+      <h1 id="hero-heading" class="hero-h1">Trusted by enterprise<br><span class="accent-line">data leaders.</span></h1>
+      <p class="subcopy body-lg" style="margin-top: var(--space-5); margin-bottom: var(--space-7);">See how companies in finance, insurance, healthcare, and retail deployed governed AI analytics — and got results in weeks, not months.</p>
+      <div class="hero-buttons" style="justify-content: center;">
+        <a href="/contact" class="btn btn-primary" aria-label="Book a demo — opens contact form">Book a Demo</a>
+        <a href="#case-studies" class="btn btn-secondary">See customer stories</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [2] LOGO MARQUEE (#logos) — CustomerLogoMarquee
+     Interactive: CSS infinite scroll, pauses on hover; aria-live off (decorative)
+     ============================================================ -->
+<section id="logos" class="cust-marquee-section" aria-label="Companies using Quaeris">
+  <p class="cust-marquee-label">How data leaders at enterprise companies use Quaeris to answer faster</p>
+  <div class="cust-marquee-track" aria-hidden="true">
+    <!-- First set -->
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+      E4E Relief
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+      [Financial Institution]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></span>
+      [Property Mgmt SaaS]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/></svg></span>
+      [Retail Bank]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+      [Healthcare / Higher Ed]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+      [Insurance Co.]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
+      [Services SaaS]
+    </div>
+    <!-- Duplicate set for seamless loop -->
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+      E4E Relief
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+      [Financial Institution]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></span>
+      [Property Mgmt SaaS]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/></svg></span>
+      [Retail Bank]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+      [Healthcare / Higher Ed]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+      [Insurance Co.]
+    </div>
+    <div class="cust-logo-slot" data-placeholder>
+      <span class="cust-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
+      [Services SaaS]
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [3] HOW THEY WON (#how-they-won) — 3 FeatureRows
+     Interactive: bar fills animate on scroll (IntersectionObserver)
+     ============================================================ -->
+<section id="how-they-won" class="section-pad cust-rows-js" aria-labelledby="how-they-won-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How they won</span>
+      <h2 id="how-they-won-heading" class="display-lg">Three problems.<br><span class="accent-line">Three decisive outcomes.</span></h2>
+      <p class="subcopy body-lg">Enterprise data leaders solve the same three problems with Quaeris. Here's how.</p>
+    </div>
+
+    <!-- Row 1 — Metric Unification -->
+    <div style="margin-top: var(--space-10);">
+      <div class="cust-row-grid reveal">
+        <div>
+          <span class="cust-row-eyebrow">Step 01 — Align teams</span>
+          <h3 class="display-md">Unified metric definitions across 6+ regions.</h3>
+          <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-4); line-height: 1.65;">Before: conflicting revenue definitions in Tableau, Excel, and dbt. After: one Quaeris semantic layer, one number everywhere. The board no longer debates reconciliation.</p>
+          <div class="cust-row-stats">
+            <span class="cust-row-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>1 source of truth</span>
+            <span class="cust-row-stat" data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>[data-placeholder: metric count]</span>
+            <span class="cust-row-stat" data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>[data-placeholder: ROI multiple]</span>
+          </div>
+          <a href="#" class="btn btn-ghost" data-placeholder aria-label="See the metric unification case study">See the case study →</a>
+        </div>
+        <div class="cust-row-visual" aria-label="Metric unification visual: single source of truth replacing three conflicting sources" role="img">
+          <div class="cust-row-vis-head">
+            <span>Metric unification · revenue</span>
+            <span class="cust-row-vis-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:11px;height:11px;"><path d="M20 6 9 17l-5-5"/></svg>
+              Certified
+            </span>
+          </div>
+          <div class="cust-vis-bar-row">
+            <div class="cust-vis-bar-top"><span>Tableau (old)</span><b style="color: rgba(255,255,255,0.5); text-decoration: line-through;">v1.4</b></div>
+            <div class="cust-vis-bar-track"><div class="cust-vis-bar-fill" style="--w:45%; --d:0ms; background: rgba(255,255,255,0.40);"></div></div>
+          </div>
+          <div class="cust-vis-bar-row">
+            <div class="cust-vis-bar-top"><span>Excel (old)</span><b style="color: rgba(255,255,255,0.5); text-decoration: line-through;">v2.1</b></div>
+            <div class="cust-vis-bar-track"><div class="cust-vis-bar-fill" style="--w:62%; --d:80ms; background: rgba(255,255,255,0.40);"></div></div>
+          </div>
+          <div class="cust-vis-bar-row">
+            <div class="cust-vis-bar-top"><span>Quaeris semantic layer</span><b>v3.0 ✓</b></div>
+            <div class="cust-vis-bar-track"><div class="cust-vis-bar-fill" style="--w:100%; --d:160ms;"></div></div>
+          </div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.65); display: flex; align-items: center; gap: 6px; margin-top: auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:14px;height:14px;color:rgba(255,255,255,0.9);"><path d="M20 6 9 17l-5-5"/></svg>
+            Board reconciliation time: <b style="color:var(--text-on-dark);">0 days</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 — Time-to-Insight -->
+    <div style="margin-top: var(--space-10);">
+      <div class="cust-row-grid reverse reveal">
+        <div>
+          <span class="cust-row-eyebrow">Step 02 — Answer faster</span>
+          <h3 class="display-md">Cut data-request backlog by 87% in <span data-placeholder>[data-placeholder: timeframe]</span>.</h3>
+          <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-4); line-height: 1.65;">Before: analysts drowning in ad-hoc requests, 3-day turnaround on simple questions. After: business users ask directly via Quaeris agents. Data team freed to focus on strategy.</p>
+          <div class="cust-row-stats">
+            <span class="cust-row-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>20 min avg time-to-insight</span>
+            <span class="cust-row-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>3× faster than tickets</span>
+            <span class="cust-row-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>0% hallucinations</span>
+          </div>
+          <a href="#" class="btn btn-ghost" data-placeholder aria-label="See the time-to-insight case study">See the case study →</a>
+        </div>
+        <div class="cust-row-visual" aria-label="Request backlog comparison: before 87 requests per week, after 11 requests per week" role="img">
+          <div class="cust-row-vis-head">
+            <span>Ad-hoc request volume</span>
+            <span class="cust-row-vis-chip" style="background: rgba(255,255,255,0.20);">↓ 87%</span>
+          </div>
+          <div class="cust-vis-bar-row">
+            <div class="cust-vis-bar-top"><span>Before Quaeris</span><b>87 req / week</b></div>
+            <div class="cust-vis-bar-track"><div class="cust-vis-bar-fill" style="--w:100%; --d:0ms;"></div></div>
+          </div>
+          <div class="cust-vis-bar-row">
+            <div class="cust-vis-bar-top"><span>After Quaeris</span><b>11 req / week</b></div>
+            <div class="cust-vis-bar-track"><div class="cust-vis-bar-fill" style="--w:13%; --d:120ms;"></div></div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-top: auto;">
+            <div style="text-align:center; background: rgba(255,255,255,0.10); border-radius: var(--radius-md); padding: var(--space-3);">
+              <b style="display:block; font-size:20px; font-weight:700; font-variant-numeric:tabular-nums;">14 min</b>
+              <span style="font-size:11px; color:rgba(255,255,255,0.65);">Avg first answer</span>
+            </div>
+            <div style="text-align:center; background: rgba(255,255,255,0.10); border-radius: var(--radius-md); padding: var(--space-3);">
+              <b style="display:block; font-size:20px; font-weight:700;">0%</b>
+              <span style="font-size:11px; color:rgba(255,255,255,0.65);">Hallucination rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 — Scalable Access -->
+    <div style="margin-top: var(--space-10);">
+      <div class="cust-row-grid reveal">
+        <div>
+          <span class="cust-row-eyebrow">Step 03 — Trust direct access</span>
+          <h3 class="display-md"><span data-placeholder>[data-placeholder: user-count]</span> business users with self-serve, zero governance violations.</h3>
+          <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-4); line-height: 1.65;">Before: only analysts could query; executives waited on reports. After: Quaeris role-based access enforced at query time, not dashboard filters. Every user sees exactly the slice of data they should.</p>
+          <div class="cust-row-stats">
+            <span class="cust-row-stat" data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>[data-placeholder: self-serve count]</span>
+            <span class="cust-row-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>0 access violations</span>
+            <span class="cust-row-stat" data-placeholder><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>[data-placeholder: rollout duration]</span>
+          </div>
+          <a href="#" class="btn btn-ghost" data-placeholder aria-label="See the scalable access case study">See the case study →</a>
+        </div>
+        <div class="cust-row-visual" aria-label="Role-based access control visual showing 3 user roles with different data permissions" role="img">
+          <div class="cust-row-vis-head">
+            <span>Role-based access · query-time</span>
+            <span class="cust-row-vis-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:11px;height:11px;"><path d="M20 6 9 17l-5-5"/></svg>
+              0 violations
+            </span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+            <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.10); border-radius:var(--radius-md); padding: var(--space-3) var(--space-4); font-size:13px;">
+              <span style="font-weight:600;">CFO</span>
+              <span style="font-size:11px; color:rgba(255,255,255,0.70);">All regions · all metrics</span>
+              <span style="font-size:11px; background:rgba(255,255,255,0.18); border-radius:var(--radius-pill); padding:2px 8px;">Full</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.10); border-radius:var(--radius-md); padding: var(--space-3) var(--space-4); font-size:13px;">
+              <span style="font-weight:600;">Region Lead</span>
+              <span style="font-size:11px; color:rgba(255,255,255,0.70);">Own region only</span>
+              <span style="font-size:11px; background:rgba(255,255,255,0.18); border-radius:var(--radius-pill); padding:2px 8px;">Scoped</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.10); border-radius:var(--radius-md); padding: var(--space-3) var(--space-4); font-size:13px;">
+              <span style="font-weight:600;">Analyst</span>
+              <span style="font-size:11px; color:rgba(255,255,255,0.70);">Assigned metrics · no PII</span>
+              <span style="font-size:11px; background:rgba(255,255,255,0.18); border-radius:var(--radius-pill); padding:2px 8px;">Filtered</span>
+            </div>
+          </div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.65); display:flex; align-items:center; gap:6px; margin-top:auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:13px;height:13px;color:rgba(255,255,255,0.9);"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Enforced at query time — not dashboard filters
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [4] CASE STUDY GRID (#case-studies) — 6 CaseStudyCards 3×2
+     Interactive: hover lift + border accent; cards link to case study pages
+     ============================================================ -->
+<section id="case-studies" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="cs-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Customer stories</span>
+      <h2 id="cs-heading" class="display-lg">Six industries.<br><span class="accent-line">Six decisive deployments.</span></h2>
+      <p class="subcopy body-lg">Each story shows how governed agentic analytics solved a real pain point — metric conflicts, slow answers, access bottlenecks — and freed data teams to focus on strategy, not tickets.</p>
+    </div>
+
+    <div class="cust-cs-grid">
+
+      <!-- Card 1 — Financial Services -->
+      <article class="cust-cs-card reveal" aria-label="Financial Services case study">
+        <div class="cust-cs-header">
+          <div class="cust-cs-company">
+            <span class="cust-cs-logo-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </span>
+            <span class="cust-cs-name" data-placeholder>[data-placeholder: company name]</span>
+          </div>
+          <span class="cust-cs-industry">Financial Services</span>
+        </div>
+        <div class="cust-cs-body">
+          <p class="cust-cs-headline">"Reduced ad-hoc analytics requests to the data team by 80–87% while expanding self-serve access — without relaxing governance controls."</p>
+          <div class="cust-cs-metrics">
+            <div class="cust-cs-metric" data-placeholder><b>87%</b><span>Request reduction</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[N]</b><span>Certified metrics</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[T]wks</b><span>To deploy</span></div>
+          </div>
+          <a href="#" class="cust-cs-link" data-placeholder aria-label="Read the financial services case study">
+            Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 2 — B2B SaaS / RevOps -->
+      <article class="cust-cs-card reveal" aria-label="B2B SaaS RevOps case study">
+        <div class="cust-cs-header">
+          <div class="cust-cs-company">
+            <span class="cust-cs-logo-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+            </span>
+            <span class="cust-cs-name" data-placeholder>[data-placeholder: company name]</span>
+          </div>
+          <span class="cust-cs-industry">B2B SaaS / RevOps</span>
+        </div>
+        <div class="cust-cs-body">
+          <p class="cust-cs-headline">"Cut time-to-insight from <span data-placeholder>[data-placeholder: baseline]</span> to under 20 minutes — with 0% hallucinated numbers across every governed answer."</p>
+          <div class="cust-cs-metrics">
+            <div class="cust-cs-metric"><b>14 min</b><span>Avg first answer</span></div>
+            <div class="cust-cs-metric"><b>0%</b><span>Hallucination rate</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[T]wks</b><span>To deploy</span></div>
+          </div>
+          <a href="#" class="cust-cs-link" data-placeholder aria-label="Read the B2B SaaS RevOps case study">
+            Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 3 — Retail & eCommerce -->
+      <article class="cust-cs-card reveal" aria-label="Retail and eCommerce case study">
+        <div class="cust-cs-header">
+          <div class="cust-cs-company">
+            <span class="cust-cs-logo-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </span>
+            <span class="cust-cs-name" data-placeholder>[data-placeholder: company name]</span>
+          </div>
+          <span class="cust-cs-industry">Retail &amp; eCommerce</span>
+        </div>
+        <div class="cust-cs-body">
+          <p class="cust-cs-headline">"Unified <span data-placeholder>[data-placeholder: number]</span> regional teams on one certified metric definition — board reconciliation went from weeks to minutes."</p>
+          <div class="cust-cs-metrics">
+            <div class="cust-cs-metric"><b>1</b><span>Source of truth</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[N]</b><span>Regions aligned</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[T]wks</b><span>To deploy</span></div>
+          </div>
+          <a href="#" class="cust-cs-link" data-placeholder aria-label="Read the retail eCommerce case study">
+            Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 4 — Insurance -->
+      <article class="cust-cs-card reveal" aria-label="Insurance case study">
+        <div class="cust-cs-header">
+          <div class="cust-cs-company">
+            <span class="cust-cs-logo-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            </span>
+            <span class="cust-cs-name" data-placeholder>[data-placeholder: company name]</span>
+          </div>
+          <span class="cust-cs-industry">Insurance</span>
+        </div>
+        <div class="cust-cs-body">
+          <p class="cust-cs-headline">"Built a governed AI agent for compliance-sensitive claims analytics — with full SOX/Gramm-Leach-Bliley audit trail on every answer."</p>
+          <div class="cust-cs-metrics">
+            <div class="cust-cs-metric"><b>100%</b><span>Audit coverage</span></div>
+            <div class="cust-cs-metric"><b>0</b><span>Compliance violations</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[T]wks</b><span>To deploy</span></div>
+          </div>
+          <a href="#" class="cust-cs-link" data-placeholder aria-label="Read the insurance case study">
+            Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 5 — Manufacturing -->
+      <article class="cust-cs-card reveal" aria-label="Manufacturing case study">
+        <div class="cust-cs-header">
+          <div class="cust-cs-company">
+            <span class="cust-cs-logo-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>
+            </span>
+            <span class="cust-cs-name" data-placeholder>[data-placeholder: company name]</span>
+          </div>
+          <span class="cust-cs-industry">Manufacturing</span>
+        </div>
+        <div class="cust-cs-body">
+          <p class="cust-cs-headline">"Connected Snowflake production logs to Document Agents for quality root-cause analysis — warehouse-native, no data pipeline redesign."</p>
+          <div class="cust-cs-metrics">
+            <div class="cust-cs-metric"><b>0</b><span>Data migrations</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[N]</b><span>Sources unified</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[T]wks</b><span>To deploy</span></div>
+          </div>
+          <a href="#" class="cust-cs-link" data-placeholder aria-label="Read the manufacturing case study">
+            Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 6 — Healthcare / Higher Ed -->
+      <article class="cust-cs-card reveal" aria-label="Healthcare Higher Education case study">
+        <div class="cust-cs-header">
+          <div class="cust-cs-company">
+            <span class="cust-cs-logo-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </span>
+            <span class="cust-cs-name" data-placeholder>[data-placeholder: company name]</span>
+          </div>
+          <span class="cust-cs-industry">Healthcare / Higher Ed</span>
+        </div>
+        <div class="cust-cs-body">
+          <p class="cust-cs-headline">"Deployed HIPAA-compliant, warehouse-native analytics in <span data-placeholder>[data-placeholder: timeframe]</span> — data never left their environment."</p>
+          <div class="cust-cs-metrics">
+            <div class="cust-cs-metric"><b>HIPAA</b><span>Compliant</span></div>
+            <div class="cust-cs-metric"><b>0</b><span>Data egress events</span></div>
+            <div class="cust-cs-metric" data-placeholder><b>[T]wks</b><span>To go live</span></div>
+          </div>
+          <a href="#" class="cust-cs-link" data-placeholder aria-label="Read the healthcare higher education case study">
+            Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+    </div>
+    <p class="cust-cs-caption">Each story shows how governed agentic analytics solved a real pain point — metric conflicts, slow answers, access bottlenecks — and freed data teams to focus on strategy, not tickets.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [5] STAT BAND (#stats-band) — 4 proof metrics
+     Interactive: count-up on scroll via IntersectionObserver
+     ============================================================ -->
+<section id="stats-band" class="section-pad cust-stat-band" aria-labelledby="stats-heading">
+  <div class="container">
+    <p class="cust-stat-pretext">Governed agentic analytics by the numbers.</p>
+    <h2 id="stats-heading" class="display-lg" style="text-align:center; color:var(--text-on-dark); margin-bottom: var(--space-8);">Collective customer wins.</h2>
+    <div class="stats-grid">
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-target="87" data-suffix="%" aria-label="87 percent">87%</span>
+        <span class="stat-label">Reduction in ad-hoc data requests</span>
+        <p class="body-sm">Median across 4+ deployed customers</p>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num" aria-label="2 to 4 weeks">2–4 wks</span>
+        <span class="stat-label">To governance-ready deployment</span>
+        <p class="body-sm">Warehouse setup through first governed answers</p>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-target="0" data-suffix="%" aria-label="0 percent">0%</span>
+        <span class="stat-label">Hallucinated numbers</span>
+        <p class="body-sm">100% of answers grounded in certified semantic layer</p>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num stat-number" data-target="6" data-suffix="+" aria-label="6 plus">6+</span>
+        <span class="stat-label">Industries actively deploying</span>
+        <p class="body-sm">Finance, insurance, retail, healthcare, manufacturing, construction</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [6] TESTIMONIALS (#testimonials) — dual-row CSS scroll marquee
+     Interactive: row-fwd scrolls left, row-rev scrolls right; pauses on hover
+     aria-live="polite" on the outer wrapper per spec §11
+     ============================================================ -->
+<section id="testimonials" class="section-pad" aria-labelledby="testimonials-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Customer voices</span>
+      <h2 id="testimonials-heading" class="display-lg">What data leaders say<br><span class="accent-line">after they deploy.</span></h2>
+      <p class="subcopy body-lg">From metric chaos to governed clarity — in their words.</p>
+    </div>
+  </div>
+
+  <div class="cust-testi-outer" style="margin-top: var(--space-8); padding: var(--space-2) 0;" aria-live="polite" aria-label="Customer testimonials">
+
+    <!-- Row 1 — scrolls left (forward) -->
+    <div class="cust-testi-row row-fwd" role="list">
+      <!-- Real quote from spec audit -->
+      <article class="cust-testi-card" role="listitem">
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"We'd been fighting over metric definitions for two years. Quaeris gave us a single place to certify them — and now every agent answer uses the same number. The board debates stopped."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">JK</span>
+          <div>
+            <p class="cust-testi-name">J.K., Head of Data</p>
+            <p class="cust-testi-role" data-placeholder>[Company name to confirm]</p>
+          </div>
+        </div>
+      </article>
+      <!-- Placeholder quotes — themes from spec §3.6 -->
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"The lineage view alone justified the deployment. When our auditors asked where a number came from, we traced it in one click. That's never happened before."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">TM</span>
+          <div>
+            <p class="cust-testi-name">T.M., VP Controller</p>
+            <p class="cust-testi-role" data-placeholder>[Company name to confirm]</p>
+          </div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"From 3-day turnaround to 14 minutes. My team stopped being a ticketing system and started doing actual analysis. That shift happened in week two of deployment."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">AL</span>
+          <div>
+            <p class="cust-testi-name">A.L., Head of Analytics</p>
+            <p class="cust-testi-role" data-placeholder>[Company name to confirm]</p>
+          </div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"My team can see exactly what they should, nothing more. Role-based access at query time is a completely different security model than dashboard-level filters. Night and day."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">CR</span>
+          <div>
+            <p class="cust-testi-name">Courtney Ramey, E4E Relief</p>
+            <p class="cust-testi-role">Data &amp; Analytics Lead</p>
+          </div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"No data moved. No pipeline redesign. We connected to Snowflake, migrated our metric definitions, and had governed answers in production by day 14. The warehouse-native architecture was the deciding factor."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">RK</span>
+          <div>
+            <p class="cust-testi-name">R.K., Chief Data Officer</p>
+            <p class="cust-testi-role" data-placeholder>[Company name to confirm]</p>
+          </div>
+        </div>
+      </article>
+      <!-- Duplicate set for seamless loop -->
+      <article class="cust-testi-card" role="listitem" aria-hidden="true">
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"We'd been fighting over metric definitions for two years. Quaeris gave us a single place to certify them — and now every agent answer uses the same number. The board debates stopped."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">JK</span>
+          <div><p class="cust-testi-name">J.K., Head of Data</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"The lineage view alone justified the deployment. When our auditors asked where a number came from, we traced it in one click. That's never happened before."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">TM</span>
+          <div><p class="cust-testi-name">T.M., VP Controller</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"From 3-day turnaround to 14 minutes. My team stopped being a ticketing system and started doing actual analysis. That shift happened in week two of deployment."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">AL</span>
+          <div><p class="cust-testi-name">A.L., Head of Analytics</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"My team can see exactly what they should, nothing more. Role-based access at query time is a completely different security model than dashboard-level filters. Night and day."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">CR</span>
+          <div><p class="cust-testi-name">Courtney Ramey, E4E Relief</p><p class="cust-testi-role">Data &amp; Analytics Lead</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"No data moved. No pipeline redesign. We connected to Snowflake, migrated our metric definitions, and had governed answers in production by day 14."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">RK</span>
+          <div><p class="cust-testi-name">R.K., Chief Data Officer</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Row 2 — scrolls right (reverse) -->
+    <div class="cust-testi-row row-rev" role="list">
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"We evaluated ThoughtSpot and Databricks Genie. Quaeris was the only one with a semantic layer that auto-learns from prompts. We didn't have to write every definition upfront."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">SN</span>
+          <div><p class="cust-testi-name">S.N., Global Finance Director</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"Connected in day one, governed answers in week two. I've never seen a platform go from warehouse connection to production that fast without a data migration."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">MP</span>
+          <div><p class="cust-testi-name">M.P., Director of Data Engineering</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"Everyone queries the same definition now. No more 'which number do you trust?' conversations in the board room. It's transformative for how we run leadership meetings."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">JD</span>
+          <div><p class="cust-testi-name">J.D., Chief Financial Officer</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"HIPAA compliance was non-negotiable. Warehouse-native meant our patient data never left our Azure environment. The governance controls were the only reason we could say yes to self-serve analytics."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">PW</span>
+          <div><p class="cust-testi-name">P.W., Chief Medical Informatics Officer</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"Our merchandisers ask questions directly now — no analyst in the middle. Agents surface margin anomalies before promotions go live. That's a capability we didn't think was possible outside a data science team."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">LB</span>
+          <div><p class="cust-testi-name">L.B., VP Merchandising Analytics</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <!-- Duplicate set for seamless loop -->
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"We evaluated ThoughtSpot and Databricks Genie. Quaeris was the only one with a semantic layer that auto-learns from prompts."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">SN</span>
+          <div><p class="cust-testi-name">S.N., Global Finance Director</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"Connected in day one, governed answers in week two. I've never seen a platform go from warehouse connection to production that fast without a data migration."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">MP</span>
+          <div><p class="cust-testi-name">M.P., Director of Data Engineering</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"Everyone queries the same definition now. No more 'which number do you trust?' conversations in the board room."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">JD</span>
+          <div><p class="cust-testi-name">J.D., Chief Financial Officer</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"HIPAA compliance was non-negotiable. Warehouse-native meant our patient data never left our Azure environment."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">PW</span>
+          <div><p class="cust-testi-name">P.W., Chief Medical Informatics Officer</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+      <article class="cust-testi-card" role="listitem" aria-hidden="true" data-placeholder>
+        <div class="cust-testi-stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="cust-testi-quote">"Our merchandisers ask questions directly now — no analyst in the middle. Agents surface margin anomalies before promotions go live."</p>
+        <div class="cust-testi-author">
+          <span class="cust-testi-avatar" aria-hidden="true">LB</span>
+          <div><p class="cust-testi-name">L.B., VP Merchandising Analytics</p><p class="cust-testi-role" data-placeholder>[Company name to confirm]</p></div>
+        </div>
+      </article>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [7] DEPLOYMENT PATH (#deploy) — 4-step IconFeatureGrid
+     Interactive: hover lifts card + swaps icon bg to brand; connector line between steps
+     ============================================================ -->
+<section id="deploy" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="deploy-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How customers deploy</span>
+      <h2 id="deploy-heading" class="display-lg">From warehouse to governed answers<br><span class="accent-line">in 4 steps.</span></h2>
+      <p class="subcopy body-lg">Every customer follows the same proven path. Here's what the first 30 days looks like.</p>
+    </div>
+
+    <div class="cust-deploy-grid reveal">
+
+      <!-- Step 1 -->
+      <article class="cust-deploy-card" aria-labelledby="deploy-1-title">
+        <span class="cust-deploy-step-label">Week 1 — Connect</span>
+        <span class="cust-deploy-icon" aria-hidden="true">
+          <!-- lucide: plug-2 -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6"/><path d="M15 2v6"/><path d="M12 17v5"/><path d="M5 8h14"/><path d="M6 11V8h12v3a6 6 0 1 1-12 0Z"/></svg>
+        </span>
+        <h3 class="cust-deploy-title" id="deploy-1-title">Connect your warehouse</h3>
+        <p class="cust-deploy-body">Quaeris integrates directly with Snowflake, BigQuery, Databricks, Redshift, or Azure Synapse. No data moves. Setup takes hours, not weeks.</p>
+        <span class="cust-deploy-meta" data-placeholder>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          [data-placeholder: 4–8 hours typical]
+        </span>
+      </article>
+
+      <!-- Step 2 -->
+      <article class="cust-deploy-card" aria-labelledby="deploy-2-title">
+        <span class="cust-deploy-step-label">Weeks 1–2 — Define</span>
+        <span class="cust-deploy-icon" aria-hidden="true">
+          <!-- lucide: layers -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-8.17 3.72a2 2 0 0 1-1.66 0L4 12.65"/><path d="m22 17.65-8.17 3.72a2 2 0 0 1-1.66 0L4 17.65"/></svg>
+        </span>
+        <h3 class="cust-deploy-title" id="deploy-2-title">Build the semantic layer</h3>
+        <p class="cust-deploy-body">Your data team migrates certified metric definitions into Quaeris. Typical engagement: 120–300 metrics across revenue, product, finance, and ops. The layer auto-learns from prompts over time.</p>
+        <span class="cust-deploy-meta" data-placeholder>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          [data-placeholder: 3–5 days median]
+        </span>
+      </article>
+
+      <!-- Step 3 -->
+      <article class="cust-deploy-card" aria-labelledby="deploy-3-title">
+        <span class="cust-deploy-step-label">Weeks 2–3 — Launch</span>
+        <span class="cust-deploy-icon" aria-hidden="true">
+          <!-- lucide: message-square-text -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>
+        </span>
+        <h3 class="cust-deploy-title" id="deploy-3-title">Activate agent interfaces</h3>
+        <p class="cust-deploy-body">Roll out to business users and analysts. Access policies are enforced automatically at query time. First governed answers in production by day 14.</p>
+        <span class="cust-deploy-meta" data-placeholder>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          [data-placeholder: 50–100 first-cohort users]
+        </span>
+      </article>
+
+      <!-- Step 4 -->
+      <article class="cust-deploy-card" aria-labelledby="deploy-4-title">
+        <span class="cust-deploy-step-label">Weeks 3–4 — Expand</span>
+        <span class="cust-deploy-icon" aria-hidden="true">
+          <!-- lucide: trending-up -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </span>
+        <h3 class="cust-deploy-title" id="deploy-4-title">Scale across teams</h3>
+        <p class="cust-deploy-body">Iterative expansion to finance, product, operations, and marketing. Feedback loop accelerates metric refinement. Typical run-rate by month 3 is <span data-placeholder>[data-placeholder: user count]</span>.</p>
+        <span class="cust-deploy-meta" data-placeholder>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          [data-placeholder: ~20%/month user growth]
+        </span>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [8] INDUSTRY SEGMENTS (#industries) — 6 SegmentCards
+     Interactive: hover lifts card + accent border; icon box swaps bg/color
+     ============================================================ -->
+<section id="industries" class="section-pad" aria-labelledby="industries-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Industry outcomes</span>
+      <h2 id="industries-heading" class="display-lg">Governed analytics built<br><span class="accent-line">for your vertical.</span></h2>
+      <p class="subcopy body-lg">Every industry has a different governance challenge. Quaeris solves each one with the same warehouse-native, semantic-layer approach.</p>
+    </div>
+
+    <div class="cust-seg-grid reveal">
+
+      <!-- Finance -->
+      <article class="segment-card">
+        <span class="segment-icon-box" aria-hidden="true">
+          <!-- lucide: briefcase -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </span>
+        <span class="eyebrow" style="font-size:11px; letter-spacing:0.08em;">For CFOs &amp; Controllers</span>
+        <h3 class="heading-sm segment-label">Unified numbers across regional teams &amp; business units.</h3>
+        <p class="body-sm segment-desc">Single source of truth for revenue, bookings, and margin. Every forecast uses certified metrics. Board reports reconcile in minutes, not weeks.</p>
+        <a href="/industries/finance-governed-analytics" class="btn btn-ghost" style="margin-top: auto;">See finance use cases</a>
+      </article>
+
+      <!-- Insurance -->
+      <article class="segment-card">
+        <span class="segment-icon-box" aria-hidden="true">
+          <!-- lucide: shield-alert -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        </span>
+        <span class="eyebrow" style="font-size:11px; letter-spacing:0.08em;">For Actuaries &amp; Claims Teams</span>
+        <h3 class="heading-sm segment-label">Governed agent for compliance-first analytics.</h3>
+        <p class="body-sm segment-desc">Document + warehouse unified query. Claims data, policy terms, regulatory changes — all in one natural-language question. Full audit trail for SOX/Gramm-Leach-Bliley.</p>
+        <a href="/industries/insurance-governed-analytics" class="btn btn-ghost" style="margin-top: auto;">See insurance use cases</a>
+      </article>
+
+      <!-- Retail & CPG -->
+      <article class="segment-card">
+        <span class="segment-icon-box" aria-hidden="true">
+          <!-- lucide: shopping-cart -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        </span>
+        <span class="eyebrow" style="font-size:11px; letter-spacing:0.08em;">For Merchandisers &amp; Finance</span>
+        <h3 class="heading-sm segment-label">Real-time margin &amp; inventory signals across regions.</h3>
+        <p class="body-sm segment-desc">Merchandisers ask questions directly — no analyst middleman. Agents surface anomalies before promotions go live. Inventory aligned with demand.</p>
+        <a href="/industries/retail-cpg-governed-analytics" class="btn btn-ghost" style="margin-top: auto;">See retail use cases</a>
+      </article>
+
+      <!-- Healthcare -->
+      <article class="segment-card">
+        <span class="segment-icon-box" aria-hidden="true">
+          <!-- lucide: activity -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </span>
+        <span class="eyebrow" style="font-size:11px; letter-spacing:0.08em;">For Chief Medical Officers &amp; CFOs</span>
+        <h3 class="heading-sm segment-label">HIPAA-compliant, warehouse-native analytics.</h3>
+        <p class="body-sm segment-desc">Readmission rates, care quality, revenue cycle — governed agents answer at scale. Warehouse-native means data never leaves your environment.</p>
+        <a href="/industries/healthcare-governed-analytics" class="btn btn-ghost" style="margin-top: auto;">See healthcare use cases</a>
+      </article>
+
+      <!-- Manufacturing -->
+      <article class="segment-card">
+        <span class="segment-icon-box" aria-hidden="true">
+          <!-- lucide: hammer -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/></svg>
+        </span>
+        <span class="eyebrow" style="font-size:11px; letter-spacing:0.08em;">For Plant Managers &amp; Quality Teams</span>
+        <h3 class="heading-sm segment-label">Root-cause detection across machines, materials, methods.</h3>
+        <p class="body-sm segment-desc">Connect warehouse data (production logs) with supplier documents and quality reports. Agents flag anomalies autonomously. Margins protected.</p>
+        <a href="/industries/manufacturing-governed-analytics" class="btn btn-ghost" style="margin-top: auto;">See manufacturing use cases</a>
+      </article>
+
+      <!-- Construction -->
+      <article class="segment-card">
+        <span class="segment-icon-box" aria-hidden="true">
+          <!-- lucide: hard-hat -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6h0"/><path d="M14 6h0a6 6 0 0 1 6 6v3"/></svg>
+        </span>
+        <span class="eyebrow" style="font-size:11px; letter-spacing:0.08em;">For Project Managers &amp; Finance</span>
+        <h3 class="heading-sm segment-label">Margin &amp; schedule insights per project, per subcontractor.</h3>
+        <p class="body-sm segment-desc">Connect project financials, budget variance, and procurement docs. Agents surface margin erosion before it impacts the bottom line. Field teams stay in sync.</p>
+        <a href="/industries/construction-governed-analytics" class="btn btn-ghost" style="margin-top: auto;">See construction use cases</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [9] REVIEW BADGES (#reviews) — NEW:ReviewBadges social proof band
+     Interactive: hover lifts each badge; stars render inline SVG
+     All badges are data-placeholder until reviews are published
+     ============================================================ -->
+<section id="reviews" class="cust-review-band" aria-labelledby="reviews-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Verified reviews</span>
+      <h2 id="reviews-heading" class="display-md">Trusted by thousands of<br><span class="accent-line">data professionals.</span></h2>
+    </div>
+    <div class="cust-review-badges" role="list" data-placeholder>
+
+      <div class="cust-badge" role="listitem" data-placeholder aria-label="G2: 4.9 out of 5, 100 or more verified reviews">
+        <span class="cust-badge-name">G2</span>
+        <div class="cust-badge-stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="cust-badge-score" data-placeholder>4.9 / 5</span>
+        <span class="cust-badge-count" data-placeholder>100+ verified reviews</span>
+      </div>
+
+      <div class="cust-badge" role="listitem" data-placeholder aria-label="Gartner Peer Insights: 4.8 out of 5, 30 or more verified reviews">
+        <span class="cust-badge-name">Gartner Peer Insights</span>
+        <div class="cust-badge-stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="cust-badge-score" data-placeholder>4.8 / 5</span>
+        <span class="cust-badge-count" data-placeholder>30+ verified reviews</span>
+      </div>
+
+      <div class="cust-badge" role="listitem" data-placeholder aria-label="Capterra: 4.9 out of 5, 50 or more verified reviews">
+        <span class="cust-badge-name">Capterra</span>
+        <div class="cust-badge-stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="cust-badge-score" data-placeholder>4.9 / 5</span>
+        <span class="cust-badge-count" data-placeholder>50+ verified reviews</span>
+      </div>
+
+    </div>
+    <p style="text-align:center; font-size:12px; color:var(--text-tertiary); margin-top:var(--space-5);" data-placeholder>Review scores are [data-placeholder] — to be updated when G2, Gartner Peer Insights, and Capterra reviews are published.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [10] FAQ (#faq) — Accordion, 5 items, native <details>
+     Interactive: expand/collapse with chevron rotate; first item open by default
+     ============================================================ -->
+<section id="faq" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Customer questions</span>
+      <h2 id="faq-heading" class="display-lg">Questions our customers ask.</h2>
+    </div>
+
+    <div class="accordion cust-faq reveal" style="margin-top: var(--space-7);">
+
+      <details class="accordion-item" open>
+        <summary class="accordion-trigger">
+          <span class="accordion-question">How long does deployment take?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content">
+          <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Most customers are live with governed answers in 2–4 weeks. Week 1 is warehouse integration and semantic-layer setup. Weeks 2–3 are user onboarding and access policy configuration. There is no data migration — your warehouse is the target.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">Do you work with our specific warehouse?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content">
+          <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris supports Snowflake, Google BigQuery, AWS Redshift, Databricks, and Azure Synapse natively. <span data-placeholder>[data-placeholder: additional connectors in roadmap]</span>. If your warehouse isn't listed, contact us — we prioritize integrations based on customer demand.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">What's involved in setting up the semantic layer?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content">
+          <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Your data team works with our team to migrate certified metric definitions from your existing BI tool, dbt, or Looker. Typical scope: 120–300 metrics. The semantic layer auto-learns from prompts over time — you don't have to write every definition upfront. Typical effort: 3–5 days.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">How is access controlled?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content">
+          <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris enforces role-based access at query time — not just dashboard filters. Access policies map to your warehouse roles or user directories. Every query and answer is logged for audit. Users see exactly the slice of data their role permits, nothing more.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">What if we already have ThoughtSpot, Power BI, or Looker?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content">
+          <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris complements your BI stack. It's a natural-language agent layer on top of your warehouse and semantic layer. Your existing dashboards and reports continue to serve structured, scheduled reporting. Quaeris handles exploratory questions and ad-hoc analysis that doesn't fit a dashboard. Many customers run both in parallel during a transition.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [11] CTA BAND (#final-cta) — CTABand gradient card
+     Interactive: primary button + secondary download link; hover states
+     ============================================================ -->
+<section id="final-cta" class="section-pad" aria-labelledby="final-cta-heading">
+  <div class="container">
+    <div class="cust-cta-card reveal">
+      <span class="eyebrow" style="color: rgba(255,255,255,0.7); display:block; margin-bottom: var(--space-4);">Ready to deploy?</span>
+      <h2 id="final-cta-heading" class="display-lg">Join the data leaders<br>deploying governed AI.</h2>
+      <p>See your team's time-to-insight drop by 80%. In weeks, not months. Book a 30-minute demo with a solutions engineer.</p>
+      <div class="cust-cta-btns">
+        <a href="/contact" class="btn btn-on-light" aria-label="Book a demo — opens contact form">Book a Demo</a>
+        <a href="#" class="cust-cta-secondary" data-placeholder aria-label="Download our customer playbook — gated PDF asset">
+          <!-- lucide: download -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+          Download customer playbook
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPTS — vanilla IIFEs, gated, reduced-motion safe
+     ============================================================ -->
+
+<!-- [A] Feature-row bar animation — IntersectionObserver triggers bar fills on scroll -->
+<script>
+(function () {
+  'use strict';
+  if (!window.IntersectionObserver) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var section = document.querySelector('.cust-rows-js');
+  if (!section) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { section.classList.add('played'); io.disconnect(); }
+    });
+  }, { threshold: 0.2 });
+  io.observe(section);
+}());
+</script>
+
+<!-- [B] Stat band count-up — IntersectionObserver + requestAnimationFrame -->
+<script>
+(function () {
+  'use strict';
+  if (!window.IntersectionObserver) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var band = document.getElementById('stats-band');
+  if (!band) return;
+  var targets = band.querySelectorAll('.stat-number[data-target]');
+  if (!targets.length) return;
+  function animateNum(el) {
+    var end = parseFloat(el.dataset.target);
+    var suffix = el.dataset.suffix || '';
+    var dur = 1400;
+    var start = performance.now();
+    function step(now) {
+      var p = Math.min((now - start) / dur, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      var val = Math.round(end * ease);
+      el.textContent = val + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { targets.forEach(animateNum); io.disconnect(); }
+    });
+  }, { threshold: 0.4 });
+  io.observe(band);
+}());
+</script>
+
+</body>
+</html>

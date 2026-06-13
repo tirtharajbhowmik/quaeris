@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/warehouse — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: pw- (Platform Warehouse page)
+   ============================================================ */
+
+/* ---- Shared from finance-v3: hero grid, trust strip, brief card ---- */
+.fin-hero-grid {
+  display: grid; grid-template-columns: 6fr 5fr;
+  gap: var(--space-8); align-items: center; position: relative; z-index: 1;
+}
+@media (max-width: 900px) { .fin-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+.fin-trust-strip {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start; gap: var(--space-5) var(--space-6); margin-top: var(--space-7);
+}
+@media (max-width: 640px) { .fin-trust-strip { grid-template-columns: 1fr; gap: var(--space-4); } }
+.fin-trust-item { display: flex; align-items: flex-start; gap: var(--space-3); }
+.fin-trust-item svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+.fin-trust-item strong { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.fin-trust-item span { display: block; font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+
+/* ---- Hero right: warehouse architecture card ---- */
+.pw-arch-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+  padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3);
+}
+.pw-arch-head { display: flex; align-items: center; justify-content: space-between; }
+.pw-arch-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.pw-arch-dots { display: flex; gap: 6px; }
+.pw-arch-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+.pw-stack { display: flex; flex-direction: column; gap: var(--space-2); }
+.pw-layer {
+  display: flex; align-items: center; gap: var(--space-3);
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4); background: var(--bg-canvas);
+  transition: background var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast);
+  cursor: default;
+}
+.pw-layer:hover { background: var(--brand-accent-soft); border-color: var(--brand-accent); transform: translateX(3px); }
+.pw-layer-icon { width: 32px; height: 32px; border-radius: var(--radius-sm); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pw-layer-icon svg { width: 16px; height: 16px; color: var(--brand-accent); }
+.pw-layer.active .pw-layer-icon { background: var(--brand-accent); }
+.pw-layer.active .pw-layer-icon svg { color: var(--text-on-dark); }
+.pw-layer-text { flex: 1; }
+.pw-layer-name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+.pw-layer-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
+.pw-layer-badge { font-size: 10px; font-weight: 700; color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); border-radius: var(--radius-pill); padding: 2px 8px; white-space: nowrap; }
+.pw-connector {
+  display: flex; align-items: center; gap: var(--space-2); padding-left: var(--space-5);
+}
+.pw-connector-line { width: 2px; height: 20px; background: var(--border-strong); border-radius: 2px; margin-left: 14px; position: relative; overflow: hidden; }
+.pw-connector-flow { position: absolute; top: -100%; left: 0; width: 100%; height: 40%; border-radius: 2px; background: var(--brand-accent); }
+.pw-connector-label { font-size: 11px; color: var(--text-tertiary); }
+.pw-arch-status { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; font-weight: 600; color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); }
+.pw-arch-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+
+/* ---- Problem / Solution 2-col grid ---- */
+.pw-prob-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-top: var(--space-8);
+}
+@media (max-width: 820px) { .pw-prob-grid { grid-template-columns: 1fr; } }
+.pw-prob-card {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+  padding: var(--space-6); background: var(--bg-canvas);
+  transition: box-shadow var(--dur-base), border-color var(--dur-base);
+}
+.pw-prob-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--border-strong); }
+.pw-prob-card.solution { background: var(--bg-surface); border-color: color-mix(in srgb, var(--brand-accent) 30%, transparent); }
+.pw-prob-card.solution:hover { border-color: var(--brand-accent); }
+.pw-prob-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: var(--radius-pill); padding: 3px 10px; align-self: flex-start; }
+.pw-prob-tag.problem { color: var(--error); background: color-mix(in srgb, var(--error) 10%, transparent); }
+.pw-prob-tag.solution { color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); }
+.pw-prob-tag svg { width: 12px; height: 12px; }
+.pw-prob-card h3 { color: var(--text-primary); }
+.pw-prob-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ---- Architecture Diagram (Section 03) ---- */
+.pw-diag-wrap {
+  display: grid; grid-template-columns: 1fr 340px; gap: var(--space-9); align-items: center;
+  margin-top: var(--space-8);
+}
+@media (max-width: 960px) { .pw-diag-wrap { grid-template-columns: 1fr; gap: var(--space-7); } }
+.pw-diag-stack { display: flex; flex-direction: column; position: relative; }
+.pw-diag-layer {
+  display: flex; gap: var(--space-4); align-items: stretch;
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-5); cursor: pointer;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.pw-diag-layer:hover, .pw-diag-layer.active { border-color: var(--brand-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent) 15%, transparent); }
+.pw-diag-layer:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.pw-diag-layer-num { font-size: 11px; font-weight: 700; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.pw-diag-layer-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pw-diag-layer-icon svg { width: 20px; height: 20px; color: var(--brand-accent); }
+.pw-diag-layer.active .pw-diag-layer-icon { background: var(--brand-accent); }
+.pw-diag-layer.active .pw-diag-layer-icon svg { color: var(--text-on-dark); }
+.pw-diag-layer-body { flex: 1; }
+.pw-diag-layer-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.pw-diag-layer-desc { font-size: 13px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; display: block; }
+/* JS-enhanced: collapse non-active descriptions only when script is running */
+.pw-diag.js .pw-diag-layer:not(.active) .pw-diag-layer-desc { display: none; }
+.pw-diag.js .pw-diag-layer.active .pw-diag-layer-desc { display: block; }
+.pw-diag-arrow {
+  display: flex; justify-content: flex-start; padding-left: 60px;
+  position: relative; height: 28px; align-items: center;
+}
+.pw-diag-arrow-line {
+  width: 2px; height: 28px; background: var(--border-strong); border-radius: 2px;
+  position: absolute; left: 68px; top: 0; overflow: hidden;
+}
+.pw-diag-arrow-flow {
+  position: absolute; top: -100%; left: 0; width: 100%; height: 50%;
+  background: linear-gradient(180deg, transparent, var(--brand-accent));
+  border-radius: 2px;
+}
+.pw-diag-callouts { display: flex; flex-direction: column; gap: var(--space-4); }
+.pw-callout {
+  background: var(--brand-accent-soft); border: 1px solid color-mix(in srgb, var(--brand-accent) 20%, transparent);
+  border-radius: var(--radius-md); padding: var(--space-4);
+  opacity: 0.4; transition: opacity var(--dur-base), border-color var(--dur-base);
+}
+.pw-callout.active { opacity: 1; border-color: var(--brand-accent); }
+.pw-callout-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-accent); margin-bottom: var(--space-2); display: block; }
+.pw-callout h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.pw-callout p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.pw-diag-prose { margin-top: var(--space-7); font-size: 17px; color: var(--text-secondary); line-height: 1.7; max-width: 72ch; }
+
+/* ---- Warehouse cards grid (Section 04) ---- */
+.pw-wh-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin-top: var(--space-8);
+}
+@media (max-width: 1000px) { .pw-wh-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .pw-wh-grid { grid-template-columns: 1fr; } }
+.pw-wh-card {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-base), border-color var(--dur-base), transform var(--dur-base);
+}
+.pw-wh-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); transform: translateY(-2px); }
+.pw-wh-icon-row { display: flex; align-items: center; gap: var(--space-3); }
+.pw-wh-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pw-wh-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+.pw-wh-name { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.pw-wh-connector-type { font-size: 12px; color: var(--text-tertiary); }
+.pw-wh-bullets { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; }
+.pw-wh-bullet { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.pw-wh-bullet svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+.pw-wh-cta { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--brand-accent); text-decoration: none; margin-top: auto; padding-top: var(--space-2); border-top: 1px solid var(--border-subtle); }
+.pw-wh-cta:hover { text-decoration: underline; }
+.pw-wh-cta svg { width: 14px; height: 14px; }
+.pw-wh-card.placeholder { border-style: dashed; }
+.pw-wh-card.placeholder .pw-wh-icon { background: var(--bg-canvas); }
+.pw-wh-card.placeholder .pw-wh-icon svg { color: var(--text-tertiary); }
+
+/* ---- Compliance Matrix (Section 05) ---- */
+.pw-compliance-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-9); align-items: start;
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .pw-compliance-grid { grid-template-columns: 1fr; gap: var(--space-6); } }
+.pw-compliance-sticky { position: sticky; top: var(--space-7); }
+.pw-compliance-blocks { display: flex; flex-direction: column; gap: var(--space-6); }
+.pw-compliance-block {
+  display: flex; gap: var(--space-4); align-items: flex-start;
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+  padding: var(--space-5); background: var(--bg-surface);
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.pw-compliance-block:hover { border-color: var(--brand-accent); box-shadow: var(--shadow-card); }
+.pw-compliance-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pw-compliance-icon svg { width: 20px; height: 20px; color: var(--brand-accent); }
+.pw-compliance-body { flex: 1; }
+.pw-compliance-body h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-2); }
+.pw-compliance-body p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.pw-compliance-placeholder { font-size: 12px; color: var(--text-tertiary); font-style: italic; margin-top: var(--space-2); }
+
+/* ---- Deployment Model Cards (Section 06) ---- */
+.pw-deploy-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .pw-deploy-grid { grid-template-columns: 1fr; } }
+.pw-deploy-card {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  background: var(--bg-surface); border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-card);
+  transition: border-color var(--dur-base), box-shadow var(--dur-base), transform var(--dur-base);
+  position: relative;
+}
+.pw-deploy-card:hover { border-color: var(--brand-accent); box-shadow: var(--shadow-card-hover); transform: translateY(-3px); }
+.pw-deploy-card.recommended { border-color: var(--brand-accent); }
+.pw-deploy-recommended-badge {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  background: var(--brand-accent); color: var(--text-on-dark); border-radius: var(--radius-pill);
+  padding: 3px 12px; white-space: nowrap;
+}
+.pw-deploy-icon-row { display: flex; align-items: center; gap: var(--space-3); }
+.pw-deploy-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pw-deploy-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+.pw-deploy-card h3 { font-size: 17px; font-weight: 600; color: var(--text-primary); }
+.pw-deploy-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.pw-deploy-bullets { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; }
+.pw-deploy-bullet { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.pw-deploy-bullet svg { width: 14px; height: 14px; color: var(--success); flex-shrink: 0; margin-top: 2px; }
+.pw-deploy-audience { font-size: 12px; font-weight: 600; color: var(--text-tertiary); border-top: 1px solid var(--border-subtle); padding-top: var(--space-3); margin-top: auto; }
+.pw-deploy-audience strong { color: var(--brand-accent); }
+.pw-deploy-footer { margin-top: var(--space-7); font-size: 16px; color: var(--text-secondary); line-height: 1.7; text-align: center; }
+.pw-deploy-footer a { color: var(--brand-accent); font-weight: 600; text-decoration: underline; }
+
+/* ---- Audit Dashboard (Section 07) ---- */
+.pw-audit-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-9); align-items: center;
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .pw-audit-grid { grid-template-columns: 1fr; gap: var(--space-6); } }
+.pw-audit-dashboard {
+  background: linear-gradient(155deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  box-shadow: 0 24px 60px -20px var(--brand-accent-glow);
+  display: flex; flex-direction: column; gap: var(--space-5);
+}
+.pw-audit-dash-title { font-size: 15px; font-weight: 700; color: var(--text-on-dark); display: flex; align-items: center; gap: var(--space-2); }
+.pw-audit-dash-title svg { width: 16px; height: 16px; }
+.pw-audit-tiles {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);
+}
+.pw-audit-tile {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-md); padding: var(--space-4);
+  transition: background var(--dur-fast);
+}
+.pw-audit-tile:hover { background: rgba(255,255,255,0.20); }
+.pw-audit-tile-val { font-size: 24px; font-weight: 700; color: var(--text-on-dark); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.pw-audit-tile-label { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 4px; line-height: 1.4; }
+.pw-audit-tile-delta { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6); margin-top: 3px; }
+.pw-audit-query-log { display: flex; flex-direction: column; gap: var(--space-2); }
+.pw-audit-log-row {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: rgba(255,255,255,0.09); border-radius: var(--radius-sm);
+  padding: 7px 10px; font-size: 12px; color: var(--text-on-dark);
+}
+.pw-audit-log-row svg { width: 13px; height: 13px; color: rgba(255,255,255,0.7); flex-shrink: 0; }
+.pw-audit-log-ts { font-size: 10px; color: rgba(255,255,255,0.55); font-variant-numeric: tabular-nums; margin-left: auto; white-space: nowrap; }
+.pw-audit-log-tag { font-size: 10px; font-weight: 700; border-radius: var(--radius-pill); padding: 2px 7px; }
+.pw-audit-log-tag.ok { background: color-mix(in srgb, var(--success) 25%, transparent); color: color-mix(in srgb, var(--success) 55%, white); }
+.pw-audit-right { display: flex; flex-direction: column; gap: var(--space-5); }
+.pw-audit-prose { font-size: 16px; color: var(--text-secondary); line-height: 1.7; }
+.pw-audit-callout {
+  background: var(--brand-accent-soft); border: 1px solid color-mix(in srgb, var(--brand-accent) 20%, transparent);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+}
+.pw-audit-callout h4 { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-3); display: flex; align-items: center; gap: var(--space-2); }
+.pw-audit-callout h4 svg { width: 16px; height: 16px; color: var(--brand-accent); }
+.pw-audit-callout ul { display: flex; flex-direction: column; gap: var(--space-2); }
+.pw-audit-callout li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+.pw-audit-callout li svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+
+/* ---- Stats band ---- */
+.pw-stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .pw-stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .pw-stats-grid { grid-template-columns: 1fr; } }
+.pw-stat { text-align: center; padding: var(--space-5); }
+.pw-stat-num { display: block; font-size: clamp(36px, 4vw, 52px); font-weight: 700; color: var(--brand-accent); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.pw-stat-label { display: block; font-size: 14px; color: var(--text-primary); font-weight: 600; margin-top: var(--space-2); }
+.pw-stat-sub { display: block; font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
+
+/* ---- FAQ ---- */
+.fin-faq { max-width: 760px; margin: 0 auto; }
+
+/* ---- CTA card ---- */
+.fin-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg); padding: var(--space-9) var(--space-7);
+  text-align: center; color: var(--text-on-dark); box-shadow: var(--shadow-card);
+}
+.fin-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.fin-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.fin-cta-btns { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; }
+.fin-cta-card .btn-on-light {
+  background: var(--bg-surface); color: var(--brand-accent-deep);
+  padding: 12px 28px; border-radius: var(--radius-cta); font-weight: 600; min-height: 44px;
+  text-decoration: none; display: inline-flex; align-items: center;
+}
+.fin-cta-card .btn-ghost-on-dark {
+  background: transparent; color: var(--text-on-dark);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  padding: 12px 28px; border-radius: var(--radius-cta); font-weight: 600; min-height: 44px;
+  text-decoration: none; display: inline-flex; align-items: center;
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+}
+.fin-cta-card .btn-ghost-on-dark:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.8); }
+
+/* ---- Newsletter ---- */
+.pw-newsletter {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+  text-align: center; padding: var(--space-8) 0;
+}
+.pw-newsletter h2 { font-size: 28px; font-weight: 400; color: var(--text-primary); }
+.pw-newsletter p { font-size: 16px; color: var(--text-secondary); max-width: 52ch; }
+.pw-newsletter-form { display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; width: 100%; max-width: 480px; }
+.pw-newsletter-input {
+  flex: 1; min-width: 200px; padding: 11px 16px; border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-md); font-family: var(--font-body); font-size: 15px;
+  background: var(--bg-surface); color: var(--text-primary);
+  transition: border-color var(--dur-fast);
+}
+.pw-newsletter-input:focus-visible { outline: none; border-color: var(--brand-accent); box-shadow: 0 0 0 3px var(--brand-accent-soft); }
+.pw-newsletter-input::placeholder { color: var(--text-tertiary); }
+.pw-newsletter-consent { font-size: 12px; color: var(--text-tertiary); }
+
+/* ---- Animations ---- */
+.pw-connector-flow { animation: pw-flow 1.8s ease-in-out infinite; }
+@keyframes pw-flow { 0% { top: -100%; } 100% { top: 100%; } }
+.pw-arch-status-dot { animation: pw-pulse 2s ease-in-out infinite; }
+@keyframes pw-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.pw-diag-arrow-flow { animation: pw-flow 1.6s ease-in-out infinite; }
+
+/* JS-gated entrance */
+.pw-diag.js .pw-diag-layer { opacity: 0; transform: translateX(-14px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur-fast); }
+.pw-diag.js .pw-diag-layer.entered { opacity: 1; transform: none; }
+.pw-wh.js .pw-wh-card { opacity: 0; transform: translateY(14px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-base), border-color var(--dur-base); }
+.pw-wh.js .pw-wh-card.entered { opacity: 1; transform: none; }
+.pw-stats.js .pw-stat { opacity: 0; transform: translateY(10px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.pw-stats.js .pw-stat.entered { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pw-connector-flow, .pw-arch-status-dot, .pw-diag-arrow-flow { animation: none !important; }
+  .pw-diag.js .pw-diag-layer, .pw-wh.js .pw-wh-card, .pw-stats.js .pw-stat { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+</style>
+</head>
+<body>
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#hero)
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="fin-hero-grid">
+
+      <!-- LEFT -->
+      <div class="hero-inner reveal">
+        <span class="eyebrow">Security &amp; Control</span>
+        <h1 id="hero-heading" class="hero-h1">Your data stays <span class="accent-line">where it belongs.</span></h1>
+        <p class="subcopy body-lg">Quaeris is warehouse-native. No data copy. No cache layer. No exfiltration risk. Agents query your Snowflake, BigQuery, Databricks, or Redshift in place — with row-level security enforced. Every query runs in your environment. Every result stays governed.</p>
+        <div class="hero-buttons">
+          <a href="#architecture" class="btn btn-primary">See the architecture</a>
+          <a href="#deployment-models" class="btn btn-secondary">Compare deployment models</a>
+        </div>
+        <ul class="fin-trust-strip">
+          <li class="fin-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93 19.07 19.07"/></svg>
+            <p><strong>Zero data egress</strong><span>Raw data never leaves your warehouse environment</span></p>
+          </li>
+          <li class="fin-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <p><strong>Role-based enforcement</strong><span>Permissions applied at query execution time</span></p>
+          </li>
+          <li class="fin-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <p><strong>Full residency control</strong><span>Deploy in your region, your VPC, your rules</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT — animated warehouse stack card -->
+      <div class="reveal">
+        <div class="pw-arch-card" role="img" aria-label="Warehouse-native architecture diagram showing four layers: warehouse, connector, semantic layer, and query agents — all within your environment." data-placeholder>
+          <div class="pw-arch-head">
+            <span class="pw-arch-title">Your Environment — Nothing Leaves</span>
+            <span class="pw-arch-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </div>
+          <div class="pw-stack">
+            <div class="pw-layer active" style="--d:0ms">
+              <div class="pw-layer-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              </div>
+              <div class="pw-layer-text">
+                <div class="pw-layer-name">Your Data Warehouse</div>
+                <div class="pw-layer-sub">Snowflake · BigQuery · Databricks · Redshift</div>
+              </div>
+              <span class="pw-layer-badge">In place</span>
+            </div>
+            <div class="pw-connector" aria-hidden="true">
+              <div class="pw-connector-line"><div class="pw-connector-flow"></div></div>
+              <span class="pw-connector-label">Native connector — zero copy</span>
+            </div>
+            <div class="pw-layer" style="--d:120ms">
+              <div class="pw-layer-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="pw-layer-text">
+                <div class="pw-layer-name">Governed Semantic Layer</div>
+                <div class="pw-layer-sub">Metric definitions · Row-level security</div>
+              </div>
+              <span class="pw-layer-badge">In your VPC</span>
+            </div>
+            <div class="pw-connector" aria-hidden="true">
+              <div class="pw-connector-line"><div class="pw-connector-flow"></div></div>
+              <span class="pw-connector-label">Governed query execution</span>
+            </div>
+            <div class="pw-layer" style="--d:240ms">
+              <div class="pw-layer-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+              </div>
+              <div class="pw-layer-text">
+                <div class="pw-layer-name">Quaeris Query Agents</div>
+                <div class="pw-layer-sub">NL → SQL → governed result + audit trail</div>
+              </div>
+              <span class="pw-layer-badge">In your env</span>
+            </div>
+          </div>
+          <div class="pw-arch-status">
+            <span class="pw-arch-status-dot" aria-hidden="true"></span>
+            All layers in your environment · 0 bytes egressed
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] THE PROBLEM (#problem)
+     ============================================================ -->
+<section id="problem" class="section-pad" aria-labelledby="problem-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The Risk</span>
+      <h2 id="problem-heading" class="display-lg">Most analytics vendors move <span class="accent-line">your data first.</span></h2>
+      <p class="subcopy body-lg">Traditional SaaS BI copies data to their cloud before it answers a question. That copy is where compliance risk begins.</p>
+    </div>
+
+    <div class="pw-prob-grid reveal">
+      <article class="pw-prob-card">
+        <span class="pw-prob-tag problem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          Problem
+        </span>
+        <h3 class="heading-sm">SaaS analytics moves your data to the cloud.</h3>
+        <p>Typical BI vendors copy your warehouse to their infrastructure — "for performance." That copy is a compliance liability: data residency violations, audit log gaps, third-party exposure.</p>
+      </article>
+
+      <article class="pw-prob-card solution">
+        <span class="pw-prob-tag solution">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Solution
+        </span>
+        <h3 class="heading-sm">Warehouse-native keeps your data locked in place.</h3>
+        <p>No copy. No cloud sync. Quaeris connects directly to your warehouse and executes queries in silo. Your data never crosses a network boundary to Quaeris infrastructure.</p>
+      </article>
+
+      <article class="pw-prob-card">
+        <span class="pw-prob-tag problem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          Problem
+        </span>
+        <h3 class="heading-sm">Multi-tenant vendors blur account boundaries.</h3>
+        <p>Shared infrastructure creates cross-tenant risks. Query isolation is app-level, not infrastructure-level. One SQL injection in another tenant's query potentially exposes your data.</p>
+      </article>
+
+      <article class="pw-prob-card solution">
+        <span class="pw-prob-tag solution">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Solution
+        </span>
+        <h3 class="heading-sm">Single-tenant deployment per customer.</h3>
+        <p>Your agents, your semantic layer, your query execution — all isolated in your environment. No shared infrastructure. No cross-customer blast radius.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] ARCHITECTURE DIAGRAM (#architecture)
+     ============================================================ -->
+<section id="architecture" class="section-pad" aria-labelledby="arch-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 id="arch-heading" class="display-lg">Warehouse-native isn't a <span class="accent-line">marketing phrase.</span></h2>
+      <p class="subcopy body-lg">It's an architecture. Click each layer to understand where each component lives — and why your data never leaves.</p>
+    </div>
+
+    <div class="pw-diag-wrap pw-diag reveal">
+      <!-- Left: interactive stack -->
+      <div>
+        <div class="pw-diag-stack" role="group" aria-label="Warehouse-native architecture layers">
+
+          <div class="pw-diag-layer active" role="button" data-layer="0" tabindex="0" aria-pressed="true" aria-describedby="pw-callout-0">
+            <span class="pw-diag-layer-num">01</span>
+            <div class="pw-diag-layer-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            </div>
+            <div class="pw-diag-layer-body">
+              <div class="pw-diag-layer-name">Your Warehouse</div>
+              <div class="pw-diag-layer-desc">Snowflake, BigQuery, Databricks, Synapse, Redshift — your system of record. Where your data lives. Unchanged. Quaeris never persists anything here without your explicit control.</div>
+            </div>
+          </div>
+
+          <div class="pw-diag-arrow" aria-hidden="true">
+            <div class="pw-diag-arrow-line"><div class="pw-diag-arrow-flow"></div></div>
+            <span style="font-size:11px; color:var(--text-tertiary); padding-left: var(--space-4);">Native connector · direct SQL execution · zero copy</span>
+          </div>
+
+          <div class="pw-diag-layer" role="button" data-layer="1" tabindex="0" aria-pressed="false" aria-describedby="pw-callout-1">
+            <span class="pw-diag-layer-num">02</span>
+            <div class="pw-diag-layer-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+            </div>
+            <div class="pw-diag-layer-body">
+              <div class="pw-diag-layer-name">Quaeris Warehouse Connector</div>
+              <div class="pw-diag-layer-desc">Native connector for your warehouse. Direct SQL execution engine. Zero data copy — queries are pushed down into your warehouse compute, results stream back governed.</div>
+            </div>
+          </div>
+
+          <div class="pw-diag-arrow" aria-hidden="true">
+            <div class="pw-diag-arrow-line"><div class="pw-diag-arrow-flow"></div></div>
+            <span style="font-size:11px; color:var(--text-tertiary); padding-left: var(--space-4);">Metric definitions · business rules · row-level security</span>
+          </div>
+
+          <div class="pw-diag-layer" role="button" data-layer="2" tabindex="0" aria-pressed="false" aria-describedby="pw-callout-2">
+            <span class="pw-diag-layer-num">03</span>
+            <div class="pw-diag-layer-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <div class="pw-diag-layer-body">
+              <div class="pw-diag-layer-name">Governed Semantic Layer</div>
+              <div class="pw-diag-layer-desc">Metric definitions, business rules, ownership, and enforced row-level security. Lives in your warehouse (e.g., as in-warehouse metadata) or your VPC. Never on Quaeris servers.</div>
+            </div>
+          </div>
+
+          <div class="pw-diag-arrow" aria-hidden="true">
+            <div class="pw-diag-arrow-line"><div class="pw-diag-arrow-flow"></div></div>
+            <span style="font-size:11px; color:var(--text-tertiary); padding-left: var(--space-4);">Plain-language query → agent reasoning → result + audit trail</span>
+          </div>
+
+          <div class="pw-diag-layer" role="button" data-layer="3" tabindex="0" aria-pressed="false" aria-describedby="pw-callout-3">
+            <span class="pw-diag-layer-num">04</span>
+            <div class="pw-diag-layer-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+            </div>
+            <div class="pw-diag-layer-body">
+              <div class="pw-diag-layer-name">Query Agents &amp; Audit</div>
+              <div class="pw-diag-layer-desc">Agents run in your environment or behind your firewall. Every question, reasoning step, metric applied, and row returned is logged — immutably — in your infrastructure.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="pw-diag-prose">Quaeris connects directly to your existing warehouse and executes every query in place. The semantic layer can live in-warehouse or in your private cloud. Agents run in your environment. Your data never lands on Quaeris infrastructure.</p>
+      </div>
+
+      <!-- Right: compliance callouts -->
+      <div class="pw-diag-callouts" aria-live="polite">
+        <div class="pw-callout active" id="pw-callout-0">
+          <span class="pw-callout-badge">Layer 01</span>
+          <h4>Your system of record stays untouched</h4>
+          <p>Data residency is enforced by your warehouse — Quaeris never moves, copies, or caches your raw data. EU data stays on your EU instance.</p>
+        </div>
+        <div class="pw-callout" id="pw-callout-1">
+          <span class="pw-callout-badge">Layer 02</span>
+          <h4>GDPR-compliant by architecture</h4>
+          <p>Connector pushes queries down. No secondary store. Data in EU, agents in EU — no cross-border transfer without your orchestration.</p>
+        </div>
+        <div class="pw-callout" id="pw-callout-2">
+          <span class="pw-callout-badge">Layer 03</span>
+          <h4>SOX audit-ready semantic layer</h4>
+          <p>Metric definitions are versioned and owned. Every query cites which metric version was applied. Auditors get lineage in one click.</p>
+        </div>
+        <div class="pw-callout" id="pw-callout-3">
+          <span class="pw-callout-badge">Layer 04</span>
+          <h4>Data residency enforced end-to-end</h4>
+          <p>Agents run inside your perimeter. Audit logs are written to your infrastructure. Zero bytes leave your control at any layer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] SUPPORTED WAREHOUSES (#connectors)
+     ============================================================ -->
+<section id="connectors" class="section-pad pw-wh" aria-labelledby="connectors-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Connectors</span>
+      <h2 id="connectors-heading" class="display-lg">Wherever your data lives, <span class="accent-line">Quaeris connects.</span></h2>
+      <p class="subcopy body-lg">Native connectors for the five major cloud warehouses. Your architecture, not ours.</p>
+    </div>
+
+    <div class="pw-wh-grid">
+
+      <article class="pw-wh-card">
+        <div class="pw-wh-icon-row">
+          <div class="pw-wh-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+          </div>
+          <div>
+            <div class="pw-wh-name">Snowflake</div>
+            <div class="pw-wh-connector-type" data-placeholder>Direct connector · [confirm: Native App or standard connector]</div>
+          </div>
+        </div>
+        <ul class="pw-wh-bullets">
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Supports Snowflake Data Sharing [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Queries Iceberg tables natively [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Row-level security enforcement [confirm access-control method]</span></li>
+        </ul>
+        <a href="/integrations/snowflake" class="pw-wh-cta">See Snowflake integration details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      </article>
+
+      <article class="pw-wh-card">
+        <div class="pw-wh-icon-row">
+          <div class="pw-wh-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          </div>
+          <div>
+            <div class="pw-wh-name">BigQuery</div>
+            <div class="pw-wh-connector-type" data-placeholder>Direct API connector [confirm with engineering]</div>
+          </div>
+        </div>
+        <ul class="pw-wh-bullets">
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Cloud DLP integration [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>BigLake support for data lake [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Authorized Views enforcement [confirm access-control method]</span></li>
+        </ul>
+        <a href="/integrations/bigquery" class="pw-wh-cta">See BigQuery integration details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      </article>
+
+      <article class="pw-wh-card">
+        <div class="pw-wh-icon-row">
+          <div class="pw-wh-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div>
+            <div class="pw-wh-name">Databricks</div>
+            <div class="pw-wh-connector-type" data-placeholder>Unity Catalog integration [confirm depth with engineering]</div>
+          </div>
+        </div>
+        <ul class="pw-wh-bullets">
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Supports Delta Lake + Unity tables [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Row-level access control [confirm enforcement method]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>AI/BI Genie alternative — governed, auditable</span></li>
+        </ul>
+        <a href="/integrations/databricks" class="pw-wh-cta">See Databricks integration details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      </article>
+
+      <article class="pw-wh-card">
+        <div class="pw-wh-icon-row">
+          <div class="pw-wh-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </div>
+          <div>
+            <div class="pw-wh-name">Amazon Redshift</div>
+            <div class="pw-wh-connector-type" data-placeholder>Direct SQL connector [confirm with engineering]</div>
+          </div>
+        </div>
+        <ul class="pw-wh-bullets">
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Spectrum external tables supported [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Federated query compatible [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>RLS and dynamic masking [confirm access-control method]</span></li>
+        </ul>
+        <a href="/integrations/redshift" class="pw-wh-cta">See Redshift integration details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      </article>
+
+      <article class="pw-wh-card">
+        <div class="pw-wh-icon-row">
+          <div class="pw-wh-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <div class="pw-wh-name">Azure Synapse</div>
+            <div class="pw-wh-connector-type" data-placeholder>T-SQL native connector [confirm with engineering]</div>
+          </div>
+        </div>
+        <ul class="pw-wh-bullets">
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Private endpoints supported [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Dedicated SQL pool optimized [confirm with engineering]</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Row-level security + column encryption [confirm method]</span></li>
+        </ul>
+        <a href="/integrations/synapse" class="pw-wh-cta">See Synapse integration details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      </article>
+
+      <article class="pw-wh-card placeholder">
+        <div class="pw-wh-icon-row">
+          <div class="pw-wh-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          </div>
+          <div>
+            <div class="pw-wh-name" data-placeholder>Your warehouse?</div>
+            <div class="pw-wh-connector-type">Custom connectors available</div>
+          </div>
+        </div>
+        <ul class="pw-wh-bullets">
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Custom connectors available for enterprise customers</span></li>
+          <li class="pw-wh-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>PostgreSQL, MySQL, Oracle on roadmap [confirm timeline]</span></li>
+        </ul>
+        <a href="/contact" class="pw-wh-cta">Discuss custom integration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] DATA RESIDENCY & COMPLIANCE (#compliance)
+     ============================================================ -->
+<section id="compliance" class="section-pad" aria-labelledby="compliance-heading">
+  <div class="container">
+    <div class="pw-compliance-grid reveal">
+
+      <div class="pw-compliance-sticky">
+        <span class="eyebrow" style="display:block; margin-bottom: var(--space-3);">Data Residency &amp; Compliance</span>
+        <h2 id="compliance-heading" class="display-lg">Data stays in <span class="accent-line">your hands.</span></h2>
+        <p class="body-lg" style="color: var(--text-secondary); margin-top: var(--space-4);">Warehouse-native architecture solves data residency by design — not as a configuration option. Your data is where you put it. Quaeris queries it. Nothing moves.</p>
+      </div>
+
+      <div class="pw-compliance-blocks">
+
+        <div class="pw-compliance-block">
+          <div class="pw-compliance-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          </div>
+          <div class="pw-compliance-body">
+            <h3>GDPR &amp; EU Data Residency</h3>
+            <p>European regulations require personal data to stay within EU borders. Quaeris is warehouse-native, so your EU data stays on your EU warehouse instance — no transfer to US servers. Your semantic layer can be deployed in your EU VPC. Agents run in-region. Audit trails stay in-region.</p>
+            <p class="pw-compliance-placeholder" data-placeholder>[data-placeholder: SOC 2 GDPR certification link — to be added once available]</p>
+          </div>
+        </div>
+
+        <div class="pw-compliance-block">
+          <div class="pw-compliance-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="pw-compliance-body">
+            <h3>HIPAA &amp; Healthcare Data Protection</h3>
+            <p>HIPAA-covered entities must maintain tight access logs and audit trails. Quaeris logs every query, every agent step, and every answer at the warehouse level — immutable, in-place. No data copy means no secondary handling; no secondary handling means lower breach risk and simpler audit trails.</p>
+            <p class="pw-compliance-placeholder" data-placeholder>[data-placeholder: HIPAA-eligible infrastructure list — to be confirmed with engineering]</p>
+          </div>
+        </div>
+
+        <div class="pw-compliance-block">
+          <div class="pw-compliance-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+          </div>
+          <div class="pw-compliance-body">
+            <h3>SOX Compliance &amp; Financial Audit</h3>
+            <p>SOX auditors demand proof that financial queries are governed and their results audited. Quaeris's audit trail is a first-class citizen: every question, every agent reasoning step, every metric definition applied — all logged. The log is immutable (warehouse-level) and can be exported for SOX reviews.</p>
+            <p class="pw-compliance-placeholder" data-placeholder>[data-placeholder: SOX audit playbook link — Q2 content asset]</p>
+          </div>
+        </div>
+
+        <div class="pw-compliance-block">
+          <div class="pw-compliance-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </div>
+          <div class="pw-compliance-body">
+            <h3>Data Residency for Regulated Industries</h3>
+            <p>Some contracts forbid data transfer to third parties. Others require data to stay within a specific geography or cloud. Warehouse-native architecture solves this: Quaeris is a query layer, not a data layer. Deploy it behind your firewall, in your private cloud, or on your warehouse's private endpoint.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [6] DEPLOYMENT MODELS (#deployment-models)
+     ============================================================ -->
+<section id="deployment-models" class="section-pad" aria-labelledby="deploy-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Deployment Models</span>
+      <h2 id="deploy-heading" class="display-lg">Pick your <span class="accent-line">infrastructure posture.</span></h2>
+      <p class="subcopy body-lg">All three models are warehouse-native. Pick the one that matches your compliance requirements.</p>
+    </div>
+
+    <div class="pw-deploy-grid reveal">
+
+      <article class="pw-deploy-card recommended" aria-label="Recommended: SaaS Behind Your Firewall">
+        <span class="pw-deploy-recommended-badge" aria-label="Recommended for most">Recommended for most</span>
+        <div class="pw-deploy-icon-row">
+          <div class="pw-deploy-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+        </div>
+        <h3>SaaS, Behind Your Firewall</h3>
+        <p>Quaeris SaaS runs in AWS or Azure, but agents connect to your warehouse through a private endpoint or VPN tunnel. Your queries never touch the public internet.</p>
+        <ul class="pw-deploy-bullets">
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Fastest to deploy (hours, not days)</li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Automatic updates and security patches</li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Zero infrastructure burden on your team</li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Private endpoint or VPN tunnel required</li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Data residency: your warehouse location</li>
+        </ul>
+        <p class="pw-deploy-audience"><strong>For:</strong> Most enterprises. SaaS convenience without public-internet data flow.</p>
+      </article>
+
+      <article class="pw-deploy-card" aria-label="Self-Hosted in Your VPC">
+        <div class="pw-deploy-icon-row">
+          <div class="pw-deploy-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></svg>
+          </div>
+        </div>
+        <h3>Self-Hosted in Your VPC</h3>
+        <p>Deploy the entire Quaeris stack — agents, semantic layer, API — in your private cloud or VPC. Quaeris connects to your warehouse from inside your network perimeter.</p>
+        <ul class="pw-deploy-bullets">
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Complete infrastructure control</li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No egress to Quaeris-managed servers</li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Single-tenant, isolated deployment</li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Your team manages updates</li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Data residency: wherever you deploy</li>
+        </ul>
+        <p class="pw-deploy-audience"><strong>For:</strong> Highly regulated customers (financial services, healthcare, federal).</p>
+      </article>
+
+      <article class="pw-deploy-card" aria-label="Warehouse-Native App (Snowflake — roadmap)" data-placeholder>
+        <div class="pw-deploy-icon-row">
+          <div class="pw-deploy-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          </div>
+        </div>
+        <h3>Warehouse-Native App <span style="font-size:12px; font-weight:400; color:var(--text-tertiary);" data-placeholder>[data-placeholder: confirm Snowflake Native App availability — see Open Question Q1]</span></h3>
+        <p data-placeholder>[data-placeholder: confirm with engineering — restore copy below if Snowflake Native App is confirmed available; replace with roadmap callout if not.]</p>
+        <p><em>Draft copy (use only if confirmed):</em> Quaeris runs as a Snowflake Native App inside your Snowflake account. No separate infrastructure. Agents execute directly within Snowflake's compute environment.</p>
+        <ul class="pw-deploy-bullets">
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Zero external network calls [confirm with engineering]</span></li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Leverages Snowflake's RBAC and audit logs [confirm]</span></li>
+          <li class="pw-deploy-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>Billed as Snowflake credits [confirm]</span></li>
+        </ul>
+        <p class="pw-deploy-audience" data-placeholder><strong>For:</strong> [confirm with engineering] Snowflake-first enterprises wanting minimal-footprint deployment.</p>
+      </article>
+
+    </div>
+
+    <p class="pw-deploy-footer">All three models are warehouse-native. Need help deciding? <a href="/contact">Book a security review call</a></p>
+  </div>
+</section>
+
+<!-- ============================================================
+     [7] ACCESS CONTROL & AUDIT (#audit)
+     ============================================================ -->
+<section id="audit" class="section-pad" aria-labelledby="audit-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Governed at Query Time</span>
+      <h2 id="audit-heading" class="display-lg">Every query is audited. <span class="accent-line">Every answer is governed.</span></h2>
+    </div>
+
+    <div class="pw-audit-grid reveal">
+      <!-- Left: mock dashboard -->
+      <div class="pw-audit-dashboard" aria-label="Mock audit dashboard showing query metrics and live audit log entries" data-placeholder role="img">
+        <div class="pw-audit-dash-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          Audit &amp; Governance Dashboard
+        </div>
+        <div class="pw-audit-tiles">
+          <div class="pw-audit-tile">
+            <div class="pw-audit-tile-val" data-num="1247" data-placeholder>1,247</div>
+            <div class="pw-audit-tile-label">Queries executed this month</div>
+            <div class="pw-audit-tile-delta" data-placeholder>↑ [placeholder] vs. last month</div>
+          </div>
+          <div class="pw-audit-tile">
+            <div class="pw-audit-tile-val" data-num="8432" data-placeholder>8,432</div>
+            <div class="pw-audit-tile-label">Access policies enforced</div>
+            <div class="pw-audit-tile-delta" data-placeholder>↓ [placeholder] access violations</div>
+          </div>
+          <div class="pw-audit-tile">
+            <div class="pw-audit-tile-val">100%</div>
+            <div class="pw-audit-tile-label">Queries with cited sources</div>
+            <div class="pw-audit-tile-delta">Zero hallucinated answers</div>
+          </div>
+          <div class="pw-audit-tile">
+            <div class="pw-audit-tile-val" data-placeholder>2 yrs</div>
+            <div class="pw-audit-tile-label">Immutable audit log retention</div>
+            <div class="pw-audit-tile-delta" data-placeholder>SOX / HIPAA ready [confirm policy]</div>
+          </div>
+        </div>
+        <div class="pw-audit-query-log" aria-label="Live audit log entries">
+          <div class="pw-audit-log-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>J. Park · "Show Q3 revenue by region"</span>
+            <span class="pw-audit-log-ts">14:31:08</span>
+            <span class="pw-audit-log-tag ok">Permitted</span>
+          </div>
+          <div class="pw-audit-log-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Role check · ANALYST_EMEA · row filter applied</span>
+            <span class="pw-audit-log-ts">14:31:09</span>
+            <span class="pw-audit-log-tag ok">Enforced</span>
+          </div>
+          <div class="pw-audit-log-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Lineage traced → revenue_v3.1 · GL 4000–4099</span>
+            <span class="pw-audit-log-ts">14:31:09</span>
+            <span class="pw-audit-log-tag ok">Traced</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: prose + callout -->
+      <div class="pw-audit-right">
+        <p class="pw-audit-prose">Access control is enforced at query execution time, not as a post-query filter. When a user asks a question, Quaeris agents apply their role's permissions before the query runs — only rows and columns they're allowed to see are queried from your warehouse. Results are audited: who asked, what question, which metrics were used, which rows returned. Full lineage, immutable log.</p>
+
+        <div class="pw-audit-callout">
+          <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            Why query-time access control matters
+          </h4>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Faster: no post-query filtering overhead</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Safer: permissions enforced before warehouse load</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Auditable: logs prove policy was applied at execution</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Compliant: role-based enforcement passes SOX/HIPAA audits</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [8] STATS BAND (#stats)
+     ============================================================ -->
+<section id="stats" class="section-pad pw-stats" aria-labelledby="stats-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" data-placeholder>Architecture outcomes</span>
+      <h2 id="stats-heading" class="display-lg">The case for warehouse-native.</h2>
+    </div>
+    <div class="pw-stats-grid">
+      <div class="pw-stat" data-placeholder>
+        <span class="pw-stat-num stat-number" data-num="0" data-suffix="">0</span>
+        <span class="pw-stat-label">Bytes of raw data egressed</span>
+        <span class="pw-stat-sub">Your warehouse stays your warehouse</span>
+      </div>
+      <div class="pw-stat" data-placeholder>
+        <span class="pw-stat-num stat-number" data-num="5" data-suffix="">5</span>
+        <span class="pw-stat-label">Major cloud warehouses supported</span>
+        <span class="pw-stat-sub">Snowflake · BigQuery · Databricks · Redshift · Synapse</span>
+      </div>
+      <div class="pw-stat" data-placeholder>
+        <span class="pw-stat-num stat-number" data-num="100" data-suffix="%">100%</span>
+        <span class="pw-stat-label">Queries with full audit trail</span>
+        <span class="pw-stat-sub">Who asked, what, when, and what role applied</span>
+      </div>
+      <div class="pw-stat" data-placeholder>
+        <span class="pw-stat-num stat-number" data-num="3" data-suffix="">3</span>
+        <span class="pw-stat-label">Deployment models — all warehouse-native</span>
+        <span class="pw-stat-sub">SaaS behind firewall · VPC · Warehouse App</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [9] FAQ (#faq)
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2 id="faq-heading" class="display-lg">Warehouse-Native <span class="accent-line">Questions.</span></h2>
+      <p class="subcopy body-lg">Everything you need to know about how Quaeris keeps your data in place.</p>
+    </div>
+
+    <div class="accordion fin-faq reveal" style="margin-top: var(--space-7);">
+
+      <details class="accordion-item" open>
+        <summary class="accordion-trigger"><span class="accordion-question">Does Quaeris copy my data to its infrastructure?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">No. Quaeris is warehouse-native. Agents query your warehouse directly and return results. Your raw data is never copied to Quaeris infrastructure. Results are cached temporarily for performance (audit-log compatible) but never persisted without your control. <span data-placeholder>[data-placeholder: full details in our data residency whitepaper — link when available]</span></p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">What if I have a multi-region deployment?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Deploy Quaeris in the same region as your primary warehouse, or use private endpoints/VPN to connect from a different region. EU data stays on your EU warehouse; US data on your US instance. No data cross-border without your orchestration. <span data-placeholder>[data-placeholder: multi-region deployment guide — Q3 content asset]</span></p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">Can you query federated tables across multiple warehouses?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Yes. Quaeris can execute cross-warehouse queries if your warehouse supports federation (e.g., Snowflake's data sharing, BigQuery federated queries). Data stays in each warehouse; queries fan out to each one and results are merged in-place. No centralized data copy.</p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">How does row-level security work?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris agents apply row-level security (RLS) policies when they execute queries — if a user's role forbids access to certain records, the agent's query filters the result set at execution time. <span data-placeholder>[data-placeholder: confirm with engineering — Open Question Q6 flags whether Quaeris uses warehouse-native RLS or its own RLS layer. Update before publishing.]</span></p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">Is the semantic layer stored in my warehouse?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">By default, yes — as a metadata store in your warehouse (or a separate database schema). For extra isolation, deploy it in your private cloud. Either way, it's under your control and never on Quaeris infrastructure. <span data-placeholder>[data-placeholder: confirm with engineering — Open Question Q7 flags semantic layer location options]</span></p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">Can you run Quaeris in an air-gapped network?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Yes, if you choose the self-hosted deployment model. Quaeris runs entirely inside your VPC/private cloud and connects to your warehouse over a private network. Zero external network calls. <span data-placeholder>[data-placeholder: air-gapped deployment guide — confirm readiness per Open Question Q4]</span></p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">How do you handle audit trails for compliance?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris logs all queries, agent steps, and answers at the warehouse level (immutable). Additionally, audit logs are written to your infrastructure (self-hosted) or in AWS/Azure (SaaS behind firewall) with configurable retention policies. Logs are exportable for compliance reviews. <span data-placeholder>[data-placeholder: confirm retention period per Open Question Q2; audit trail spec — Q3 content asset]</span></p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">What if my warehouse doesn't support the features Quaeris needs?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris supports Snowflake, BigQuery, Databricks, Redshift, and Synapse natively. If you use a different warehouse or have a custom setup, <a href="/contact" style="color: var(--brand-accent); font-weight: 600;">contact our sales team</a> — we have a track record of building custom connectors for enterprise customers.</p></div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [10] CLOSING CTA (#cta)
+     ============================================================ -->
+<section id="cta" class="section-pad" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="fin-cta-card reveal">
+      <span class="eyebrow" style="color: rgba(255,255,255,0.75); display:block; margin-bottom: var(--space-3);">Ready to deploy?</span>
+      <h2 id="cta-heading" class="display-lg">Data residency you can trust.</h2>
+      <p class="body-lg">Talk to our security and engineering teams. We'll walk you through the architecture, confirm it meets your compliance requirements, and show you a warehouse integration demo.</p>
+      <div class="fin-cta-btns">
+        <a href="/contact" class="btn-on-light">Book a security review</a>
+        <a href="/contact" class="btn-ghost-on-dark" data-placeholder>[data-placeholder: link to architecture whitepaper when available] Download the architecture guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [11] NEWSLETTER (#newsletter)
+     ============================================================ -->
+<section id="newsletter" class="section-pad" aria-labelledby="newsletter-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="pw-newsletter reveal">
+      <span class="eyebrow">Governed Analytics Brief</span>
+      <h2 id="newsletter-heading">Security updates and compliance tips.</h2>
+      <p>Practical insights on warehouse-native architecture, data residency, and governed AI — every Thursday, no hype.</p>
+      <form class="pw-newsletter-form" action="/subscribe" method="POST" aria-label="Newsletter signup">
+        <label for="pw-email" class="sr-only">Email address</label>
+        <input type="email" id="pw-email" name="email" class="pw-newsletter-input" placeholder="you@company.com" required autocomplete="email" />
+        <button type="submit" class="btn btn-primary" style="min-height: 44px; white-space: nowrap;">Subscribe</button>
+      </form>
+      <p class="pw-newsletter-consent">No spam. Unsubscribe any time.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+
+<!-- [1] Architecture diagram: click-to-activate layers + callout sync -->
+<script>
+(function () {
+  const diag = document.querySelector('.pw-diag');
+  if (!diag) return;
+  const layers = Array.from(diag.querySelectorAll('.pw-diag-layer'));
+  const callouts = Array.from(document.querySelectorAll('.pw-callout'));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  diag.classList.add('js');
+
+  function activate(i) {
+    layers.forEach((l, j) => {
+      l.classList.toggle('active', j === i);
+      l.setAttribute('aria-pressed', j === i ? 'true' : 'false');
+    });
+    callouts.forEach((c, j) => c.classList.toggle('active', j === i));
+  }
+
+  layers.forEach((layer, i) => {
+    layer.addEventListener('click', () => activate(i));
+    layer.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(i); }
+    });
+  });
+
+  // Entrance: stagger layers in
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) {
+        layers.forEach((l, i) => {
+          if (reduce) { l.classList.add('entered'); return; }
+          setTimeout(() => l.classList.add('entered'), i * 100);
+        });
+        io.disconnect();
+      }
+    }), { threshold: 0.2 });
+    io.observe(diag);
+  } else {
+    layers.forEach(l => l.classList.add('entered'));
+  }
+
+  // Auto-rotate callouts every 3s when not hovered
+  let auto = null;
+  let current = 0;
+  function startAuto() {
+    if (reduce) return;
+    auto = setInterval(() => {
+      current = (current + 1) % layers.length;
+      activate(current);
+    }, 3000);
+  }
+  function stopAuto() { clearInterval(auto); auto = null; }
+
+  diag.addEventListener('mouseenter', stopAuto);
+  diag.addEventListener('mouseleave', startAuto);
+  diag.addEventListener('focusin', stopAuto);
+  diag.addEventListener('focusout', startAuto);
+  startAuto();
+})();
+</script>
+
+<!-- [2] Warehouse cards: IntersectionObserver stagger entrance -->
+<script>
+(function () {
+  const section = document.querySelector('.pw-wh');
+  if (!section) return;
+  const cards = Array.from(section.querySelectorAll('.pw-wh-card'));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('js');
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) {
+        cards.forEach((c, i) => {
+          if (reduce) { c.classList.add('entered'); return; }
+          setTimeout(() => c.classList.add('entered'), i * 80);
+        });
+        io.disconnect();
+      }
+    }), { threshold: 0.15 });
+    io.observe(section);
+  } else {
+    cards.forEach(c => c.classList.add('entered'));
+  }
+})();
+</script>
+
+<!-- [3] Stats band: count-up on intersection -->
+<script>
+(function () {
+  const section = document.querySelector('.pw-stats');
+  if (!section) return;
+  const stats = Array.from(section.querySelectorAll('.pw-stat'));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('js');
+
+  function countUp(el, target, suffix, dur) {
+    if (reduce) { el.textContent = target + suffix; return; }
+    const start = performance.now();
+    el.textContent = '0' + suffix;
+    (function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const val = Math.round(target * (1 - Math.pow(1 - t, 3)));
+      el.textContent = val + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) {
+        stats.forEach((stat, i) => {
+          if (reduce) { stat.classList.add('entered'); } else { setTimeout(() => stat.classList.add('entered'), i * 100); }
+          const numEl = stat.querySelector('.stat-number');
+          if (numEl) {
+            const num = parseFloat(numEl.dataset.num || numEl.textContent) || 0;
+            const suffix = numEl.dataset.suffix || '';
+            setTimeout(() => countUp(numEl, num, suffix, 1000), reduce ? 0 : i * 100 + 200);
+          }
+        });
+        io.disconnect();
+      }
+    }), { threshold: 0.3 });
+    io.observe(section);
+  } else {
+    stats.forEach(s => s.classList.add('entered'));
+  }
+})();
+</script>
+
+<!-- [4] Audit dashboard: log row stagger + tile count-ups on intersection -->
+<script>
+(function () {
+  const dash = document.querySelector('.pw-audit-dashboard');
+  if (!dash) return;
+  const logRows = Array.from(dash.querySelectorAll('.pw-audit-log-row'));
+  const tiles = Array.from(dash.querySelectorAll('.pw-audit-tile'));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Initial state
+  if (!reduce) {
+    logRows.forEach(r => { r.style.opacity = '0'; r.style.transform = 'translateX(-8px)'; r.style.transition = 'opacity 0.4s, transform 0.4s'; });
+  }
+
+  function animateDash() {
+    tiles.forEach((tile, i) => {
+      const valEl = tile.querySelector('.pw-audit-tile-val[data-num]');
+      if (valEl && !reduce) {
+        const target = parseInt(valEl.dataset.num, 10);
+        if (!isNaN(target)) {
+          const start = performance.now();
+          valEl.textContent = '0';
+          (function tick(now) {
+            const t = Math.min(1, (now - start) / 900);
+            valEl.textContent = Math.round(target * (1 - Math.pow(1 - t, 3))).toLocaleString('en-US');
+            if (t < 1) requestAnimationFrame(tick);
+          })(start);
+        }
+      }
+    });
+
+    logRows.forEach((r, i) => {
+      if (reduce) { r.style.opacity = ''; r.style.transform = ''; return; }
+      setTimeout(() => { r.style.opacity = '1'; r.style.transform = 'none'; }, 400 + i * 180);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { animateDash(); io.disconnect(); }
+    }), { threshold: 0.3 });
+    io.observe(dash);
+  } else { animateDash(); }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /docs — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  /* .reveal is static: sections that are not JS-animated show final state. */
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: docs page classes — move to globals.css at port time.
+   Prefix: docs-
+   ============================================================ */
+
+/* ============================================================
+   [1] DOCS HERO — search bar + popular chips
+   ============================================================ */
+
+.docs-hero-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.docs-hero-inner .eyebrow { color: var(--brand-accent); display: block; margin-bottom: var(--space-3); }
+.docs-hero-inner h1 { color: var(--text-primary); margin-bottom: var(--space-4); }
+.docs-hero-inner .subcopy { color: var(--text-secondary); margin-bottom: var(--space-6); }
+
+/* Search field — static, non-functional, visual only */
+.docs-search-wrap {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto var(--space-5);
+}
+.docs-search-input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 14px 52px 14px 20px;
+  box-shadow: var(--shadow-card);
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  min-height: 52px;
+  appearance: none;
+}
+.docs-search-input::placeholder { color: var(--text-tertiary); }
+.docs-search-input:focus {
+  border-color: var(--brand-accent);
+  box-shadow: 0 0 0 3px var(--brand-accent-soft), var(--shadow-card);
+}
+.docs-search-icon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+  color: var(--text-tertiary);
+}
+.docs-search-kbd {
+  position: absolute;
+  right: 52px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  pointer-events: none;
+}
+
+/* Popular chips */
+.docs-chips-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-right: var(--space-2);
+}
+.docs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+}
+.docs-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  min-height: 36px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  text-decoration: none;
+  box-shadow: var(--shadow-card);
+}
+.docs-chip svg { width: 14px; height: 14px; flex-shrink: 0; }
+.docs-chip:hover {
+  color: var(--brand-accent);
+  border-color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  transform: translateY(-1px);
+}
+.docs-chip:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+/* Hero BG wash */
+.docs-hero-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, var(--brand-accent-soft) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   [2] CATEGORY CARD GRID — hover lift + icon pulse
+   ============================================================ */
+
+.docs-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .docs-cat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .docs-cat-grid { grid-template-columns: 1fr; } }
+
+.docs-cat-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  text-decoration: none;
+  transition: box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
+  cursor: pointer;
+}
+.docs-cat-card:hover,
+.docs-cat-card:focus-visible {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-3px);
+  border-color: var(--brand-accent);
+}
+.docs-cat-card:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+
+.docs-cat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--dur-base) var(--ease-out);
+}
+.docs-cat-icon svg { width: 24px; height: 24px; color: var(--brand-accent); }
+.docs-cat-card:hover .docs-cat-icon,
+.docs-cat-card:focus-visible .docs-cat-icon { background: var(--brand-accent); }
+.docs-cat-card:hover .docs-cat-icon svg,
+.docs-cat-card:focus-visible .docs-cat-icon svg { color: var(--text-on-dark); }
+
+.docs-cat-title {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.docs-cat-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.docs-cat-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+}
+.docs-cat-count svg { width: 13px; height: 13px; }
+
+/* JS: staggered entrance */
+.docs-cat.js .docs-cat-card {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d, 0ms),
+              transform var(--dur-slow) var(--ease-out) var(--d, 0ms),
+              box-shadow var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
+}
+.docs-cat.js .docs-cat-card.entered { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-cat.js .docs-cat-card { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [3] QUICKSTART STEPPER — 3 steps, interactive
+   ============================================================ */
+
+.docs-steps-wrap {
+  max-width: 860px;
+  margin: var(--space-8) auto 0;
+}
+.docs-steps-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border-subtle);
+  margin-bottom: var(--space-7);
+  overflow-x: auto;
+}
+.docs-step-tab {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background var(--dur-fast) var(--ease-out);
+  min-width: 160px;
+}
+.docs-step-tab:hover { background: var(--brand-accent-soft); }
+.docs-step-tab:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: -2px; }
+
+.docs-step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-canvas);
+  border: 2px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: background var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              color var(--dur-base) var(--ease-out);
+  flex-shrink: 0;
+}
+.docs-step-tab[aria-selected="true"] .docs-step-num {
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+  color: var(--text-on-dark);
+}
+.docs-step-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.35;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.docs-step-tab[aria-selected="true"] .docs-step-label { color: var(--brand-accent); }
+.docs-step-bar {
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  height: 2px;
+  background: var(--brand-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
+  border-radius: 2px;
+}
+.docs-step-tab[aria-selected="true"] .docs-step-bar { transform: scaleX(1); }
+
+/* Step panels */
+.docs-step-panel { display: none; }
+.docs-step-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; }
+@media (max-width: 700px) { .docs-step-panel.active { grid-template-columns: 1fr; gap: var(--space-6); } }
+
+.docs-step-panel-text h3 {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+.docs-step-panel-text p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-5);
+}
+.docs-step-links { display: flex; flex-direction: column; gap: var(--space-2); }
+.docs-step-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand-accent);
+  text-decoration: none;
+  transition: gap var(--dur-fast) var(--ease-out);
+}
+.docs-step-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+.docs-step-link:hover { gap: var(--space-3); }
+.docs-step-link:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; border-radius: var(--radius-sm); }
+
+/* Code / visual block */
+.docs-step-visual {
+  background: var(--bg-ink);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.82);
+  overflow: hidden;
+  position: relative;
+}
+.docs-step-visual .code-line { display: block; }
+.docs-step-visual .code-comment { color: rgba(255,255,255,0.38); }
+.docs-step-visual .code-key { color: #93c5fd; } /* muted blue — no brand hex */
+.docs-step-visual .code-str { color: #86efac; } /* muted green */
+.docs-step-visual .code-kw { color: var(--brand-accent); }
+.docs-step-visual .code-var { color: rgba(255,255,255,0.9); }
+.docs-step-visual .code-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 30%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  margin-top: var(--space-3);
+}
+.docs-step-visual .code-badge svg { width: 13px; height: 13px; }
+
+/* Typing cursor */
+.docs-step-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--brand-accent);
+  margin-left: 2px;
+  vertical-align: -2px;
+  animation: docs-caret 1s steps(1) infinite;
+}
+@keyframes docs-caret { 50% { opacity: 0; } }
+
+.docs-step-nav-btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+.docs-step-prev, .docs-step-next {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  background: none;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 8px 20px;
+  min-height: 40px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.docs-step-prev:hover, .docs-step-next:hover {
+  color: var(--brand-accent);
+  border-color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+}
+.docs-step-prev:disabled, .docs-step-next:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+.docs-step-prev svg, .docs-step-next svg { width: 16px; height: 16px; }
+.docs-step-prev:focus-visible, .docs-step-next:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+.docs-step-pips {
+  display: flex;
+  gap: var(--space-2);
+}
+.docs-step-pip {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border-strong);
+  transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.docs-step-pip.active { background: var(--brand-accent); transform: scale(1.3); }
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-step-cursor { animation: none !important; }
+  .docs-step-pip { transition: none !important; }
+}
+
+/* ============================================================
+   [4] POPULAR ARTICLES LIST — hover highlight + new badge
+   ============================================================ */
+
+.docs-articles-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+  margin-top: var(--space-8);
+}
+@media (max-width: 800px) { .docs-articles-layout { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+.docs-article-list { display: flex; flex-direction: column; gap: 0; }
+
+.docs-article-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  cursor: pointer;
+}
+.docs-article-item:first-child { border-top: 1px solid var(--border-subtle); }
+.docs-article-item:hover { background: var(--brand-accent-soft); transform: translateX(3px); }
+.docs-article-item:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+.docs-article-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.docs-article-icon svg { width: 18px; height: 18px; color: var(--brand-accent); }
+
+.docs-article-body { flex: 1; min-width: 0; }
+.docs-article-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.docs-article-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+}
+.docs-article-meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+.docs-article-arrow {
+  width: 18px; height: 18px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.docs-article-item:hover .docs-article-arrow { color: var(--brand-accent); transform: translateX(3px); }
+
+/* Sidebar stats card */
+.docs-side-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.docs-side-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.docs-side-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.docs-side-stat:last-of-type { border-bottom: none; }
+.docs-side-stat-num {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  min-width: 56px;
+}
+.docs-side-stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.docs-side-stat-label strong { display: block; font-weight: 600; color: var(--text-primary); }
+
+/* Count-up animation */
+.docs-side.js .docs-side-stat-num[data-count] { color: var(--brand-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-article-item { transition: none !important; transform: none !important; }
+  .docs-article-arrow { transition: none !important; }
+}
+
+/* ============================================================
+   [5] DEVELOPER / API & MCP HIGHLIGHT BLOCK
+   ============================================================ */
+
+.docs-dev-block {
+  background: linear-gradient(150deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-7);
+  color: var(--text-on-dark);
+  box-shadow: 0 24px 60px -20px var(--brand-accent-glow);
+  position: relative;
+  overflow: hidden;
+}
+.docs-dev-block-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(255,255,255,0.06) 0%, transparent 55%);
+  pointer-events: none;
+}
+.docs-dev-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 800px) { .docs-dev-grid { grid-template-columns: 1fr; gap: var(--space-6); } }
+
+.docs-dev-text .eyebrow { color: rgba(255,255,255,0.65); margin-bottom: var(--space-3); display: block; }
+.docs-dev-text h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); font-size: clamp(24px, 3vw, 36px); }
+.docs-dev-text p { color: var(--text-on-dark-dim); font-size: 15px; line-height: 1.6; margin-bottom: var(--space-5); }
+
+.docs-dev-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+.docs-dev-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-on-dark);
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+}
+.docs-dev-pill svg { width: 14px; height: 14px; }
+
+.docs-dev-btns { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+/* API/MCP card terminal */
+.docs-dev-terminal {
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.docs-dev-term-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.docs-dev-term-dots {
+  display: flex; gap: 5px;
+}
+.docs-dev-term-dots i {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: rgba(255,255,255,0.25); display: block;
+}
+.docs-dev-term-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  margin-left: var(--space-2);
+  font-family: "Roboto Mono", monospace;
+}
+
+.docs-dev-term-body {
+  padding: var(--space-4) var(--space-5);
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.82);
+}
+.docs-dev-term-line { display: block; }
+.docs-dev-term-line.prompt::before { content: "$ "; color: var(--brand-accent); font-weight: 700; }
+.docs-dev-term-line.comment { color: rgba(255,255,255,0.32); }
+.docs-dev-term-line.out { color: rgba(255,255,255,0.6); }
+.docs-dev-term-line.ok { color: #86efac; }
+.docs-dev-term-line.key { color: #93c5fd; }
+
+/* Packet animation — dots travel across a path in the terminal background */
+.docs-dev-term-flow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.docs-dev-flow-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.45); white-space: nowrap; }
+.docs-dev-flow-track {
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.docs-dev-flow-packet {
+  position: absolute;
+  top: -3px;
+  left: -12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  box-shadow: 0 0 6px 2px var(--brand-accent-glow);
+  animation: docs-flow-travel 2s var(--ease-out) infinite;
+}
+.docs-dev-flow-packet:nth-child(2) { animation-delay: 0.65s; }
+.docs-dev-flow-packet:nth-child(3) { animation-delay: 1.3s; }
+@keyframes docs-flow-travel {
+  0% { left: -12px; opacity: 0; }
+  5% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: calc(100% + 12px); opacity: 0; }
+}
+.docs-dev-flow-status { font-size: 11px; font-weight: 600; color: #86efac; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+.docs-dev-flow-dot { width: 6px; height: 6px; border-radius: 50%; background: #86efac; animation: docs-pulse-dot 1.6s ease-in-out infinite; }
+@keyframes docs-pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-dev-flow-packet { animation: none !important; left: 50% !important; opacity: 0.6 !important; }
+  .docs-dev-flow-dot { animation: none !important; }
+}
+
+/* ============================================================
+   [6] HELP / CTA SECTION
+   ============================================================ */
+
+.docs-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.docs-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.docs-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); font-size: 17px; line-height: 1.6; }
+.docs-cta-btns { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+
+/* ============================================================
+   [7] ACCENT LINE (shared helper — from finance-v3)
+   ============================================================ */
+.accent-line {
+  background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   SHARED: icon-box utility (same as globals spec §3.4)
+   ============================================================ */
+.icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.icon-box svg { width: 22px; height: 22px; color: var(--brand-accent); }
+
+/* hero-purple-wash (reuse from finance pages) */
+.hero-purple-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 90% 70% at 50% -10%, var(--brand-accent-soft) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO — search field (static/non-functional) + popular chips
+     Interactive: chip hover micro-interactions + focus ring on input
+     ============================================================ -->
+<section id="docs-hero" aria-labelledby="docs-hero-heading" style="padding: var(--section-pad-y) 0; position: relative; overflow: hidden;">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container">
+    <div class="docs-hero-inner">
+      <span class="eyebrow">Documentation</span>
+      <h1 id="docs-hero-heading" class="display-xl">How can we <span class="accent-line">help you build?</span></h1>
+      <p class="body-lg subcopy">Everything you need to connect, govern, and query your data with Quaeris — from first setup to production MCP integrations.</p>
+
+      <!-- Static search field — visual only; functional search added at port time -->
+      <div class="docs-search-wrap" role="search" aria-label="Documentation search (not yet functional in mockup)">
+        <label for="docs-search-input" class="sr-only">Search documentation</label>
+        <input
+          id="docs-search-input"
+          type="search"
+          class="docs-search-input"
+          placeholder="Search docs… e.g. 'semantic layer setup'"
+          autocomplete="off"
+          aria-label="Search documentation"
+          readonly
+          data-placeholder
+        />
+        <span class="docs-search-kbd" aria-hidden="true"><kbd>⌘</kbd><kbd>K</kbd></span>
+        <svg class="docs-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <!-- PORT TODO: replace readonly + caption with live search at port time -->
+      <p style="font-size:12px; color:var(--text-tertiary); margin-top:var(--space-2);" aria-live="polite">Search coming online at port time — use the chips below to explore topics.</p>
+
+      <!-- Popular search chips -->
+      <div class="docs-chips" role="list" aria-label="Popular search topics">
+        <span class="docs-chips-label" aria-hidden="true">Popular:</span>
+        <a href="#" class="docs-chip" role="listitem" data-placeholder aria-label="Quick start guide (placeholder link)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Quick start
+        </a>
+        <a href="#" class="docs-chip" role="listitem" data-placeholder aria-label="Semantic layer (placeholder link)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2"/><path d="M12 6v6l4 2"/></svg>
+          Semantic layer
+        </a>
+        <a href="#" class="docs-chip" role="listitem" data-placeholder aria-label="MCP tools (placeholder link)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+          MCP tools
+        </a>
+        <a href="#" class="docs-chip" role="listitem" data-placeholder aria-label="API reference (placeholder link)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+          API reference
+        </a>
+        <a href="#" class="docs-chip" role="listitem" data-placeholder aria-label="Audit and lineage (placeholder link)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          Audit &amp; lineage
+        </a>
+        <a href="#" class="docs-chip" role="listitem" data-placeholder aria-label="Warehouse native (placeholder link)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          Warehouse-native
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] CATEGORY CARD GRID — hover lift, staggered entrance
+     Interactive: hover lift + border accent + icon color flip; JS staggered entrance
+     ============================================================ -->
+<section id="docs-categories" class="section-pad docs-cat" aria-labelledby="docs-cat-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Browse by topic</span>
+      <h2 id="docs-cat-heading" class="display-lg">Everything in one place.<br><span class="accent-line">Find what you need fast.</span></h2>
+    </div>
+
+    <div class="docs-cat-grid" role="list">
+
+      <!-- Getting Started -->
+      <a href="#" class="docs-cat-card" role="listitem" data-placeholder style="--d:0ms" aria-label="Getting started — 12 articles (placeholder link)">
+        <span class="docs-cat-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </span>
+        <span class="docs-cat-title">Getting Started</span>
+        <span class="docs-cat-desc">Install Quaeris, connect your first warehouse, and run your first governed query in under 10 minutes.</span>
+        <span class="docs-cat-count">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          12 articles
+        </span>
+      </a>
+
+      <!-- Semantic Layer -->
+      <a href="#" class="docs-cat-card" role="listitem" data-placeholder style="--d:80ms" aria-label="Semantic layer — 18 articles (placeholder link)">
+        <span class="docs-cat-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2"/><path d="m7 10 2 2 4-4"/></svg>
+        </span>
+        <span class="docs-cat-title">Semantic Layer</span>
+        <span class="docs-cat-desc">Define certified metrics, version-lock definitions, and build the governed data model that powers every query.</span>
+        <span class="docs-cat-count">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          18 articles
+        </span>
+      </a>
+
+      <!-- AI Agents -->
+      <a href="#" class="docs-cat-card" role="listitem" data-placeholder style="--d:160ms" aria-label="AI agents — 14 articles (placeholder link)">
+        <span class="docs-cat-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </span>
+        <span class="docs-cat-title">AI Agents</span>
+        <span class="docs-cat-desc">Configure and deploy agentic analytics workflows — orchestrate multi-step questions against governed data.</span>
+        <span class="docs-cat-count">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          14 articles
+        </span>
+      </a>
+
+      <!-- Query & API -->
+      <a href="#" class="docs-cat-card" role="listitem" data-placeholder style="--d:240ms" aria-label="Query and API — 22 articles (placeholder link)">
+        <span class="docs-cat-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+        </span>
+        <span class="docs-cat-title">Query &amp; API</span>
+        <span class="docs-cat-desc">REST API reference, natural-language query engine internals, SQL passthrough, and result pagination.</span>
+        <span class="docs-cat-count">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          22 articles
+        </span>
+      </a>
+
+      <!-- MCP Tools -->
+      <a href="#" class="docs-cat-card" role="listitem" data-placeholder style="--d:320ms" aria-label="MCP tools — 9 articles (placeholder link)">
+        <span class="docs-cat-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </span>
+        <span class="docs-cat-title">MCP Tools</span>
+        <span class="docs-cat-desc">Model Context Protocol integration — expose governed Quaeris data to any MCP-compatible AI host environment.</span>
+        <span class="docs-cat-count">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          9 articles
+        </span>
+      </a>
+
+      <!-- Security & Governance -->
+      <a href="#" class="docs-cat-card" role="listitem" data-placeholder style="--d:400ms" aria-label="Security and governance — 16 articles (placeholder link)">
+        <span class="docs-cat-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <span class="docs-cat-title">Security &amp; Governance</span>
+        <span class="docs-cat-desc">Row-level security, field-level masking, audit trail configuration, RBAC policies, and compliance posture.</span>
+        <span class="docs-cat-count">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          16 articles
+        </span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] QUICKSTART STEPPER — "3 steps to your first governed answer"
+     Interactive: tab/step switcher + prev/next buttons + pip indicators
+     ============================================================ -->
+<section id="docs-quickstart" class="section-pad" aria-labelledby="docs-qs-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Quick Start</span>
+      <h2 id="docs-qs-heading" class="display-lg">3 steps to your first<br><span class="accent-line">governed answer.</span></h2>
+      <p class="subcopy body-lg">From zero to a traced, auditable query result in minutes.</p>
+    </div>
+
+    <div class="docs-steps-wrap" role="region" aria-label="Quick start stepper">
+
+      <!-- Step tabs -->
+      <div class="docs-steps-nav" role="tablist" aria-label="Quick start steps">
+        <button class="docs-step-tab" role="tab" id="qs-tab-1" aria-controls="qs-panel-1" aria-selected="true" tabindex="0">
+          <span class="docs-step-num" aria-hidden="true">1</span>
+          <span class="docs-step-label">Connect your warehouse</span>
+          <span class="docs-step-bar" aria-hidden="true"></span>
+        </button>
+        <button class="docs-step-tab" role="tab" id="qs-tab-2" aria-controls="qs-panel-2" aria-selected="false" tabindex="-1">
+          <span class="docs-step-num" aria-hidden="true">2</span>
+          <span class="docs-step-label">Define a certified metric</span>
+          <span class="docs-step-bar" aria-hidden="true"></span>
+        </button>
+        <button class="docs-step-tab" role="tab" id="qs-tab-3" aria-controls="qs-panel-3" aria-selected="false" tabindex="-1">
+          <span class="docs-step-num" aria-hidden="true">3</span>
+          <span class="docs-step-label">Ask your first question</span>
+          <span class="docs-step-bar" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- Panel 1 -->
+      <div class="docs-step-panel active" id="qs-panel-1" role="tabpanel" aria-labelledby="qs-tab-1">
+        <div class="docs-step-panel-text">
+          <h3>Connect your data warehouse</h3>
+          <p>Quaeris is warehouse-native — your data never moves. Provide credentials for Snowflake, BigQuery, Redshift, or Databricks and Quaeris introspects your schema automatically.</p>
+          <div class="docs-step-links">
+            <a href="#" class="docs-step-link" data-placeholder aria-label="Snowflake connector guide (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              Snowflake connector guide
+            </a>
+            <a href="#" class="docs-step-link" data-placeholder aria-label="BigQuery setup (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              BigQuery setup
+            </a>
+            <a href="#" class="docs-step-link" data-placeholder aria-label="Supported warehouses (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              All supported connectors
+            </a>
+          </div>
+        </div>
+        <div class="docs-step-visual" aria-label="Example warehouse connection configuration (placeholder code)">
+          <span class="code-line"><span class="code-comment"># quaeris.yaml — warehouse connection</span></span>
+          <span class="code-line">&nbsp;</span>
+          <span class="code-line"><span class="code-key">warehouse</span>:</span>
+          <span class="code-line">&nbsp; <span class="code-key">type</span>: <span class="code-str">"snowflake"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">account</span>: <span class="code-str">"your-account"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">database</span>: <span class="code-str">"PROD_ANALYTICS"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">schema</span>: <span class="code-str">"finance"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">role</span>: <span class="code-str">"QUAERIS_READER"</span></span>
+          <span class="code-line">&nbsp;</span>
+          <span class="code-line"><span class="code-comment"># Credentials resolved from env — never stored in config</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">credentials</span>: <span class="code-str">"env://SNOWFLAKE_CREDS"</span></span>
+          <span class="code-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Schema introspected · data stays in warehouse
+          </span>
+        </div>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="docs-step-panel" id="qs-panel-2" role="tabpanel" aria-labelledby="qs-tab-2" hidden>
+        <div class="docs-step-panel-text">
+          <h3>Define a certified metric</h3>
+          <p>In the semantic layer editor, declare your metric once — formula, GL accounts, owner, and certification date. Every query that touches "revenue" will use this exact definition forever.</p>
+          <div class="docs-step-links">
+            <a href="#" class="docs-step-link" data-placeholder aria-label="Metric definition syntax (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              Metric definition syntax
+            </a>
+            <a href="#" class="docs-step-link" data-placeholder aria-label="Versioning and certification (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              Versioning &amp; certification workflow
+            </a>
+            <a href="#" class="docs-step-link" data-placeholder aria-label="Semantic layer overview (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              Semantic layer overview
+            </a>
+          </div>
+        </div>
+        <div class="docs-step-visual" aria-label="Example metric definition in YAML (placeholder code)">
+          <span class="code-line"><span class="code-comment"># semantic/metrics/revenue.yaml</span></span>
+          <span class="code-line">&nbsp;</span>
+          <span class="code-line"><span class="code-key">metric</span>:</span>
+          <span class="code-line">&nbsp; <span class="code-key">name</span>: <span class="code-str">"revenue"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">version</span>: <span class="code-str">"3.1"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">formula</span>: <span class="code-str">"SUM(gl_4000_4099) - returns"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">gl_accounts</span>: <span class="code-str">"4000–4099"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">owner</span>: <span class="code-str">"controller@company.com"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">certified_at</span>: <span class="code-str">"2026-06-01"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">access</span>:</span>
+          <span class="code-line">&nbsp;&nbsp;&nbsp; <span class="code-key">roles</span>: <span class="code-str">["finance", "executive"]</span></span>
+          <span class="code-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Version-locked · RBAC enforced at query time
+          </span>
+        </div>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="docs-step-panel" id="qs-panel-3" role="tabpanel" aria-labelledby="qs-tab-3" hidden>
+        <div class="docs-step-panel-text">
+          <h3>Ask your first question</h3>
+          <p>Use the Query API, the chat UI, or an MCP tool call to ask a natural-language question. Quaeris returns a certified answer with full lineage — traceable back to the source table and GL account.</p>
+          <div class="docs-step-links">
+            <a href="#" class="docs-step-link" data-placeholder aria-label="Query API reference (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              Query API reference
+            </a>
+            <a href="#" class="docs-step-link" data-placeholder aria-label="Understanding lineage in results (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              Understanding lineage in results
+            </a>
+            <a href="#" class="docs-step-link" data-placeholder aria-label="MCP query tool (placeholder link)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              MCP query_governed tool
+            </a>
+          </div>
+        </div>
+        <div class="docs-step-visual" aria-label="Example API query and response (placeholder code)">
+          <span class="code-line"><span class="code-comment"># POST /v1/query</span></span>
+          <span class="code-line">&nbsp;</span>
+          <span class="code-line"><span class="code-key">question</span>: <span class="code-str">"What was Q3 revenue by region?"</span></span>
+          <span class="code-line"><span class="code-key">context</span>: <span class="code-str">{ "fiscal_year": 2026 }</span></span>
+          <span class="code-line">&nbsp;</span>
+          <span class="code-line"><span class="code-comment"># Response includes lineage block:</span></span>
+          <span class="code-line"><span class="code-key">lineage</span>:</span>
+          <span class="code-line">&nbsp; <span class="code-key">metric</span>: <span class="code-str">"revenue · v3.1"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">gl_accounts</span>: <span class="code-str">"4000–4099"</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">traced_in_ms</span>: <span class="code-var">420</span></span>
+          <span class="code-line">&nbsp; <span class="code-key">access_enforced</span>: <span class="code-var">true</span></span>
+          <span class="code-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Audit trail attached · zero hallucination risk
+          </span>
+        </div>
+      </div>
+
+      <!-- Nav controls -->
+      <div class="docs-step-nav-btns">
+        <button type="button" class="docs-step-prev" id="qs-prev" aria-label="Previous step" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          Previous
+        </button>
+        <div class="docs-step-pips" role="list" aria-label="Step indicators">
+          <span class="docs-step-pip active" role="listitem" aria-label="Step 1, current"></span>
+          <span class="docs-step-pip" role="listitem" aria-label="Step 2"></span>
+          <span class="docs-step-pip" role="listitem" aria-label="Step 3"></span>
+        </div>
+        <button type="button" class="docs-step-next" id="qs-next" aria-label="Next step">
+          Next
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] POPULAR ARTICLES + SIDEBAR STATS
+     Interactive: hover translate + arrow micro-animation; JS count-up on sidebar stats
+     ============================================================ -->
+<section id="docs-articles" class="section-pad docs-side" aria-labelledby="docs-art-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Popular articles</span>
+      <h2 id="docs-art-heading" class="display-lg">The most-read docs<br><span class="accent-line">right now.</span></h2>
+    </div>
+
+    <div class="docs-articles-layout">
+
+      <!-- Article list -->
+      <div class="docs-article-list" role="list" aria-label="Popular documentation articles">
+
+        <a href="#" class="docs-article-item" role="listitem" data-placeholder aria-label="Quick start: connect Snowflake in 5 minutes — Getting Started (placeholder link)">
+          <span class="docs-article-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </span>
+          <span class="docs-article-body">
+            <span class="docs-article-title">Quick start: connect Snowflake in 5 minutes <span class="docs-article-badge">New</span></span>
+            <span class="docs-article-meta">Getting Started · 5 min read</span>
+          </span>
+          <svg class="docs-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a href="#" class="docs-article-item" role="listitem" data-placeholder aria-label="Defining your first certified metric — Semantic Layer (placeholder link)">
+          <span class="docs-article-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 10 2 2 4-4"/><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+          </span>
+          <span class="docs-article-body">
+            <span class="docs-article-title">Defining your first certified metric</span>
+            <span class="docs-article-meta">Semantic Layer · 8 min read</span>
+          </span>
+          <svg class="docs-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a href="#" class="docs-article-item" role="listitem" data-placeholder aria-label="Audit trail and lineage: how it works — Security and Governance (placeholder link)">
+          <span class="docs-article-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </span>
+          <span class="docs-article-body">
+            <span class="docs-article-title">Audit trail and lineage: how it works</span>
+            <span class="docs-article-meta">Security &amp; Governance · 10 min read</span>
+          </span>
+          <svg class="docs-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a href="#" class="docs-article-item" role="listitem" data-placeholder aria-label="Setting up MCP tools: query_governed and describe_metric — MCP Tools (placeholder link)">
+          <span class="docs-article-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </span>
+          <span class="docs-article-body">
+            <span class="docs-article-title">Setting up MCP tools: query_governed and describe_metric <span class="docs-article-badge">New</span></span>
+            <span class="docs-article-meta">MCP Tools · 12 min read</span>
+          </span>
+          <svg class="docs-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a href="#" class="docs-article-item" role="listitem" data-placeholder aria-label="Row-level security and field masking — Security and Governance (placeholder link)">
+          <span class="docs-article-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          <span class="docs-article-body">
+            <span class="docs-article-title">Row-level security and field masking</span>
+            <span class="docs-article-meta">Security &amp; Governance · 7 min read</span>
+          </span>
+          <svg class="docs-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a href="#" class="docs-article-item" role="listitem" data-placeholder aria-label="Warehouse-native deployment: Snowflake, BigQuery, Redshift — Getting Started (placeholder link)">
+          <span class="docs-article-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          </span>
+          <span class="docs-article-body">
+            <span class="docs-article-title">Warehouse-native deployment: Snowflake, BigQuery, Redshift</span>
+            <span class="docs-article-meta">Getting Started · 9 min read</span>
+          </span>
+          <svg class="docs-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a href="#" class="docs-article-item" role="listitem" data-placeholder aria-label="Configuring AI agents for multi-step analysis — AI Agents (placeholder link)">
+          <span class="docs-article-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+          </span>
+          <span class="docs-article-body">
+            <span class="docs-article-title">Configuring AI agents for multi-step analysis</span>
+            <span class="docs-article-meta">AI Agents · 14 min read</span>
+          </span>
+          <svg class="docs-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a href="#" class="docs-article-item" role="listitem" data-placeholder aria-label="Query API pagination and result formats — Query and API (placeholder link)">
+          <span class="docs-article-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+          </span>
+          <span class="docs-article-body">
+            <span class="docs-article-title">Query API pagination and result formats</span>
+            <span class="docs-article-meta">Query &amp; API · 6 min read</span>
+          </span>
+          <svg class="docs-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+      </div>
+
+      <!-- Sidebar stats card (JS count-up) -->
+      <div>
+        <div class="docs-side-card" role="complementary" aria-label="Documentation statistics (placeholder data)" data-placeholder>
+          <p class="docs-side-card-title">Docs at a glance</p>
+
+          <div class="docs-side-stat">
+            <span class="docs-side-stat-num" data-count="91" data-suffix="">91</span>
+            <span class="docs-side-stat-label"><strong>Total articles</strong>Across 6 topic areas</span>
+          </div>
+          <div class="docs-side-stat">
+            <span class="docs-side-stat-num" data-count="9" data-suffix="">9</span>
+            <span class="docs-side-stat-label"><strong>MCP tool docs</strong>Model Context Protocol integrations</span>
+          </div>
+          <div class="docs-side-stat">
+            <span class="docs-side-stat-num" data-count="5" data-suffix="">5</span>
+            <span class="docs-side-stat-label"><strong>Warehouses supported</strong>Snowflake, BigQuery, Redshift, Databricks, Synapse</span>
+          </div>
+
+          <a href="#" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: var(--space-2);" data-placeholder aria-label="Browse all documentation (placeholder link)">
+            Browse all docs
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] DEVELOPER / API & MCP HIGHLIGHT BLOCK
+     Interactive: animated packet flow across the terminal track
+     ============================================================ -->
+<section id="docs-dev" class="section-pad" aria-labelledby="docs-dev-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="docs-dev-block">
+      <div class="docs-dev-block-bg" aria-hidden="true"></div>
+      <div class="docs-dev-grid">
+
+        <div class="docs-dev-text">
+          <span class="eyebrow">Developer &amp; API</span>
+          <h2 id="docs-dev-heading" class="display-lg">Build on the governed<br><span style="opacity:0.85;">data layer.</span></h2>
+          <p>The Quaeris REST API and MCP tools let you query governed, certified data from any LLM host, application, or workflow — with lineage and access control enforced automatically.</p>
+
+          <div class="docs-dev-pills" aria-label="Developer capabilities">
+            <span class="docs-dev-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+              REST API v1
+            </span>
+            <span class="docs-dev-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              MCP Tools
+            </span>
+            <span class="docs-dev-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+              Audit lineage on every call
+            </span>
+            <span class="docs-dev-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+              Warehouse-native
+            </span>
+          </div>
+
+          <div class="docs-dev-btns">
+            <a href="#" class="btn btn-on-dark" data-placeholder aria-label="API reference (placeholder link)">API reference</a>
+            <a href="#" class="btn btn-secondary-dark" data-placeholder aria-label="MCP tool catalog (placeholder link)">MCP tool catalog</a>
+          </div>
+        </div>
+
+        <!-- Terminal visual with packet flow animation -->
+        <div class="docs-dev-terminal" aria-label="Example MCP tool call for governed query (placeholder code)" data-placeholder>
+          <div class="docs-dev-term-head" aria-hidden="true">
+            <div class="docs-dev-term-dots"><i></i><i></i><i></i></div>
+            <span class="docs-dev-term-label">mcp-host · quaeris tools</span>
+          </div>
+          <div class="docs-dev-term-body">
+            <span class="docs-dev-term-line comment"># MCP tool call from your LLM host</span>
+            <span class="docs-dev-term-line">&nbsp;</span>
+            <span class="docs-dev-term-line"><span class="out">tool:</span> <span class="ok">query_governed</span></span>
+            <span class="docs-dev-term-line"><span class="out">args:</span></span>
+            <span class="docs-dev-term-line">&nbsp; <span class="key">question:</span> "Top 5 cost drivers this quarter?"</span>
+            <span class="docs-dev-term-line">&nbsp; <span class="key">enforce_rbac:</span> true</span>
+            <span class="docs-dev-term-line">&nbsp;</span>
+            <span class="docs-dev-term-line comment"># Response</span>
+            <span class="docs-dev-term-line ok">✓ Metric: opex_variance v2.0</span>
+            <span class="docs-dev-term-line ok">✓ Lineage: GL 6000–6999 · certified 2026-06-01</span>
+            <span class="docs-dev-term-line ok">✓ Access enforced for role: finance_analyst</span>
+          </div>
+          <div class="docs-dev-term-flow" aria-hidden="true">
+            <span class="docs-dev-flow-label">Data flow</span>
+            <div class="docs-dev-flow-track">
+              <span class="docs-dev-flow-packet"></span>
+              <span class="docs-dev-flow-packet"></span>
+              <span class="docs-dev-flow-packet"></span>
+            </div>
+            <span class="docs-dev-flow-status"><span class="docs-dev-flow-dot"></span>Live</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [6] HELP / CTA — purple gradient card
+     Interactive: button hover transforms (from global .btn styles)
+     ============================================================ -->
+<section id="docs-cta" class="section-pad" aria-labelledby="docs-cta-heading">
+  <div class="container">
+    <div class="docs-cta-card">
+      <span class="eyebrow" style="color:rgba(255,255,255,0.6); display:block; margin-bottom:var(--space-3);">Still have questions?</span>
+      <h2 id="docs-cta-heading" class="display-lg">We're here to help you<br>get to your first answer.</h2>
+      <p>Talk to a solutions engineer, open a support ticket, or join the Quaeris developer community — whichever fits where you are.</p>
+      <div class="docs-cta-btns">
+        <a href="/contact" class="btn btn-on-dark">Talk to a solutions engineer</a>
+        <a href="#" class="btn btn-secondary-dark" data-placeholder aria-label="Open support ticket (placeholder link)">Open a support ticket</a>
+        <a href="#" class="btn btn-secondary-dark" data-placeholder aria-label="Developer community (placeholder link)">Developer community</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* ============================================================
+   DOCS PAGE — vanilla IIFE, motion-gated, reduced-motion safe.
+   All sections: correct without JS (final state visible).
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- util: IntersectionObserver factory ---- */
+  function onEnter(el, cb, opts) {
+    if (!('IntersectionObserver' in window)) { cb(); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { cb(); io.unobserve(el); }
+      });
+    }, opts || { threshold: 0.12 });
+    io.observe(el);
+  }
+
+  /* ================================================================
+     [2] CATEGORY CARD GRID — staggered entrance
+  ================================================================ */
+  var catSection = document.querySelector('.docs-cat');
+  var catCards = document.querySelectorAll('.docs-cat-grid .docs-cat-card');
+  if (catSection && catCards.length) {
+    catSection.classList.add('js');
+    onEnter(catSection, function () {
+      catCards.forEach(function (card) {
+        setTimeout(function () {
+          card.classList.add('entered');
+        }, parseInt(card.style.getPropertyValue('--d')) || 0);
+      });
+    });
+  }
+
+  /* ================================================================
+     [3] QUICKSTART STEPPER — tab switching + prev/next + pips
+  ================================================================ */
+  var tabs = document.querySelectorAll('.docs-step-tab');
+  var panels = document.querySelectorAll('.docs-step-panel');
+  var pips = document.querySelectorAll('.docs-step-pip');
+  var prevBtn = document.getElementById('qs-prev');
+  var nextBtn = document.getElementById('qs-next');
+  var currentStep = 0;
+
+  function setStep(idx) {
+    if (idx < 0 || idx >= tabs.length) return;
+    tabs.forEach(function (t, i) {
+      t.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+      t.setAttribute('tabindex', i === idx ? '0' : '-1');
+    });
+    panels.forEach(function (p, i) {
+      if (i === idx) {
+        p.classList.add('active');
+        p.removeAttribute('hidden');
+      } else {
+        p.classList.remove('active');
+        p.setAttribute('hidden', '');
+      }
+    });
+    pips.forEach(function (pip, i) {
+      pip.classList.toggle('active', i === idx);
+      pip.setAttribute('aria-label', 'Step ' + (i + 1) + (i === idx ? ', current' : ''));
+    });
+    currentStep = idx;
+    if (prevBtn) prevBtn.disabled = currentStep === 0;
+    if (nextBtn) nextBtn.disabled = currentStep === tabs.length - 1;
+    /* Scroll active tab into view on narrow viewports where the tablist overflows */
+    if (tabs[idx] && tabs[idx].scrollIntoView) {
+      tabs[idx].scrollIntoView({ inline: 'center', block: 'nearest', behavior: prefersReduced ? 'auto' : 'smooth' });
+    }
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { setStep(i); });
+    tab.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); setStep(Math.min(currentStep + 1, tabs.length - 1)); tabs[currentStep].focus(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); setStep(Math.max(currentStep - 1, 0)); tabs[currentStep].focus(); }
+      if (e.key === 'Home')       { e.preventDefault(); setStep(0); tabs[0].focus(); }
+      if (e.key === 'End')        { e.preventDefault(); setStep(tabs.length - 1); tabs[tabs.length - 1].focus(); }
+    });
+  });
+  if (prevBtn) prevBtn.addEventListener('click', function () { setStep(currentStep - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { setStep(currentStep + 1); });
+
+  /* init */
+  setStep(0);
+
+  /* ================================================================
+     [4] SIDEBAR COUNT-UP on scroll-enter
+  ================================================================ */
+  if (!prefersReduced) {
+    var sideSection = document.querySelector('.docs-side');
+    var countEls = document.querySelectorAll('.docs-side-stat-num[data-count]');
+    if (sideSection && countEls.length) {
+      sideSection.classList.add('js');
+      onEnter(sideSection, function () {
+        countEls.forEach(function (el) {
+          var target = parseInt(el.getAttribute('data-count'), 10);
+          var suffix = el.getAttribute('data-suffix') || '';
+          var duration = 900;
+          var start = null;
+          var startVal = 0;
+          function step(ts) {
+            if (!start) start = ts;
+            var progress = Math.min((ts - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(startVal + (target - startVal) * eased) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      });
+    }
+  }
+
+  /* ================================================================
+     [5] HERO search input — purely aesthetic focus ring already handled by CSS.
+     Chip hover done via CSS. No JS needed beyond what CSS provides.
+  ================================================================ */
+
+})();
+</script>
+
+</body>
+</html>

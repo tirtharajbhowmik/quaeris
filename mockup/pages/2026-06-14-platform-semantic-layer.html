@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform/semantic-layer — Quaeris</title>
+<meta name="description" content="Auto-learn business metrics from usage. Define revenue, churn, and KPIs once — every agent answer cites certified definitions. No upfront modeling sprints." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* Static sections (problem/features/faq/cta) are visible without animation. */
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: sml- (Semantic Layer page) — move to globals.css at port time.
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — 2-col grid: left text + right interactive metric card
+   ============================================================ */
+.sml-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 900px) { .sml-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+/* Trust badges strip */
+.sml-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+.sml-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent-deep);
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+.sml-trust-badge svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* Hero right — Metric learning card */
+.sml-learn-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.sml-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sml-card-dots { display: flex; gap: 6px; }
+.sml-card-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+
+/* Query bar */
+.sml-query-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+  overflow: hidden;
+}
+.sml-query-bar svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+.sml-query-text { white-space: pre; }
+.sml-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1em;
+  background: var(--brand-accent);
+  margin-left: 2px;
+  vertical-align: -2px;
+  animation: sml-caret 1s steps(1) infinite;
+}
+.sml-caret.hidden { display: none; }
+@keyframes sml-caret { 50% { opacity: 0; } }
+
+/* Metric being learned */
+.sml-learning-section { display: flex; flex-direction: column; gap: var(--space-3); }
+.sml-section-title { font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1.5px; }
+.sml-metric-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+  cursor: pointer;
+}
+.sml-metric-row:hover { border-color: var(--brand-accent); background: var(--brand-accent-soft); }
+.sml-metric-status {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.sml-metric-status.learning { background: var(--warning); animation: sml-pulse 1.6s ease-in-out infinite; }
+.sml-metric-status.certified { background: var(--success); }
+.sml-metric-status.pending { background: var(--border-strong); }
+@keyframes sml-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.sml-metric-name { font-weight: 600; color: var(--text-primary); flex: 1; }
+.sml-metric-conf { font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.sml-metric-tag {
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+}
+.sml-metric-tag.cert { color: var(--success); background: rgba(26,158,108,0.1); }
+.sml-metric-tag.learn { color: var(--warning); background: rgba(217,142,4,0.1); }
+
+/* Confidence bar under learning metrics */
+.sml-conf-bar { margin-top: var(--space-1); height: 3px; border-radius: var(--radius-pill); background: var(--border-subtle); overflow: hidden; }
+.sml-conf-fill { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent)); width: var(--w); transition: width 1.2s var(--ease-out); }
+
+.sml-replay {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  color: var(--text-tertiary); padding: 3px 8px; border-radius: var(--radius-pill);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.sml-replay svg { width: 13px; height: 13px; }
+.sml-replay:hover { color: var(--brand-accent); background: var(--brand-accent-soft); }
+.sml-replay:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+.sml-learn-card.js-anim { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sml-caret, .sml-metric-status.learning { animation: none !important; }
+  .sml-conf-fill { transition: none !important; }
+}
+
+/* ============================================================
+   [2] PROBLEM/SOLUTION — 2-col card pair
+   ============================================================ */
+.sml-ps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 768px) { .sml-ps-grid { grid-template-columns: 1fr; } }
+
+.sml-ps-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.sml-ps-card.problem { border-top: 3px solid var(--error); }
+.sml-ps-card.solution { border-top: 3px solid var(--success); }
+.sml-ps-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.sml-ps-label.problem { color: var(--error); }
+.sml-ps-label.solution { color: var(--success); }
+.sml-ps-label svg { width: 14px; height: 14px; }
+.sml-ps-card h3 { color: var(--text-primary); font-family: var(--font-display); font-size: 22px; font-weight: 400; }
+.sml-ps-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+
+/* Animated timeline showing pain vs solution */
+.sml-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
+  margin-top: var(--space-2);
+}
+.sml-tl-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 13px;
+}
+.sml-tl-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.sml-tl-dot.bad { background: var(--error); }
+.sml-tl-dot.good { background: var(--success); }
+.sml-tl-text { color: var(--text-secondary); }
+.sml-tl-time { margin-left: auto; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sml-tl-time.bad { color: var(--error); }
+.sml-tl-time.good { color: var(--success); }
+
+/* ============================================================
+   [3] HOW IT WORKS — 3 alternating feature rows
+   ============================================================ */
+.sml-feature-rows { display: flex; flex-direction: column; gap: var(--space-9); margin-top: var(--space-8); }
+
+.sml-feature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+.sml-feature-row.reverse { direction: rtl; }
+.sml-feature-row.reverse > * { direction: ltr; }
+@media (max-width: 900px) {
+  .sml-feature-row, .sml-feature-row.reverse { grid-template-columns: 1fr; direction: ltr; }
+}
+
+.sml-feature-text { display: flex; flex-direction: column; gap: var(--space-4); }
+.sml-feature-text .eyebrow { color: var(--brand-accent); }
+.sml-feature-text h3 { font-family: var(--font-display); font-size: clamp(22px, 2.5vw, 30px); font-weight: 400; color: var(--text-primary); line-height: 1.25; }
+.sml-feature-text p { color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+.sml-feature-text a { color: var(--brand-accent); font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 4px; transition: gap var(--dur-fast); }
+.sml-feature-text a:hover { gap: 8px; }
+.sml-feature-text a::after { content: "→"; }
+.sml-feature-text a:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: 3px; }
+
+/* Feature visual card */
+.sml-feature-visual {
+  background: linear-gradient(150deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  color: var(--text-on-dark);
+  box-shadow: 0 24px 60px -20px var(--brand-accent-glow);
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+.sml-feature-visual-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.7); }
+.sml-viz-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--text-on-dark);
+  transition: background var(--dur-fast);
+  cursor: pointer;
+}
+.sml-viz-row:hover { background: rgba(255,255,255,0.2); }
+.sml-viz-row-name { font-weight: 600; }
+.sml-viz-chip {
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  background: rgba(255,255,255,0.16);
+  color: var(--text-on-dark);
+}
+.sml-viz-chip.high { background: rgba(26,158,108,0.4); }
+.sml-viz-chip.med { background: rgba(217,142,4,0.4); }
+
+/* Lineage mini tree */
+.sml-lineage-tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+  padding-left: var(--space-6);
+}
+.sml-lineage-tree::before {
+  content: "";
+  position: absolute;
+  left: 7px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px;
+}
+.sml-lt-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sml-lt-node::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-6) + 1px);
+  top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: 2px solid rgba(255,255,255,0.5);
+  transition: background var(--dur-base);
+}
+.sml-lt-node.active::before { background: var(--text-on-dark); border-color: var(--text-on-dark); box-shadow: 0 0 0 4px rgba(255,255,255,0.15); }
+.sml-lt-k { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+.sml-lt-v { font-size: 13px; color: var(--text-on-dark); font-weight: 500; }
+.sml-lt-sub { font-size: 11px; color: rgba(255,255,255,0.65); }
+
+/* Governance panel */
+.sml-gov-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+.sml-gov-item {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+.sml-gov-k { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+.sml-gov-v { font-size: 12px; font-weight: 600; color: var(--text-on-dark); }
+
+/* ============================================================
+   [4] WHY AUTO-LEARNING — 2×3 icon feature grid
+   ============================================================ */
+.sml-why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .sml-why-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .sml-why-grid { grid-template-columns: 1fr; } }
+
+.sml-why-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.sml-why-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); border-color: var(--brand-accent); }
+.sml-why-card h3 { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.sml-why-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+
+/* ============================================================
+   [5] COMPARISON TABLE — accordion + scrollable table
+   ============================================================ */
+.sml-compare-wrap {
+  margin-top: var(--space-8);
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+}
+.sml-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.sml-compare-table th {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--bg-canvas);
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+.sml-compare-table th.sml-ours {
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+}
+.sml-compare-table td {
+  padding: var(--space-4) var(--space-5);
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.sml-compare-table td:first-child { font-weight: 600; color: var(--text-primary); }
+.sml-compare-table td.sml-ours { background: rgba(147,51,234,0.04); }
+.sml-compare-table tr:last-child td { border-bottom: none; }
+.sml-compare-table tr:hover td { background: var(--bg-canvas); }
+.sml-compare-table tr:hover td.sml-ours { background: rgba(147,51,234,0.07); }
+.sml-yes { color: var(--success); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.sml-yes svg { width: 14px; height: 14px; }
+.sml-no { color: var(--text-tertiary); }
+.sml-table-note { font-size: 12px; color: var(--text-tertiary); font-style: italic; margin-top: var(--space-4); }
+
+/* ============================================================
+   [6] SEMANTIC LAYER ANATOMY — 3-col breakout card
+   ============================================================ */
+.sml-anatomy {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7);
+  margin-top: var(--space-8);
+}
+.sml-anatomy-header { text-align: center; margin-bottom: var(--space-7); }
+.sml-anatomy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+@media (max-width: 900px) { .sml-anatomy-grid { grid-template-columns: 1fr; } }
+.sml-anatomy-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.sml-anatomy-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--brand-accent);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--brand-accent-soft);
+}
+.sml-anatomy-rows { display: flex; flex-direction: column; gap: var(--space-3); }
+.sml-anatomy-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: border-color var(--dur-fast);
+  cursor: default;
+}
+.sml-anatomy-row:hover { border-color: var(--brand-accent); }
+.sml-anatomy-key { font-size: 10px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; }
+.sml-anatomy-val { font-size: 13px; color: var(--text-primary); font-weight: 500; line-height: 1.45; }
+.sml-anatomy-val code { font-family: ui-monospace, monospace; font-size: 12px; color: var(--brand-accent); background: var(--brand-accent-soft); padding: 1px 5px; border-radius: 4px; }
+
+/* Active row highlight on click */
+.sml-anatomy-row.active { border-color: var(--brand-accent); background: var(--brand-accent-soft); }
+.sml-anatomy-row.active .sml-anatomy-key { color: var(--brand-accent); }
+
+/* ============================================================
+   [7] USE CASES — 2×2 segment cards
+   ============================================================ */
+.sml-uc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 768px) { .sml-uc-grid { grid-template-columns: 1fr; } }
+
+.sml-uc-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.sml-uc-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); border-color: var(--brand-accent); }
+.sml-uc-card h3 { font-family: var(--font-display); font-size: 20px; font-weight: 400; color: var(--text-primary); }
+.sml-uc-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.65; flex: 1; }
+.sml-uc-card a { color: var(--brand-accent); font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: gap var(--dur-fast); margin-top: auto; }
+.sml-uc-card a:hover { gap: 8px; }
+.sml-uc-card a::after { content: "→"; }
+
+/* ============================================================
+   [8] GETTING STARTED — styled accordion
+   ============================================================ */
+.sml-accordion { margin-top: var(--space-7); border-top: 1px solid var(--border-subtle); }
+.sml-acc-item { border-bottom: 1px solid var(--border-subtle); }
+.sml-acc-summary {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: var(--space-4);
+  min-height: 44px;
+  list-style: none;
+}
+.sml-acc-summary:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; border-radius: 2px; }
+.sml-acc-q { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+.sml-acc-week {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sml-acc-icon {
+  width: 24px; height: 24px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-subtle); border-radius: 50%;
+  color: var(--text-secondary);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.sml-acc-item[open] .sml-acc-icon { transform: rotate(180deg); }
+.sml-acc-body { padding: 0 0 var(--space-5); }
+.sml-acc-body ul { display: flex; flex-direction: column; gap: var(--space-3); }
+.sml-acc-body li { display: flex; align-items: flex-start; gap: var(--space-3); font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+.sml-acc-body li svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 3px; }
+
+/* ============================================================
+   [9] PROOF — case study + testimonial
+   ============================================================ */
+.sml-proof-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 768px) { .sml-proof-grid { grid-template-columns: 1fr; } }
+
+.sml-cs-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.sml-cs-stat-num { font-size: 36px; font-weight: 700; color: var(--brand-accent); font-variant-numeric: tabular-nums; line-height: 1; }
+.sml-cs-stat-label { font-size: 13px; color: var(--text-tertiary); margin-top: 2px; }
+.sml-cs-quote { font-size: 15px; color: var(--text-secondary); line-height: 1.65; font-style: italic; border-left: 3px solid var(--brand-accent); padding-left: var(--space-4); }
+.sml-cs-attr { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-2); }
+
+/* Testimonial card */
+.sml-testimonial {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-7) var(--space-6);
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+.sml-testimonial blockquote { font-size: 18px; line-height: 1.6; color: var(--text-on-dark); font-style: italic; }
+.sml-testimonial cite { font-size: 13px; color: var(--text-on-dark-dim); font-style: normal; }
+.sml-tq-mark { font-size: 64px; line-height: 1; color: rgba(255,255,255,0.25); margin-bottom: var(--space-1); font-family: Georgia, serif; }
+
+/* ============================================================
+   [10] DEEP DIVE EDITORIAL — text + accent
+   ============================================================ */
+.sml-editorial {
+  background: var(--bg-canvas);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  position: relative;
+  overflow: hidden;
+}
+.sml-editorial::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--brand-accent-deep), var(--brand-accent));
+}
+.sml-editorial-inner { padding-left: var(--space-5); max-width: 72ch; }
+.sml-editorial h2 { font-family: var(--font-display); font-size: clamp(24px, 3vw, 36px); font-weight: 400; color: var(--text-primary); margin-bottom: var(--space-5); }
+.sml-editorial p { color: var(--text-secondary); font-size: 15px; line-height: 1.75; margin-bottom: var(--space-5); }
+.sml-editorial p:last-child { margin-bottom: 0; }
+.sml-editorial em { color: var(--text-primary); font-style: normal; font-weight: 600; }
+
+/* ============================================================
+   [11] FAQ accordion — centered single column
+   ============================================================ */
+.sml-faq-wrap { max-width: 760px; margin: var(--space-8) auto 0; }
+
+/* ============================================================
+   [12] CTA band — purple gradient card
+   ============================================================ */
+.sml-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+.sml-cta-card::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 200%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.sml-cta-card .eyebrow { color: rgba(255,255,255,0.75); margin-bottom: var(--space-4); display: block; }
+.sml-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 42px); font-weight: 400; }
+.sml-cta-card p { color: rgba(255,255,255,0.85); max-width: 58ch; margin: 0 auto var(--space-7); font-size: 17px; line-height: 1.6; }
+
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [0] HERO (#hero) — semantic layer landing
+     Interactive: typewriter query + live metric learning card with
+     animated confidence bars and pulsing learning status dots.
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="sml-hero-grid">
+
+      <!-- LEFT: text column -->
+      <div class="hero-inner reveal">
+        <span class="eyebrow">The Semantic Layer</span>
+        <h1 id="hero-heading" class="hero-h1">Metrics your team can trust.<span class="accent-line">No upfront modeling.</span></h1>
+        <p class="subcopy body-lg">Define revenue, churn, activation — once. Quaeris learns from usage patterns and agent questions, auto-building a certified semantic layer. Every answer traces back to those definitions. No LookML sprints. No manual metric catalog.</p>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">See it in action</a>
+          <a href="/resources/white-papers/smart-semantic-layers" class="btn btn-secondary">Read the white paper: Smart Semantic Layers</a>
+        </div>
+        <ul class="sml-trust-strip" aria-label="Platform trust signals">
+          <li>
+            <span class="sml-trust-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+              Warehouse-native — scales to thousands of metrics
+            </span>
+          </li>
+          <li>
+            <span class="sml-trust-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Auto-learned from prompts — no coding required
+            </span>
+          </li>
+          <li>
+            <span class="sml-trust-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+              Certified by your team — versioned &amp; audited
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT: interactive metric learning card -->
+      <div class="reveal">
+        <div class="sml-learn-card" role="img" aria-label="Quaeris Smart Semantic Layer: a natural-language question triggers automatic metric learning, with confidence scores and certification status shown for revenue, churn, and activation metrics. Placeholder data." data-placeholder>
+          <div class="sml-card-head">
+            <span class="eyebrow" style="color: var(--text-tertiary);">Smart Semantic Layer — Learning</span>
+            <span style="display:inline-flex;align-items:center;gap:var(--space-3);">
+              <button type="button" class="sml-replay" aria-label="Re-run the demo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+                Re-run
+              </button>
+              <span class="sml-card-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+
+          <!-- Query being typed -->
+          <div class="sml-query-bar" aria-label="Natural language question being processed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="sml-query-text" data-text='"What was Q2 revenue by region?"'>"What was Q2 revenue by region?"</span><span class="sml-caret hidden" aria-hidden="true"></span>
+          </div>
+
+          <!-- Metrics being learned -->
+          <div class="sml-learning-section">
+            <div class="sml-section-title">Metrics inferred from question</div>
+
+            <div class="sml-metric-row" tabindex="0" aria-label="Revenue metric: certified, 98% confidence">
+              <span class="sml-metric-status certified" aria-hidden="true"></span>
+              <span class="sml-metric-name">Revenue</span>
+              <span class="sml-metric-conf">98% confidence</span>
+              <span class="sml-metric-tag cert">Certified</span>
+            </div>
+
+            <div class="sml-metric-row" tabindex="0" aria-label="Region dimension: learning, 84% confidence">
+              <span class="sml-metric-status learning" aria-hidden="true"></span>
+              <span class="sml-metric-name">Region (dimension)</span>
+              <span class="sml-metric-conf">84% confidence</span>
+              <span class="sml-metric-tag learn">Learning</span>
+              <div class="sml-conf-bar" aria-hidden="true" style="position:absolute;bottom:0;left:0;right:0;display:none;"></div>
+            </div>
+
+            <div class="sml-metric-row" tabindex="0" aria-label="Q2 Time filter: certified, 99% confidence">
+              <span class="sml-metric-status certified" aria-hidden="true"></span>
+              <span class="sml-metric-name">Q2 (time filter)</span>
+              <span class="sml-metric-conf">99% confidence</span>
+              <span class="sml-metric-tag cert">Certified</span>
+            </div>
+          </div>
+
+          <!-- Lineage mini-strip -->
+          <div style="background:var(--brand-accent-soft);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-2);font-size:12px;color:var(--brand-accent-deep);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:14px;height:14px;color:var(--brand-accent);flex-shrink:0;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            <span style="font-weight:600;">Lineage:</span>&nbsp;orders → order_items → geography_dim
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [1] PROBLEM/SOLUTION (#problem) — 2-col card pair
+     Interactive: timeline rows with colored status dots showing pain vs. Quaeris fix.
+     ============================================================ -->
+<section id="problem" aria-labelledby="problem-heading" style="background:var(--bg-canvas);">
+  <div class="container section-pad">
+    <div class="section-header center">
+      <span class="eyebrow">The Problem with Existing Semantic Layers</span>
+      <h2 id="problem-heading" class="display-lg">Built, not born.</h2>
+      <p class="subcopy">Traditional semantic layers require your team to do the modeling work upfront — before a single business user can ask their first question.</p>
+    </div>
+
+    <div class="sml-ps-grid">
+      <!-- Problem card -->
+      <div class="sml-ps-card problem">
+        <div class="sml-ps-label problem" aria-label="Problem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          The Problem
+        </div>
+        <h3>Semantic layers are built, not born.</h3>
+        <p>Traditional semantic layers require upfront modeling: LookML in Looker, dbt YAML in dbt Semantic Layer, hand-written cube definitions in Cube. Your data team spends 3–6 months building before a single user asks their first question. Metric definitions live in code, buried in git history. When definitions change, documentation lags by weeks. Business teams end up with six conflicting "revenue" definitions — one in Tableau, one in Sigma, one in a spreadsheet. Trust collapses.</p>
+        <div class="sml-timeline" aria-label="Traditional semantic layer timeline">
+          <div class="sml-tl-item">
+            <span class="sml-tl-dot bad" aria-hidden="true"></span>
+            <span class="sml-tl-text">Write LookML / YAML config files</span>
+            <span class="sml-tl-time bad">Month 1–2</span>
+          </div>
+          <div class="sml-tl-item">
+            <span class="sml-tl-dot bad" aria-hidden="true"></span>
+            <span class="sml-tl-text">Model sprints, architecture review</span>
+            <span class="sml-tl-time bad">Month 3–4</span>
+          </div>
+          <div class="sml-tl-item">
+            <span class="sml-tl-dot bad" aria-hidden="true"></span>
+            <span class="sml-tl-text">Pilot questions — definitions wrong</span>
+            <span class="sml-tl-time bad">Month 5–6</span>
+          </div>
+          <div class="sml-tl-item">
+            <span class="sml-tl-dot bad" aria-hidden="true"></span>
+            <span class="sml-tl-text">Six teams, six "revenue" definitions</span>
+            <span class="sml-tl-time bad">Ongoing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solution card -->
+      <div class="sml-ps-card solution">
+        <div class="sml-ps-label solution" aria-label="Quaeris answer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          The Quaeris Answer
+        </div>
+        <h3>Learn from every question.</h3>
+        <p>Quaeris watches. As business users ask questions in natural language, the platform observes which tables they're asking about, which filters they apply, which metrics they care about. Over days and weeks, it learns the semantic structure of your warehouse — not from documentation, but from <em style="font-style:italic;color:var(--text-primary);font-weight:600;">actual usage</em>. Your data team certifies what it learns, versioning it and scoping who sees it. From that moment on, every agent answer uses the same certified number.</p>
+        <div class="sml-timeline" aria-label="Quaeris deployment timeline">
+          <div class="sml-tl-item">
+            <span class="sml-tl-dot good" aria-hidden="true"></span>
+            <span class="sml-tl-text">Connect warehouse, observe usage</span>
+            <span class="sml-tl-time good">Day 1–2</span>
+          </div>
+          <div class="sml-tl-item">
+            <span class="sml-tl-dot good" aria-hidden="true"></span>
+            <span class="sml-tl-text">Quaeris infers metric patterns</span>
+            <span class="sml-tl-time good">Day 3–7</span>
+          </div>
+          <div class="sml-tl-item">
+            <span class="sml-tl-dot good" aria-hidden="true"></span>
+            <span class="sml-tl-text">Data team certifies top 20–30 metrics</span>
+            <span class="sml-tl-time good">Week 2</span>
+          </div>
+          <div class="sml-tl-item">
+            <span class="sml-tl-dot good" aria-hidden="true"></span>
+            <span class="sml-tl-text">Every agent answer cites certified metric</span>
+            <span class="sml-tl-time good">Go-live</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] HOW IT WORKS (#how-it-works) — 3 alternating feature rows
+     Interactive: each visual card has a clickable/hoverable
+     animated element (lineage nodes, cert badge pulse, governance grid highlight).
+     ============================================================ -->
+<section id="how-it-works" aria-labelledby="how-heading">
+  <div class="container section-pad">
+    <div class="section-header center">
+      <span class="eyebrow">How the Smart Semantic Layer Works</span>
+      <h2 id="how-heading" class="display-lg">Observe. Certify. Trust.</h2>
+      <p class="subcopy">Three steps replace a six-month modeling sprint with a two-week deployment.</p>
+    </div>
+
+    <div class="sml-feature-rows">
+
+      <!-- Row 1: Auto-Learning -->
+      <div class="sml-feature-row">
+        <div class="sml-feature-text">
+          <span class="eyebrow">Step 01 — Observe</span>
+          <h3>Quaeris watches your usage. You certify what you learn.</h3>
+          <p>As users ask questions — "What was Q2 revenue by region?" — Quaeris parses the natural language, maps it to your warehouse tables, and notes which metrics matter. It builds a probabilistic model of your semantic structure: revenue is typically SUM of orders.order_total WHERE orders.status = 'completed'. Region comes from the geography dimension. Over 100 questions, patterns emerge. No manual YAML, no config files, no sprint meetings. Just observation.</p>
+          <a href="/contact" aria-label="Watch a live demo of the Quaeris semantic layer">Watch a live demo</a>
+        </div>
+        <div class="sml-feature-visual" role="img" aria-label="Quaeris semantic layer learning engine — parsing a natural-language question and inferring metric definitions from warehouse schema. Placeholder visualization." data-placeholder>
+          <span class="sml-feature-visual-label">Live learning — Q2 revenue by region</span>
+          <!-- Animated lineage learning tree -->
+          <div class="sml-lineage-tree" id="learn-tree" aria-hidden="true">
+            <div class="sml-lt-node active">
+              <span class="sml-lt-k">Question parsed</span>
+              <span class="sml-lt-v">"Q2 revenue by region"</span>
+            </div>
+            <div class="sml-lt-node active">
+              <span class="sml-lt-k">Metric inferred</span>
+              <span class="sml-lt-v">Revenue = SUM(order_items.price)</span>
+              <span class="sml-lt-sub">WHERE status = 'completed'</span>
+            </div>
+            <div class="sml-lt-node active">
+              <span class="sml-lt-k">Dimension inferred</span>
+              <span class="sml-lt-v">Region ← geography_dim.region</span>
+              <span class="sml-lt-sub">Confidence: 84%</span>
+            </div>
+            <div class="sml-lt-node active">
+              <span class="sml-lt-k">Time filter inferred</span>
+              <span class="sml-lt-v">Q2 → 2025-04-01 to 2025-06-30</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-2);margin-top:auto;font-size:13px;color:rgba(255,255,255,0.7);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px;flex-shrink:0;color:var(--text-on-dark);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span><b style="color:var(--text-on-dark);">4 patterns</b> logged this question</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Certification (reversed) -->
+      <div class="sml-feature-row reverse">
+        <div class="sml-feature-text">
+          <span class="eyebrow">Step 02 — Certify</span>
+          <h3>Your team owns the canonical definitions.</h3>
+          <p>Your data engineer reviews what Quaeris learned and certifies it: "Yes, this is revenue. No, that variant is a one-off for the finance team." Certification happens in the Quaeris UI — no code, no YAML, no friction. Once certified, a definition is locked, versioned, and owned. When it changes, every downstream agent answer updates automatically. The change is audited.</p>
+          <a href="/platform/governance" aria-label="Explore the Quaeris certification flow">Explore the certification flow</a>
+        </div>
+        <div class="sml-feature-visual" role="img" aria-label="Data engineer certifying and versioning a revenue metric definition in Quaeris — showing ownership, version history, and business rules. Placeholder visualization." data-placeholder>
+          <span class="sml-feature-visual-label">Certification UI — Revenue metric</span>
+          <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+            <div class="sml-viz-row" tabindex="0">
+              <span class="sml-viz-row-name">Revenue</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.7);">SUM(order_items.price) WHERE status='completed'</span>
+              <span class="sml-viz-chip high">✓ Certified</span>
+            </div>
+            <div class="sml-viz-row" tabindex="0">
+              <span class="sml-viz-row-name">Revenue (finance variant)</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.7);">One-off — finance team only</span>
+              <span class="sml-viz-chip">Scoped</span>
+            </div>
+            <div class="sml-viz-row" tabindex="0">
+              <span class="sml-viz-row-name">Gross Revenue</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.7);">Pending owner assignment</span>
+              <span class="sml-viz-chip med">Review</span>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:var(--space-4);margin-top:var(--space-2);">
+            <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-bottom:var(--space-2);">Revenue — version history</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--text-on-dark);">
+              <div style="display:flex;justify-content:space-between;"><span>v2.3 — Jun 10 by sarah@company.com</span><span style="color:rgba(255,255,255,0.6);">Active</span></div>
+              <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.55);"><span>v2.2 — Apr 3 by marcus@company.com</span><span>Archived</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Trust & Governance -->
+      <div class="sml-feature-row">
+        <div class="sml-feature-text">
+          <span class="eyebrow">Step 03 — Trust</span>
+          <h3>Every answer cites the certified metric.</h3>
+          <p>When a business user asks "What's our Q3 churn?", the Quaeris agent returns not just a number, but the metric definition it used — owner, version, business logic, and the exact table lineage. Users see <em style="font-style:italic;font-weight:600;color:var(--text-primary);">why</em> the answer is what it is. If a different team has a different churn definition, both coexist in the semantic layer with clear ownership. The governance dashboard shows metric usage, ownership, lineage, and change history. This is how trust scales.</p>
+          <a href="/platform/governance" aria-label="See the Quaeris lineage view">See the lineage view</a>
+        </div>
+        <div class="sml-feature-visual" role="img" aria-label="Quaeris answer showing metric definition, owner, full lineage back to source tables, and governance metadata. Placeholder visualization." data-placeholder>
+          <span class="sml-feature-visual-label">Answer — Q3 Churn with full lineage</span>
+          <div style="background:rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:var(--space-4);font-size:13px;color:var(--text-on-dark);">
+            <div style="font-size:22px;font-weight:700;margin-bottom:var(--space-2);font-variant-numeric:tabular-nums;">3.7% <span style="font-size:13px;font-weight:400;color:rgba(255,255,255,0.65);">Q3 Churn</span></div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);">Metric: Churn Rate v1.4 · Owner: Head of Product</div>
+          </div>
+          <div class="sml-gov-grid" aria-label="Governance metadata">
+            <div class="sml-gov-item">
+              <div class="sml-gov-k">Definition</div>
+              <div class="sml-gov-v">COUNT(churned) / COUNT(active)</div>
+            </div>
+            <div class="sml-gov-item">
+              <div class="sml-gov-k">Source Tables</div>
+              <div class="sml-gov-v">subscriptions, events</div>
+            </div>
+            <div class="sml-gov-item">
+              <div class="sml-gov-k">Version</div>
+              <div class="sml-gov-v">v1.4 (Aug 2, 2025)</div>
+            </div>
+            <div class="sml-gov-item">
+              <div class="sml-gov-k">Audit trail</div>
+              <div class="sml-gov-v">280 queries logged</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] WHY AUTO-LEARNING (#why) — 2×3 icon feature grid
+     Interactive: hover lift + icon color-fill on each card.
+     ============================================================ -->
+<section id="why" aria-labelledby="why-heading" style="background:var(--bg-canvas);">
+  <div class="container section-pad">
+    <div class="section-header center">
+      <span class="eyebrow">Why Auto-Learning Wins</span>
+      <h2 id="why-heading" class="display-lg">Six reasons to stop writing YAML.</h2>
+      <p class="subcopy">Every semantic competitor asks your team to do the modeling work upfront. Quaeris learns from usage instead.</p>
+    </div>
+
+    <div class="sml-why-grid" role="list">
+
+      <div class="sml-why-card" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>Weeks, not months</h3>
+        <p>Traditional semantic layers need 3–6 month modeling sprints. Quaeris learns from usage in days. Deploy on week one, first certified metric by week two.</p>
+      </div>
+
+      <div class="sml-why-card" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>No code required</h3>
+        <p>Your data team certifies metrics in a UI, not YAML or MDX. Analytics engineers stay focused on BI work, not semantic layer maintenance.</p>
+      </div>
+
+      <div class="sml-why-card" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+        </div>
+        <h3>Versioned &amp; audited</h3>
+        <p>Every metric definition change is logged with owner, timestamp, and rationale. Rollback or compare versions in one click. Full audit trail, always.</p>
+      </div>
+
+      <div class="sml-why-card" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Multiple authoritative definitions</h3>
+        <p>Finance's "revenue" and Product's "activation" coexist in one semantic layer. No forced reconciliation. Ownership and lineage make the difference clear.</p>
+      </div>
+
+      <div class="sml-why-card" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>Scales to thousands</h3>
+        <p>Warehouse-native design handles thousands of metrics across hundreds of tables. No performance cliff as your semantic layer grows with your business.</p>
+      </div>
+
+      <div class="sml-why-card" role="listitem">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Governance by design</h3>
+        <p>Access controls, role-based metric visibility, and lineage enforcement are built in. Not added later. Security and governance scale with adoption.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] COMPARISON TABLE (#compare) — scrollable feature table
+     Interactive: column hover highlight + sticky row filter tabs.
+     ============================================================ -->
+<section id="compare" aria-labelledby="compare-heading">
+  <div class="container section-pad">
+    <div class="section-header center">
+      <span class="eyebrow">Competitive Comparison</span>
+      <h2 id="compare-heading" class="display-lg">How Quaeris compares to other semantic layers</h2>
+      <p class="subcopy">Direct, factual comparison against dbt Semantic Layer, Cube, AtScale, and Looker's LookML. Current as of June 2026.</p>
+    </div>
+
+    <div class="sml-compare-wrap" role="region" aria-label="Feature comparison table — Quaeris vs. competitors">
+      <table class="sml-compare-table">
+        <caption class="sr-only">Feature comparison: Quaeris Smart Semantic Layer vs. dbt Semantic Layer vs. Cube vs. AtScale vs. Looker LookML</caption>
+        <thead>
+          <tr>
+            <th scope="col">Feature / Capability</th>
+            <th scope="col" class="sml-ours">Quaeris Smart Semantic Layer</th>
+            <th scope="col">dbt Semantic Layer</th>
+            <th scope="col">Cube</th>
+            <th scope="col">AtScale</th>
+            <th scope="col">Looker LookML</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Auto-learn from usage</td>
+            <td class="sml-ours"><span class="sml-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Yes</span> — learns from natural-language prompts</td>
+            <td><span class="sml-no">No</span> — requires YAML config</td>
+            <td><span class="sml-no">Partial</span> — requires code</td>
+            <td><span class="sml-no">No</span> — manual cube design</td>
+            <td><span class="sml-no">No</span> — requires LookML</td>
+          </tr>
+          <tr>
+            <td>UI-based certification</td>
+            <td class="sml-ours"><span class="sml-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Yes</span> — zero code</td>
+            <td><span class="sml-no">No</span></td>
+            <td><span class="sml-no">No</span></td>
+            <td><span class="sml-no">No</span></td>
+            <td><span class="sml-no">No</span></td>
+          </tr>
+          <tr>
+            <td>Warehouse-native</td>
+            <td class="sml-ours"><span class="sml-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Yes</span> — queries live data</td>
+            <td><span class="sml-yes" style="color:var(--success);">Yes</span> — via dbt Cloud</td>
+            <td>Partial — proxies queries</td>
+            <td>Limited — requires data sync</td>
+            <td><span class="sml-no">No</span> — proprietary model</td>
+          </tr>
+          <tr>
+            <td>Versioning &amp; audit trail</td>
+            <td class="sml-ours"><span class="sml-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Full history</span>, owner tracking</td>
+            <td>Via git only</td>
+            <td>Via API only</td>
+            <td>Limited</td>
+            <td>Limited</td>
+          </tr>
+          <tr>
+            <td>Role-based metric access</td>
+            <td class="sml-ours"><span class="sml-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Yes</span> — agent-level enforcement</td>
+            <td><span class="sml-no">No</span></td>
+            <td>Partial</td>
+            <td>Partial</td>
+            <td>Via Looker roles</td>
+          </tr>
+          <tr>
+            <td>Time to first metric</td>
+            <td class="sml-ours"><span class="sml-yes" style="font-weight:700;">Days</span> — learning starts immediately</td>
+            <td><span data-placeholder style="color:var(--text-tertiary);font-style:italic;">Estimated weeks — upfront YAML sprints required</span></td>
+            <td><span data-placeholder style="color:var(--text-tertiary);font-style:italic;">Estimated weeks — developer setup &amp; architecture work</span></td>
+            <td><span data-placeholder style="color:var(--text-tertiary);font-style:italic;">Estimated months — heavy cube modeling required</span></td>
+            <td><span data-placeholder style="color:var(--text-tertiary);font-style:italic;">Estimated months — LookML expertise &amp; modeling sprint</span></td>
+          </tr>
+          <tr>
+            <td>Warehouse platform support</td>
+            <td class="sml-ours">Snowflake, BigQuery, Databricks, Redshift, Synapse</td>
+            <td>Yes — via adapters</td>
+            <td>Yes — via drivers</td>
+            <td>Yes</td>
+            <td>Looker-only</td>
+          </tr>
+          <tr>
+            <td>Learning curve for data teams</td>
+            <td class="sml-ours"><span class="sml-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Low</span> — watch &amp; certify</td>
+            <td>Medium — YAML + dbt modeling</td>
+            <td>High — code + architecture</td>
+            <td>High — cube design</td>
+            <td>Very high — LookML + Looker concepts</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sml-table-note" role="note">Feature comparison current as of June 2026. See <a href="/compare/quaeris-vs-cube" style="color:var(--brand-accent);">Cube vs. Quaeris</a> and <a href="/compare/quaeris-vs-dbt-semantic-layer" style="color:var(--brand-accent);">dbt Semantic Layer alternative</a> for deeper analysis.</p>
+    <div style="text-align:center;margin-top:var(--space-6);">
+      <a href="/resources/semantic-layer-comparison-guide" class="btn btn-secondary">Download the full competitive analysis</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] SEMANTIC LAYER ANATOMY (#anatomy) — 3-col clickable breakout card
+     Interactive: clicking a row highlights it + shows an info tooltip.
+     ============================================================ -->
+<section id="anatomy" aria-labelledby="anatomy-heading" style="background:var(--bg-surface);">
+  <div class="container section-pad">
+    <div class="sml-anatomy">
+      <div class="sml-anatomy-header">
+        <span class="eyebrow" style="color:var(--brand-accent);display:block;margin-bottom:var(--space-3);">Inside the Semantic Layer</span>
+        <h2 id="anatomy-heading" class="display-lg">What a certified metric looks like</h2>
+        <p style="color:var(--text-secondary);font-size:17px;margin-top:var(--space-3);max-width:56ch;margin-left:auto;margin-right:auto;">Every metric definition in Quaeris contains the information your team needs to trust it. Click any field to inspect it.</p>
+      </div>
+      <div class="sml-anatomy-grid" role="region" aria-label="Anatomy of a certified metric: definition, lineage, and governance fields">
+
+        <!-- Column 1: Definition -->
+        <div class="sml-anatomy-col">
+          <div class="sml-anatomy-label">What is it?</div>
+          <div class="sml-anatomy-rows">
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="The official name of this metric in the Quaeris semantic layer registry.">
+              <span class="sml-anatomy-key">Metric name</span>
+              <span class="sml-anatomy-val">Revenue</span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="Plain-language description used in answer citations and metric cards.">
+              <span class="sml-anatomy-key">Description</span>
+              <span class="sml-anatomy-val">Total order value excluding taxes and refunds</span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="The person responsible for this metric definition — notified on changes.">
+              <span class="sml-anatomy-key">Owner</span>
+              <span class="sml-anatomy-val">Head of Finance <span style="color:var(--text-tertiary);font-size:12px;">(sarah@company.com)</span></span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="Semantic version number. Every certified change increments the minor version.">
+              <span class="sml-anatomy-key">Version</span>
+              <span class="sml-anatomy-val">v2.3 <span style="color:var(--text-tertiary);font-size:12px;">(updated Jun 10, 2026)</span></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Column 2: Lineage -->
+        <div class="sml-anatomy-col">
+          <div class="sml-anatomy-label">Where does it come from?</div>
+          <div class="sml-anatomy-rows">
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="The raw warehouse tables this metric reads from. Quaeris infers joins automatically.">
+              <span class="sml-anatomy-key">Source tables</span>
+              <span class="sml-anatomy-val">orders, order_items, refunds</span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="The SQL filter applied before aggregation. Part of the certified business logic.">
+              <span class="sml-anatomy-key">Key filter</span>
+              <span class="sml-anatomy-val"><code>WHERE status = 'completed'</code></span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="The SQL expression Quaeris generates when answering questions using this metric.">
+              <span class="sml-anatomy-key">Calculation</span>
+              <span class="sml-anatomy-val"><code>SUM(order_items.price) - SUM(refunds.amount)</code></span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="When this definition was last changed and by whom. Immutable audit record.">
+              <span class="sml-anatomy-key">Last updated</span>
+              <span class="sml-anatomy-val">Jun 10, 2026 by sarah@company.com</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Column 3: Governance -->
+        <div class="sml-anatomy-col">
+          <div class="sml-anatomy-label">Who can see it?</div>
+          <div class="sml-anatomy-rows">
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="Roles that can query this metric via Quaeris agents. Enforced at query time.">
+              <span class="sml-anatomy-key">Visibility</span>
+              <span class="sml-anatomy-val">Finance, Executive, Sales Leadership</span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="Roles that cannot see this metric. Quaeris agents return a scoped variant instead.">
+              <span class="sml-anatomy-key">Restricted from</span>
+              <span class="sml-anatomy-val">Customer Success, Product</span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="Total number of certified versions for this metric since creation.">
+              <span class="sml-anatomy-key">Change log</span>
+              <span class="sml-anatomy-val">12 versions tracked</span>
+            </button>
+            <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="Number of agent answers that used this metric definition in the current billing month.">
+              <span class="sml-anatomy-key">Audit trail</span>
+              <span class="sml-anatomy-val">340 queries this month</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <!-- Selected field info panel -->
+      <div id="anatomy-info" role="status" aria-live="polite" style="margin-top:var(--space-6);min-height:40px;text-align:center;font-size:14px;color:var(--brand-accent);font-weight:500;transition:opacity 0.2s;opacity:0;">
+        <!-- JS populates this on click -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [6] USE CASES (#use-cases) — 2×2 segment cards
+     Interactive: hover lift + border highlight.
+     ============================================================ -->
+<section id="use-cases" aria-labelledby="uc-heading">
+  <div class="container section-pad">
+    <div class="section-header center">
+      <span class="eyebrow">Where It Delivers</span>
+      <h2 id="uc-heading" class="display-lg">Where the Smart Semantic Layer delivers</h2>
+      <p class="subcopy">From multi-team metric alignment to warehouse consolidation — four situations where auto-learned semantics changes the outcome.</p>
+    </div>
+
+    <div class="sml-uc-grid">
+
+      <div class="sml-uc-card">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Finance + Product + Sales speak the same language</h3>
+        <p>Each team has their own "revenue" definition. Quaeris holds all of them in one semantic layer with clear ownership. No more reconciliation calls before the board meeting. Every team queries the definition they own.</p>
+        <a href="/use-cases/financial-services-metric-alignment" data-placeholder aria-label="Case study pending: see how a financial-services customer unified metrics across teams">[data-placeholder: see how a financial-services customer unified metrics across teams]</a>
+      </div>
+
+      <div class="sml-uc-card">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>Stop the ad-hoc request queue</h3>
+        <p>Business teams no longer ask "What's our revenue?" — they know the certified definition and ask confident follow-ups. Your data team shrinks the backlog because every agent answer is already governed and traceable.</p>
+        <a href="/use-cases/saas-time-to-insight" data-placeholder aria-label="Case study pending: how an analytics team cut time-to-insight">[data-placeholder: read how an analytics team cut time-to-insight]</a>
+      </div>
+
+      <div class="sml-uc-card">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Audit every metric and every query</h3>
+        <p>Regulated industries — finance, insurance, healthcare — need proof that metrics are certified and queries are governed. Quaeris's semantic layer IS the proof. Every agent answer is logged with metric version, user, and table lineage.</p>
+        <a href="/platform/governance" aria-label="Explore compliance and audit features">Explore compliance &amp; audit features</a>
+      </div>
+
+      <div class="sml-uc-card">
+        <div class="segment-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <h3>Migrate off multiple BI tools</h3>
+        <p>Teams running Tableau, Looker, and Sigma in parallel — each with different metric definitions. Quaeris's semantic layer becomes the single source of truth. Once certified, it's the foundation for retiring the legacy BI tool and its metric fragmentation.</p>
+        <a href="/resources/bi-consolidation-roi" aria-label="See consolidation ROI analysis">See consolidation ROI analysis</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [7] GETTING STARTED (#getting-started) — expandable accordion
+     Interactive: native <details> accordion; each step expands to reveal sub-tasks.
+     ============================================================ -->
+<section id="getting-started" aria-labelledby="gs-heading" style="background:var(--bg-canvas);">
+  <div class="container section-pad">
+    <div class="section-header">
+      <span class="eyebrow">Getting Started</span>
+      <h2 id="gs-heading" class="display-lg">Deploy in two weeks. Govern on day one.</h2>
+      <p class="subcopy">Four phases from warehouse connection to full semantic governance.</p>
+    </div>
+
+    <div class="sml-accordion" role="list">
+
+      <details class="sml-acc-item accordion-item" role="listitem">
+        <summary class="sml-acc-summary" aria-label="Week 1: Connect &amp; Observe — expand for details">
+          <span style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="sml-acc-week">Week 1</span>
+            <span class="sml-acc-q">Connect your warehouse. Quaeris begins learning.</span>
+          </span>
+          <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="sml-acc-body">
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              <span><strong>Day 1–2:</strong> Connect to your Snowflake, BigQuery, Databricks, or Redshift instance (30 minutes). Quaeris scans your schema and begins observing user questions.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              <span><strong>Day 3–5:</strong> Your data team invites business users to ask pilot questions (10–20 exploratory queries). Quaeris infers metric patterns.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              <span><strong>Day 7:</strong> Review what Quaeris learned. Begin certification: "Yes, that's our revenue. No, that's a one-off."</span>
+            </li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="sml-acc-item accordion-item" role="listitem">
+        <summary class="sml-acc-summary" aria-label="Week 2: Certify &amp; Govern — expand for details">
+          <span style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="sml-acc-week">Week 2</span>
+            <span class="sml-acc-q">Your team certifies metrics. Governance locks in.</span>
+          </span>
+          <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="sml-acc-body">
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Day 8–10:</strong> Data engineer certifies the top 20–30 metrics. Assigns owners, writes business rules, versions each one.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Day 11–12:</strong> Configure role-based access. Decide which teams see which metrics. Test with a cohort of power users.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Day 14:</strong> Go live. All agent answers cite certified metrics. Lineage is live. Audit logs are flowing.</span>
+            </li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="sml-acc-item accordion-item" role="listitem">
+        <summary class="sml-acc-summary" aria-label="Week 3 and beyond: Scale &amp; Optimize — expand for details">
+          <span style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="sml-acc-week">Week 3+</span>
+            <span class="sml-acc-q">Grow metrics. Refine governance.</span>
+          </span>
+          <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="sml-acc-body">
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <span><strong>Weeks 3–4:</strong> Monitor usage. Add new metrics as they emerge. Retire obsolete definitions.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <span><strong>Month 2:</strong> Roll out to all business teams. Measure reduction in data-team ad-hoc requests.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <span><strong>Ongoing:</strong> Quaeris learns new patterns. Your team certifies quarterly. Semantic layer stays current.</span>
+            </li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="sml-acc-item accordion-item" role="listitem">
+        <summary class="sml-acc-summary" aria-label="Support &amp; Training — expand for details">
+          <span style="display:flex;align-items:center;gap:var(--space-3);">
+            <span class="sml-acc-week">Ongoing</span>
+            <span class="sml-acc-q">Quaeris runs alongside your existing BI stack.</span>
+          </span>
+          <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="sml-acc-body">
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <span><strong>Your data team gets:</strong> setup support, bi-weekly office hours, Slack channel with Quaeris experts.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <span><strong>Business users get:</strong> 30-minute training on how to ask questions and read metric definitions.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+              <span><strong>Documentation:</strong> API reference, SQL generator, lineage how-tos, and governance playbooks.</span>
+            </li>
+          </ul>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [8] PROOF (#proof) — case study slot + testimonial
+     Interactive: case study card hover + testimonial blockquote.
+     ============================================================ -->
+<section id="proof" aria-labelledby="proof-heading" style="background:var(--bg-surface);">
+  <div class="container section-pad">
+    <div class="section-header center">
+      <span class="eyebrow">Trusted by Data Leaders</span>
+      <h2 id="proof-heading" class="display-lg">Trusted by data leaders</h2>
+    </div>
+
+    <div class="sml-proof-grid">
+
+      <!-- Case study placeholder -->
+      <div class="sml-cs-card">
+        <div class="industry-chip" data-placeholder>[data-placeholder: Customer industry]</div>
+        <div>
+          <div class="sml-cs-stat-num" data-placeholder>[x]%</div>
+          <div class="sml-cs-stat-label" data-placeholder>reduction in metric definition conflicts</div>
+        </div>
+        <blockquote class="sml-cs-quote" data-placeholder>"[data-placeholder: quote from data leader on governance impact]"</blockquote>
+        <cite class="sml-cs-attr" data-placeholder>[data-placeholder: Name, Title, Company]</cite>
+        <a href="#" class="btn-ghost" style="font-size:14px;" data-placeholder>Read the full story</a>
+      </div>
+
+      <!-- Testimonial card -->
+      <div class="sml-testimonial">
+        <div class="sml-tq-mark" aria-hidden="true">"</div>
+        <blockquote data-placeholder>"[data-placeholder: quote on auto-learning semantic layer — from data leader]"</blockquote>
+        <cite data-placeholder>[data-placeholder: Name, Title, Company]</cite>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [9] DEEP DIVE EDITORIAL (#deep-dive) — text + accent bar
+     Interactive: paragraph links, no animation — static editorial block.
+     ============================================================ -->
+<section id="deep-dive" aria-labelledby="dd-heading" style="background:var(--bg-canvas);">
+  <div class="container section-pad">
+    <div class="sml-editorial">
+      <div class="sml-editorial-inner">
+        <h2 id="dd-heading">The semantic layer bottleneck — and why Quaeris solves it</h2>
+        <p>Every semantic layer product asks your team to do the work upfront. Looker demands LookML expertise. dbt Semantic Layer requires weeks of YAML config writing. Cube and AtScale need architects to design cubes before a single question gets answered. The ROI math is brutal: you spend 3–6 months building before you get any benefit. Meanwhile, business teams have already found their own analytics solutions — spreadsheets, Sigma, Mode — and defined their own "revenue." Once that fragmentation sets in, unifying metrics later is a political problem, not a technical one.</p>
+        <p>Quaeris flips the model. Metrics emerge <em>from usage</em>. Your team certifies what Quaeris learns, not the other way around. Governance happens at the point of observation, not at the end of a long modeling sprint. The ROI is immediate: in week two, every agent answer cites a certified metric. By month three, your data team's ad-hoc request queue has shrunk — <span data-placeholder style="color:var(--text-tertiary);font-style:italic;">[data-placeholder: % reduction in ad-hoc requests — confirm with customer success team before publishing]</span> — and your data team is focused on decisions, not definitions.</p>
+        <p>This is the only semantic layer that pays for itself before your team finishes configuring it.</p>
+        <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;margin-top:var(--space-6);">
+          <a href="/contact" class="btn btn-primary" style="font-size:15px;">Book a demo</a>
+          <a href="/resources/white-papers/smart-semantic-layers" class="btn btn-secondary" style="font-size:15px;">Read the white paper</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [10] FAQ (#faq) — accordion with 8 items
+     Interactive: native <details> accordion for each FAQ item.
+     ============================================================ -->
+<section id="faq" aria-labelledby="faq-heading" style="background:var(--bg-surface);">
+  <div class="container section-pad">
+    <div class="section-header center">
+      <span class="eyebrow">Common Questions</span>
+      <h2 id="faq-heading" class="display-lg">Common questions about the Smart Semantic Layer</h2>
+    </div>
+
+    <div class="sml-faq-wrap">
+      <div class="sml-accordion" role="list">
+
+        <details class="sml-acc-item accordion-item" role="listitem">
+          <summary class="sml-acc-summary" aria-label="Does Quaeris replace our existing BI tool's semantic layer?">
+            <span class="sml-acc-q">Does Quaeris replace our existing BI tool's semantic layer (LookML, YAML, etc.)?</span>
+            <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="sml-acc-body" style="padding-top:0;">
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Quaeris complements, not replaces, your BI tool. If you're using Looker's LookML, Quaeris can coexist and serve natural-language queries while LookML continues to power structured dashboards. If you're looking to migrate off a legacy BI tool altogether, Quaeris's semantic layer becomes the source of truth — and you can retire LookML, YAML, or proprietary models.</p>
+          </div>
+        </details>
+
+        <details class="sml-acc-item accordion-item" role="listitem">
+          <summary class="sml-acc-summary" aria-label="Can Quaeris learn metrics from a warehouse that already has a semantic layer?">
+            <span class="sml-acc-q">Can Quaeris learn metrics from a warehouse that already has a semantic layer?</span>
+            <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="sml-acc-body" style="padding-top:0;">
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Yes. If you have Looker, dbt Semantic Layer, or Cube already deployed, Quaeris can ingest those definitions and extend them. It learns from new questions, suggests new metrics, and lets your team version everything in one place. You're not forced to rebuild from scratch.</p>
+          </div>
+        </details>
+
+        <details class="sml-acc-item accordion-item" role="listitem">
+          <summary class="sml-acc-summary" aria-label="What if Quaeris learns a metric definition wrong?">
+            <span class="sml-acc-q">What if Quaeris learns a metric definition wrong?</span>
+            <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="sml-acc-body" style="padding-top:0;">
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Your data team reviews it during certification. If it's wrong, you reject it or correct it — mark the actual business rule. Quaeris won't use the rejected definition. It's not training on your corrections in a black-box way; your team's certification decision is explicit and versioned.</p>
+          </div>
+        </details>
+
+        <details class="sml-acc-item accordion-item" role="listitem">
+          <summary class="sml-acc-summary" aria-label="Who owns the metrics — Quaeris or our team?">
+            <span class="sml-acc-q">Who owns the metrics — Quaeris or our team?</span>
+            <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="sml-acc-body" style="padding-top:0;">
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">100% your team. Metrics live in your warehouse. Definitions are certified by your data engineers. Quaeris is the platform that learns patterns and surfaces them for your approval. You control versioning, access, change history, everything.</p>
+          </div>
+        </details>
+
+        <details class="sml-acc-item accordion-item" role="listitem">
+          <summary class="sml-acc-summary" aria-label="Does the auto-learning happen in real time or in batch?">
+            <span class="sml-acc-q">Does the auto-learning happen in real time or in batch?</span>
+            <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="sml-acc-body" style="padding-top:0;">
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Quaeris observes questions in real time and incrementally updates its confidence in metric patterns. Certification happens on your schedule — daily, weekly, or monthly. No batch delays. No waiting.</p>
+          </div>
+        </details>
+
+        <details class="sml-acc-item accordion-item" role="listitem">
+          <summary class="sml-acc-summary" aria-label="What if we have conflicting metric definitions?">
+            <span class="sml-acc-q">What if we have conflicting metric definitions (Finance's revenue vs. Product's revenue)?</span>
+            <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="sml-acc-body" style="padding-top:0;">
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Both live in the semantic layer. Quaeris tracks which team owns which definition, tags them separately, and ensures agents use the correct one based on context or user role. No forced reconciliation. Transparency replaces conflict.</p>
+          </div>
+        </details>
+
+        <details class="sml-acc-item accordion-item" role="listitem">
+          <summary class="sml-acc-summary" aria-label="Can we audit which queries used which metric definition?">
+            <span class="sml-acc-q">Can we audit which queries used which metric definition?</span>
+            <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="sml-acc-body" style="padding-top:0;">
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Yes. Every answer Quaeris returns is logged with: the metric definition version used, the date, the user who asked, the warehouse tables queried, and the exact lineage. <span data-placeholder style="color:var(--text-tertiary);font-style:italic;">[data-placeholder: confirm held certifications (SOC 2, HIPAA BAA, ISO 27001) with security/compliance team before citing specific standards]</span></p>
+          </div>
+        </details>
+
+        <details class="sml-acc-item accordion-item" role="listitem">
+          <summary class="sml-acc-summary" aria-label="How does Quaeris handle new tables or schema changes?">
+            <span class="sml-acc-q">How does Quaeris handle new tables or schema changes?</span>
+            <span class="sml-acc-icon accordion-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="sml-acc-body" style="padding-top:0;">
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Quaeris rescans your warehouse regularly. When a new table appears, it learns potential metrics from that table. When a schema changes, it updates its confidence estimates. Your team re-certifies as needed. Zero downtime.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [11] CTA BAND (#cta) — gradient card, last section
+     Interactive: button hover states.
+     ============================================================ -->
+<section id="cta" aria-labelledby="cta-heading">
+  <div class="container section-pad">
+    <div class="sml-cta-card">
+      <span class="eyebrow">Ready to deploy?</span>
+      <h2 id="cta-heading">See the Smart Semantic Layer in action.</h2>
+      <p>Book a 30-minute demo. We'll connect to your warehouse, walk through a live metric certification, and show you an agent answer with full lineage — using your actual schema.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-on-dark" style="font-size:15px;font-weight:600;">Book a Demo</a>
+        <a href="/resources/white-papers/smart-semantic-layers" class="btn btn-secondary-dark" style="font-size:15px;">Get the white paper</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- JSON-LD: breadcrumb + FAQ schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://quaeris.ai/"},
+        {"@type": "ListItem", "position": 2, "name": "Platform", "item": "https://quaeris.ai/platform"},
+        {"@type": "ListItem", "position": 3, "name": "Semantic Layer", "item": "https://quaeris.ai/platform/semantic-layer"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "Does Quaeris replace our existing BI tool's semantic layer (LookML, YAML, etc.)?", "acceptedAnswer": {"@type": "Answer", "text": "Quaeris complements, not replaces, your BI tool. If you're using Looker's LookML, Quaeris can coexist and serve natural-language queries while LookML continues to power structured dashboards. If you're looking to migrate off a legacy BI tool altogether, Quaeris's semantic layer becomes the source of truth."}},
+        {"@type": "Question", "name": "Can Quaeris learn metrics from a warehouse that already has a semantic layer?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. If you have Looker, dbt Semantic Layer, or Cube already deployed, Quaeris can ingest those definitions and extend them."}},
+        {"@type": "Question", "name": "Who owns the metrics — Quaeris or our team?", "acceptedAnswer": {"@type": "Answer", "text": "100% your team. Metrics live in your warehouse. Definitions are certified by your data engineers. Quaeris is the platform that learns patterns and surfaces them for your approval."}},
+        {"@type": "Question", "name": "Does the auto-learning happen in real time or in batch?", "acceptedAnswer": {"@type": "Answer", "text": "Quaeris observes questions in real time and incrementally updates its confidence in metric patterns. Certification happens on your schedule — daily, weekly, or monthly."}},
+        {"@type": "Question", "name": "How does Quaeris handle new tables or schema changes?", "acceptedAnswer": {"@type": "Answer", "text": "Quaeris rescans your warehouse regularly. When a new table appears, it learns potential metrics from that table. When a schema changes, it updates its confidence estimates. Zero downtime."}}
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- ============================================================
+     ANATOMY JS — click-to-highlight rows and show info panel
+     ============================================================ -->
+<script>
+(function () {
+  'use strict';
+  var rows = document.querySelectorAll('.sml-anatomy-row');
+  var panel = document.getElementById('anatomy-info');
+  if (!rows.length || !panel) return;
+  rows.forEach(function (row) {
+    row.addEventListener('click', function () {
+      var alreadyActive = row.classList.contains('active');
+      // Clear all
+      rows.forEach(function (r) { r.classList.remove('active'); r.setAttribute('aria-pressed', 'false'); });
+      if (alreadyActive) {
+        panel.style.opacity = '0';
+        return;
+      }
+      row.classList.add('active');
+      row.setAttribute('aria-pressed', 'true');
+      var info = row.getAttribute('data-info') || '';
+      panel.textContent = info;
+      panel.style.opacity = '1';
+    });
+    row.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); row.click(); }
+    });
+  });
+}());
+</script>
+
+<!-- ============================================================
+     HERO JS — typewriter + confidence bar animation
+     ============================================================ -->
+<script>
+(function () {
+  'use strict';
+  if (!document.querySelector('.sml-learn-card')) return;
+
+  var card = document.querySelector('.sml-learn-card');
+  var queryEl = document.querySelector('.sml-query-text');
+  var caretEl = document.querySelector('.sml-caret');
+  var fullText = queryEl.dataset.text || '';
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function typeText(el, text, done) {
+    if (prefersReduced) { el.textContent = text; if (done) done(); return; }
+    el.textContent = '';
+    caretEl.classList.remove('hidden');
+    var i = 0;
+    var id = setInterval(function () {
+      el.textContent = text.slice(0, ++i);
+      if (i >= text.length) { clearInterval(id); setTimeout(function () { caretEl.classList.add('hidden'); if (done) done(); }, 600); }
+    }, 38);
+  }
+
+  function runDemo() {
+    card.classList.add('js-anim');
+    requestAnimationFrame(function () {
+      card.style.opacity = '0';
+      card.style.transition = 'opacity 0.3s';
+      setTimeout(function () {
+        card.style.opacity = '1';
+        typeText(queryEl, fullText, null);
+      }, 300);
+    });
+  }
+
+  // Initial run (small delay to let paint settle)
+  setTimeout(runDemo, 400);
+
+  // Replay button
+  var replayBtn = document.querySelector('.sml-replay');
+  if (replayBtn) replayBtn.addEventListener('click', runDemo);
+}());
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/revenue-ops — Quaeris</title>
+<meta name="description" content="Unified pipeline and forecast metrics across CRM + warehouse. Query revenue KPIs in natural language with governed agents. No conflicting numbers." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: revops- — move to globals.css at port time (token-driven).
+   /solutions/revenue-ops mockup  2026-06-14
+   ============================================================ */
+
+/* ---- Hero grid (mirrors fin-hero-grid) ---- */
+.ro-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 900px) { .ro-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+/* Trust strip — 3-column horizontal under CTA */
+.ro-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  margin-top: var(--space-7);
+}
+.ro-trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.ro-trust-item svg {
+  width: 15px; height: 15px;
+  color: var(--brand-accent);
+  flex-shrink: 0; margin-top: 2px;
+}
+
+/* ---- Hero right: Pipeline Query Brief (all-UI, animated) ---- */
+.ro-brief {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.ro-brief-head {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ro-brief-dots { display: flex; gap: 6px; }
+.ro-brief-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+.ro-brief-bar {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px; color: var(--text-primary); font-weight: 500;
+  overflow: hidden;
+}
+.ro-brief-bar svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+.ro-brief-query { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+
+.ro-brief-loading { display: none; flex-direction: column; gap: var(--space-3); }
+.ro-brief-body.is-loading .ro-brief-loading { display: flex; }
+.ro-brief-body.is-loading .ro-brief-title,
+.ro-brief-body.is-loading .ro-brief-row { display: none; }
+
+.ro-brief-status { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.ro-brief-spinner {
+  width: 14px; height: 14px; flex-shrink: 0; border-radius: 50%;
+  border: 2px solid var(--brand-accent-soft); border-top-color: var(--brand-accent);
+  animation: ro-spin .7s linear infinite;
+}
+@keyframes ro-spin { to { transform: rotate(360deg); } }
+.ro-skel-rows { display: flex; flex-direction: column; gap: var(--space-3); }
+.ro-skel-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-subtle); }
+.ro-skel { position: relative; overflow: hidden; height: 12px; border-radius: var(--radius-pill); background: var(--border-subtle); }
+.ro-skel::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: ro-shimmer 1.1s var(--ease-out) infinite; }
+.ro-skel-label { flex: 1; max-width: 55%; }
+.ro-skel-val { width: 70px; }
+@keyframes ro-shimmer { 100% { transform: translateX(100%); } }
+
+.ro-brief-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.ro-brief-row {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-2);
+  font-size: 14px; color: var(--text-secondary);
+  transition: color var(--dur-fast);
+}
+.ro-brief-row:last-child { border-bottom: none; padding-bottom: 0; }
+.ro-brief-row:hover { color: var(--text-primary); }
+.ro-brief-delta {
+  font-weight: 700; font-variant-numeric: tabular-nums;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.ro-brief-delta.ok { color: var(--success); }
+.ro-brief-delta.warn { color: var(--error); }
+.ro-brief-sources {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
+  font-size: 12px; color: var(--text-tertiary);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+.ro-brief-sources svg { width: 14px; height: 14px; color: var(--brand-accent); }
+.ro-brief-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.ro-brief-stat { text-align: center; }
+.ro-brief-stat b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.ro-brief-stat span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+.ro-brief-replay {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  color: var(--text-tertiary); padding: 3px 8px; border-radius: var(--radius-pill);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.ro-brief-replay svg { width: 13px; height: 13px; }
+.ro-brief-replay:hover { color: var(--brand-accent); background: var(--brand-accent-soft); }
+.ro-brief-replay:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.ro-brief-chrome { display: inline-flex; align-items: center; gap: var(--space-3); }
+@media (prefers-reduced-motion: reduce) {
+  .ro-brief-spinner, .ro-skel::after { animation: none !important; }
+}
+
+/* ---- Problem cards (3-col) ---- */
+.ro-prob-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .ro-prob-grid { grid-template-columns: 1fr; } }
+.ro-prob-card { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.ro-prob-card h3 { color: var(--text-primary); }
+.ro-prob-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+.ro-prob-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+}
+.ro-prob-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+
+/* ---- Feature rows (alternating left/right) ---- */
+.ro-feat-rows { display: flex; flex-direction: column; gap: var(--space-9); margin-top: var(--space-8); }
+.ro-feat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+.ro-feat-row.reverse { direction: rtl; }
+.ro-feat-row.reverse > * { direction: ltr; }
+@media (max-width: 900px) {
+  .ro-feat-row, .ro-feat-row.reverse { grid-template-columns: 1fr; direction: ltr; }
+}
+.ro-feat-text { display: flex; flex-direction: column; gap: var(--space-3); }
+.ro-feat-text .eyebrow { color: var(--brand-accent); display: block; }
+.ro-feat-text h3 { color: var(--text-primary); }
+.ro-feat-text p { color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+/* Step visual mock */
+.ro-feat-visual {
+  background: linear-gradient(150deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  color: var(--text-on-dark);
+  box-shadow: 0 24px 60px -20px var(--brand-accent-glow);
+  min-height: 220px;
+  display: flex; flex-direction: column; gap: var(--space-4);
+}
+.ro-feat-visual-head { font-size: 13px; font-weight: 700; color: var(--text-on-dark); }
+.ro-feat-chip {
+  font-size: 11px; font-weight: 600; color: var(--text-on-dark);
+  background: rgba(255,255,255,0.16); border-radius: var(--radius-pill);
+  padding: 3px 10px; display: inline-flex; align-items: center; gap: 4px; align-self: flex-start;
+}
+.ro-conn-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.ro-conn-item {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+  font-size: 13px; color: var(--text-on-dark); font-weight: 500;
+  transition: background var(--dur-fast);
+}
+.ro-conn-item:hover { background: rgba(255,255,255,0.20); }
+.ro-conn-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+.ro-conn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; margin-left: auto; }
+
+/* ---- Capability icon grid (4-col) ---- */
+.ro-caps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .ro-caps-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .ro-caps-grid { grid-template-columns: 1fr; } }
+.ro-cap-card { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.ro-cap-card h3 { color: var(--text-primary); }
+.ro-cap-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+.ro-cap-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--dur-base);
+}
+.ro-cap-card:hover .ro-cap-icon { background: var(--brand-accent); }
+.ro-cap-icon svg { width: 22px; height: 22px; color: var(--brand-accent); transition: color var(--dur-base); }
+.ro-cap-card:hover .ro-cap-icon svg { color: var(--text-on-dark); }
+
+/* ---- Use case bento grid (3x2) ---- */
+.ro-uc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .ro-uc-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .ro-uc-grid { grid-template-columns: 1fr; } }
+.ro-uc-card { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.ro-uc-card[data-placeholder] { opacity: 0.65; }
+.ro-uc-tag {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--brand-accent); background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill); padding: 4px 10px; align-self: flex-start;
+}
+.ro-uc-tag svg { width: 12px; height: 12px; }
+.ro-uc-card h3 { color: var(--text-primary); }
+.ro-uc-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+
+/* ---- Filter bar for use-case section ---- */
+.ro-filter-bar {
+  display: flex; flex-wrap: wrap; gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+.ro-filter-btn {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  color: var(--text-secondary); background: var(--bg-surface);
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-pill);
+  padding: 6px 16px; min-height: 36px; cursor: pointer;
+  transition: color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast);
+}
+.ro-filter-btn:hover { border-color: var(--brand-accent); color: var(--brand-accent); }
+.ro-filter-btn[aria-pressed="true"] { color: var(--text-on-dark); background: var(--brand-accent); border-color: var(--brand-accent); }
+.ro-filter-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+/* ---- Proof / case study cards ---- */
+.ro-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .ro-proof-grid { grid-template-columns: 1fr; } }
+.ro-proof-card { display: flex; flex-direction: column; gap: var(--space-4); height: 100%; }
+.ro-proof-card h3 { color: var(--text-primary); }
+.ro-proof-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--brand-accent); }
+.ro-proof-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); margin-top: auto; }
+.ro-proof-stat { text-align: center; }
+.ro-proof-stat b { display: block; font-size: 22px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.ro-proof-stat span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+.ro-proof-how { font-size: 13px; color: var(--text-secondary); border-left: 2px solid var(--brand-accent-soft); padding-left: var(--space-3); line-height: 1.5; }
+
+/* ---- Comparison table (new) ---- */
+.ro-compare-wrap { overflow-x: auto; margin-top: var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); }
+.ro-compare-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ro-compare-table th,
+.ro-compare-table td { padding: var(--space-4) var(--space-5); text-align: left; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; }
+.ro-compare-table tr:last-child td { border-bottom: none; }
+.ro-compare-table thead th { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); background: var(--bg-canvas); }
+.ro-compare-table thead th:first-child { color: var(--text-secondary); text-transform: none; letter-spacing: 0; font-size: 13px; }
+.ro-compare-table thead th.col-ours { color: var(--brand-accent); background: var(--brand-accent-soft); }
+.ro-compare-table tbody tr:hover td { background: var(--bg-canvas); }
+.ro-compare-feature { font-weight: 600; color: var(--text-primary); max-width: 220px; }
+.ro-compare-cell { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); }
+.ro-compare-cell.yes { color: var(--success); font-weight: 600; }
+.ro-compare-cell.ours { color: var(--brand-accent); font-weight: 700; }
+.ro-compare-cell.no { color: var(--text-tertiary); }
+.ro-compare-cell svg { width: 15px; height: 15px; flex-shrink: 0; }
+.ro-compare-narrative { font-size: 15px; color: var(--text-secondary); line-height: 1.65; margin-top: var(--space-6); max-width: 72ch; }
+
+/* ---- Dark governance section ---- */
+.ro-gov-section { background: var(--bg-ink); padding: var(--section-pad-y) 0; }
+.ro-gov-cols {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .ro-gov-cols { grid-template-columns: 1fr; } }
+.ro-gov-col { display: flex; flex-direction: column; gap: var(--space-3); }
+.ro-gov-num { font-family: var(--font-display); font-size: 36px; font-weight: 400; color: rgba(255,255,255,0.18); line-height: 1; font-variant-numeric: tabular-nums; }
+.ro-gov-col h3 { color: var(--text-on-dark); }
+.ro-gov-col p { color: var(--text-on-dark-dim); font-size: 15px; line-height: 1.6; }
+
+/* Dashboard mock in dark section */
+.ro-dash-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4);
+  margin-top: var(--space-7);
+}
+@media (max-width: 900px) { .ro-dash-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .ro-dash-grid { grid-template-columns: 1fr; } }
+.ro-dash-tile {
+  background: var(--bg-ink-elevated); border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-md); padding: var(--space-4);
+  transition: border-color var(--dur-fast);
+}
+.ro-dash-tile:hover { border-color: rgba(255,255,255,0.25); }
+.ro-dash-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); }
+.ro-dash-val { font-size: 22px; font-weight: 700; color: var(--text-on-dark); margin: var(--space-2) 0 var(--space-1); font-variant-numeric: tabular-nums; }
+.ro-dash-sub { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+.ro-dash-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 600; color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+  border-radius: var(--radius-pill); padding: 2px 8px; margin-top: var(--space-2);
+}
+.ro-dash-chip svg { width: 11px; height: 11px; }
+.ro-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); display: inline-block; }
+.ro-dash.js .ro-live-dot { animation: ro-livepulse 1.8s ease-in-out infinite; }
+@keyframes ro-livepulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+@media (prefers-reduced-motion: reduce) {
+  .ro-dash.js .ro-live-dot { animation: none !important; }
+}
+
+/* ---- FAQ accordion ---- */
+.ro-faq { max-width: 760px; margin: 0 auto; }
+.accordion-item { border-bottom: 1px solid var(--border-subtle); }
+.accordion-item:first-child { border-top: 1px solid var(--border-subtle); }
+details.accordion-item > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: var(--space-5) 0;
+  font-size: 16px; font-weight: 600; color: var(--text-primary);
+  cursor: pointer; user-select: none;
+}
+details.accordion-item > summary:hover { color: var(--brand-accent); }
+details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: 4px; }
+.accordion-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--text-secondary); transition: transform var(--dur-base) var(--ease-out); }
+.accordion-body { padding: 0 0 var(--space-5); color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+
+/* ---- CTA band ---- */
+.ro-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.ro-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.ro-cta-card p { color: rgba(255,255,255,0.85); max-width: 58ch; margin: 0 auto var(--space-6); font-size: 18px; }
+.hero-purple-wash {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 60% 40%, var(--brand-accent-soft) 0%, transparent 70%);
+  z-index: 0;
+}
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ================================================================
+     [1] HERO (#hero)
+     Interactive: animated pipeline query card (shimmer skeleton + status cycle + replay button)
+     ================================================================ -->
+<section id="hero" aria-labelledby="hero-heading" style="position:relative; overflow:hidden; background: var(--bg-warm);">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="ro-hero-grid">
+
+      <!-- LEFT — text + CTAs + trust strip -->
+      <div class="hero-inner reveal">
+        <span class="eyebrow" style="color: var(--brand-accent); display:block; margin-bottom: var(--space-3);">Revenue &amp; Operations</span>
+        <h1 id="hero-heading" class="display-xl">Unified revenue pipeline.<br><span style="color: var(--brand-accent);">One source of truth.</span></h1>
+        <p class="body-lg" style="color: var(--text-secondary); margin-top: var(--space-5); max-width: 54ch;">Stop managing conflicting revenue numbers across your CRM and data warehouse. Quaeris agents query governed pipeline metrics in natural language — giving your entire RevOps team the same answer, every time.</p>
+        <div class="hero-buttons" style="display:flex; flex-wrap:wrap; gap: var(--space-3); margin-top: var(--space-6);">
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+          <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
+        </div>
+        <ul class="ro-trust-strip" aria-label="Platform trust signals">
+          <li class="ro-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            Works with Snowflake, BigQuery, Redshift, and your data warehouse
+          </li>
+          <li class="ro-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Role-based access enforced at query time
+          </li>
+          <li class="ro-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Zero hallucinated forecast numbers
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT — Pipeline Query Brief card (all-UI) -->
+      <div class="reveal">
+        <div class="ro-brief" role="img" aria-label="Pipeline Intelligence Brief: the question 'What is our forecast versus quota by region for Q3?' answered with a governed pipeline breakdown by territory. Illustrative placeholder data." data-placeholder>
+          <div class="ro-brief-head">
+            <span class="eyebrow" style="color: var(--text-tertiary);">Pipeline Intelligence Brief</span>
+            <span class="ro-brief-chrome">
+              <button type="button" class="ro-brief-replay" id="ro-replay-btn" aria-label="Re-run the pipeline query">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+                Re-run
+              </button>
+              <span class="ro-brief-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+          <div class="ro-brief-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="ro-brief-query" id="ro-query-text">"Forecast vs. quota by region, Q3?"</span>
+          </div>
+          <div class="ro-brief-body" id="ro-brief-body">
+            <div class="ro-brief-loading" aria-hidden="true" id="ro-loading">
+              <div class="ro-brief-status">
+                <span class="ro-brief-spinner"></span>
+                <span id="ro-status-text">Querying semantic layer…</span>
+              </div>
+              <div class="ro-skel-rows">
+                <div class="ro-skel-row"><span class="ro-skel ro-skel-label"></span><span class="ro-skel ro-skel-val"></span></div>
+                <div class="ro-skel-row"><span class="ro-skel ro-skel-label"></span><span class="ro-skel ro-skel-val"></span></div>
+                <div class="ro-skel-row"><span class="ro-skel ro-skel-label"></span><span class="ro-skel ro-skel-val"></span></div>
+              </div>
+            </div>
+            <span class="ro-brief-title" id="ro-answer-title">Forecast vs. Quota — Q3 by Territory</span>
+            <div class="ro-brief-row"><span>Americas</span><span class="ro-brief-delta ok">94% attainment ▲</span></div>
+            <div class="ro-brief-row"><span>EMEA</span><span class="ro-brief-delta warn">78% attainment ▼</span></div>
+            <div class="ro-brief-row"><span>APAC</span><span class="ro-brief-delta ok">102% attainment ▲</span></div>
+          </div>
+          <div class="ro-brief-sources">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><strong style="color: var(--text-secondary);">Sources certified:</strong> Warehouse · Semantic Layer · Role: RevOps Lead</span>
+          </div>
+          <div class="ro-brief-stats">
+            <div class="ro-brief-stat"><b>100%</b><span>Governed</span></div>
+            <div class="ro-brief-stat"><b>&lt;2s</b><span>Answer time</span></div>
+            <div class="ro-brief-stat"><b>Zero</b><span>Conflicts</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     [2] PROBLEM STATEMENT (#problem)
+     Interactive: hover-lift cards (card CSS handles lift + icon pop)
+     ================================================================ -->
+<section id="problem" class="section-pad" aria-labelledby="problem-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The RevOps Problem</span>
+      <h2 id="problem-heading" class="display-lg">Three numbers, three teams,<br><span style="color: var(--brand-accent);">zero alignment.</span></h2>
+      <p class="subcopy body-lg" style="margin-top: var(--space-4);">Your revenue team drowns in conflicting pipeline views. CRM says $8M in forecast, the warehouse says $7.2M, and finance says $9.1M. Without a single governed pipeline metric, your team burns cycles reconciling spreadsheets instead of closing deals.</p>
+    </div>
+    <div class="ro-prob-grid">
+      <article class="card ro-prob-card reveal">
+        <span class="ro-prob-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </span>
+        <h3 class="heading-sm">Conflicting Pipeline Views</h3>
+        <p>Different teams query the same pipeline from different sources — CRM lag, warehouse definitions, cached BI tools. No way to know which number is the source of truth.</p>
+        <div style="margin-top:auto;padding-top:var(--space-4);border-top:1px solid var(--border-subtle);display:flex;align-items:center;gap:var(--space-2);font-size:13px;color:var(--text-tertiary);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          3 teams · 3 different numbers
+        </div>
+      </article>
+      <article class="card ro-prob-card reveal">
+        <span class="ro-prob-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+        </span>
+        <h3 class="heading-sm">Forecast Accuracy Unknown</h3>
+        <p>Sales pulls forecasts from the CRM, finance from the warehouse, ops from a legacy dashboard. Reconciliation happens in spreadsheets, days before board meetings.</p>
+        <div style="margin-top:auto;padding-top:var(--space-4);border-top:1px solid var(--border-subtle);display:flex;align-items:center;gap:var(--space-2);font-size:13px;color:var(--text-tertiary);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          Days of manual reconciliation
+        </div>
+      </article>
+      <article class="card ro-prob-card reveal">
+        <span class="ro-prob-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </span>
+        <h3 class="heading-sm">Data Team Bottleneck</h3>
+        <p>Every ad-hoc pipeline question escalates to data. RevOps can't self-serve metrics without governance controls, so the request queue grows while forecast deadlines shrink.</p>
+        <div style="margin-top:auto;padding-top:var(--space-4);border-top:1px solid var(--border-subtle);display:flex;align-items:center;gap:var(--space-2);font-size:13px;color:var(--text-tertiary);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          Weeks to answer one pipeline question
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     [2A] HOW QUAERIS SOLVES REVOPS (#how-it-works)
+     Interactive: 3-step feature rows — each with an animated all-UI visual
+     (Step 1: source connection list with live-dot; Step 2: metric definition
+      toggle; Step 3: query → answer card reveal)
+     ================================================================ -->
+<section id="how-it-works" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Governed RevOps Agents</span>
+      <h2 id="how-heading" class="display-lg">Ask pipeline questions.<br><span style="color: var(--brand-accent);">Get audited answers.</span></h2>
+      <p class="subcopy body-lg" style="margin-top: var(--space-4);">Quaeris connects your CRM and warehouse into a single semantic layer where agents answer revenue questions in natural language — with every metric certified and every answer traceable.</p>
+    </div>
+
+    <div class="ro-feat-rows">
+
+      <!-- Step 01: Connect -->
+      <div class="ro-feat-row reveal">
+        <div class="ro-feat-text">
+          <span class="eyebrow">Step 01 — Connect</span>
+          <h3 class="heading-sm" style="margin-top: var(--space-3);">Connect your CRM and your warehouse</h3>
+          <p>Quaeris joins your pipeline and forecast data with historical warehouse metrics. No batch syncs, no data duplication — agents query the single source of truth. Setup takes hours, not weeks.</p>
+          <p style="font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-2);" data-placeholder>[data-placeholder: confirm which CRM systems are supported at GA before naming specific platforms]</p>
+          <a href="#" class="btn-ghost" style="margin-top: var(--space-4);" data-placeholder>See supported integrations</a>
+        </div>
+        <!-- Visual: source connection list -->
+        <div class="ro-feat-visual" aria-hidden="true">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="ro-feat-visual-head">Connected Sources</span>
+            <span class="ro-feat-chip">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              Live
+            </span>
+          </div>
+          <div class="ro-conn-list">
+            <div class="ro-conn-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              Snowflake — Pipeline DWH
+              <span class="ro-conn-dot" aria-label="Connected"></span>
+            </div>
+            <div class="ro-conn-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              BigQuery — Historical Revenue
+              <span class="ro-conn-dot" aria-label="Connected"></span>
+            </div>
+            <div class="ro-conn-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              Redshift — Quota Actuals
+              <span class="ro-conn-dot" aria-label="Connected"></span>
+            </div>
+            <div class="ro-conn-item" style="opacity: 0.6; border-style: dashed;" data-placeholder>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              [data-placeholder: CRM connector — pending GA confirmation]
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--warning);margin-left:auto;flex-shrink:0;"></span>
+            </div>
+          </div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.55); display:flex; align-items:center; gap: var(--space-2);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Warehouse-native — data never leaves your environment
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 02: Define — reverse layout -->
+      <div class="ro-feat-row reverse reveal">
+        <div class="ro-feat-text">
+          <span class="eyebrow">Step 02 — Define</span>
+          <h3 class="heading-sm" style="margin-top: var(--space-3);">Certify pipeline and quota metrics</h3>
+          <p>Your RevOps team owns the semantic layer: define what "pipeline" means (bookings only? includes opps? which forecast category?), when "quota" is attainment vs. plan, how to calculate year-over-year growth. One definition. Used by every agent. No spreadsheet conflicts.</p>
+          <a href="/platform/semantic-layer" class="btn-ghost" style="margin-top: var(--space-4);">Learn about the Smart Semantic Layer</a>
+        </div>
+        <!-- Visual: metric definition toggle -->
+        <div class="ro-feat-visual" aria-label="Metric definition UI" id="ro-step2-visual">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="ro-feat-visual-head">Semantic Layer — Metric Editor</span>
+          </div>
+          <!-- toggle bar -->
+          <div style="display:flex; gap: var(--space-2); flex-wrap:wrap;">
+            <button class="ro-metric-tab" data-tab="pipeline" aria-pressed="true" style="font-family:var(--font-body);font-size:11px;font-weight:600;color:var(--text-on-dark);background:rgba(255,255,255,0.22);border:none;border-radius:var(--radius-pill);padding:5px 12px;cursor:pointer;transition:background var(--dur-fast);">Pipeline</button>
+            <button class="ro-metric-tab" data-tab="quota" aria-pressed="false" style="font-family:var(--font-body);font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);background:none;border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-pill);padding:5px 12px;cursor:pointer;transition:background var(--dur-fast);">Quota</button>
+            <button class="ro-metric-tab" data-tab="forecast" aria-pressed="false" style="font-family:var(--font-body);font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);background:none;border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-pill);padding:5px 12px;cursor:pointer;transition:background var(--dur-fast);">Forecast</button>
+          </div>
+          <div id="ro-metric-panel" style="background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.16);border-radius:var(--radius-md);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);font-size:13px;color:var(--text-on-dark);">
+            <div style="display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.65);">Definition</span><span style="font-weight:600;" id="ro-met-def">Bookings + open opps (forecast cat ≥ Commit)</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.65);">Owner</span><span id="ro-met-owner">RevOps Lead</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.65);">Version</span><span id="ro-met-ver">v2.3 · certified</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.65);">Source</span><span id="ro-met-src">Snowflake · pipeline_fact</span></div>
+          </div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:var(--space-2);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            All agents use this definition — no conflicts possible
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 03: Query -->
+      <div class="ro-feat-row reveal">
+        <div class="ro-feat-text">
+          <span class="eyebrow">Step 03 — Query</span>
+          <h3 class="heading-sm" style="margin-top: var(--space-3);">Ask questions in plain language</h3>
+          <p>Sales ops ask: "What's our total forecast versus quota, by region, for Q3?" The agent queries the governed semantic layer and returns an answer in seconds — with sources cited, metric definitions shown, and lineage traceable back to the source records. No hallucinations.</p>
+          <a href="/contact" class="btn-ghost" style="margin-top: var(--space-4);" data-placeholder>View a demo</a>
+        </div>
+        <!-- Visual: query → answer reveal -->
+        <div class="ro-feat-visual" aria-hidden="true" id="ro-step3-visual">
+          <div style="display:flex;align-items:center;gap:var(--space-2);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span style="font-size:13px;font-weight:600;">Agent Query</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.12);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-size:13px;color:var(--text-on-dark);font-style:italic;">
+            "What's our total forecast vs. quota by region for Q3?"
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-2);font-size:12px;color:rgba(255,255,255,0.65);">
+            <span class="ro-live-dot" id="ro-query-dot"></span> Querying certified metric: <strong style="color:var(--text-on-dark);">pipeline_forecast_v2.3</strong>
+          </div>
+          <div id="ro-step3-rows" style="display:flex;flex-direction:column;gap:var(--space-2);">
+            <div class="ro-step3-row" style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.10);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;opacity:0;transform:translateX(-8px);transition:opacity 0.35s var(--ease-out),transform 0.35s var(--ease-out);">
+              <span>Americas</span><span style="font-weight:700;color:var(--success-on-dark);">94% ▲</span>
+            </div>
+            <div class="ro-step3-row" style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.10);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;opacity:0;transform:translateX(-8px);transition:opacity 0.35s var(--ease-out) 0.12s,transform 0.35s var(--ease-out) 0.12s;">
+              <span>EMEA</span><span style="font-weight:700;color:var(--error-on-dark);">78% ▼</span>
+            </div>
+            <div class="ro-step3-row" style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.10);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;opacity:0;transform:translateX(-8px);transition:opacity 0.35s var(--ease-out) 0.24s,transform 0.35s var(--ease-out) 0.24s;">
+              <span>APAC</span><span style="font-weight:700;color:var(--success-on-dark);">102% ▲</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);border-top:1px solid rgba(255,255,255,0.12);padding-top:var(--space-3);display:flex;align-items:center;gap:var(--space-2);">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Sources cited · metric lineage shown · zero hallucinations
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     [3] KEY CAPABILITIES (#capabilities)
+     Interactive: icon cards with hover icon-color-pop
+     ================================================================ -->
+<section id="capabilities" class="section-pad" aria-labelledby="caps-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">What Governed RevOps Agents Enable</span>
+      <h2 id="caps-heading" class="display-lg">Pipeline questions answered,<br><span style="color: var(--brand-accent);">your way.</span></h2>
+    </div>
+    <div class="ro-caps-grid">
+
+      <article class="card ro-cap-card reveal">
+        <span class="ro-cap-icon" aria-hidden="true">
+          <!-- lucide: git-merge -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
+        </span>
+        <h3 class="heading-sm">Multi-source Pipeline Unification</h3>
+        <p>Your warehouse data merges into one semantic layer. Agents query across all connected sources and answer forecast/pipeline questions with a single number.</p>
+        <p style="font-size:11px;color:var(--text-tertiary);margin-top:var(--space-2);" data-placeholder>[data-placeholder: list specific CRM sources once GA integrations are confirmed]</p>
+      </article>
+
+      <article class="card ro-cap-card reveal">
+        <span class="ro-cap-icon" aria-hidden="true">
+          <!-- lucide: target -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </span>
+        <h3 class="heading-sm">Governed Forecast Accuracy</h3>
+        <p>Define forecast accuracy rules in the semantic layer. Agents calculate attainment, track vs. plan, and flag discrepancies — all auditable, all governed, zero ad-hoc.</p>
+      </article>
+
+      <article class="card ro-cap-card reveal">
+        <span class="ro-cap-icon" aria-hidden="true">
+          <!-- lucide: link -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </span>
+        <h3 class="heading-sm">Revenue Lineage &amp; Traceability</h3>
+        <p>Every pipeline metric, every forecast number flows back to certified definitions. Click any agent answer and trace it: which business rule? which warehouse table?</p>
+      </article>
+
+      <article class="card ro-cap-card reveal">
+        <span class="ro-cap-icon" aria-hidden="true">
+          <!-- lucide: lock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <h3 class="heading-sm">Role-Based Revenue Access</h3>
+        <p>Define who sees which pipeline: sales sees their regions, finance sees the consolidated forecast, execs see company-wide. Access enforced at agent query time, not dashboard filter.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     [4] USE CASES (#use-cases)
+     Interactive: filter bar (All / Pipeline / Forecast / Velocity)
+     that shows/hides cards; staggered reveal on filter change
+     ================================================================ -->
+<section id="use-cases" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="uc-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Revenue Questions RevOps Asks</span>
+      <h2 id="uc-heading" class="display-lg">The questions your agents<br><span style="color: var(--brand-accent);">answer daily.</span></h2>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="ro-filter-bar reveal" role="group" aria-label="Filter use cases by topic" style="justify-content:center; margin-top: var(--space-6);">
+      <button class="ro-filter-btn" aria-pressed="true" data-filter="all">All</button>
+      <button class="ro-filter-btn" aria-pressed="false" data-filter="pipeline">Pipeline</button>
+      <button class="ro-filter-btn" aria-pressed="false" data-filter="forecast">Forecast</button>
+      <button class="ro-filter-btn" aria-pressed="false" data-filter="velocity">Velocity</button>
+    </div>
+
+    <div class="ro-uc-grid" id="ro-uc-grid">
+
+      <article class="card ro-uc-card" data-tags="pipeline forecast">
+        <span class="ro-uc-tag" aria-hidden="true">
+          <!-- lucide: trending-up -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          Pipeline · Forecast
+        </span>
+        <h3 class="heading-sm">Pipeline Forecast vs. Quota</h3>
+        <p>Compare forecast to quota by territory, rep, and product line. Identify underforecast regions before the deal review and route support proactively.</p>
+      </article>
+
+      <article class="card ro-uc-card" data-tags="pipeline forecast">
+        <!-- lucide: bar-chart-3 -->
+        <span class="ro-uc-tag" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+          Pipeline · Forecast
+        </span>
+        <h3 class="heading-sm">Bookings Attainment &amp; Run Rate</h3>
+        <p>Query actual bookings, attach to plan by region, and calculate YTD attainment. No spreadsheet pulls — agents answer in real time, showing sources and business rules.</p>
+      </article>
+
+      <article class="card ro-uc-card" data-tags="velocity">
+        <span class="ro-uc-tag" aria-hidden="true">
+          <!-- lucide: clock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Velocity
+        </span>
+        <h3 class="heading-sm">Opp Age &amp; Velocity Analysis</h3>
+        <p>How long do deals sit in each stage? Which stages are bottlenecks? Agents pull aging and velocity from CRM, join with warehouse win/loss history, and surface trends.</p>
+      </article>
+
+      <article class="card ro-uc-card" data-tags="pipeline" data-placeholder>
+        <span class="ro-uc-tag" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Pipeline
+        </span>
+        <h3 class="heading-sm" data-placeholder>[data-placeholder: Upsell &amp; Cross-Sell Pipeline]</h3>
+        <p data-placeholder>[data-placeholder: use case copy — to be filled by RevOps content strategy before launch]</p>
+      </article>
+
+      <article class="card ro-uc-card" data-tags="forecast" data-placeholder>
+        <span class="ro-uc-tag" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Forecast
+        </span>
+        <h3 class="heading-sm" data-placeholder>[data-placeholder: Pricing &amp; Discount Tracking]</h3>
+        <p data-placeholder>[data-placeholder: use case copy — to be filled by RevOps content strategy before launch]</p>
+      </article>
+
+      <article class="card ro-uc-card" data-tags="velocity pipeline" data-placeholder>
+        <span class="ro-uc-tag" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Velocity · Pipeline
+        </span>
+        <h3 class="heading-sm" data-placeholder>[data-placeholder: Territory &amp; Rep Performance]</h3>
+        <p data-placeholder>[data-placeholder: use case copy — to be filled by RevOps content strategy before launch]</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     [5] PROOF — CUSTOMER OUTCOMES (#proof)
+     Interactive: cards fade in via shared .reveal observer (count-up pending real stat data)
+     ================================================================ -->
+<section id="proof" class="section-pad" aria-labelledby="proof-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Customer Proof</span>
+      <h2 id="proof-heading" class="display-lg">How revenue teams improved<br><span style="color: var(--brand-accent);">with Quaeris.</span></h2>
+    </div>
+
+    <div class="ro-proof-grid" id="ro-proof-grid">
+
+      <!-- Case 1 -->
+      <article class="card ro-proof-card reveal">
+        <span class="ro-proof-label">B2B SaaS</span>
+        <h3 class="heading-sm" data-placeholder>[data-placeholder: RevOps-focused SaaS company, anonymized if needed]</h3>
+        <p class="ro-proof-how" data-placeholder>[data-placeholder: Connected CRM to Snowflake in the semantic layer, certified pipeline metrics, trained ops team on natural-language queries.]</p>
+        <div class="ro-proof-stats">
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>Source-of-truth adoption</span>
+          </div>
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>Forecast accuracy lift</span>
+          </div>
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>Hours/week saved</span>
+          </div>
+        </div>
+        <a href="#" class="btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+
+      <!-- Case 2 -->
+      <article class="card ro-proof-card reveal">
+        <span class="ro-proof-label">Enterprise SaaS</span>
+        <h3 class="heading-sm" data-placeholder>[data-placeholder: Enterprise customer, anonymized if needed]</h3>
+        <p class="ro-proof-how" data-placeholder>[data-placeholder: Semantic layer setup, certified metric count, access control rollout narrative.]</p>
+        <div class="ro-proof-stats">
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>Ad-hoc requests reduced</span>
+          </div>
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>Self-serve queries/mo</span>
+          </div>
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>FTE reallocated</span>
+          </div>
+        </div>
+        <a href="#" class="btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+
+      <!-- Case 3 -->
+      <article class="card ro-proof-card reveal">
+        <span class="ro-proof-label" data-placeholder>[data-placeholder: Industry]</span>
+        <h3 class="heading-sm" data-placeholder>[data-placeholder: Customer name or anonymized reference]</h3>
+        <p class="ro-proof-how" data-placeholder>[data-placeholder: Deployment narrative — specific RevOps outcome, governed pipeline metrics deployed.]</p>
+        <div class="ro-proof-stats">
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>[data-placeholder: metric label]</span>
+          </div>
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>[data-placeholder: metric label]</span>
+          </div>
+          <div class="ro-proof-stat">
+            <b data-placeholder>[data-placeholder]</b>
+            <span data-placeholder>[data-placeholder: metric label]</span>
+          </div>
+        </div>
+        <a href="#" class="btn-ghost" data-placeholder>Read the full story</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     [6] COMPARISON TABLE (#compare)
+     Interactive: row hover highlight; toggle between 3-column views
+     ================================================================ -->
+<section id="compare" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="compare-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Why Quaeris</span>
+      <h2 id="compare-heading" class="display-lg">Built for RevOps.<br><span style="color: var(--brand-accent);">Not bolted on.</span></h2>
+    </div>
+
+    <div class="ro-compare-wrap reveal">
+      <table class="ro-compare-table" aria-label="Quaeris vs Traditional BI vs ThoughtSpot Spotter feature comparison">
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col">Traditional BI</th>
+            <th scope="col">ThoughtSpot Spotter</th>
+            <th scope="col" class="col-ours">Quaeris</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ro-compare-feature">Query CRM + Warehouse together</td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Requires manual data sync</span></td>
+            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Requires ThoughtSpot modeling</span></td>
+            <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Native, live join</span></td>
+          </tr>
+          <tr>
+            <td class="ro-compare-feature">Governed semantic layer</td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Manual modeling, weeks to deploy</span></td>
+            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Search-token architecture, fixed</span></td>
+            <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Auto-learns, auditable</span></td>
+          </tr>
+          <tr>
+            <td class="ro-compare-feature">Natural-language pipeline questions</td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>No</span></td>
+            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Search-first, limited multi-step</span></td>
+            <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full agent reasoning, multi-step</span></td>
+          </tr>
+          <tr>
+            <td class="ro-compare-feature">Forecast accuracy rules</td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Excel formulas</span></td>
+            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Pre-built only</span></td>
+            <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Customizable, certified per org</span></td>
+          </tr>
+          <tr>
+            <td class="ro-compare-feature">Role-based access at query time</td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Dashboard-level only</span></td>
+            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Platform role-based</span></td>
+            <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Enforced at query execution</span></td>
+          </tr>
+          <tr>
+            <td class="ro-compare-feature">Audit trail for compliance</td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Limited</span></td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Limited</span></td>
+            <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full prompt + agent step logs</span></td>
+          </tr>
+          <tr>
+            <td class="ro-compare-feature">BYOM (bring your own model)</td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>No</span></td>
+            <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>No</span></td>
+            <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>OpenAI, Anthropic, Google, Meta</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ro-compare-narrative reveal">Quaeris doesn't replace your warehouse — it unifies it with your pipeline data. Agents query a governed semantic layer where every metric is certified, every answer is auditable, and every number traces back to a source record. That's why RevOps teams get answers in seconds, not days.</p>
+  </div>
+</section>
+
+<!-- ================================================================
+     [7] DARK GOVERNANCE SECTION (#governance)
+     Interactive: dashboard tiles with live-pulse dot + count-up on enter
+     ================================================================ -->
+<section id="governance" class="ro-gov-section" aria-labelledby="gov-heading">
+  <div class="container">
+    <div class="section-header center section-header-dark reveal">
+      <span class="eyebrow" style="color: var(--brand-accent); display:block; margin-bottom: var(--space-3);">Governed by Design</span>
+      <h2 id="gov-heading" class="display-lg" style="color: var(--text-on-dark);">Every pipeline metric<br>is auditable.</h2>
+      <p class="subcopy body-lg" style="color: var(--text-on-dark-dim); margin-top: var(--space-4);">In regulated industries and large enterprises, revenue reporting carries compliance weight. Quaeris traces every forecast number — which metric definition was used, which source record drove the answer, which business rule applied, and who ran the query. That's real governance.</p>
+    </div>
+
+    <div class="ro-gov-cols">
+      <div class="ro-gov-col reveal">
+        <span class="ro-gov-num" aria-hidden="true">01</span>
+        <h3 class="heading-sm">Certified Metric Definitions</h3>
+        <p>Your RevOps team certifies what "pipeline" and "forecast" mean. Agents never generate alternative definitions — they query only the certified ones. Consistency guaranteed, compliance-ready.</p>
+      </div>
+      <div class="ro-gov-col reveal">
+        <span class="ro-gov-num" aria-hidden="true">02</span>
+        <h3 class="heading-sm">Full Query Lineage</h3>
+        <p>Trace any forecast number: metric definition → warehouse query → agent reasoning step → final answer. Auditors see the chain. Finance can verify the math.</p>
+      </div>
+      <div class="ro-gov-col reveal">
+        <span class="ro-gov-num" aria-hidden="true">03</span>
+        <h3 class="heading-sm">Prompt &amp; Agent Audit Logs</h3>
+        <p>Every question asked, every agent step taken, every metric queried is logged. Who asked what, when, from which source record. Compliance reporting is built in.</p>
+      </div>
+    </div>
+
+    <!-- Dashboard mock: Governed Revenue Query — illustrative data -->
+    <div class="ro-dash" id="ro-dash" aria-label="Illustrative Governed Revenue Query dashboard mock. All figures are placeholder data." data-placeholder>
+      <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:var(--space-7);margin-bottom:var(--space-4);display:flex;align-items:center;gap:var(--space-2);">
+        <span class="ro-live-dot" id="ro-dash-dot"></span>
+        Governed Revenue Query — Live Session
+        <span style="margin-left:auto;font-style:italic;">[data-placeholder: replace all figures with real customer data before publishing]</span>
+      </p>
+      <div class="ro-dash-grid">
+        <div class="ro-dash-tile">
+          <div class="ro-dash-label">Last question answered</div>
+          <div class="ro-dash-val" style="font-size:15px;line-height:1.3;">Forecast vs. quota, Q3</div>
+          <div class="ro-dash-sub">↑ Cites 5 certified metrics</div>
+          <span class="ro-dash-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Governed</span>
+        </div>
+        <div class="ro-dash-tile">
+          <div class="ro-dash-label">Avg. answer time</div>
+          <div class="ro-dash-val" data-placeholder>[data-placeholder]</div>
+          <div class="ro-dash-sub" data-placeholder>[data-placeholder: vs. ticket reduction %]</div>
+          <span class="ro-dash-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>vs. manual</span>
+        </div>
+        <div class="ro-dash-tile">
+          <div class="ro-dash-label">Metrics certified</div>
+          <div class="ro-dash-val" data-placeholder>[data-placeholder]</div>
+          <div class="ro-dash-sub" data-placeholder>[data-placeholder: growth this quarter]</div>
+          <span class="ro-dash-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>All versioned</span>
+        </div>
+        <div class="ro-dash-tile">
+          <div class="ro-dash-label">Access enforcement</div>
+          <div class="ro-dash-val" style="font-size:15px;line-height:1.3;">By territory role</div>
+          <div class="ro-dash-sub">All queries logged</div>
+          <span class="ro-dash-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Query-time</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     [8] FAQ (#faq)
+     Interactive: native <details> accordion — first item open by default
+     ================================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Common Questions</span>
+      <h2 id="faq-heading" class="display-lg">Answers for RevOps leaders.</h2>
+      <p class="subcopy body-lg" style="margin-top: var(--space-4);">If your question isn't here, book a demo — we'll walk through your warehouse setup and show you a live governed pipeline query.</p>
+    </div>
+
+    <div class="ro-faq reveal" style="margin-top: var(--space-8);">
+
+      <details class="accordion-item" open>
+        <summary>
+          Can agents hallucinate revenue numbers?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">No. Quaeris agents don't generate forecast numbers — they retrieve certified ones from your semantic layer. If a question can't be answered from your governance policies, the agent says so. No hallucinations, no guesses. Every forecast is traceable to a certified metric definition and a source record.</div>
+      </details>
+
+      <details class="accordion-item">
+        <summary>
+          How do we define our forecast metrics?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Your RevOps team owns the semantic layer. You define: what qualifies as "pipeline" (bookings-only? includes opps?), how to calculate "forecast" (last-forecast-date field? weighted by probability?), which fields map to which business metrics. Definitions are versioned and audited. Once certified, agents use that definition everywhere.</div>
+      </details>
+
+      <details class="accordion-item">
+        <summary>
+          <span data-placeholder>Does Quaeris work with our data warehouse?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Confirmed warehouse integrations include Snowflake, BigQuery, Redshift, Databricks, and Azure Synapse — agents can query across all connected sources in a single natural-language question. <span data-placeholder>[data-placeholder: CRM connector GA status to be verified with product team before naming specific platforms in live copy.]</span></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary>
+          Can we enforce row-level access on pipeline data?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Absolutely. Role-based access is enforced at query time, not at the dashboard level. A regional VP sees only deals in their region. A sales rep sees only their own forecast. A CFO sees the consolidated view. Access rules map to your existing warehouse or IdP roles.</div>
+      </details>
+
+      <details class="accordion-item">
+        <summary>
+          What happens if CRM and warehouse forecast numbers conflict?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Your semantic layer defines the single source of truth. You choose: does forecast come from the warehouse historical record, or a calculation across both? Once chosen, agents use that rule consistently. Conflicts don't happen — they're architected out.</div>
+      </details>
+
+      <details class="accordion-item">
+        <summary>
+          How long does deployment take?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Most RevOps teams are answering pipeline questions in 2–3 weeks. Week 1: connect your warehouse, define 10–15 key metrics. Week 2: test agent queries, set up access rules, train ops team. Week 3: go live with broader teams. No data migration needed — agents query your live systems.</div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     [9] CTA BAND (#cta)
+     Interactive: gradient card with hover lift on both buttons
+     ================================================================ -->
+<section id="cta" class="section-pad" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="ro-cta-card reveal">
+      <span class="eyebrow" style="color: rgba(255,255,255,0.7); display:block; margin-bottom: var(--space-4);">Ready to unify your revenue metrics?</span>
+      <h2 id="cta-heading" class="display-lg">Stop managing conflicting numbers.<br>Start using one source of truth.</h2>
+      <p>Book a 30-minute demo. We'll connect to your data warehouse, show you a live governed forecast query, and answer your governance questions.</p>
+      <div style="display:flex; flex-wrap:wrap; gap: var(--space-3); justify-content:center;">
+        <a href="/contact" class="btn btn-on-dark" style="border-radius: var(--radius-cta); font-weight:600; min-height:44px; padding: 12px 32px;">Book a Demo</a>
+        <a href="/platform" class="btn btn-secondary-dark" style="border-radius: var(--radius-cta); min-height:44px; padding: 12px 32px;">Explore the platform</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+</main>
+</body>
+
+<!-- [A] Scroll reveal (IntersectionObserver) -->
+<script>
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function (el) { io.observe(el); });
+})();
+</script>
+
+<!-- [B] Use-case filter bar -->
+<script>
+(function () {
+  var btns = document.querySelectorAll('.ro-filter-btn');
+  var cards = document.querySelectorAll('#ro-uc-grid .ro-uc-card');
+  if (!btns.length || !cards.length) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function applyFilter(filter) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.filter === filter ? 'true' : 'false'); });
+    var delay = 0;
+    cards.forEach(function (card) {
+      var tags = (card.dataset.tags || 'all').split(' ');
+      var show = filter === 'all' || tags.indexOf(filter) !== -1;
+      if (show) {
+        card.style.display = '';
+        if (!reduce) {
+          card.style.opacity = '0'; card.style.transform = 'translateY(10px)';
+          var d = delay;
+          setTimeout(function () {
+            card.style.transition = 'opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out)';
+            card.style.opacity = '1'; card.style.transform = '';
+          }, d);
+          delay += 60;
+        } else { card.style.opacity = ''; card.style.transform = ''; }
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () { applyFilter(btn.dataset.filter); });
+  });
+  applyFilter('all');
+})();
+</script>
+
+<!-- [C] Step 2 metric tab toggle -->
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.ro-metric-tab');
+  if (!tabs.length) return;
+  var defs = {
+    pipeline: { def: 'Bookings + open opps (forecast cat ≥ Commit)', owner: 'RevOps Lead', ver: 'v2.3 · certified', src: 'Snowflake · pipeline_fact' },
+    quota:    { def: 'Annual quota plan / 4 quarters, by territory', owner: 'Sales Ops', ver: 'v1.8 · certified', src: 'Snowflake · quota_plan' },
+    forecast: { def: 'Weighted pipeline × close probability, by rep', owner: 'RevOps Lead', ver: 'v3.0 · certified', src: 'BigQuery · forecast_fact' }
+  };
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) {
+        var active = t === tab;
+        t.setAttribute('aria-pressed', active ? 'true' : 'false');
+        t.style.background = active ? 'rgba(255,255,255,0.22)' : 'none';
+        t.style.color = active ? 'var(--text-on-dark)' : 'rgba(255,255,255,0.65)';
+        t.style.border = active ? 'none' : '1px solid rgba(255,255,255,0.2)';
+      });
+      var d = defs[tab.dataset.tab];
+      if (!d) return;
+      var panel = document.getElementById('ro-metric-panel');
+      if (!panel) return;
+      var spans = panel.querySelectorAll('[id^="ro-met-"]');
+      document.getElementById('ro-met-def').textContent   = d.def;
+      document.getElementById('ro-met-owner').textContent = d.owner;
+      document.getElementById('ro-met-ver').textContent   = d.ver;
+      document.getElementById('ro-met-src').textContent   = d.src;
+    });
+  });
+})();
+</script>
+
+<!-- [D] Step 3 query row reveal on enter viewport -->
+<script>
+(function () {
+  var visual = document.getElementById('ro-step3-visual');
+  if (!visual) return;
+  var rows = visual.querySelectorAll('.ro-step3-row');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fired = false;
+  function reveal() {
+    if (fired) return; fired = true;
+    if (reduce) { rows.forEach(function (r) { r.style.opacity = '1'; r.style.transform = ''; }); return; }
+    rows.forEach(function (r, i) {
+      setTimeout(function () { r.style.opacity = '1'; r.style.transform = 'none'; }, 300 + i * 140);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { reveal(); io.disconnect(); } }); }, { threshold: 0.4 });
+    io.observe(visual);
+  } else { reveal(); }
+})();
+</script>
+
+<!-- [E] Governance section: live-dot pulse + dash tile entrance -->
+<script>
+(function () {
+  var dash = document.getElementById('ro-dash');
+  if (!dash) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  dash.classList.add('js');
+  var tiles = dash.querySelectorAll('.ro-dash-tile');
+  var fired = false;
+  function enter() {
+    if (fired) return; fired = true;
+    if (reduce) return;
+    tiles.forEach(function (tile, i) {
+      tile.style.opacity = '0'; tile.style.transform = 'translateY(12px)';
+      tile.style.transition = 'opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out)';
+      setTimeout(function () { tile.style.opacity = '1'; tile.style.transform = ''; }, i * 100);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { enter(); io.disconnect(); } }); }, { threshold: 0.2 });
+    io.observe(dash);
+  } else { enter(); }
+})();
+</script>
+
+<!-- [1] Hero brief: loading shimmer + status cycle + replay -->
+<script>
+(function () {
+  var btn = document.getElementById('ro-replay-btn');
+  var body = document.getElementById('ro-brief-body');
+  var loading = document.getElementById('ro-loading');
+  var title = document.getElementById('ro-answer-title');
+  var rows = body ? Array.from(body.querySelectorAll('.ro-brief-row')) : [];
+  var statusEl = document.getElementById('ro-status-text');
+  if (!btn || !body) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var steps = ['Querying semantic layer…', 'Enforcing role-based access…', 'Returning certified metrics…'];
+  var timers = [];
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+  function run() {
+    clearTimers();
+    rows.forEach(function(r) { r.style.display = ''; });
+    if (title) title.style.display = '';
+    if (reduce) { body.classList.remove('is-loading'); return; }
+    body.classList.add('is-loading');
+    var s = 0;
+    function stepStatus() {
+      if (statusEl && s < steps.length) { statusEl.textContent = steps[s++]; timers.push(setTimeout(stepStatus, 700)); }
+    }
+    stepStatus();
+    timers.push(setTimeout(function() {
+      body.classList.remove('is-loading');
+    }, 2200));
+  }
+
+  if (btn) btn.addEventListener('click', run);
+  timers.push(setTimeout(run, 600));
+})();
+</script>
+
+</html>
