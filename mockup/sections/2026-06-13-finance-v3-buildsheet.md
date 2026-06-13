@@ -110,9 +110,9 @@ purple-gradient **live dashboard** unique to each tab.
 - **Tabs:** real `role=tablist/tab/tabpanel`, ←/→ keyboard, sliding **progress underline** that fills
   over `--dwell` (~6.5s) then **auto-advances**; **pauses on hover / focus-within**; click resets.
 - **Per-tab dashboards**, each replays a choreographed entrance on activation + has ambient idle motion:
-  1. *Governed Analytics* — glowing pulse **traces the lineage** (Question → metric `revenue v3.1` → `GL 4000–4099`), each node locks a ✓; "traced in 0.8s" counts up; chip breathes.
+  1. *Governed Analytics* — a glowing dot **drops smoothly down the lineage** (Question → metric `revenue v3.1` → `GL 4000–4099`), a colored progress line fills behind it, and each node locks a ✓ **the instant the dot reaches it**; "traced in 0.8s" counts up; chip breathes. *(Refined 2026-06-13: measured, transform/GPU dot via the Web Animations API — stops exactly on the final circle; node lock-ins fire off the decelerating dot's real position via an easing-inverter, never fixed timers. Port: framer-motion + a measured `useAnimate` timeline, `useReducedMotion` → snap to fully-traced state.)*
   2. *Variance Analysis* — driver **bars grow with a light sweep**, values + **+8.8% total** count up; bars hover-highlight.
-  3. *Forecasting* — **scan reveals the drawing line**, dashed projection + band fade in, 98.8% counts up, a **live pulsing point** beats, alert pulses; hover thickens line.
+  3. *Forecasting* — the **line plots itself L→R** (smooth Catmull-Rom curve), the area fills under it, then the dashed projection + dots settle in; 98.8% counts up, a **live pulsing point** beats on "now", alert pulses; hover thickens line. *(Refined 2026-06-13: removed the disliked sweep/scan overlay → clean draw-on reveal; chart re-proportioned to a taller `460×200` viewBox with smooth curved `<path>`s — no more horizontal stretch / angular zig-zag. Port: framer-motion line-draw (`pathLength`), area/forecast/dots staggered fade.)*
   4. *Unification* — sources **slide in from their sides**, connectors draw, **data packets flow** into a **breathing core**; 3,000+ counts up; sources hover-lift.
 - Progressive enhancement: gated behind a `.js` flag; reduced-motion / no-JS → correct static state.
 
