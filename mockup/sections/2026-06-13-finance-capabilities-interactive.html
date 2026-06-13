@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — finance Core Capabilities (interactive dashboards v2) — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+</style>
+
+<style>
+/* ============================================================
+   PORT: Core Capabilities — interactive tabs + per-tab dashboards.
+   Choreographed entrance + ambient idle motion + hover micro-interactions
+   + auto-advancing progress tabs. CSS transitions/anim + vanilla count-ups,
+   gated by .caps.js, reduced-motion safe → framer-motion at port.
+   ============================================================ */
+
+.caps { --dwell: 6500ms; margin-top: var(--space-7); }
+
+/* --- Tabs with filling progress underline --- */
+.cap-tabs { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-6); border-bottom: 1px solid var(--border-subtle); margin-bottom: var(--space-8); }
+.cap-tab {
+  position: relative; background: none; border: none; cursor: pointer; font-family: var(--font-body);
+  font-size: 15px; font-weight: 600; color: var(--text-secondary);
+  padding: 0 2px var(--space-4); transition: color var(--dur-fast) var(--ease-out);
+}
+.cap-tab:hover { color: var(--text-primary); }
+.cap-tab[aria-selected="true"] { color: var(--brand-accent); }
+.cap-tab:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 4px; border-radius: 4px; }
+.cap-tab-bar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 2px; background: var(--brand-accent); transform: scaleX(0); transform-origin: left; }
+.cap-tab[aria-selected="true"] .cap-tab-bar { transform: scaleX(1); } /* static fallback (no-JS / reduced-motion) */
+.caps.js .cap-tab[aria-selected="true"] .cap-tab-bar { transform: scaleX(0); animation: cap-prog var(--dwell) linear forwards; }
+.caps.js:hover .cap-tab[aria-selected="true"] .cap-tab-bar,
+.caps.js:focus-within .cap-tab[aria-selected="true"] .cap-tab-bar { animation-play-state: paused; }
+@keyframes cap-prog { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* --- Panels --- */
+.cap-panel { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-9); align-items: center; }
+@media (max-width: 900px) { .cap-panel { grid-template-columns: 1fr; gap: var(--space-6); } }
+.cap-panel[hidden] { display: none; }
+.cap-panel .display-md { color: var(--text-primary); }
+.cap-panel-lead { color: var(--text-secondary); margin-top: var(--space-3); }
+.cap-bullets { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-5); }
+.cap-bullets li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 15px; line-height: 1.55; color: var(--text-secondary); }
+.cap-bullets svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 3px; }
+.caps.js .cap-panel { animation: cap-fade var(--dur-base) var(--ease-out); }
+@keyframes cap-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* --- Dashboard card --- */
+.cap-visual {
+  position: relative; overflow: hidden;
+  background: linear-gradient(155deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-lg); padding: var(--space-6); color: var(--text-on-dark);
+  box-shadow: 0 24px 60px -20px var(--brand-accent-glow);
+  min-height: 300px; display: flex; flex-direction: column; gap: var(--space-5);
+}
+.cap-viz-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.cap-viz-title { font-size: 15px; font-weight: 700; color: var(--text-on-dark); }
+.cap-viz-metric b { font-size: 22px; font-weight: 700; color: var(--text-on-dark); font-variant-numeric: tabular-nums; }
+.cap-viz-chip { font-size: 11px; font-weight: 600; color: var(--text-on-dark); background: rgba(255,255,255,0.16); border-radius: var(--radius-pill); padding: 3px 10px; display: inline-flex; align-items: center; gap: 4px; }
+.cap-viz-chip svg { width: 12px; height: 12px; }
+.caps.js .cap-panel.play .cap-viz-chip { animation: cap-breathe 3s var(--ease-out) infinite 1.4s; }
+@keyframes cap-breathe { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
+.cap-viz-foot { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; color: var(--text-on-dark-dim); margin-top: auto; }
+.cap-viz-foot svg { width: 15px; height: 15px; color: var(--text-on-dark); flex-shrink: 0; }
+.cap-viz-foot b { color: var(--text-on-dark); font-variant-numeric: tabular-nums; }
+
+/* Reveal primitive */
+.caps.js [data-rise] { opacity: 0; transform: translateY(10px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); transition-delay: var(--d, 0ms); }
+.caps.js .cap-panel.play [data-rise] { opacity: 1; transform: none; }
+
+/* --- Viz 1: lineage with traveling trace pulse + lock-in checks --- */
+.cap-lineage { position: relative; display: flex; flex-direction: column; gap: var(--space-5); padding-left: var(--space-6); }
+.cap-lineage::before { content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: rgba(255,255,255,0.22); }
+.cap-trace { position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--text-on-dark); box-shadow: 0 0 14px 5px rgba(255,255,255,0.55); opacity: 0; }
+.caps.js .cap-panel.play .cap-trace { animation: cap-trace 1.3s var(--ease-out) forwards; }
+@keyframes cap-trace { 0% { opacity: 1; top: 0; } 88% { opacity: 1; } 100% { opacity: 0; top: calc(100% - 16px); } }
+.cap-node { position: relative; }
+.cap-node-k { display: block; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+.cap-node-v { display: block; font-size: 14px; color: var(--text-on-dark); font-weight: 500; transition: color var(--dur-fast); }
+.cap-node:hover .cap-node-v { color: #fff; }
+.cap-node-dot { position: absolute; left: calc(-1 * var(--space-6) + 1px); top: 2px; width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 4px var(--brand-accent-deep); }
+.cap-node-dot svg { width: 10px; height: 10px; color: var(--brand-accent-deep); opacity: 0; transform: scale(.4); transition: opacity .3s var(--ease-out), transform .3s var(--ease-out); transition-delay: var(--cd, 0ms); }
+.caps.js .cap-panel.play .cap-node-dot { transition: background .3s; transition-delay: var(--cd, 0ms); }
+.caps.js .cap-panel.play .cap-node-dot { background: var(--text-on-dark); }
+.caps.js .cap-panel.play .cap-node-dot svg { opacity: 1; transform: none; }
+
+/* --- Viz 2: variance bars with light sweep + hover --- */
+.cap-bars { display: flex; flex-direction: column; gap: var(--space-4); }
+.cap-bar-item { transition: transform var(--dur-fast) var(--ease-out); }
+.cap-bar-item:hover { transform: translateX(3px); }
+.cap-bar-top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); font-size: 13px; color: var(--text-on-dark-dim); margin-bottom: 6px; }
+.cap-bar-top b { font-size: 14px; font-weight: 700; color: var(--text-on-dark); font-variant-numeric: tabular-nums; }
+.cap-bar-track { height: 9px; border-radius: var(--radius-pill); background: rgba(255,255,255,0.14); overflow: hidden; }
+.cap-bar-fill { position: relative; overflow: hidden; height: 100%; border-radius: var(--radius-pill); background: var(--text-on-dark); width: var(--w); transition: background var(--dur-fast); }
+.cap-bar-item:hover .cap-bar-fill { background: #fff; }
+.caps.js .cap-bar-fill { width: 0; transition: width var(--dur-slow) var(--ease-out); transition-delay: var(--d, 0ms); }
+.caps.js .cap-panel.play .cap-bar-fill { width: var(--w); }
+.cap-bar-fill::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent); }
+.caps.js .cap-panel.play .cap-bar-fill::after { animation: cap-barshine 1.1s var(--ease-out) .55s; }
+@keyframes cap-barshine { to { transform: translateX(100%); } }
+
+/* --- Viz 3: forecast chart with scan reveal + live pulse --- */
+.cap-chart-wrap { position: relative; }
+.cap-chart { width: 100%; height: 150px; display: block; }
+.cap-chart-area { fill: rgba(255,255,255,0.12); }
+.cap-chart-line { fill: none; stroke: var(--text-on-dark); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke-width var(--dur-fast); }
+.cap-chart-wrap:hover .cap-chart-line { stroke-width: 3.3; }
+.cap-chart-fc { fill: none; stroke: rgba(255,255,255,0.7); stroke-width: 2.5; stroke-dasharray: 5 5; stroke-linecap: round; }
+.cap-chart-dot { fill: var(--text-on-dark); }
+.cap-chart-ping { fill: none; stroke: var(--text-on-dark); stroke-width: 2; transform-box: fill-box; transform-origin: center; opacity: 0; }
+.caps.js .cap-chart-line { stroke-dasharray: 360; stroke-dashoffset: 360; }
+.caps.js .cap-panel.play .cap-chart-line { stroke-dashoffset: 0; transition: stroke-dashoffset 1.1s var(--ease-out); }
+.caps.js .cap-chart-area, .caps.js .cap-chart-fc, .caps.js .cap-chart-dot { opacity: 0; transition: opacity var(--dur-slow) var(--ease-out) .8s; }
+.caps.js .cap-panel.play .cap-chart-area, .caps.js .cap-panel.play .cap-chart-fc, .caps.js .cap-panel.play .cap-chart-dot { opacity: 1; }
+.caps.js .cap-panel.play .cap-chart-ping { animation: cap-ping 1.9s var(--ease-out) infinite 1.1s; }
+@keyframes cap-ping { 0% { transform: scale(.5); opacity: .9; } 100% { transform: scale(2.6); opacity: 0; } }
+.cap-chart-scan { position: absolute; top: 0; bottom: 0; left: 0; width: 45%; pointer-events: none; opacity: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.20), transparent); transform: translateX(-70%); }
+.caps.js .cap-panel.play .cap-chart-scan { animation: cap-scan 1.15s var(--ease-out) forwards; }
+@keyframes cap-scan { 0% { opacity: 1; transform: translateX(-70%); } 100% { opacity: 0; transform: translateX(260%); } }
+.cap-alert { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; font-weight: 500; color: var(--text-on-dark); background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+.cap-alert svg { width: 16px; height: 16px; flex-shrink: 0; }
+.caps.js .cap-panel.play .cap-alert svg { animation: cap-alertpulse 1.6s var(--ease-out) infinite 1.4s; transform-origin: center; }
+@keyframes cap-alertpulse { 0%,100% { opacity: .8; } 50% { opacity: 1; transform: scale(1.12); } }
+
+/* --- Viz 4: unification — directional sources, drawing connectors, flowing packets, breathing core --- */
+.cap-union { display: flex; flex-direction: column; gap: var(--space-3); }
+.cap-union-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+.cap-src { background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius-md); padding: var(--space-3); text-align: center; transition: background var(--dur-fast), transform var(--dur-fast); }
+.cap-src:hover { background: rgba(255,255,255,0.20); transform: translateY(-2px); }
+.cap-src svg { width: 18px; height: 18px; color: var(--text-on-dark); margin-bottom: 4px; }
+.cap-src span { display: block; font-size: 11px; font-weight: 600; color: var(--text-on-dark); }
+.cap-src small { display: block; font-size: 10px; color: rgba(255,255,255,0.6); }
+.caps.js .cap-src { opacity: 0; transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); transition-delay: var(--d, 0ms); }
+.caps.js .cap-src.from-l { transform: translateX(-16px); }
+.caps.js .cap-src.from-t { transform: translateY(-16px); }
+.caps.js .cap-src.from-r { transform: translateX(16px); }
+.caps.js .cap-panel.play .cap-src { opacity: 1; transform: none; }
+.cap-union-merge svg { width: 100%; height: 40px; display: block; }
+.cap-union-base { fill: none; stroke: rgba(255,255,255,0.45); stroke-width: 2; }
+.caps.js .cap-union-base { stroke-dasharray: 130; stroke-dashoffset: 130; }
+.caps.js .cap-panel.play .cap-union-base { stroke-dashoffset: 0; transition: stroke-dashoffset .85s var(--ease-out) .3s; }
+.cap-flow { fill: none; stroke: var(--text-on-dark); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 5 72; opacity: 0; }
+.caps.js .cap-panel.play .cap-flow { opacity: 1; transition: opacity .3s 1.1s; animation: cap-flow 1.8s linear infinite 1.1s; }
+@keyframes cap-flow { from { stroke-dashoffset: 77; } to { stroke-dashoffset: 0; } }
+.cap-core { text-align: center; background: rgba(255,255,255,0.18); border-radius: var(--radius-md); padding: var(--space-4); font-size: 14px; font-weight: 700; color: var(--text-on-dark); }
+.cap-core small { display: block; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.caps.js .cap-panel.play .cap-core { animation: cap-corebeat 2.8s var(--ease-out) infinite 1.3s; }
+@keyframes cap-corebeat { 0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } 50% { box-shadow: 0 0 0 6px rgba(255,255,255,0.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .caps.js .cap-tab[aria-selected="true"] .cap-tab-bar { animation: none; transform: scaleX(1); }
+  .caps.js [data-rise], .caps.js .cap-src, .caps.js .cap-bar-fill, .caps.js .cap-chart-line,
+  .caps.js .cap-chart-area, .caps.js .cap-chart-fc, .caps.js .cap-chart-dot, .caps.js .cap-union-base { transition: none !important; }
+  .caps.js .cap-panel, .caps.js .cap-trace, .caps.js .cap-viz-chip, .caps.js .cap-bar-fill::after,
+  .caps.js .cap-chart-ping, .caps.js .cap-chart-scan, .caps.js .cap-alert svg, .caps.js .cap-flow, .caps.js .cap-core { animation: none !important; }
+  .caps.js [data-rise], .caps.js .cap-src { opacity: 1 !important; transform: none !important; }
+  .caps.js .cap-node-dot svg { opacity: 1 !important; transform: none !important; }
+}
+</style>
+</head>
+<body>
+
+<section id="capabilities" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="capabilities-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Core Capabilities</span>
+      <h2 id="capabilities-heading" class="display-lg">From close cycle to board prep.<br><span class="accent-line">One platform covers it.</span></h2>
+      <p class="subcopy body-lg">Four capabilities built around how finance teams actually work. From audit-ready lineage to proactive cash-flow alerts.</p>
+    </div>
+
+    <div class="caps reveal">
+      <div class="cap-tabs" role="tablist" aria-label="Core capabilities">
+        <button class="cap-tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true" tabindex="0">Governed Analytics<span class="cap-tab-bar" aria-hidden="true"></span></button>
+        <button class="cap-tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1">Variance Analysis<span class="cap-tab-bar" aria-hidden="true"></span></button>
+        <button class="cap-tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1">Forecasting<span class="cap-tab-bar" aria-hidden="true"></span></button>
+        <button class="cap-tab" role="tab" id="tab-4" aria-controls="panel-4" aria-selected="false" tabindex="-1">Unification<span class="cap-tab-bar" aria-hidden="true"></span></button>
+      </div>
+
+      <!-- Panel 1 — Governed Analytics -->
+      <div class="cap-panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1">
+        <div>
+          <h3 class="display-md">Governed Answers with Full Audit Trail</h3>
+          <p class="body-md cap-panel-lead">Every financial query is sourced, permission-enforced, and traceable back to origin. When your auditors ask where a number came from, your team answers in seconds.</p>
+          <ul class="cap-bullets">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Query lineage traced to source system automatically</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Role-based access enforced with no governance workarounds</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Regulators and auditors get the lineage they need, on demand</span></li>
+          </ul>
+        </div>
+        <div class="cap-visual" aria-hidden="true">
+          <div class="cap-viz-head"><span class="cap-viz-title">Audit lineage</span><span class="cap-viz-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>verified</span></div>
+          <div class="cap-lineage">
+            <span class="cap-trace" aria-hidden="true"></span>
+            <div class="cap-node" data-rise style="--d:80ms"><span class="cap-node-dot" style="--cd:300ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Question</span><span class="cap-node-v">"Where did Q3 revenue come from?"</span></div>
+            <div class="cap-node" data-rise style="--d:220ms"><span class="cap-node-dot" style="--cd:650ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Certified metric</span><span class="cap-node-v">revenue · v3.1</span></div>
+            <div class="cap-node" data-rise style="--d:360ms"><span class="cap-node-dot" style="--cd:1000ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Source</span><span class="cap-node-v">GL 4000–4099 · ledger</span></div>
+          </div>
+          <div class="cap-viz-foot" data-rise style="--d:1200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Lineage traced in <b data-num="0.8" data-decimals="1" data-suffix="s">0.8s</b></div>
+        </div>
+      </div>
+
+      <!-- Panel 2 — Variance Analysis -->
+      <div class="cap-panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>
+        <div>
+          <h3 class="display-md">Variance Analysis in Plain English</h3>
+          <p class="body-md cap-panel-lead">Ask "why did we miss forecast?" and get the drivers ranked, each tied to its GL account and certified metric definition — no two-day SQL sprint.</p>
+          <ul class="cap-bullets">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Actual vs budget vs forecast vs prior year, by any dimension</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Drivers ranked and cited back to GL accounts</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Exportable to Excel for the board deck</span></li>
+          </ul>
+        </div>
+        <div class="cap-visual" aria-hidden="true">
+          <div class="cap-viz-head"><span class="cap-viz-title">Variance drivers · Q3 OPEX</span><span class="cap-viz-metric"><b data-num="8.8" data-decimals="1" data-prefix="+" data-suffix="%">+8.8%</b></span></div>
+          <div class="cap-bars">
+            <div class="cap-bar-item" data-rise style="--d:80ms"><div class="cap-bar-top"><span>Commission expense · GL 6210</span><b data-num="5.1" data-decimals="1" data-prefix="+" data-suffix="%">+5.1%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:82%; --d:120ms"></div></div></div>
+            <div class="cap-bar-item" data-rise style="--d:200ms"><div class="cap-bar-top"><span>Cloud spend · GL 6480</span><b data-num="2.3" data-decimals="1" data-prefix="+" data-suffix="%">+2.3%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:37%; --d:240ms"></div></div></div>
+            <div class="cap-bar-item" data-rise style="--d:320ms"><div class="cap-bar-top"><span>SaaS licenses · GL 6700</span><b data-num="1.4" data-decimals="1" data-prefix="+" data-suffix="%">+1.4%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:22%; --d:360ms"></div></div></div>
+          </div>
+          <div class="cap-viz-foot" data-rise style="--d:520ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Certified metric · <b>opex_variance v2.0</b></div>
+        </div>
+      </div>
+
+      <!-- Panel 3 — Forecasting -->
+      <div class="cap-panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" hidden>
+        <div>
+          <h3 class="display-md">Forecasting You Can Audit</h3>
+          <p class="body-md cap-panel-lead">Track forecast accuracy in real time. See which assumptions drifted and where actuals diverged — before the quarter closes, not after.</p>
+          <ul class="cap-bullets">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Forecast vs actual tracked by product line and region</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Early-warning alerts when drivers move outside threshold</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Every projection grounded in certified historicals</span></li>
+          </ul>
+        </div>
+        <div class="cap-visual" aria-hidden="true">
+          <div class="cap-viz-head"><span class="cap-viz-title">Forecast vs actual · FY26</span><span class="cap-viz-metric"><b data-num="98.8" data-decimals="1" data-suffix="%">98.8%</b></span></div>
+          <div class="cap-chart-wrap">
+            <svg class="cap-chart" viewBox="0 0 320 150" preserveAspectRatio="none" aria-hidden="true">
+              <path class="cap-chart-area" d="M10 115 L60 98 L110 104 L160 72 L210 80 L210 150 L10 150 Z" />
+              <polyline class="cap-chart-line" points="10,115 60,98 110,104 160,72 210,80" />
+              <polyline class="cap-chart-fc" points="210,80 260,52 300,40" />
+              <circle class="cap-chart-dot" cx="160" cy="72" r="3.5" />
+              <circle class="cap-chart-dot" cx="300" cy="40" r="4" />
+              <circle class="cap-chart-ping" cx="210" cy="80" r="5" />
+              <circle class="cap-chart-dot" cx="210" cy="80" r="4" />
+            </svg>
+            <span class="cap-chart-scan" aria-hidden="true"></span>
+          </div>
+          <div class="cap-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Early warning · pipeline coverage below 3×</div>
+        </div>
+      </div>
+
+      <!-- Panel 4 — Unification -->
+      <div class="cap-panel" role="tabpanel" id="panel-4" aria-labelledby="tab-4" hidden>
+        <div>
+          <h3 class="display-md">One Source of Truth, Unified</h3>
+          <p class="body-md cap-panel-lead">ERP, data warehouse, and contracts queried together against one governed semantic layer — so every team works from the same certified number.</p>
+          <ul class="cap-bullets">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Warehouse-native — your data never leaves your environment</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>ERP, GL, contracts, and BI unified in one query surface</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>One certified definition, used everywhere</span></li>
+          </ul>
+        </div>
+        <div class="cap-visual" aria-hidden="true">
+          <div class="cap-viz-head"><span class="cap-viz-title">Unified sources</span><span class="cap-viz-metric"><b data-num="3000" data-comma data-suffix="+">3,000+</b></span></div>
+          <div class="cap-union">
+            <div class="cap-union-sources">
+              <div class="cap-src from-l" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>ERP</span><small>NetSuite · SAP</small></div>
+              <div class="cap-src from-t" style="--d:200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg><span>Warehouse</span><small>Snowflake · BQ</small></div>
+              <div class="cap-src from-r" style="--d:320ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg><span>Contracts</span><small>SharePoint</small></div>
+            </div>
+            <div class="cap-union-merge"><svg viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+              <path class="cap-union-base" d="M50 4 C50 26 150 16 150 38" /><path class="cap-union-base" d="M150 4 L150 38" /><path class="cap-union-base" d="M250 4 C250 26 150 16 150 38" />
+              <path class="cap-flow" d="M50 4 C50 26 150 16 150 38" /><path class="cap-flow" d="M150 4 L150 38" /><path class="cap-flow" d="M250 4 C250 26 150 16 150 38" />
+            </svg></div>
+            <div class="cap-core">Governed semantic layer<small>One certified number, used everywhere</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  const caps = document.querySelector('.caps');
+  if (!caps) return;
+  const tabs = Array.from(caps.querySelectorAll('.cap-tab'));
+  const panels = Array.from(caps.querySelectorAll('.cap-panel'));
+  if (!tabs.length || !panels.length) return;
+
+  caps.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function fmt(el, v) {
+    const dec = +(el.dataset.decimals || 0);
+    let n = dec ? (+v).toFixed(dec) : Math.round(v);
+    if (el.hasAttribute('data-comma')) n = Number(dec ? (+v).toFixed(dec) : Math.round(v)).toLocaleString('en-US');
+    return (el.dataset.prefix || '') + n + (el.dataset.suffix || '');
+  }
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = fmt(el, target); return; }
+    const start = performance.now();
+    el.textContent = fmt(el, 0);
+    (function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick); else el.textContent = fmt(el, target);
+    })(start);
+  }
+
+  function activate(i, focus) {
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+    panels.forEach((p, j) => { if (j === i) p.hidden = false; else { p.hidden = true; p.classList.remove('play'); } });
+    const panel = panels[i];
+    panel.classList.remove('play'); void panel.offsetWidth; panel.classList.add('play');
+    // restart the active tab's progress underline from 0
+    const bar = tabs[i].querySelector('.cap-tab-bar');
+    if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+    panel.querySelectorAll('[data-num]').forEach(el => countUp(el, parseFloat(el.dataset.num), 850));
+    if (focus) tabs[i].focus();
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => activate(i, false));
+    tab.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        activate((i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length, true);
+      }
+    });
+    // auto-advance: when the active tab's progress underline finishes, go to next
+    const bar = tab.querySelector('.cap-tab-bar');
+    if (bar) bar.addEventListener('animationend', () => {
+      if (tab.getAttribute('aria-selected') === 'true') activate((i + 1) % tabs.length, false);
+    });
+  });
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { activate(0, false); io.disconnect(); } }), { threshold: 0.3 });
+    io.observe(caps);
+  } else {
+    activate(0, false);
+  }
+})();
+</script>
+
+</body>
+</html>

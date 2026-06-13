@@ -19,9 +19,9 @@ Next.js `/solutions/finance` route. This file is the source of truth for v3 asse
 |---|------|--------|-------------------|
 | 1 | **Hero** | 🔒 **LOCKED** | Combined hero — see below |
 | 2 | **The problem** | 🔒 **LOCKED** | v2 "The Leader's Challenge", 6 cards 3×2 — see below |
-| 3 | What it does | ⬜ | v1 FeatureRow ×3 vs v2 Core-Capabilities tabs |
-| 4 | Why Quaeris | ⬜ | v1 IconFeatureGrid ×4 (v1-only) |
-| 5 | Security / compliance | ⬜ | v1 trust-badges ×6 vs v2 "inside your perimeter" comparison table |
+| 3 | **What it does** | 🔒 **LOCKED** | Interactive Core Capabilities tabs — see below |
+| 4 | Why Quaeris | ⬜ (likely drop) | v1 IconFeatureGrid ×4 — not chosen so far |
+| 5 | **Security / compliance** | 🔒 **LOCKED** | v2 "inside your perimeter" + comparison table — see below |
 | 6 | Use cases | ⬜ | v1 SegmentCards ×3 (v1-only) |
 | 7 | Stats | ⬜ | v1 StatBlock ×4 (v1-only) |
 | 8 | Testimonials | ⬜ | v1 ×6 (v1-only) |
@@ -97,6 +97,67 @@ sits at the intersection of every business system…"). Below: a **6-card grid, 
 
 ---
 
+## Slot 3 — What it does · 🔒 LOCKED (2026-06-13)
+
+**Source:** `2026-06-13-finance-capabilities-interactive.html` (interactive build, not the static v2).
+
+**Composition:** centered header (eyebrow "Core Capabilities" → H2 "From close cycle to board prep.
+*One platform covers it.*" → subcopy). Below: **4 ARIA tabs** (Governed Analytics / Variance Analysis /
+Forecasting / Unification) over a two-column panel — left = title + lead + 3 check-bullets, right = a
+purple-gradient **live dashboard** unique to each tab.
+
+**Interactivity (locked):**
+- **Tabs:** real `role=tablist/tab/tabpanel`, ←/→ keyboard, sliding **progress underline** that fills
+  over `--dwell` (~6.5s) then **auto-advances**; **pauses on hover / focus-within**; click resets.
+- **Per-tab dashboards**, each replays a choreographed entrance on activation + has ambient idle motion:
+  1. *Governed Analytics* — glowing pulse **traces the lineage** (Question → metric `revenue v3.1` → `GL 4000–4099`), each node locks a ✓; "traced in 0.8s" counts up; chip breathes.
+  2. *Variance Analysis* — driver **bars grow with a light sweep**, values + **+8.8% total** count up; bars hover-highlight.
+  3. *Forecasting* — **scan reveals the drawing line**, dashed projection + band fade in, 98.8% counts up, a **live pulsing point** beats, alert pulses; hover thickens line.
+  4. *Unification* — sources **slide in from their sides**, connectors draw, **data packets flow** into a **breathing core**; 3,000+ counts up; sources hover-lift.
+- Progressive enhancement: gated behind a `.js` flag; reduced-motion / no-JS → correct static state.
+
+### Port notes (for v3 → Next.js)
+- **Component:** `CapabilitiesTabs.tsx` + a `CapabilityDashboard` per key (`LineageViz`, `VarianceViz`,
+  `ForecastViz`, `UnificationViz`). Tabs = state + framer-motion (`AnimatePresence` for panel cross-fade,
+  layout/`motion` for the progress underline, `useReducedMotion`). Auto-advance via an interval/`useAnimationFrame`
+  that pauses on hover/focus. Count-ups via framer-motion `animate(0, target)`.
+- **Content → brand config:** tab labels, each tab's title/lead/bullets, and each dashboard's placeholder
+  data (lineage nodes, variance drivers, chart points, sources) live in `brands/*/config.ts`
+  (`solutions.finance.capabilities`), typed in `config/types.ts`.
+- **New CSS → globals.css (token-driven):** the `.cap-*` system (tabs, panels, `.cap-visual`, and the four
+  viz blocks `cap-lineage` / `cap-bars` / `cap-chart` / `cap-union` + keyframes `cap-prog`, `cap-trace`,
+  `cap-barshine`, `cap-ping`, `cap-scan`, `cap-flow`, `cap-corebeat`, `cap-breathe`, `cap-fade`). Reuses
+  `.container`, `.section-header.center`, `.eyebrow`, `.display-md/-lg`, `.accent-line`, `.body-md`.
+- All dashboard data stays `data-placeholder` until real product numbers are sourced.
+
+---
+
+## Slot 5 — Security / compliance · 🔒 LOCKED (2026-06-13)
+
+**Source:** `2026-06-13-solutions-finance-v2.html` — section `#security`.
+
+**Composition:** two-column (`.sec-grid`). **Left:** accent eyebrow "Security & Governance" → H2 "Your
+financial data stays *inside your perimeter.*" → paragraph → **4 icon bullets** (`.sec-bullet`, `.icon-box`):
+deploy on your own Kubernetes (database icon) · data-level permissions per query (lock) · everything logged,
+PCI/DSS-ready (file-check) · bring your own model — OpenAI/Anthropic/Google/Meta (brain). **Right:** a
+**comparison card** (`.compare-card`) titled "QuaerisAI vs Open AI Tools" with header row
+(Capability / QuaerisAI / Open AI Tools) and **5 rows** (`.compare-row` → `.compare-feature` +
+`.compare-cell.yes` ✓ + `.compare-cell.no` ✗): Data stays in your network (Always / Cloud only) ·
+Audit trail on every answer (Built-in / None) · Role-based access control (Query-level / Manual) ·
+On-premise deployment (Yes / Cloud only) · PCI/DSS ready (By design / Not built for it).
+
+### Port notes (for v3 → Next.js)
+- **Component:** `SecurityCompare.tsx` (left bullets + right `ComparisonTable`).
+- **Content → brand config:** the 4 bullets (icon key + text) and the comparison rows
+  (feature, ours, theirs) live in `brands/*/config.ts` (`solutions.finance.security`), typed in `config/types.ts`.
+  Competitor column phrased generically ("Open AI Tools") — no named-vendor claims.
+- **New CSS → globals.css (token-driven):** `.sec-grid`, `.sec-bullets`, `.sec-bullet`, `.compare-card`,
+  `.compare-title`, `.compare-head`, `.compare-row`, `.compare-feature`, `.compare-cell` (+ `.yes`/`.no`).
+  Reuses `.icon-box`, `.eyebrow`, `.display-lg`, `.accent-line`, `.subcopy`.
+- Optional at port: light entrance (rows reveal on scroll); keep restrained — this is a trust section.
+
+---
+
 ## Next
-Finalize Slot 3 (What it does): compare v1's FeatureRow ×3 (Define → Answer → Audit, with UI
-product-shots) vs v2's Core-Capabilities tabs in the browser, decide, lock here.
+Slot 9 (FAQ) — reconcile v1's 7 vs v2's 7; and Slot 10 (Closing CTA) — v1 dark band vs v2 gradient card.
+(Slot 4 "Why Quaeris" currently dropped; reinstate if wanted.)
