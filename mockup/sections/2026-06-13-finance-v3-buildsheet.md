@@ -20,8 +20,10 @@ Next.js `/solutions/finance` route. This file is the source of truth for v3 asse
 | 1 | **Hero** | 🔒 **LOCKED** | Combined hero — see below |
 | 2 | **The problem** | 🔒 **LOCKED** | v2 "The Leader's Challenge", 6 cards 3×2 — see below |
 | 3 | **What it does** | 🔒 **LOCKED** | Interactive Core Capabilities tabs — see below |
-| 4 | Why Quaeris | ⬜ (likely drop) | v1 IconFeatureGrid ×4 — not chosen so far |
 | 5 | **Security / compliance** | 🔒 **LOCKED** | v2 "inside your perimeter" + comparison table — see below |
+| 4 | **Why Quaeris** | 🔒 **LOCKED** | 2×2 interactive "Ledger Cards" (v5) — **placed AFTER §5** — see below |
+
+**v3 section order** (note §4 moves after §5 per user): Hero → The problem → What it does → Security/compliance → **Why Quaeris** → (FAQ → Closing CTA → …).
 | 6 | Use cases | ⬜ | v1 SegmentCards ×3 (v1-only) |
 | 7 | Stats | ⬜ | v1 StatBlock ×4 (v1-only) |
 | 8 | Testimonials | ⬜ | v1 ×6 (v1-only) |
@@ -158,6 +160,44 @@ On-premise deployment (Yes / Cloud only) · PCI/DSS ready (By design / Not built
 
 ---
 
+## Slot 4 — Why Quaeris · 🔒 LOCKED (2026-06-13) · placed AFTER §5
+
+**Source:** `2026-06-13-finance-why-v5.html` (chosen via an 8-agent design tournament — winner
+"Ledger Cards / Cohesive-Calm" — then re-laid-out to **2×2** per user direction). Retired
+iterations (`why-interactive`, `-v2`, `-v3`, `-v4`) archived under `mockup/sections/_archive/`.
+
+**Composition:** centered header (eyebrow "Why Quaeris" → H2 "Built for the way finance *actually
+works.*" → subcopy) on a **white** surface (deliberate authority signal). Below: a **2×2 grid**
+(`repeat(2,1fr)`; → 1-col ≤1000px) of equal-height cards. Each card = **text column** (number `0X`
+with accent tick · icon · `h3` · claim) + a **proof column** (bordered-left panel), vertically
+centered. Internal card grid `minmax(0,0.64fr) minmax(0,1fr)`; stacks ≤620px.
+
+**The 4 cards** — one signature interaction each, one motion language ("ledger settle, inked left-to-right"):
+1. **Certified Metrics Library** — a registry table (Metric · GL root · Ver · ✓) of 6 certified metrics; **click a row** → its certified definition + owner + date expands (single-open). Pulsing cert dot + ticking UTC stamp.
+2. **Multi-Dimensional Variance** — segmented toggle **vs Budget / vs Forecast / Prior Year** re-tweens 3 ranked driver bars + deltas (GL-cited, error-tinted).
+3. **Instant Budget Questions** — question chip + **Run** button reveals 3 ranked answer rows (Marketing/R&D/Legal + GL roots) + provenance footer.
+4. **EU AI Act & SOX Ready** — SOX §302/§404 + EU AI Act Art. 13 tags + a **Replay**-able 3-node audit timeline (Permitted → Approved → Traced) + Live pulse.
+
+**Motion/a11y:** staggered card entrance + per-row left-to-right "ink"; ambient = one motif per card;
+all click-driven (no hover-to-discover); full ARIA (registry rows `aria-expanded`, toggle `role=group`
+`aria-pressed`, Run/Replay buttons, `aria-live`/`role=log`), 44px targets, `:focus-visible`. Gated by
+`.wq.js`; reduced-motion + no-JS → correct static state. Verified on the :3200 preview (2×2 confirmed,
+zero clipped registry cells).
+
+### Port notes (for v3 → Next.js)
+- **Component:** `WhyQuaeris.tsx` + small per-card pieces (`MetricsRegistry`, `VarianceToggle`,
+  `BudgetQuery`, `AuditTrail`). Motion → framer-motion (`useInView`, `useReducedMotion`, `animate` for
+  count-ups + bar widths); the registry expand = controlled state.
+- **Content → brand config:** card titles/claims + each proof's data (6 metrics & lineage strings; the
+  3 variance datasets; the budget Q + 3 answers; the audit nodes + framework tags) → `brands/*/config.ts`
+  (`solutions.finance.why`), typed in `config/types.ts`. All illustrative data stays `data-placeholder`.
+- **New CSS → globals.css (token-driven):** the `wq-*` system (`.wq-grid`, `.wq-card`, `.wq-text`,
+  `.wq-head`, `.wq-num`/`-tick`, `.wq-icon`, `.wq-claim`, `.wq-proof`, and the four proof blocks
+  `wq-reg*` / `wq-dim*` / `wq-q`+`wq-ans*` / `wq-tags`+`wq-chain`+`wq-node*`) + keyframe `wq-pulse`.
+  White section bg is intentional — do not change to `--bg-warm`/`--bg-canvas`.
+
+---
+
 ## Next
 Slot 9 (FAQ) — reconcile v1's 7 vs v2's 7; and Slot 10 (Closing CTA) — v1 dark band vs v2 gradient card.
-(Slot 4 "Why Quaeris" currently dropped; reinstate if wanted.)
+Then assemble v3 in the locked order (Hero → Problem → Capabilities → Security → Why → FAQ → CTA …).
