@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/finance (v2) — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  /* native <details> stands in for Accordion.tsx (Radix) — do NOT port */
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+</style>
+
+<style>
+/* ============================================================
+   PORT: new classes — move to globals.css at port time (token-driven).
+   Structure follows the reference screenshot; styling = Quaeris tokens.
+   ============================================================ */
+
+/* --- Hero: text column + Finance Intelligence Brief card --- */
+.fin-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 900px) { .fin-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+.fin-hero-checks { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); margin-top: var(--space-6); }
+.fin-hero-checks li { display: flex; align-items: center; gap: var(--space-2); font-size: 14px; color: var(--text-secondary); }
+.fin-hero-checks svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* Finance Intelligence Brief — placeholder analytics card (all-UI, no image) */
+.fin-brief {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.fin-brief-head { display: flex; align-items: center; justify-content: space-between; }
+.fin-brief-dots { display: flex; gap: 6px; }
+.fin-brief-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+.fin-brief-bar {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px; color: var(--text-primary); font-weight: 500;
+}
+.fin-brief-bar svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+.fin-brief-analysis { display: flex; flex-direction: column; gap: var(--space-3); }
+.fin-brief-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.fin-brief-row {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-2);
+  font-size: 14px; color: var(--text-secondary);
+}
+.fin-brief-row:last-child { border-bottom: none; padding-bottom: 0; }
+.fin-brief-delta { font-weight: 700; font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 4px; }
+.fin-brief-delta.up { color: var(--error); }     /* cost increase = bad */
+.fin-brief-delta.down { color: var(--success); }  /* cost decrease = good */
+.fin-brief-sources {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
+  font-size: 12px; color: var(--text-tertiary);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+.fin-brief-sources svg { width: 14px; height: 14px; color: var(--brand-accent); }
+.fin-brief-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.fin-brief-stat { text-align: center; }
+.fin-brief-stat b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.fin-brief-stat span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+/* --- The Leader's Challenge — 6 problem cards (3 × 2) --- */
+.challenge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin-top: var(--space-8); }
+@media (max-width: 980px) { .challenge-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .challenge-grid { grid-template-columns: 1fr; } }
+.challenge-grid > * { height: 100%; }
+.challenge-card { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.challenge-card h3 { color: var(--text-primary); }
+.challenge-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+
+/* --- Core Capabilities — pure-CSS tabs (becomes React state at port) --- */
+.cap-wrap { margin-top: var(--space-7); }
+.cap-radio { position: absolute; opacity: 0; pointer-events: none; }
+.cap-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); border-bottom: 1px solid var(--border-subtle); margin-bottom: var(--space-7); }
+.cap-tab {
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px; font-weight: 600; color: var(--text-secondary);
+  cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.cap-tab:hover { color: var(--text-primary); }
+.cap-panel { display: none; }
+.cap-panels .cap-panel {
+  grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center;
+}
+@media (max-width: 900px) { .cap-panels .cap-panel { grid-template-columns: 1fr; gap: var(--space-6); } }
+/* radio → active tab + visible panel */
+#cap-1:checked ~ .cap-tabs label[for="cap-1"],
+#cap-2:checked ~ .cap-tabs label[for="cap-2"],
+#cap-3:checked ~ .cap-tabs label[for="cap-3"],
+#cap-4:checked ~ .cap-tabs label[for="cap-4"] { color: var(--brand-accent); border-bottom-color: var(--brand-accent); }
+#cap-1:checked ~ .cap-panels .cap-panel:nth-of-type(1),
+#cap-2:checked ~ .cap-panels .cap-panel:nth-of-type(2),
+#cap-3:checked ~ .cap-panels .cap-panel:nth-of-type(3),
+#cap-4:checked ~ .cap-panels .cap-panel:nth-of-type(4) { display: grid; }
+.cap-bullets { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
+.cap-bullets li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 15px; line-height: 1.55; color: var(--text-secondary); }
+.cap-bullets svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 3px; }
+
+/* purple panel visual on the right of each capability */
+.cap-visual {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  color: var(--text-on-dark);
+  display: flex; flex-direction: column; gap: var(--space-4);
+  box-shadow: var(--shadow-card);
+}
+.cap-visual h4 { font-size: 16px; font-weight: 700; color: var(--text-on-dark); }
+.cap-visual-row {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px; color: var(--text-on-dark);
+}
+.cap-visual-row svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--text-on-dark); }
+
+/* --- Security & Governance — text bullets + comparison card --- */
+.sec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center; }
+@media (max-width: 900px) { .sec-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+.sec-bullets { display: flex; flex-direction: column; gap: var(--space-5); margin-top: var(--space-6); }
+.sec-bullet { display: flex; align-items: flex-start; gap: var(--space-4); }
+.sec-bullet .icon-box { width: 40px; height: 40px; flex-shrink: 0; }
+.sec-bullet .icon-box svg { width: 20px; height: 20px; }
+.sec-bullet p { font-size: 15px; color: var(--text-secondary); line-height: 1.55; }
+
+.compare-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.compare-title { font-size: 15px; font-weight: 700; margin-bottom: var(--space-5); color: var(--text-on-dark); }
+.compare-head, .compare-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr; align-items: center; gap: var(--space-3); }
+.compare-head { padding-bottom: var(--space-3); border-bottom: 1px solid rgba(255,255,255,0.18); }
+.compare-head span { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.compare-head span:first-child { text-transform: none; letter-spacing: 0; color: rgba(255,255,255,0.7); font-weight: 500; }
+.compare-head span:nth-child(2) { color: var(--text-on-dark); }
+.compare-head span:last-child { color: rgba(255,255,255,0.65); }
+.compare-row { padding: var(--space-3) 0; border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 13px; }
+.compare-row:last-child { border-bottom: none; }
+.compare-feature { color: var(--text-on-dark); font-weight: 500; }
+.compare-cell { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.8); }
+.compare-cell svg { width: 16px; height: 16px; flex-shrink: 0; }
+.compare-cell.yes svg { color: #fff; }
+.compare-cell.no { color: rgba(255,255,255,0.55); }
+
+/* --- FAQ centered single column --- */
+.fin-faq { max-width: 760px; margin: 0 auto; }
+
+/* --- Final CTA — purple gradient card --- */
+.fin-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.fin-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.fin-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.fin-cta-card .btn-on-light {
+  background: var(--bg-surface); color: var(--brand-accent-deep);
+  padding: 12px 28px; border-radius: var(--radius-cta); font-weight: 600; min-height: 44px;
+}
+</style>
+</head>
+<body>
+
+<!-- Header/footer omitted — SiteHeader / SiteFooter components at port time. -->
+<main id="main">
+
+<!-- ============================================================
+     3.1 HERO — NEW:FinanceHero (text + Finance Intelligence Brief card)
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="fin-hero-grid">
+      <div class="hero-inner reveal">
+        <span class="eyebrow">For CFOs &amp; Finance Leaders</span>
+        <h1 id="hero-heading" class="hero-h1">Your data has the answer.<br><span class="accent-line">Your team is still looking for it.</span></h1>
+        <p class="subcopy body-lg">Ask any financial question in plain English and get a sourced, governed answer in under a minute. Your ERP, data warehouse, and contracts — searched together, every number traceable to its origin.</p>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+          <a href="/contact" class="btn btn-secondary">See a live query</a>
+        </div>
+        <ul class="fin-hero-checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Every query, fully audited</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Role-gated data access</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Flexible deployment</li>
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <div class="fin-brief" role="img" aria-label="Finance Intelligence Brief: the question 'Why did operating costs spike in Q3?' answered with a Q3 operating-cost variance root-cause analysis, verified sources, and traceability stats. Placeholder data." data-placeholder>
+          <div class="fin-brief-head">
+            <span class="eyebrow" style="color: var(--text-tertiary);">Finance Intelligence Brief</span>
+            <span class="fin-brief-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </div>
+          <div class="fin-brief-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "Why did operating costs spike in Q3?"
+          </div>
+          <div class="fin-brief-analysis">
+            <span class="fin-brief-title">Root Cause Analysis: Q3 Operating Cost Variance</span>
+            <div class="fin-brief-row"><span>Cloud Infrastructure</span><span class="fin-brief-delta up">+$420K ▲</span></div>
+            <div class="fin-brief-row"><span>Contractor Spend</span><span class="fin-brief-delta up">+$180K ▲</span></div>
+            <div class="fin-brief-row"><span>Travel &amp; Events</span><span class="fin-brief-delta down">−$45K ▼</span></div>
+            <div class="fin-brief-row"><span>SaaS Licenses</span><span class="fin-brief-delta up">+$90K ▲</span></div>
+          </div>
+          <div class="fin-brief-sources">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><strong style="color: var(--text-secondary);">Sources verified:</strong> Finance Systems · Vendor Contracts · Cloud Spend</span>
+          </div>
+          <div class="fin-brief-stats">
+            <div class="fin-brief-stat"><b>100%</b><span>Traceable</span></div>
+            <div class="fin-brief-stat"><b>&lt;1 min</b><span>To answer</span></div>
+            <div class="fin-brief-stat"><b>Zero</b><span>SQL required</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.2 THE LEADER'S CHALLENGE — 6 problem cards (3 × 2)
+     ============================================================ -->
+<section id="challenge" class="section-pad" aria-labelledby="challenge-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The Leader's Challenge</span>
+      <h2 id="challenge-heading" class="display-lg">You have the data.<br><span class="accent-line">You're still waiting for the answer.</span></h2>
+      <p class="subcopy body-lg">The CFO's office sits at the intersection of every business system. And yet most financial leaders spend more time reconciling conflicting spreadsheets than acting on insight.</p>
+    </div>
+
+    <div class="challenge-grid">
+      <article class="card challenge-card reveal">
+        <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <h3 class="heading-sm">Slow Financial Close</h3>
+        <p>Month-end close drags on for days. Data lives in ERP, spreadsheets, and email threads. Reconciling it manually burns your most senior team members.</p>
+      </article>
+      <article class="card challenge-card reveal">
+        <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></span>
+        <h3 class="heading-sm">Version-Control Hell</h3>
+        <p>Board decks, budget models, and variance reports all tell slightly different stories. Your last board meeting had three versions of the same gross-margin figure.</p>
+      </article>
+      <article class="card challenge-card reveal">
+        <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+        <h3 class="heading-sm">Audit &amp; Compliance Risk</h3>
+        <p>Auditors ask for lineage. Your team scrambles. Tracing a number back to its source across systems takes days and creates real exposure.</p>
+      </article>
+      <article class="card challenge-card reveal">
+        <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></span>
+        <h3 class="heading-sm">Analyst Bottleneck</h3>
+        <p>Every ad-hoc question goes through a small team of FP&amp;A analysts. The queue grows. Decisions wait. Your best people spend their week pulling data instead of interpreting it.</p>
+      </article>
+      <article class="card challenge-card reveal">
+        <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>
+        <h3 class="heading-sm">Forecasting Blind Spots</h3>
+        <p>Cash-flow models are built on last quarter's assumptions. By the time a risk surfaces in the numbers, the window to act has already closed.</p>
+      </article>
+      <article class="card challenge-card reveal">
+        <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
+        <h3 class="heading-sm">Fragmented Data Systems</h3>
+        <p>Your ERP doesn't talk to your data warehouse. Your contracts live in SharePoint. Getting a unified financial picture requires a data engineer and three days.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.3 CORE CAPABILITIES — tabbed (pure-CSS here; React state at port)
+     ============================================================ -->
+<section id="capabilities" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="capabilities-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Core Capabilities</span>
+      <h2 id="capabilities-heading" class="display-lg">From close cycle to board prep.<br><span class="accent-line">One platform covers it.</span></h2>
+      <p class="subcopy body-lg">Four capabilities built around how finance teams actually work. From audit-ready lineage to proactive cash-flow alerts.</p>
+    </div>
+
+    <div class="cap-wrap reveal">
+      <input type="radio" name="cap" id="cap-1" class="cap-radio" checked />
+      <input type="radio" name="cap" id="cap-2" class="cap-radio" />
+      <input type="radio" name="cap" id="cap-3" class="cap-radio" />
+      <input type="radio" name="cap" id="cap-4" class="cap-radio" />
+
+      <div class="cap-tabs" role="tablist">
+        <label class="cap-tab" for="cap-1">Governed Analytics</label>
+        <label class="cap-tab" for="cap-2">Variance Analysis</label>
+        <label class="cap-tab" for="cap-3">Forecasting</label>
+        <label class="cap-tab" for="cap-4">Unification</label>
+      </div>
+
+      <div class="cap-panels">
+        <!-- Tab 1 -->
+        <div class="cap-panel">
+          <div>
+            <h3 class="display-md">Governed Answers with Full Audit Trail</h3>
+            <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3);">Every financial query is sourced, permission-enforced, and traceable back to origin. When your auditors ask where a number came from, your team answers in seconds.</p>
+            <ul class="cap-bullets">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Query lineage traced to source system automatically</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Role-based access enforced with no governance workarounds</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Regulators and auditors get the lineage they need, on demand</span></li>
+            </ul>
+          </div>
+          <div class="cap-visual" aria-hidden="true">
+            <h4>Governed Answers with Full Audit Trail</h4>
+            <div class="cap-visual-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Every lineage traced to source system automatically</div>
+            <div class="cap-visual-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Role-based access enforced with no governance workarounds</div>
+            <div class="cap-visual-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Regulators and auditors get the lineage they need, on demand</div>
+          </div>
+        </div>
+
+        <!-- Tab 2 -->
+        <div class="cap-panel">
+          <div>
+            <h3 class="display-md">Variance Analysis in Plain English</h3>
+            <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3);">Ask "why did we miss forecast?" and get the drivers ranked, each tied to its GL account and certified metric definition — no two-day SQL sprint.</p>
+            <ul class="cap-bullets">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Actual vs budget vs forecast vs prior year, by any dimension</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Drivers ranked and cited back to GL accounts</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Exportable to Excel for the board deck</span></li>
+            </ul>
+          </div>
+          <div class="cap-visual" aria-hidden="true">
+            <h4>Variance drivers · Q3 OPEX</h4>
+            <div class="cap-visual-row">Commission expense · +5.1% · GL 6210</div>
+            <div class="cap-visual-row">Cloud spend · +2.3% · GL 6480</div>
+            <div class="cap-visual-row">Certified metric · opex_variance v2.0</div>
+          </div>
+        </div>
+
+        <!-- Tab 3 -->
+        <div class="cap-panel">
+          <div>
+            <h3 class="display-md">Forecasting You Can Audit</h3>
+            <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3);">Track forecast accuracy in real time. See which assumptions drifted and where actuals diverged — before the quarter closes, not after.</p>
+            <ul class="cap-bullets">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Forecast vs actual tracked by product line and region</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Early-warning alerts when drivers move outside threshold</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Every projection grounded in certified historicals</span></li>
+            </ul>
+          </div>
+          <div class="cap-visual" aria-hidden="true">
+            <h4>Forecast accuracy · FY26</h4>
+            <div class="cap-visual-row">EMEA · within 1.2% of forecast</div>
+            <div class="cap-visual-row">AMER · +3.4% above forecast ▲</div>
+            <div class="cap-visual-row">Alert · pipeline coverage below 3×</div>
+          </div>
+        </div>
+
+        <!-- Tab 4 -->
+        <div class="cap-panel">
+          <div>
+            <h3 class="display-md">One Source of Truth, Unified</h3>
+            <p class="body-md" style="color: var(--text-secondary); margin-top: var(--space-3);">ERP, data warehouse, and contracts queried together against one governed semantic layer — so every team works from the same certified number.</p>
+            <ul class="cap-bullets">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Warehouse-native — your data never leaves your environment</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>ERP, GL, contracts, and BI unified in one query surface</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>One certified definition, used everywhere</span></li>
+            </ul>
+          </div>
+          <div class="cap-visual" aria-hidden="true">
+            <h4>Connected sources</h4>
+            <div class="cap-visual-row">ERP · NetSuite, SAP</div>
+            <div class="cap-visual-row">Warehouse · Snowflake, BigQuery, Redshift</div>
+            <div class="cap-visual-row">Contracts · SharePoint, DocuSign</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.4 SECURITY & GOVERNANCE — text bullets + comparison card
+     ============================================================ -->
+<section id="security" class="section-pad" aria-labelledby="security-heading">
+  <div class="container">
+    <div class="sec-grid">
+      <div class="reveal">
+        <span class="eyebrow" style="color: var(--brand-accent); display:block; margin-bottom: var(--space-3);">Security &amp; Governance</span>
+        <h2 id="security-heading" class="display-lg">Your financial data stays<br><span class="accent-line">inside your perimeter.</span></h2>
+        <p class="subcopy body-md" style="margin-top: var(--space-4);">For regulated industries — banking, insurance, healthcare, financial services — open AI tools are a compliance risk CFOs cannot accept. Quaeris is different.</p>
+        <div class="sec-bullets">
+          <div class="sec-bullet">
+            <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/></svg></span>
+            <p>Deploy on your own Kubernetes infrastructure. Your financial data never leaves your network.</p>
+          </div>
+          <div class="sec-bullet">
+            <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <p>Finance users see only what they're authorized to see. Data-level permissions enforced at every query.</p>
+          </div>
+          <div class="sec-bullet">
+            <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg></span>
+            <p>Every query, every answer, every data access is logged and traceable. PCI/DSS-ready by design.</p>
+          </div>
+          <div class="sec-bullet">
+            <span class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg></span>
+            <p>Connect OpenAI, Anthropic, Google, or Meta. Switch models as the landscape evolves, no rebuild required.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="compare-card">
+          <p class="compare-title">QuaerisAI vs Open AI Tools</p>
+          <div class="compare-head">
+            <span>Capability</span><span>QuaerisAI</span><span>Open AI Tools</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-feature">Data stays in your network</span>
+            <span class="compare-cell yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Always</span>
+            <span class="compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cloud only</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-feature">Audit trail on every answer</span>
+            <span class="compare-cell yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Built-in</span>
+            <span class="compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>None</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-feature">Role-based access control</span>
+            <span class="compare-cell yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Query-level</span>
+            <span class="compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Manual</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-feature">On-premise deployment</span>
+            <span class="compare-cell yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Yes</span>
+            <span class="compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cloud only</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-feature">PCI/DSS ready</span>
+            <span class="compare-cell yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>By design</span>
+            <span class="compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Not built for it</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.5 FAQ — Accordion (Radix at port; native <details> here)
+     ============================================================ -->
+<section id="faq" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2 id="faq-heading" class="display-lg">Questions CFOs ask us.<br><span class="accent-line">Before they sign.</span></h2>
+    </div>
+
+    <div class="accordion fin-faq reveal" style="margin-top: var(--space-7);">
+      <details class="accordion-item" open>
+        <summary class="accordion-trigger"><span class="accordion-question">What is agentic analytics for financial services?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">It's a governed platform where finance users ask questions in plain English and AI agents return sourced, audited answers — grounded in your certified metric definitions, never a language model's guess.</p></div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">What is the best AI analytics platform for banks, asset managers, and capital-markets firms?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">One that runs warehouse-native, enforces role-based access at query time, and keeps a full audit trail. Quaeris was architected for exactly these regulated environments.</p></div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">How do banks accelerate regulatory reporting (BCBS 239, CCAR, CECL) with AI analytics?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">By certifying metrics once in a governed semantic layer and tracing every figure to its source. When regulators ask how a number was derived, the lineage is one click away.</p></div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">How do you unify ERP, general ledger, Bloomberg, core banking, and document data?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris queries your data warehouse where these sources are already synced, plus document agents for contracts. One semantic layer spans them, so every team uses the same certified definition.</p></div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">How do finance teams analyze contracts, 10-Ks, and prospectuses alongside warehouse data?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Document agents extract structured data from contracts and filings, then unify it with warehouse metrics — so a single query can compare contracted terms against actuals.</p></div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">Is the AI compliant with SOX, SOC 2, GLBA, SR 11-7, and the EU AI Act?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris is SOC 2 Type II audited, supports role-based controls and full query logging for SOX and SR 11-7, and publishes an EU AI Act compliance roadmap. Data residency is enforced.</p></div>
+      </details>
+      <details class="accordion-item">
+        <summary class="accordion-trigger"><span class="accordion-question">Is Quaeris an alternative to Hebbia, AlphaSense, Rogo, or FP&amp;A tools like Anaplan?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris complements them. It sits above your warehouse and semantic layer as a governed natural-language interface, while your planning and research tools keep their specialized roles.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3.6 FINAL CTA — purple gradient card
+     ============================================================ -->
+<section class="section-pad" aria-labelledby="final-cta-heading">
+  <div class="container">
+    <div class="fin-cta-card reveal">
+      <h2 id="final-cta-heading" class="display-lg">Your next board deck.<br>Answered in minutes.</h2>
+      <p class="body-lg">Stop waiting on your data team. Start asking your data directly. Governed, auditable, and in plain English.</p>
+      <a href="/contact" class="btn btn-on-light">Book a Demo</a>
+    </div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
