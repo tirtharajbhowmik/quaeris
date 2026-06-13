@@ -1992,3 +1992,234 @@ ul { list-style: none; }
 .ai-card-desc { color: var(--text-on-dark-dim); font-size: 0.875rem; line-height: 1.6; }
 .ai-first-cta-row { display: flex; justify-content: center; margin-top: var(--space-8); }
 .ai-cta { border-radius: var(--radius-cta); }
+
+/* ============================================================
+   EXPLORE-PAGE SHARED COMPONENTS (consolidated — Spec consolidation pass)
+   Cross-page patterns that the per-page mockups each reinvented.
+   Defined ONCE here, token-driven; pages reuse these class names so the
+   port produces one consistent site, not 18 bespoke variants.
+   ============================================================ */
+
+/* — Reusable dark section wrapper (platform/solutions differentiation bands) — */
+.section-ink { background: var(--bg-ink); position: relative; overflow: hidden; }
+.section-ink-glow {
+  position: absolute;
+  bottom: -30%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  max-width: 600px;
+  max-height: 600px;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 70%);
+  opacity: 0.15;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+/* — Hero / section trust strip (consolidated from .plat-hero-trust, .exec-hero-trust, …) — */
+.hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+.hero-trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  max-width: 34ch;
+}
+.hero-trust-item svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+/* On dark backgrounds */
+.hero-trust-dark { border-top-color: var(--border-on-dark); }
+.hero-trust-dark .hero-trust-item { color: var(--text-on-dark-dim); }
+
+/* — Trust-badge wall (SOC 2 / HIPAA / GDPR / ISO) — */
+.trust-badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.compliance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+}
+.compliance-badge svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* — Comparison table (consolidated — the 7 "Quaeris vs others" tables) — */
+.compare-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  -webkit-overflow-scrolling: touch;
+}
+.compare-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  background: var(--bg-surface);
+  font-variant-numeric: tabular-nums;
+}
+.compare-table th,
+.compare-table td {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 14px;
+  vertical-align: middle;
+}
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table thead th {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+.compare-table th:first-child,
+.compare-table td:first-child { font-weight: 600; color: var(--text-primary); }
+.compare-col-quaeris { background: var(--brand-accent-soft); }
+.compare-table thead th.compare-col-quaeris { color: var(--brand-accent); }
+.compare-mark { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+.compare-mark svg { width: 18px; height: 18px; }
+.compare-mark-yes { color: var(--success); }
+.compare-mark-no { color: var(--text-tertiary); opacity: 0.6; }
+.compare-mark-partial { color: var(--warning); }
+.compare-note { margin-top: var(--space-4); font-size: 13px; color: var(--text-tertiary); line-height: 1.5; }
+
+/* — Product shot stand-in with allow/deny rows (governance/audit/access-control/solutions) — */
+.product-shot {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.product-shot-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.product-shot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-pill svg { width: 14px; height: 14px; }
+.status-pill-allow { background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
+.status-pill-deny { background: color-mix(in srgb, var(--error) 12%, transparent); color: var(--error); }
+
+/* — Query / console demo panel (agents/data-teams/analysts/executives) — */
+.query-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.query-panel-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+.query-panel-body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+.query-user {
+  align-self: flex-end;
+  max-width: 80%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--brand-accent-soft);
+  border: 1px solid var(--brand-accent-glow);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.query-agent {
+  align-self: flex-start;
+  max-width: 90%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.query-trace { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+.query-trace-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-accent);
+}
+
+/* — Reusable grid-column modifiers (consolidated from per-page .plat-cols-3, .exec-cols-3, …) — */
+.icon-feature-grid--3 { grid-template-columns: repeat(3, 1fr); gap: var(--space-7); }
+@media (max-width: 1024px) { .icon-feature-grid--3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .icon-feature-grid--3 { grid-template-columns: 1fr; gap: var(--space-6); } }
+
+.ps-grid--3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1024px) { .ps-grid--3 { grid-template-columns: 1fr; } }
+
+.segment-cards-grid--6 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 768px) { .segment-cards-grid--6 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .segment-cards-grid--6 { grid-template-columns: 1fr; } }
+
+.segment-cards-grid--4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) { .segment-cards-grid--4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .segment-cards-grid--4 { grid-template-columns: 1fr; } }
+
+/* — Dark variant for the problem-solution grid (platform/solutions differentiation) — */
+.ps-grid-dark .ps-card { background: var(--bg-ink-elevated); border-color: var(--border-on-dark); box-shadow: none; }
+.ps-grid-dark .ps-index { color: var(--border-on-dark); }
+.ps-grid-dark .ps-kicker { color: var(--text-on-dark-dim); display: block; }
+.ps-grid-dark .ps-problem { color: var(--text-on-dark); }
+.ps-grid-dark .ps-fix-box { background: color-mix(in srgb, var(--brand-accent) 14%, transparent); }
+.ps-grid-dark .ps-fix-label { color: color-mix(in srgb, var(--brand-accent) 45%, var(--text-on-dark)); }
+.ps-grid-dark .ps-fix-body { color: var(--text-on-dark); }

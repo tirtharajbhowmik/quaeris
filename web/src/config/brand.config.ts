@@ -5,3 +5,5 @@
 // lines would be silently dropped by ES module resolution, not errored.
 export * from "./types";
 export * from "@/brand-active/config";
+// Per-page content modules (src/brands/<brand>/pages/*), barrelled by select-brand.mjs.
+export * from "@/brand-active/pages";

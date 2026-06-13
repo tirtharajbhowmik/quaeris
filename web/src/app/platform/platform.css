@@ -1,0 +1,138 @@
+/* ============================================================
+   /platform — page-specific styles
+   Token-driven only (zero hex). Cross-page patterns live in
+   globals.css under "EXPLORE-PAGE SHARED COMPONENTS" and are
+   reused here (.hero-trust, .icon-feature-grid--3, .ps-grid--3,
+   .ps-grid-dark, .segment-cards-grid--6, .section-ink, …). Only
+   the page-unique classes remain below.
+   ============================================================ */
+
+/* — Section 01 · PlatformHero — */
+.plat-hero { background: var(--bg-warm); }
+.plat-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: var(--space-9);
+  align-items: center;
+}
+
+/* Hero architecture diagram (static stand-in) */
+.plat-diagram {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.plat-diagram-stack { display: flex; flex-direction: column; gap: var(--space-3); list-style: none; }
+.plat-diagram-layer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.plat-diagram-layer-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+.plat-diagram-layer-desc { display: block; font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.plat-diagram-connector {
+  width: 2px;
+  height: var(--space-5);
+  margin: 0 auto;
+  background: var(--brand-accent-glow);
+  border-radius: var(--radius-pill);
+}
+.plat-diagram-engines {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+.plat-diagram-engine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--brand-accent-soft);
+  border: 1px solid var(--brand-accent-glow);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+}
+.plat-diagram-engine svg { width: 20px; height: 20px; color: var(--brand-accent); }
+
+/* — Section 06 · BentoGrid engine cards: sub-capability pill links — */
+.plat-engine-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 var(--space-4);
+}
+.plat-engine-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand-accent);
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.plat-engine-link:hover { background: var(--brand-accent-soft); border-color: var(--brand-accent); }
+.plat-engine-link:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+/* — Section 11 · TrustBadgeRow — */
+.plat-trustrow {
+  background: var(--bg-canvas);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-8) 0;
+  text-align: center;
+}
+.plat-trustrow .eyebrow { color: var(--text-tertiary); display: block; margin-bottom: var(--space-3); }
+.plat-trustrow h2 { color: var(--text-primary); margin-bottom: var(--space-6); }
+.plat-trustrow-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-5);
+}
+.plat-trustrow-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.plat-trustrow-item svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; }
+a.plat-trustrow-item { transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+a.plat-trustrow-item:hover { background: var(--bg-surface); color: var(--text-primary); }
+a.plat-trustrow-item:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+/* — Responsive: hero collapses to single column — */
+@media (max-width: 1024px) {
+  .plat-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}
+@media (max-width: 640px) {
+  .plat-diagram { padding: var(--space-5); }
+  .plat-diagram-engines { grid-template-columns: 1fr; }
+}
