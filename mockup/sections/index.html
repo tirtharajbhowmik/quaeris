@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mockup Review Gallery — Quaeris explore pages</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the app uses -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+
+  .gal-head { padding: var(--space-9) 0 var(--space-7); }
+  .gal-group-title { margin: var(--space-8) 0 var(--space-5); display: flex; align-items: baseline; gap: var(--space-3); }
+  .gal-group-title .count { font-size: 13px; color: var(--text-tertiary); font-weight: 500; }
+  .gal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+  @media (max-width: 900px) { .gal-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .gal-grid { grid-template-columns: 1fr; } }
+  .gal-card {
+    display: flex; flex-direction: column; gap: var(--space-2);
+    background: var(--bg-surface); border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+    padding: var(--space-5); text-decoration: none; height: 100%;
+    transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+  }
+  .gal-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); border-color: var(--brand-accent); }
+  .gal-card:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+  .gal-route { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--brand-accent); letter-spacing: 0.3px; }
+  .gal-name { color: var(--text-primary); }
+  .gal-desc { color: var(--text-secondary); font-size: 14px; line-height: 1.5; flex: 1; }
+  .gal-open { font-size: 13px; font-weight: 600; color: var(--brand-accent); margin-top: var(--space-2); }
+  .gal-open::after { content: " →"; }
+  .gal-meta { display: flex; gap: var(--space-5); flex-wrap: wrap; margin-top: var(--space-5); }
+  .gal-meta .badge { background: var(--brand-accent-soft); border-color: var(--brand-accent); color: var(--brand-accent); }
+</style>
+</head>
+<body>
+
+<section class="section-pad" style="padding-top: 0;">
+  <div class="container">
+    <div class="gal-head">
+      <span class="eyebrow" style="color: var(--text-tertiary); display:block; margin-bottom: var(--space-3);">Mockup-first pipeline · review gate</span>
+      <h1 class="display-lg">Explore pages — mockup review</h1>
+      <p class="body-lg" style="color: var(--text-secondary); max-width: 68ch; margin-top: var(--space-4);">
+        18 standalone HTML mockups built from <code>docs/page-specs/</code> against the live Quaeris
+        tokens and <code>globals.css</code>. Review each in the browser, then approved mockups get ported
+        to Next.js (content → brand configs, new CSS → globals.css, markup → components).
+      </p>
+      <div class="gal-meta">
+        <span class="badge">18 pages</span>
+        <span class="badge">0 hardcoded colors</span>
+        <span class="badge">1 h1 each</span>
+        <span class="badge">token-true</span>
+      </div>
+    </div>
+
+    <!-- PLATFORM -->
+    <div class="gal-group-title">
+      <h2 class="display-md">Platform</h2><span class="count">hub + 6 capabilities</span>
+    </div>
+    <div class="gal-grid">
+      <a class="gal-card" href="2026-06-12-platform.html"><span class="gal-route">/platform</span><span class="gal-name heading-sm">Platform overview</span><span class="gal-desc">Three-pillar architecture hub; routes to the six capability pages.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-platform-agents.html"><span class="gal-route">/platform/agents</span><span class="gal-name heading-sm">Trusted AI Agents</span><span class="gal-desc">Multi-step agent reasoning over the governed semantic layer.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-platform-semantic-layer.html"><span class="gal-route">/platform/semantic-layer</span><span class="gal-name heading-sm">Smart Semantic Layer</span><span class="gal-desc">Auto-learning, certified metric definitions; single source of truth.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-platform-governance.html"><span class="gal-route">/platform/governance</span><span class="gal-name heading-sm">Governance &amp; Lineage</span><span class="gal-desc">Full trace from question to source; certified-not-generated answers.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-platform-access-control.html"><span class="gal-route">/platform/access-control</span><span class="gal-name heading-sm">Role-Based Access</span><span class="gal-desc">Access enforced at query time, not as a dashboard filter.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-platform-warehouse.html"><span class="gal-route">/platform/warehouse</span><span class="gal-name heading-sm">Warehouse-Native</span><span class="gal-desc">Runs in your warehouse; data never leaves your environment.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-platform-audit.html"><span class="gal-route">/platform/audit</span><span class="gal-name heading-sm">Audit Logs</span><span class="gal-desc">Prompt-level trail of every query and answer.</span><span class="gal-open">Open mockup</span></a>
+    </div>
+
+    <!-- SOLUTIONS -->
+    <div class="gal-group-title">
+      <h2 class="display-md">Solutions</h2><span class="count">hub + 6 audiences/use-cases</span>
+    </div>
+    <div class="gal-grid">
+      <a class="gal-card" href="2026-06-12-solutions.html"><span class="gal-route">/solutions</span><span class="gal-name heading-sm">Solutions overview</span><span class="gal-desc">By team and by use case; routes into the six solution pages.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-solutions-data-teams.html"><span class="gal-route">/solutions/data-teams</span><span class="gal-name heading-sm">Data Teams</span><span class="gal-desc">Cut the request backlog while staying in control.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-solutions-analysts.html"><span class="gal-route">/solutions/analysts</span><span class="gal-name heading-sm">Analysts</span><span class="gal-desc">Self-serve at speed without sacrificing trust.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-solutions-executives.html"><span class="gal-route">/solutions/executives</span><span class="gal-name heading-sm">Executives</span><span class="gal-desc">Reliable answers without waiting on reports.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-solutions-revenue-ops.html"><span class="gal-route">/solutions/revenue-ops</span><span class="gal-name heading-sm">Revenue &amp; Operations</span><span class="gal-desc">Governed pipeline and performance metrics.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-solutions-product.html"><span class="gal-route">/solutions/product</span><span class="gal-name heading-sm">Product Analytics</span><span class="gal-desc">Trusted engagement and retention signals.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-solutions-finance.html"><span class="gal-route">/solutions/finance</span><span class="gal-name heading-sm">Finance &amp; Planning</span><span class="gal-desc">Consistent numbers across every model.</span><span class="gal-open">Open mockup</span></a>
+    </div>
+
+    <!-- COMPANY / PROOF -->
+    <div class="gal-group-title">
+      <h2 class="display-md">Company &amp; proof</h2><span class="count">4 pages</span>
+    </div>
+    <div class="gal-grid">
+      <a class="gal-card" href="2026-06-12-about.html"><span class="gal-route">/about</span><span class="gal-name heading-sm">About</span><span class="gal-desc">Mission, engines, team, and how Quaeris works.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-pricing.html"><span class="gal-route">/pricing</span><span class="gal-name heading-sm">Pricing</span><span class="gal-desc">Tiers, billing toggle, and plan comparison.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-case-studies.html"><span class="gal-route">/case-studies</span><span class="gal-name heading-sm">Case Studies</span><span class="gal-desc">Outcome-led customer stories with metrics.</span><span class="gal-open">Open mockup</span></a>
+      <a class="gal-card" href="2026-06-12-customers.html"><span class="gal-route">/customers</span><span class="gal-name heading-sm">Customers</span><span class="gal-desc">How data leaders use Quaeris across industries.</span><span class="gal-open">Open mockup</span></a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
