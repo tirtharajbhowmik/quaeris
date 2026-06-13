@@ -27,7 +27,7 @@ Next.js `/solutions/finance` route. This file is the source of truth for v3 asse
 | 6 | Use cases | ⬜ | v1 SegmentCards ×3 (v1-only) |
 | 7 | Stats | ⬜ | v1 StatBlock ×4 (v1-only) |
 | 8 | Testimonials | ⬜ | v1 ×6 (v1-only) |
-| 9 | FAQ | ⬜ | v1 (7) vs v2 (7) — reconcile copy |
+| 9 | **FAQ** | 🔒 **LOCKED** | v2 "Questions CFOs ask us. Before they sign." — 7 SEO-rich Q&As — see below |
 | 10 | Closing CTA | ⬜ | v1 dark CTA band vs v2 gradient CTA card |
 | 11 | Newsletter | ⬜ | v1 (v1-only) |
 
@@ -198,6 +198,32 @@ zero clipped registry cells).
 
 ---
 
+## Slot 9 — FAQ · 🔒 LOCKED (2026-06-13)
+
+**Source:** `2026-06-13-solutions-finance-v2.html` — section `#faq` (chosen over v1's 7 generic Q&As;
+v2's set is finance-specific and SEO-rich). Background `--bg-warm`; centered header eyebrow "FAQ" →
+H2 "Questions CFOs ask us. *Before they sign.*"; single-column accordion (`.accordion.fin-faq`,
+max-width 760px, first item open).
+
+**The 7 Q&As** (each `accordion-item` → `accordion-question` + `accordion-content` answer):
+1. **What is agentic analytics for financial services?** — governed platform; plain-English questions, sourced/audited answers grounded in certified metric definitions, never an LLM guess.
+2. **What is the best AI analytics platform for banks, asset managers, and capital-markets firms?** — warehouse-native, role-based access at query time, full audit trail; Quaeris architected for regulated environments.
+3. **How do banks accelerate regulatory reporting (BCBS 239, CCAR, CECL) with AI analytics?** — certify metrics once in a governed semantic layer; every figure traceable to source on demand.
+4. **How do you unify ERP, general ledger, Bloomberg, core banking, and document data?** — query the warehouse where sources are synced + document agents; one semantic layer spans them.
+5. **How do finance teams analyze contracts, 10-Ks, and prospectuses alongside warehouse data?** — document agents extract structured data from filings, unified with warehouse metrics in one query.
+6. **Is the AI compliant with SOX, SOC 2, GLBA, SR 11-7, and the EU AI Act?** — SOC 2 Type II audited; role-based controls + full query logging for SOX/SR 11-7; EU AI Act roadmap; data residency enforced.
+7. **Is Quaeris an alternative to Hebbia, AlphaSense, Rogo, or FP&A tools like Anaplan?** — complements them; sits above warehouse + semantic layer as a governed NL interface.
+
+### Port notes (for v3 → Next.js)
+- **Component:** reuse the existing `FAQSection` / `Accordion` (Radix) component; mockup uses native
+  `<details>` as the Radix stand-in.
+- **Content → brand config:** the 7 Q&A pairs + header → `brands/*/config.ts` (`solutions.finance.faq`),
+  typed in `config/types.ts`.
+- **SEO:** emit **FAQPage JSON-LD** from these 7 Q&As at port (the question phrasing is intentionally
+  search-optimized). Reuses existing `.accordion*` globals; no new CSS.
+
+---
+
 ## Next
-Slot 9 (FAQ) — reconcile v1's 7 vs v2's 7; and Slot 10 (Closing CTA) — v1 dark band vs v2 gradient card.
+Slot 10 (Closing CTA) — v1 dark band vs v2 gradient card ("Your next board deck. Answered in minutes.").
 Then assemble v3 in the locked order (Hero → Problem → Capabilities → Security → Why → FAQ → CTA …).
