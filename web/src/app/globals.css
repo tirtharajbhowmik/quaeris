@@ -380,6 +380,9 @@ ul { list-style: none; }
   .header-nav { display: none; }
   .hamburger { display: flex; }
   .header-actions .contact-link { display: none; }
+  /* CTA lives in the mobile overlay (pinned bottom) — hide the top-bar copy so
+     it never overlaps the logo on small screens. */
+  .header-actions .header-cta { display: none; }
 }
 /* Mobile nav overlay */
 .mobile-nav {

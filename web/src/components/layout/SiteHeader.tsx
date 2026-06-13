@@ -327,7 +327,7 @@ export default function SiteHeader() {
             </a>
             <a
               href="#cta-band"
-              className="btn btn-primary"
+              className="btn btn-primary header-cta"
               style={{ fontSize: "14px", padding: "10px 22px" }}
             >
               {brand.cta.primary}
