@@ -7,7 +7,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const VALID = ["veris", "quaeris"];
-const brand = process.env.BRAND ?? "veris";
+// Default = quaeris: the only ship target. A bare `npm run dev`/`build`/install
+// no longer clobbers brand-active to veris (which has no explore-page content).
+const brand = process.env.BRAND ?? "quaeris";
 if (!VALID.includes(brand)) {
   console.error(`Unknown BRAND "${brand}". Valid brands: ${VALID.join(", ")}`);
   process.exit(1);
