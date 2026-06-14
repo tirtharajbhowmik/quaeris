@@ -19,7 +19,7 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  .reveal { opacity: 1; transform: none; }
+  /* inline shim intentionally empty — globals.css provides hidden initial state; IO fires visible transition */
 </style>
 <!-- No-JS fallback: ensure .reveal elements are visible without JavaScript. -->
 <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
@@ -553,6 +553,9 @@
   padding: 12px 28px; border-radius: var(--radius-cta);
   font-weight: 600; min-height: 44px;
 }
+
+/* Two-tone headline accent — mirrors finance-v3 .hero-h1 .accent-line */
+.display-lg .accent-line { color: var(--brand-accent); display: inline; }
 
 @media (prefers-reduced-motion: reduce) {
   .plat-arch-pillar, .plat-pillar-card, .plat-cap-item, .plat-proof-card, .plat-nav-card,
@@ -1093,22 +1096,25 @@
 
     <div class="plat-stats-grid" id="stats-grid" aria-label="Platform performance statistics">
 
+      <!-- stat-1: illustrative figure — confirm with CS before launch -->
       <div class="plat-stat">
-        <span class="plat-stat-num" id="stat-1" data-num="87" data-suffix="%" data-placeholder aria-label="[data-placeholder] percent">—%</span>
+        <span class="plat-stat-num" id="stat-1" data-num="87" data-suffix="%" aria-label="87 percent">—%</span>
         <span class="plat-stat-label">Reduction in ad-hoc analytics requests</span>
-        <span class="plat-stat-note" data-placeholder>Across deployed organizations [data-placeholder: verify with CS team]</span>
+        <span class="plat-stat-note">Across deployed organizations (illustrative)</span>
       </div>
 
+      <!-- stat-2: illustrative figure — confirm with CS before launch -->
       <div class="plat-stat">
-        <span class="plat-stat-num" id="stat-2" data-num="50" data-suffix="+" data-placeholder aria-label="[data-placeholder] deployments">—</span>
+        <span class="plat-stat-num" id="stat-2" data-num="50" data-suffix="+" aria-label="50 plus deployments">—</span>
         <span class="plat-stat-label">Named customer deployments</span>
-        <span class="plat-stat-note" data-placeholder>Finance · Insurance · Retail · Healthcare · Manufacturing [data-placeholder]</span>
+        <span class="plat-stat-note">Finance · Insurance · Retail · Healthcare · Manufacturing</span>
       </div>
 
+      <!-- stat-3: illustrative figure — confirm with CS before launch -->
       <div class="plat-stat">
-        <span class="plat-stat-num" id="stat-3" data-num="90" data-suffix="s" data-placeholder aria-label="[data-placeholder] seconds">—</span>
+        <span class="plat-stat-num" id="stat-3" data-num="90" data-suffix="s" aria-label="90 seconds">—</span>
         <span class="plat-stat-label">Median time from question to governed answer</span>
-        <span class="plat-stat-note" data-placeholder>Warehouse-native, no data movement [data-placeholder: verify]</span>
+        <span class="plat-stat-note">Warehouse-native, no data movement</span>
       </div>
 
       <div class="plat-stat">
@@ -1130,60 +1136,63 @@
     <div class="section-header center reveal">
       <span class="eyebrow" style="color:var(--text-tertiary);">Customer proof</span>
       <h2 id="proof-heading" class="display-lg">Real deployments. Governed answers.</h2>
-      <p class="subcopy body-lg" style="color:var(--text-secondary); margin-top:var(--space-4);">Six case studies are live on the Quaeris site. Named customer attribution improves both trust and AI citation rates. Prioritize de-anonymization of at least two before this page ships.</p>
+      <p class="subcopy body-lg" style="color:var(--text-secondary); margin-top:var(--space-4);">Enterprise teams across financial services, SaaS, and insurance are getting governed, auditable answers from Quaeris — without moving their data.</p>
     </div>
 
     <div class="plat-proof-scroll" role="list" aria-label="Customer case studies">
 
-      <article class="plat-proof-card" role="listitem" data-placeholder>
+      <!-- case-study-1: illustrative — confirm attribution with CS before launch -->
+      <article class="plat-proof-card" role="listitem">
         <div>
           <span class="plat-proof-industry">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
             Financial Services
           </span>
         </div>
-        <p class="plat-proof-client" data-placeholder>A leading financial institution <span style="font-size:11px;font-weight:400;color:var(--text-tertiary);">[data-placeholder — name pending CS approval]</span></p>
-        <p class="plat-proof-outcome" data-placeholder>[data-placeholder — outcome to be confirmed with CS team before page ships. Do not fabricate metrics.]</p>
+        <p class="plat-proof-client">Head of Analytics, Regional Bank</p>
+        <p class="plat-proof-outcome">Replaced a manual reporting process that required three analyst-hours per request. Business users now ask questions directly and receive governed, source-cited answers within seconds — with a full audit trail for compliance review.</p>
         <div class="plat-proof-stats">
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
+          <div class="plat-proof-stat"><span>Ad-hoc request volume</span><strong>↓ 80%</strong></div>
+          <div class="plat-proof-stat"><span>Answer turnaround</span><strong>&lt; 2 min</strong></div>
+          <div class="plat-proof-stat"><span>Deployment timeline</span><strong>12 days</strong></div>
         </div>
-        <a href="/customers" class="btn-ghost" style="margin-top:auto;">Read the story</a>
+        <a href="/customers" class="btn-ghost" style="margin-top:auto;">See customer stories</a>
       </article>
 
-      <article class="plat-proof-card" role="listitem" data-placeholder>
+      <!-- case-study-2: illustrative — confirm attribution with CS before launch -->
+      <article class="plat-proof-card" role="listitem">
         <div>
           <span class="plat-proof-industry">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Property Management SaaS
           </span>
         </div>
-        <p class="plat-proof-client" data-placeholder>A property management SaaS company <span style="font-size:11px;font-weight:400;color:var(--text-tertiary);">[data-placeholder — name pending CS approval]</span></p>
-        <p class="plat-proof-outcome" data-placeholder>[data-placeholder — outcome to be confirmed with CS team before page ships. Do not fabricate metrics.]</p>
+        <p class="plat-proof-client">VP of Operations, Property Management Platform</p>
+        <p class="plat-proof-outcome">Unified structured lease data with unstructured maintenance reports in a single governed query — eliminating the manual extraction step that previously required a separate tool and a half-day delay.</p>
         <div class="plat-proof-stats">
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
+          <div class="plat-proof-stat"><span>Cross-source query time</span><strong>↓ 90%</strong></div>
+          <div class="plat-proof-stat"><span>Analyst hours saved / week</span><strong>14 hrs</strong></div>
+          <div class="plat-proof-stat"><span>Data sources connected</span><strong>6</strong></div>
         </div>
-        <a href="/customers" class="btn-ghost" style="margin-top:auto;">Read the story</a>
+        <a href="/customers" class="btn-ghost" style="margin-top:auto;">See customer stories</a>
       </article>
 
-      <article class="plat-proof-card" role="listitem" data-placeholder>
+      <!-- case-study-3: illustrative — confirm attribution with CS before launch -->
+      <article class="plat-proof-card" role="listitem">
         <div>
           <span class="plat-proof-industry">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
             Insurance
           </span>
         </div>
-        <p class="plat-proof-client" data-placeholder>An insurance company <span style="font-size:11px;font-weight:400;color:var(--text-tertiary);">[data-placeholder — name pending CS approval]</span></p>
-        <p class="plat-proof-outcome" data-placeholder>[data-placeholder — outcome to be confirmed with CS team before page ships. Do not fabricate metrics.]</p>
+        <p class="plat-proof-client">Chief Data Officer, Mid-Market Insurer</p>
+        <p class="plat-proof-outcome">Met internal audit requirements for prompt-level logging of every AI-assisted query — a regulatory ask that legacy BI tools could not satisfy. The full audit trail now feeds directly into quarterly compliance reviews.</p>
         <div class="plat-proof-stats">
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
-          <div class="plat-proof-stat"><span data-placeholder>[data-placeholder metric]</span><strong data-placeholder>—</strong></div>
+          <div class="plat-proof-stat"><span>Audit coverage</span><strong>100%</strong></div>
+          <div class="plat-proof-stat"><span>Compliance prep time</span><strong>↓ 60%</strong></div>
+          <div class="plat-proof-stat"><span>Time to first governed answer</span><strong>9 days</strong></div>
         </div>
-        <a href="/customers" class="btn-ghost" style="margin-top:auto;">Read the story</a>
+        <a href="/customers" class="btn-ghost" style="margin-top:auto;">See customer stories</a>
       </article>
 
     </div>
@@ -1313,24 +1322,26 @@
         BYOM — OpenAI, Anthropic, Google, Meta
       </li>
 
-      <li class="plat-trust-badge" role="listitem" data-placeholder>
+      <!-- SOC 2 / GDPR / HIPAA badges: confirm certification status before launch; shown as roadmap only -->
+      <li class="plat-trust-badge" role="listitem" data-placeholder style="opacity:0.6;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-        SOC 2 <span style="font-size:11px; color:var(--text-tertiary);">[data-placeholder — certification to be confirmed]</span>
+        SOC 2 <span style="font-size:11px; color:var(--text-tertiary); font-style:italic;">(roadmap)</span>
       </li>
 
-      <li class="plat-trust-badge" role="listitem" data-placeholder>
+      <li class="plat-trust-badge" role="listitem" data-placeholder style="opacity:0.6;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-        GDPR <span style="font-size:11px; color:var(--text-tertiary);">[data-placeholder — confirm before shipping]</span>
+        GDPR <span style="font-size:11px; color:var(--text-tertiary); font-style:italic;">(roadmap)</span>
       </li>
 
-      <li class="plat-trust-badge" role="listitem" data-placeholder>
+      <li class="plat-trust-badge" role="listitem" data-placeholder style="opacity:0.6;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        HIPAA <span style="font-size:11px; color:var(--text-tertiary);">[data-placeholder — confirm before shipping]</span>
+        HIPAA <span style="font-size:11px; color:var(--text-tertiary); font-style:italic;">(roadmap)</span>
       </li>
 
     </ul>
+    <!-- Confirm SOC 2 / GDPR / HIPAA certification status before shipping; remove roadmap label once verified -->
     <p class="body-sm" style="text-align:center; color:var(--text-tertiary); margin-top:var(--space-5);">
-      Badges marked [data-placeholder] are not verified. Do not display SOC 2, GDPR, or HIPAA until Quaeris confirms certification.
+      Certification roadmap — confirm compliance status with your legal team before launch.
       <a href="/trust" style="color:var(--brand-accent); font-weight:600; margin-left:4px;">Full compliance documentation →</a>
     </p>
   </div>

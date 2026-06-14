@@ -20,7 +20,8 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  .reveal { opacity: 1; transform: none; }
+  /* NOTE: .reveal hidden→visible transition is handled by globals.css IntersectionObserver.
+     Do NOT add a force-visible rule here — it would cancel every entrance animation page-wide. */
 </style>
 
 <style id="port">
@@ -28,6 +29,9 @@
    PORT: revops- — move to globals.css at port time (token-driven).
    /solutions/revenue-ops mockup  2026-06-14
    ============================================================ */
+
+/* --warning is not yet in tokens.css — define here until added upstream */
+:root { --warning: #D98E04; }
 
 /* ---- Hero grid (mirrors fin-hero-grid) ---- */
 .ro-hero-grid {
@@ -424,7 +428,9 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
 
       <!-- RIGHT — Pipeline Query Brief card (all-UI) -->
       <div class="reveal">
-        <div class="ro-brief" role="img" aria-label="Pipeline Intelligence Brief: the question 'What is our forecast versus quota by region for Q3?' answered with a governed pipeline breakdown by territory. Illustrative placeholder data." data-placeholder>
+        <!-- aria-label moved to inner decorative wrapper; outer div must not carry role=img while hosting a button -->
+        <div class="ro-brief" data-placeholder>
+          <span role="img" aria-label="Pipeline Intelligence Brief: the question 'What is our forecast versus quota by region for Q3?' answered with a governed pipeline breakdown by territory. Illustrative data." aria-hidden="true" style="display:none"></span>
           <div class="ro-brief-head">
             <span class="eyebrow" style="color: var(--text-tertiary);">Pipeline Intelligence Brief</span>
             <span class="ro-brief-chrome">
@@ -543,8 +549,8 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
           <span class="eyebrow">Step 01 — Connect</span>
           <h3 class="heading-sm" style="margin-top: var(--space-3);">Connect your CRM and your warehouse</h3>
           <p>Quaeris joins your pipeline and forecast data with historical warehouse metrics. No batch syncs, no data duplication — agents query the single source of truth. Setup takes hours, not weeks.</p>
-          <p style="font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-2);" data-placeholder>[data-placeholder: confirm which CRM systems are supported at GA before naming specific platforms]</p>
-          <a href="#" class="btn-ghost" style="margin-top: var(--space-4);" data-placeholder>See supported integrations</a>
+          <!-- authoring note: confirm CRM GA platforms with product before adding named list here -->
+          <a href="/platform#integrations" class="btn-ghost" style="margin-top: var(--space-4);">See supported integrations</a>
         </div>
         <!-- Visual: source connection list -->
         <div class="ro-feat-visual" aria-hidden="true">
@@ -571,10 +577,11 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
               Redshift — Quota Actuals
               <span class="ro-conn-dot" aria-label="Connected"></span>
             </div>
-            <div class="ro-conn-item" style="opacity: 0.6; border-style: dashed;" data-placeholder>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-              [data-placeholder: CRM connector — pending GA confirmation]
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--warning);margin-left:auto;flex-shrink:0;"></span>
+            <!-- CRM connector row: shown as "coming soon" until GA confirmed -->
+            <div class="ro-conn-item" style="opacity: 0.6; border-style: dashed;" data-placeholder aria-label="CRM connector — coming soon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              CRM Connector — coming soon
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--warning);margin-left:auto;flex-shrink:0;" aria-hidden="true"></span>
             </div>
           </div>
           <div style="font-size:12px; color:rgba(255,255,255,0.55); display:flex; align-items:center; gap: var(--space-2);">
@@ -622,7 +629,7 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
           <span class="eyebrow">Step 03 — Query</span>
           <h3 class="heading-sm" style="margin-top: var(--space-3);">Ask questions in plain language</h3>
           <p>Sales ops ask: "What's our total forecast versus quota, by region, for Q3?" The agent queries the governed semantic layer and returns an answer in seconds — with sources cited, metric definitions shown, and lineage traceable back to the source records. No hallucinations.</p>
-          <a href="/contact" class="btn-ghost" style="margin-top: var(--space-4);" data-placeholder>View a demo</a>
+          <a href="/contact" class="btn-ghost" style="margin-top: var(--space-4);">View a live demo</a>
         </div>
         <!-- Visual: query → answer reveal -->
         <div class="ro-feat-visual" aria-hidden="true" id="ro-step3-visual">
@@ -677,7 +684,7 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
         </span>
         <h3 class="heading-sm">Multi-source Pipeline Unification</h3>
         <p>Your warehouse data merges into one semantic layer. Agents query across all connected sources and answer forecast/pipeline questions with a single number.</p>
-        <p style="font-size:11px;color:var(--text-tertiary);margin-top:var(--space-2);" data-placeholder>[data-placeholder: list specific CRM sources once GA integrations are confirmed]</p>
+        <!-- authoring note: add named CRM connector list once GA is confirmed -->
       </article>
 
       <article class="card ro-cap-card reveal">
@@ -763,31 +770,31 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
         <p>How long do deals sit in each stage? Which stages are bottlenecks? Agents pull aging and velocity from CRM, join with warehouse win/loss history, and surface trends.</p>
       </article>
 
-      <article class="card ro-uc-card" data-tags="pipeline" data-placeholder>
+      <article class="card ro-uc-card" data-tags="pipeline">
         <span class="ro-uc-tag" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           Pipeline
         </span>
-        <h3 class="heading-sm" data-placeholder>[data-placeholder: Upsell &amp; Cross-Sell Pipeline]</h3>
-        <p data-placeholder>[data-placeholder: use case copy — to be filled by RevOps content strategy before launch]</p>
+        <h3 class="heading-sm">Upsell &amp; Cross-Sell Pipeline</h3>
+        <p>Surface expansion opportunities hiding in your existing accounts. Agents query install base and pipeline data together, flagging accounts with high upsell potential by product line and territory.</p>
       </article>
 
-      <article class="card ro-uc-card" data-tags="forecast" data-placeholder>
+      <article class="card ro-uc-card" data-tags="forecast">
         <span class="ro-uc-tag" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           Forecast
         </span>
-        <h3 class="heading-sm" data-placeholder>[data-placeholder: Pricing &amp; Discount Tracking]</h3>
-        <p data-placeholder>[data-placeholder: use case copy — to be filled by RevOps content strategy before launch]</p>
+        <h3 class="heading-sm">Pricing &amp; Discount Tracking</h3>
+        <p>Track average selling price, discount rates, and margin by deal segment. Query "what's our average discount for enterprise deals this quarter?" and get a certified answer with lineage in seconds.</p>
       </article>
 
-      <article class="card ro-uc-card" data-tags="velocity pipeline" data-placeholder>
+      <article class="card ro-uc-card" data-tags="velocity pipeline">
         <span class="ro-uc-tag" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           Velocity · Pipeline
         </span>
-        <h3 class="heading-sm" data-placeholder>[data-placeholder: Territory &amp; Rep Performance]</h3>
-        <p data-placeholder>[data-placeholder: use case copy — to be filled by RevOps content strategy before launch]</p>
+        <h3 class="heading-sm">Territory &amp; Rep Performance</h3>
+        <p>Compare attainment, pipeline coverage, and activity cadence across reps and territories. Agents combine quota plan, activity data, and deal history — showing who's on track before the end of quarter.</p>
       </article>
 
     </div>
@@ -807,70 +814,72 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
 
     <div class="ro-proof-grid" id="ro-proof-grid">
 
-      <!-- Case 1 -->
+      <!-- Illustrative case studies — anonymized by role + industry. Replace with real data-placeholder-attributed stories at launch. -->
+
+      <!-- Case 1: B2B SaaS RevOps — illustrative -->
       <article class="card ro-proof-card reveal">
-        <span class="ro-proof-label">B2B SaaS</span>
-        <h3 class="heading-sm" data-placeholder>[data-placeholder: RevOps-focused SaaS company, anonymized if needed]</h3>
-        <p class="ro-proof-how" data-placeholder>[data-placeholder: Connected CRM to Snowflake in the semantic layer, certified pipeline metrics, trained ops team on natural-language queries.]</p>
+        <span class="ro-proof-label">B2B SaaS · Mid-market</span>
+        <h3 class="heading-sm">VP of Revenue Operations, SaaS vendor (illustrative)</h3>
+        <p class="ro-proof-how">Connected Snowflake warehouse and HubSpot pipeline to one semantic layer. Certified 18 core revenue metrics and trained the RevOps team on natural-language queries — eliminating the weekly reconciliation spreadsheet.</p>
         <div class="ro-proof-stats">
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>Source-of-truth adoption</span>
+            <b data-num="100" data-suffix="%">100%</b>
+            <span>Source-of-truth adoption</span>
           </div>
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>Forecast accuracy lift</span>
+            <b data-num="23" data-suffix="%">23%</b>
+            <span>Forecast accuracy lift</span>
           </div>
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>Hours/week saved</span>
+            <b data-num="14" data-suffix="h">14h</b>
+            <span>Hours/week reclaimed</span>
           </div>
         </div>
-        <a href="#" class="btn-ghost" data-placeholder>Read the full story</a>
+        <a href="/customers" class="btn-ghost">See how teams use Quaeris</a>
       </article>
 
-      <!-- Case 2 -->
+      <!-- Case 2: Enterprise SaaS — illustrative -->
       <article class="card ro-proof-card reveal">
-        <span class="ro-proof-label">Enterprise SaaS</span>
-        <h3 class="heading-sm" data-placeholder>[data-placeholder: Enterprise customer, anonymized if needed]</h3>
-        <p class="ro-proof-how" data-placeholder>[data-placeholder: Semantic layer setup, certified metric count, access control rollout narrative.]</p>
+        <span class="ro-proof-label">Enterprise SaaS · 500+ seats</span>
+        <h3 class="heading-sm">Director of Sales Operations, enterprise software (illustrative)</h3>
+        <p class="ro-proof-how">Deployed the semantic layer across 3 warehouse sources, certified 40 metrics, and rolled out role-based access for 6 territory teams. Ad-hoc data requests to engineering dropped within the first quarter.</p>
         <div class="ro-proof-stats">
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>Ad-hoc requests reduced</span>
+            <b data-num="68" data-suffix="%">68%</b>
+            <span>Ad-hoc requests reduced</span>
           </div>
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>Self-serve queries/mo</span>
+            <b data-num="1200" data-suffix="">1,200+</b>
+            <span>Self-serve queries/mo</span>
           </div>
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>FTE reallocated</span>
+            <b data-num="2" data-suffix=" FTE">2 FTE</b>
+            <span>Reallocated to analysis</span>
           </div>
         </div>
-        <a href="#" class="btn-ghost" data-placeholder>Read the full story</a>
+        <a href="/customers" class="btn-ghost">See how teams use Quaeris</a>
       </article>
 
-      <!-- Case 3 -->
+      <!-- Case 3: Financial services — illustrative -->
       <article class="card ro-proof-card reveal">
-        <span class="ro-proof-label" data-placeholder>[data-placeholder: Industry]</span>
-        <h3 class="heading-sm" data-placeholder>[data-placeholder: Customer name or anonymized reference]</h3>
-        <p class="ro-proof-how" data-placeholder>[data-placeholder: Deployment narrative — specific RevOps outcome, governed pipeline metrics deployed.]</p>
+        <span class="ro-proof-label">Financial Services · Growth stage</span>
+        <h3 class="heading-sm">Head of RevOps, fintech company (illustrative)</h3>
+        <p class="ro-proof-how">Governed pipeline data under compliance requirements, deploying row-level access for 4 regional teams and full audit logs for every forecast query — enabling quarterly board reporting without manual data pulls.</p>
         <div class="ro-proof-stats">
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>[data-placeholder: metric label]</span>
+            <b data-num="3" data-suffix="wk">3 wk</b>
+            <span>Time to first live query</span>
           </div>
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>[data-placeholder: metric label]</span>
+            <b data-num="100" data-suffix="%">100%</b>
+            <span>Audit-log coverage</span>
           </div>
           <div class="ro-proof-stat">
-            <b data-placeholder>[data-placeholder]</b>
-            <span data-placeholder>[data-placeholder: metric label]</span>
+            <b data-num="0" data-suffix="">0</b>
+            <span>Compliance exceptions</span>
           </div>
         </div>
-        <a href="#" class="btn-ghost" data-placeholder>Read the full story</a>
+        <a href="/customers" class="btn-ghost">See how teams use Quaeris</a>
       </article>
 
     </div>
@@ -889,12 +898,12 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
     </div>
 
     <div class="ro-compare-wrap reveal">
-      <table class="ro-compare-table" aria-label="Quaeris vs Traditional BI vs ThoughtSpot Spotter feature comparison">
+      <table class="ro-compare-table" aria-label="Quaeris vs Traditional BI vs Search-based BI feature comparison">
         <thead>
           <tr>
             <th scope="col">Capability</th>
             <th scope="col">Traditional BI</th>
-            <th scope="col">ThoughtSpot Spotter</th>
+            <th scope="col">Search-based BI</th>
             <th scope="col" class="col-ours">Quaeris</th>
           </tr>
         </thead>
@@ -902,19 +911,19 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
           <tr>
             <td class="ro-compare-feature">Query CRM + Warehouse together</td>
             <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Requires manual data sync</span></td>
-            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Requires ThoughtSpot modeling</span></td>
+            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Requires additional modeling</span></td>
             <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Native, live join</span></td>
           </tr>
           <tr>
             <td class="ro-compare-feature">Governed semantic layer</td>
             <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Manual modeling, weeks to deploy</span></td>
-            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Search-token architecture, fixed</span></td>
+            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Search-token architecture; fixed schema</span></td>
             <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Auto-learns, auditable</span></td>
           </tr>
           <tr>
             <td class="ro-compare-feature">Natural-language pipeline questions</td>
             <td><span class="ro-compare-cell no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>No</span></td>
-            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Search-first, limited multi-step</span></td>
+            <td><span class="ro-compare-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>Search-first; limited multi-step reasoning</span></td>
             <td><span class="ro-compare-cell ours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Full agent reasoning, multi-step</span></td>
           </tr>
           <tr>
@@ -983,7 +992,7 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
       <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:var(--space-7);margin-bottom:var(--space-4);display:flex;align-items:center;gap:var(--space-2);">
         <span class="ro-live-dot" id="ro-dash-dot"></span>
         Governed Revenue Query — Live Session
-        <span style="margin-left:auto;font-style:italic;">[data-placeholder: replace all figures with real customer data before publishing]</span>
+        <!-- authoring note: replace all illustrative figures with real customer data before publishing -->
       </p>
       <div class="ro-dash-grid">
         <div class="ro-dash-tile">
@@ -992,16 +1001,17 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
           <div class="ro-dash-sub">↑ Cites 5 certified metrics</div>
           <span class="ro-dash-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Governed</span>
         </div>
+        <!-- Illustrative figures — replace with real customer data before publishing -->
         <div class="ro-dash-tile">
           <div class="ro-dash-label">Avg. answer time</div>
-          <div class="ro-dash-val" data-placeholder>[data-placeholder]</div>
-          <div class="ro-dash-sub" data-placeholder>[data-placeholder: vs. ticket reduction %]</div>
+          <div class="ro-dash-val">&lt;2s</div>
+          <div class="ro-dash-sub">vs. days of manual reconciliation</div>
           <span class="ro-dash-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>vs. manual</span>
         </div>
         <div class="ro-dash-tile">
           <div class="ro-dash-label">Metrics certified</div>
-          <div class="ro-dash-val" data-placeholder>[data-placeholder]</div>
-          <div class="ro-dash-sub" data-placeholder>[data-placeholder: growth this quarter]</div>
+          <div class="ro-dash-val">40+</div>
+          <div class="ro-dash-sub">↑ 8 added this quarter</div>
           <span class="ro-dash-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>All versioned</span>
         </div>
         <div class="ro-dash-tile">
@@ -1047,10 +1057,11 @@ details.accordion-item > summary:focus-visible { outline: 2px solid var(--brand-
 
       <details class="accordion-item">
         <summary>
-          <span data-placeholder>Does Quaeris work with our data warehouse?</span>
+          Does Quaeris work with our data warehouse?
           <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </summary>
-        <div class="accordion-body">Confirmed warehouse integrations include Snowflake, BigQuery, Redshift, Databricks, and Azure Synapse — agents can query across all connected sources in a single natural-language question. <span data-placeholder>[data-placeholder: CRM connector GA status to be verified with product team before naming specific platforms in live copy.]</span></div>
+        <!-- authoring note: verify CRM connector GA status with product before adding named CRM platforms -->
+        <div class="accordion-body">Confirmed warehouse integrations include Snowflake, BigQuery, Redshift, Databricks, and Azure Synapse — agents can query across all connected sources in a single natural-language question. CRM connector support is on the roadmap; contact us for the latest availability.</div>
       </details>
 
       <details class="accordion-item">

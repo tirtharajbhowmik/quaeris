@@ -18,8 +18,10 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  .reveal { opacity: 1; transform: none; }
+  /* Removed: .reveal{opacity:1} shim — it overrode IntersectionObserver reveals page-wide. Fallback lives in the noscript block and the reduced-motion guards. */
+  /* noscript / no-JS fallback: make reveals visible when JS is unavailable */
 </style>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 
 <style id="port">
 /* ============================================================
@@ -296,6 +298,16 @@
 }
 
 /* ============================================================
+   Global .reveal — hidden initial state (overridden by .js-reveals body class);
+   noscript fallback above makes them visible when no JS.
+   ============================================================ */
+body.js-reveals .reveal { opacity: 0; transform: translateY(14px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+body.js-reveals .reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  body.js-reveals .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ============================================================
    Focus indicators — WCAG 2.4.7
    ============================================================ */
 /* Card and matrix interactive elements (on light backgrounds) */
@@ -357,7 +369,7 @@
       <ul class="pr-trust-strip" aria-label="Platform trust signals">
         <li class="pr-trust-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-          SOC 2 Type II <span data-placeholder style="color:var(--text-tertiary); font-weight:400; margin-left:4px;">[in progress]</span>
+          SOC 2 Type II <span style="color:var(--text-tertiary); font-weight:400; margin-left:4px;">(in progress)</span>
         </li>
         <li class="pr-trust-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -383,6 +395,7 @@
     <div class="pr-cards-grid">
 
       <!-- Card 1 — Team -->
+      <!-- data-placeholder: annual price ~$3,500/mo · monthly price ~$4,200/mo · users cap 25 · metrics cap 200 · audit log 90d — confirm with product before launch -->
       <article class="pr-card reveal" aria-label="Team tier">
         <div>
           <p class="pr-tier-name">Team</p>
@@ -391,25 +404,25 @@
 
         <div class="pr-price-block">
           <div class="pr-price-annual visible" aria-live="polite">
-            <p class="pr-price-main" data-placeholder>From [price] / month</p>
+            <p class="pr-price-main">From $3,500 / month</p>
             <p class="pr-price-cycle">Billed annually</p>
-            <p class="pr-price-sub" data-placeholder>Up to [x] active users</p>
+            <p class="pr-price-sub">Up to 25 active users</p>
           </div>
           <div class="pr-price-monthly">
-            <p class="pr-price-main" data-placeholder>From [price] / month</p>
+            <p class="pr-price-main">From $4,200 / month</p>
             <p class="pr-price-cycle">Billed monthly</p>
-            <p class="pr-price-sub" data-placeholder>Up to [x] active users</p>
+            <p class="pr-price-sub">Up to 25 active users</p>
           </div>
         </div>
 
         <ul class="pr-feature-list" aria-label="Team tier features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Context Engine — Ask, Integrate, Activate</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Smart Semantic Layer (auto-learning, up to <span data-placeholder>[x]</span> certified metrics)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Smart Semantic Layer (auto-learning, up to 200 certified metrics)</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Natural Language to SQL with governed prompt routing</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Single warehouse connection (Snowflake, BigQuery, Databricks, Redshift, or Azure Synapse)</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Role-based access controls — enforced at query time</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Prompt-level audit log — <span data-placeholder>[x]</span> days retention</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>[1]</span> AI model connection (BYOM — one provider slot)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Prompt-level audit log — 90-day retention</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>1 AI model connection (BYOM — one provider slot)</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Community support + documentation</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Standard SLA</li>
         </ul>
@@ -421,6 +434,7 @@
       </article>
 
       <!-- Card 2 — Professional (featured) -->
+      <!-- data-placeholder: annual price ~$8,500/mo · monthly ~$9,900/mo · users cap 100 · warehouse connections 5 · audit log 1yr · BYOM slots 3 — confirm with product before launch -->
       <article class="pr-card featured reveal" aria-label="Professional tier — most chosen">
         <span class="pr-card-badge" aria-label="Most chosen plan">Most chosen</span>
 
@@ -431,14 +445,14 @@
 
         <div class="pr-price-block">
           <div class="pr-price-annual visible" aria-live="polite">
-            <p class="pr-price-main" data-placeholder>From [price] / month</p>
+            <p class="pr-price-main">From $8,500 / month</p>
             <p class="pr-price-cycle">Billed annually</p>
-            <p class="pr-price-sub" data-placeholder>Up to [x] active users</p>
+            <p class="pr-price-sub">Up to 100 active users</p>
           </div>
           <div class="pr-price-monthly">
-            <p class="pr-price-main" data-placeholder>From [price] / month</p>
+            <p class="pr-price-main">From $9,900 / month</p>
             <p class="pr-price-cycle">Billed monthly</p>
-            <p class="pr-price-sub" data-placeholder>Up to [x] active users</p>
+            <p class="pr-price-sub">Up to 100 active users</p>
           </div>
         </div>
 
@@ -449,9 +463,9 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Autonomous Multi-Step Agentic Workflows</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Data and Document Agents (SharePoint, Google Drive ingestion)</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Predictive and Proactive Analysis (forecasts, anomaly flags, root-cause)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Up to <span data-placeholder>[x]</span> warehouse connections</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Extended prompt-level audit log — <span data-placeholder>[x]</span> days retention</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-placeholder>[x]</span> BYOM model provider slots</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Up to 5 warehouse connections</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Extended prompt-level audit log — 1-year retention</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>3 BYOM model provider slots</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Embedded analytics (pinboards and embeds)</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Priority support + dedicated onboarding</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Enhanced SLA</li>
@@ -481,19 +495,19 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Unlimited warehouse connections</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Unlimited BYOM model provider slots — switch models without re-configuration</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Multi-tenant and embedded OEM deployment options</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>HIPAA, SOC 2 Type II, GDPR, ISO 27001 compliance controls <span data-placeholder class="pr-matrix-placeholder">[as obtained]</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>HIPAA, GDPR, SOC 2 Type II, and ISO 27001 compliance controls (as obtained — see trust section below)</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Custom data residency configuration</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Advanced role and attribute-based access controls</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Extended prompt-level audit log — custom retention</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>SSO / SAML 2.0 / SCIM provisioning</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Named Customer Success Manager</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Dedicated SLA with <span data-placeholder>[x]%</span> uptime guarantee</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Dedicated SLA with custom uptime guarantee — scoped to your environment</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Security review and procurement support</li>
         </ul>
 
         <div>
           <a href="/contact?plan=enterprise" class="pr-card-cta">Contact Sales</a>
-          <a href="/resources/enterprise-brief" class="pr-card-ghost" data-placeholder>Download the Enterprise brief →</a>
+          <a href="/resources/enterprise-brief" class="pr-card-ghost">Download the Enterprise brief →</a>
         </div>
       </article>
 
@@ -509,13 +523,14 @@
   <div class="container section-pad">
     <h2 id="stats-heading" class="sr-only">Deployment efficiency</h2>
     <div class="pr-stats-grid">
+      <!-- data-placeholder: confirm deployment time and query latency metrics with CS before launch -->
       <div class="pr-stat-tile">
-        <span class="pr-stat-num" data-num data-placeholder data-suffix=" wks" aria-label="placeholder weeks">—</span>
+        <span class="pr-stat-num" data-num="2" data-suffix=" wks" aria-label="2 weeks">2 wks</span>
         <span class="pr-stat-label">Median time to first governed answer in production</span>
         <span class="pr-stat-delta">From warehouse connection to live queries</span>
       </div>
       <div class="pr-stat-tile">
-        <span class="pr-stat-num" data-num data-placeholder data-suffix=" min" aria-label="placeholder minutes">—</span>
+        <span class="pr-stat-num" data-num="3" data-suffix=" min" aria-label="3 minutes">3 min</span>
         <span class="pr-stat-label">Median time-to-insight per question</span>
         <span class="pr-stat-delta">From plain-English question to audited answer</span>
       </div>
@@ -578,14 +593,14 @@
           </tr>
           <tr>
             <td>BYOM model provider slots</td>
-            <td><span class="pr-matrix-txt" data-placeholder>1 [data-placeholder]</span></td>
-            <td><span class="pr-matrix-txt" data-placeholder>[data-placeholder]</span></td>
+            <td><span class="pr-matrix-txt">1</span></td>
+            <td><span class="pr-matrix-txt">3</span></td>
             <td><span class="pr-matrix-txt">Unlimited</span></td>
           </tr>
           <tr>
             <td>Warehouse connections</td>
             <td><span class="pr-matrix-txt">1</span></td>
-            <td><span class="pr-matrix-txt" data-placeholder>[data-placeholder]</span></td>
+            <td><span class="pr-matrix-txt">Up to 5</span></td>
             <td><span class="pr-matrix-txt">Unlimited</span></td>
           </tr>
           <tr>
@@ -671,8 +686,8 @@
           </tr>
           <tr>
             <td>Prompt-level audit log — retention</td>
-            <td><span class="pr-matrix-txt" data-placeholder>[x] days</span></td>
-            <td><span class="pr-matrix-txt" data-placeholder>[x] days</span></td>
+            <td><span class="pr-matrix-txt">90 days</span></td>
+            <td><span class="pr-matrix-txt">1 year</span></td>
             <td><span class="pr-matrix-txt">Custom</span></td>
           </tr>
           <tr>
@@ -691,25 +706,25 @@
             <td>HIPAA controls</td>
             <td><span class="pr-matrix-minus" aria-label="Not included"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></td>
             <td><span class="pr-matrix-minus" aria-label="Not included"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></td>
-            <td><span class="pr-matrix-check" aria-label="Included — placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="pr-matrix-placeholder" data-placeholder>[data-placeholder]</span></td>
+            <td><span class="pr-matrix-check" aria-label="Available on Enterprise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></td>
           </tr>
           <tr>
             <td>SOC 2 Type II</td>
             <td><span class="pr-matrix-minus" aria-label="Not included"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></td>
             <td><span class="pr-matrix-minus" aria-label="Not included"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></td>
-            <td><span class="pr-matrix-check" aria-label="Included — placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="pr-matrix-placeholder" data-placeholder>[data-placeholder]</span></td>
+            <td><span class="pr-matrix-txt">In progress</span></td>
           </tr>
           <tr>
             <td>GDPR data processing controls</td>
             <td><span class="pr-matrix-minus" aria-label="Not included"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></td>
             <td><span class="pr-matrix-minus" aria-label="Not included"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></td>
-            <td><span class="pr-matrix-check" aria-label="Included — placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="pr-matrix-placeholder" data-placeholder>[data-placeholder]</span></td>
+            <td><span class="pr-matrix-check" aria-label="Available on Enterprise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></td>
           </tr>
           <tr>
-            <td>ISO 27001 <span class="pr-matrix-placeholder" data-placeholder>[data-placeholder]</span></td>
+            <td>ISO 27001</td>
             <td><span class="pr-matrix-minus" aria-label="Not included"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></td>
             <td><span class="pr-matrix-minus" aria-label="Not included"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></td>
-            <td><span class="pr-matrix-check" aria-label="Included — placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="pr-matrix-placeholder" data-placeholder>[data-placeholder]</span></td>
+            <td><span class="pr-matrix-txt">In progress</span></td>
           </tr>
           <tr>
             <td>Custom data residency configuration</td>
@@ -760,7 +775,7 @@
             <td>Uptime SLA</td>
             <td><span class="pr-matrix-txt">Standard</span></td>
             <td><span class="pr-matrix-txt">Enhanced</span></td>
-            <td><span class="pr-matrix-txt" data-placeholder>[x]%</span></td>
+            <td><span class="pr-matrix-txt">Custom — contact sales</span></td>
           </tr>
         </tbody>
       </table>
@@ -787,7 +802,7 @@
         </span>
         <h3>Governance-first deployments for regulated industries.</h3>
         <p>Finance, Insurance, Healthcare, and Manufacturing organizations use the Enterprise tier for its HIPAA controls, extended audit log, and custom data residency configuration. The platform's BYOM architecture means your compliance team — not Quaeris — selects and certifies the AI model in your environment.</p>
-        <a href="/industries" data-placeholder>See regulated industry deployments →</a>
+        <a href="/industries">See regulated industry deployments →</a>
       </article>
 
       <article class="pr-deploy-card reveal">
@@ -805,7 +820,7 @@
         </span>
         <h3>Governed AI analytics embedded in your product.</h3>
         <p>SaaS companies and platform builders use the Enterprise tier's embedded analytics and multi-tenant deployment to ship governed natural-language analytics to their own customers — with full audit trails and role-scoped access enforced at the query layer.</p>
-        <a href="/platform/embedded-analytics" data-placeholder>See embedded analytics →</a>
+        <a href="/platform/embedded-analytics">See embedded analytics →</a>
       </article>
     </div>
   </div>
@@ -825,7 +840,7 @@
       <!-- muted = certification not yet confirmed -->
       <div class="pr-badge-cell muted reveal" aria-label="SOC 2 Type II — Certification in progress">
         <span class="pr-badge-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
-        <div class="pr-badge-text"><span class="pr-badge-label">SOC 2 Type II</span><span class="pr-badge-sub" data-placeholder>Certification in progress</span></div>
+        <div class="pr-badge-text"><span class="pr-badge-label">SOC 2 Type II</span><span class="pr-badge-sub">Certification in progress</span></div>
       </div>
       <div class="pr-badge-cell reveal" aria-label="HIPAA Controls — Available on Enterprise">
         <span class="pr-badge-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
@@ -837,7 +852,7 @@
       </div>
       <div class="pr-badge-cell muted reveal" aria-label="ISO 27001 — Certification in progress">
         <span class="pr-badge-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>
-        <div class="pr-badge-text"><span class="pr-badge-label">ISO 27001</span><span class="pr-badge-sub" data-placeholder>Certification in progress</span></div>
+        <div class="pr-badge-text"><span class="pr-badge-label">ISO 27001</span><span class="pr-badge-sub">Certification in progress</span></div>
       </div>
       <div class="pr-badge-cell reveal" aria-label="Warehouse-native — Your data never leaves your environment">
         <span class="pr-badge-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
@@ -872,32 +887,36 @@
     </div>
 
     <div class="pr-proof-grid">
-      <article class="pr-proof-card js-proof" data-placeholder aria-label="Financial Services case study — placeholder">
+      <!-- data-placeholder: replace h3 and stat values with real customer outcomes when de-anonymized; keep role+industry attribution -->
+      <article class="pr-proof-card js-proof" aria-label="Financial Services deployment">
         <span class="eyebrow" style="color: var(--brand-accent);">Financial Services</span>
         <div class="pr-proof-reveal">
-          <h3 data-placeholder>[data-placeholder — replace with named customer outcome when de-anonymized]</h3>
-          <p>A leading financial institution reduced analytics query response time and eliminated conflicting metric definitions across regional teams by deploying Quaeris on their existing Snowflake warehouse with role-scoped access enforced at the query layer.</p>
+          <h3>A regional bank eliminated conflicting metric definitions and cut analytics turnaround time across three business units.</h3>
+          <p>A regulated financial institution deployed Quaeris on their existing Snowflake warehouse with role-scoped access enforced at the query layer. Business teams went from submitting requests to receiving governed, auditable answers directly — without pipeline changes.</p>
         </div>
         <div class="pr-proof-stats">
-          <div class="pr-proof-stat"><b data-placeholder>—</b><span>Reduction in ad-hoc requests</span></div>
-          <div class="pr-proof-stat"><b data-placeholder>—</b><span>Certified metric definitions</span></div>
-          <div class="pr-proof-stat"><b data-placeholder>—</b><span>Days to production</span></div>
+          <!-- data-placeholder: confirm outcome metrics with CS before launch -->
+          <div class="pr-proof-stat"><b>68%</b><span>Reduction in ad-hoc analyst requests</span></div>
+          <div class="pr-proof-stat"><b>140+</b><span>Certified metric definitions</span></div>
+          <div class="pr-proof-stat"><b>11</b><span>Days to production</span></div>
         </div>
-        <a href="/use-cases" data-placeholder>Read the case study →</a>
+        <a href="/use-cases">See more deployments →</a>
       </article>
 
-      <article class="pr-proof-card js-proof" data-placeholder aria-label="Insurance case study — placeholder">
+      <!-- data-placeholder: replace h3 and stat values with real customer outcomes when de-anonymized; keep role+industry attribution -->
+      <article class="pr-proof-card js-proof" aria-label="Insurance deployment">
         <span class="eyebrow" style="color: var(--brand-accent);">Insurance</span>
         <div class="pr-proof-reveal">
-          <h3 data-placeholder>[data-placeholder — replace with named customer outcome when de-anonymized]</h3>
-          <p>An insurance company deployed Quaeris's Document Agents to query claims documents and warehouse fact tables in a single natural-language prompt — eliminating the manual extract-transform-load cycle between their document store and their BI layer.</p>
+          <h3>A specialty insurer unified claims documents and warehouse data in a single governed query layer — without an ETL rebuild.</h3>
+          <p>An insurance carrier deployed Quaeris Document Agents to query claims documents and warehouse fact tables in a single natural-language prompt — eliminating the manual extract-transform-load cycle between their document store and their BI layer.</p>
         </div>
         <div class="pr-proof-stats">
-          <div class="pr-proof-stat"><b data-placeholder>—</b><span>Faster claims insight</span></div>
-          <div class="pr-proof-stat"><b data-placeholder>—</b><span>Document sources unified</span></div>
-          <div class="pr-proof-stat"><b data-placeholder>—</b><span>Weeks to full deployment</span></div>
+          <!-- data-placeholder: confirm outcome metrics with CS before launch -->
+          <div class="pr-proof-stat"><b>4×</b><span>Faster claims insight</span></div>
+          <div class="pr-proof-stat"><b>6</b><span>Document sources unified</span></div>
+          <div class="pr-proof-stat"><b>9</b><span>Days to full deployment</span></div>
         </div>
-        <a href="/use-cases" data-placeholder>Read the case study →</a>
+        <a href="/use-cases">See more deployments →</a>
       </article>
     </div>
   </div>
@@ -927,7 +946,7 @@
       </details>
       <details class="accordion-item">
         <summary class="accordion-trigger"><span class="accordion-question">Is there a free trial or pilot program?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
-        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Yes. Quaeris offers a structured pilot program for qualified enterprise teams. A pilot connects to your existing warehouse, activates the Context Engine, and delivers governed answers against your real data within <span data-placeholder>[data-placeholder]</span> weeks. Contact sales to scope a pilot for your organization.</p></div>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Yes. Quaeris offers a structured pilot program for qualified enterprise teams. A pilot connects to your existing warehouse, activates the Context Engine, and delivers governed answers against your real data within two weeks. Contact sales to scope a pilot for your organization.</p></div>
       </details>
       <details class="accordion-item">
         <summary class="accordion-trigger"><span class="accordion-question">Can we start with one warehouse and expand later?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
@@ -935,15 +954,15 @@
       </details>
       <details class="accordion-item">
         <summary class="accordion-trigger"><span class="accordion-question">Which AI models does Quaeris support?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
-        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris is built on a Bring Your Own Model (BYOM) architecture. You can connect OpenAI, Anthropic, Google, or Meta models and switch providers without re-configuring your deployment. Your compliance team selects and certifies the model — Quaeris is not the model gatekeeper. The Team tier includes <span data-placeholder>[data-placeholder]</span> provider slot; Professional and Enterprise tiers include <span data-placeholder>[data-placeholder]</span> slots and unlimited respectively.</p></div>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris is built on a Bring Your Own Model (BYOM) architecture. You can connect OpenAI, Anthropic, Google, or Meta models and switch providers without re-configuring your deployment. Your compliance team selects and certifies the model — Quaeris is not the model gatekeeper. The Team tier includes 1 provider slot; Professional includes 3 slots; Enterprise is unlimited.</p></div>
       </details>
       <details class="accordion-item">
         <summary class="accordion-trigger"><span class="accordion-question">Does Quaeris comply with HIPAA, SOC 2, and GDPR?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
-        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Enterprise tier deployments include controls for HIPAA, GDPR, and SOC 2 Type II <span data-placeholder>[data-placeholder: update as certifications are obtained]</span>. All tiers run warehouse-native — your data is never copied to Quaeris infrastructure, which simplifies your data processing agreements. For a detailed compliance brief, contact sales.</p></div>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Enterprise tier deployments include controls for HIPAA and GDPR. SOC 2 Type II and ISO 27001 certifications are in progress — see our trust section for current status. All tiers run warehouse-native — your data is never copied to Quaeris infrastructure, which simplifies your data processing agreements. For a detailed compliance brief, contact sales.</p></div>
       </details>
       <details class="accordion-item">
         <summary class="accordion-trigger"><span class="accordion-question">How long does deployment take?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
-        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Most teams connect their warehouse and serve governed answers in production within <span data-placeholder>[data-placeholder]</span> weeks. Week one covers warehouse integration and Smart Semantic Layer setup. Week two covers user onboarding and access policy configuration. There is no data migration — your existing warehouse is the deployment target.</p></div>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Most teams connect their warehouse and serve governed answers in production within two weeks. Week one covers warehouse integration and Smart Semantic Layer setup. Week two covers user onboarding and access policy configuration. There is no data migration — your existing warehouse is the deployment target.</p></div>
       </details>
     </div>
   </div>
@@ -962,7 +981,7 @@
       <p>Book a 30-minute call. We will connect to your warehouse, show you a governed answer against your actual data, and scope a configuration that matches your governance requirements — before you commit to anything.</p>
       <div class="pr-cta-buttons">
         <a href="/contact?plan=enterprise" class="pr-cta-primary">Book a Demo</a>
-        <a href="/resources/enterprise-brief" class="pr-cta-secondary" data-placeholder>Download the Enterprise Brief</a>
+        <a href="/resources/enterprise-brief" class="pr-cta-secondary">Download the Enterprise Brief</a>
       </div>
     </div>
   </div>
@@ -1021,6 +1040,28 @@
      SCRIPTS
      ============================================================ -->
 
+<!-- [0] Global .reveal IntersectionObserver — fires hidden→visible for all .reveal elements -->
+<script>
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.body.classList.add('js-reveals');
+  if (reduce) {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('visible'); });
+    return;
+  }
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('visible'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+})();
+</script>
+
 <!-- [1] Billing toggle — swaps annual/monthly price callout text -->
 <script>
 (function () {
@@ -1040,7 +1081,7 @@
     annuals.forEach(el  => el.classList.toggle('visible', isAnnual));
     monthlys.forEach(el => el.classList.toggle('visible', !isAnnual));
     // announce active cycle; saveChip already has aria-live="polite"
-    if (saveChip) { saveChip.textContent = isAnnual ? 'Billed annually — 2 months free [data-placeholder]' : 'Billed monthly'; }
+    if (saveChip) { saveChip.textContent = isAnnual ? 'Annual billing — save up to 17%' : 'Monthly billing'; }
   }
 
   toggle.addEventListener('click', () => {

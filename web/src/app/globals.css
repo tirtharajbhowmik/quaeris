@@ -1887,7 +1887,8 @@ ul { list-style: none; }
 }
 @media (max-width: 640px) { .hero-h1 { font-size: 2.25rem; } }
 /* Accent headline line uses the brand accent (per-brand contrast verified in tokens). */
-.hero-h1 .accent-line { display: block; color: var(--brand-accent); }
+.accent-line { color: var(--brand-accent); }
+.hero-h1 .accent-line { display: block; }
 .hero-cta {
   display: inline-flex;
   align-items: center;

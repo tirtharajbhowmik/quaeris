@@ -99,7 +99,8 @@
 .docs-chips-label {
   font-size: 12px;
   font-weight: 600;
-  color: var(--text-tertiary);
+  /* Darkened from --text-tertiary to --text-secondary for contrast on hero bg */
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-right: var(--space-2);
@@ -167,6 +168,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  height: 100%; /* equal-height cards in the CSS grid */
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -218,7 +220,8 @@
 .docs-cat-count {
   font-size: 12px;
   font-weight: 600;
-  color: var(--text-tertiary);
+  /* Darkened from --text-tertiary to --text-secondary for WCAG AA on card bg */
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -320,8 +323,17 @@
 
 /* Step panels */
 .docs-step-panel { display: none; }
-.docs-step-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; }
-@media (max-width: 700px) { .docs-step-panel.active { grid-template-columns: 1fr; gap: var(--space-6); } }
+/* min-height prevents the Prev/pips/Next bar and everything below from jolting
+   when taller panel 1 switches to shorter panel 2 or 3. Value chosen to match
+   the tallest panel (code block + links); adjust at port time if content grows. */
+.docs-step-panel.active {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+  min-height: 320px;
+}
+@media (max-width: 700px) { .docs-step-panel.active { grid-template-columns: 1fr; gap: var(--space-6); min-height: auto; } }
 
 .docs-step-panel-text h3 {
   font-family: var(--font-display);
@@ -511,11 +523,13 @@
 }
 .docs-article-meta {
   font-size: 12px;
-  color: var(--text-tertiary);
+  /* Darkened from --text-tertiary (~2.6:1) to --text-secondary for WCAG AA on light bg */
+  color: var(--text-secondary);
   margin-top: 2px;
 }
 .docs-article-arrow {
   width: 18px; height: 18px;
+  /* Decorative chevron — tertiary OK here as it is supplemental to the link text */
   color: var(--text-tertiary);
   flex-shrink: 0;
   transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
@@ -536,7 +550,8 @@
 .docs-side-card-title {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text-tertiary);
+  /* Darkened from --text-tertiary to --text-secondary for WCAG AA on --bg-surface */
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1.5px;
 }
@@ -1425,11 +1440,22 @@
 
   /* ================================================================
      [4] SIDEBAR COUNT-UP on scroll-enter
+     A11Y: count-up elements have aria-hidden during animation so the
+     screen reader does not announce every intermediate frame. A visually-
+     hidden live region announces only the final value once.
   ================================================================ */
   if (!prefersReduced) {
     var sideSection = document.querySelector('.docs-side');
     var countEls = document.querySelectorAll('.docs-side-stat-num[data-count]');
     if (sideSection && countEls.length) {
+      /* Create a single off-screen live region to announce final values */
+      var liveRegion = document.createElement('span');
+      liveRegion.setAttribute('role', 'status');
+      liveRegion.setAttribute('aria-live', 'polite');
+      liveRegion.setAttribute('aria-atomic', 'true');
+      liveRegion.className = 'sr-only';
+      document.body.appendChild(liveRegion);
+
       sideSection.classList.add('js');
       onEnter(sideSection, function () {
         countEls.forEach(function (el) {
@@ -1438,12 +1464,19 @@
           var duration = 900;
           var start = null;
           var startVal = 0;
+          /* Hide from AT during animation; announce final value only */
+          el.setAttribute('aria-hidden', 'true');
           function step(ts) {
             if (!start) start = ts;
             var progress = Math.min((ts - start) / duration, 1);
             var eased = 1 - Math.pow(1 - progress, 3);
             el.textContent = Math.round(startVal + (target - startVal) * eased) + suffix;
-            if (progress < 1) requestAnimationFrame(step);
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              el.removeAttribute('aria-hidden');
+              liveRegion.textContent = el.textContent + ' ' + (el.nextElementSibling ? el.nextElementSibling.textContent : '');
+            }
           }
           requestAnimationFrame(step);
         });

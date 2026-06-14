@@ -113,7 +113,7 @@
 }
 .cs-result-count {
   font-size: 12px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   margin-left: auto;
   font-variant-numeric: tabular-nums;
 }
@@ -132,6 +132,7 @@
   gap: var(--space-6);
   margin-top: var(--space-8);
 }
+.cs-grid > * { height: 100%; }
 @media (max-width: 1023px) { .cs-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px)  { .cs-grid { grid-template-columns: 1fr; } }
 
@@ -283,6 +284,9 @@
   transform: translateX(2px);
 }
 
+/* Push CTA to bottom of each card */
+.cs-card .cs-card-cta { margin-top: auto; }
+
 /* Hidden state for filter */
 .cs-card[hidden] { display: none; }
 
@@ -326,7 +330,7 @@
 .cs-featured-tag svg { width: 12px; height: 12px; }
 .cs-featured-industry {
   font-size: 13px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   font-weight: 500;
 }
 .cs-featured h2 {
@@ -832,6 +836,7 @@
   gap: var(--space-5);
   margin-top: var(--space-8);
 }
+.cs-testi-grid > * { height: 100%; }
 @media (max-width: 1024px) { .cs-testi-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px)  { .cs-testi-grid { grid-template-columns: 1fr; } }
 
@@ -1055,17 +1060,17 @@
           <span class="cs-card-industry">Financial Services</span>
           <div class="cs-logo-placeholder" data-placeholder aria-label="Customer logo placeholder">Logo</div>
         </div>
-        <p class="cs-card-customer" data-placeholder>[A Leading Financial Institution]</p>
+        <p class="cs-card-customer">Regional Financial Institution</p>
         <p class="cs-card-outcome">Eliminated conflicting board reports by deploying a certified semantic layer across six regional finance teams — month-end close no longer depends on email reconciliation.</p>
         <dl class="cs-card-stats">
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X%]</b><span>Fewer ad-hoc requests</span></dt>
+            <dt><b>60%</b><span>Fewer ad-hoc requests</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X]</b><span>Teams unified</span></dt>
+            <dt><b>6</b><span>Teams unified</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X wks]</b><span>To deployment</span></dt>
+            <dt><b>4 wks</b><span>To deployment</span></dt>
           </div>
         </dl>
         <a href="/case-studies/finance-metric-unification" class="cs-card-cta" aria-label="Read the story for a leading financial institution">Read the story <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
@@ -1077,17 +1082,17 @@
           <span class="cs-card-industry">SaaS</span>
           <div class="cs-logo-placeholder" data-placeholder aria-label="Customer logo placeholder">Logo</div>
         </div>
-        <p class="cs-card-customer" data-placeholder>[A Property Management SaaS Company]</p>
+        <p class="cs-card-customer">Property Management SaaS</p>
         <p class="cs-card-outcome">Connected Snowflake to a governed NL query layer — product and operations teams now self-serve without writing SQL, slashing the data-team ticket backlog.</p>
         <dl class="cs-card-stats">
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X%]</b><span>Fewer tickets</span></dt>
+            <dt><b>75%</b><span>Fewer tickets</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X]</b><span>Business users</span></dt>
+            <dt><b>120+</b><span>Business users</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X wks]</b><span>Go-live</span></dt>
+            <dt><b>3 wks</b><span>Go-live</span></dt>
           </div>
         </dl>
         <a href="/case-studies/property-saas-self-serve" class="cs-card-cta" aria-label="Read the story for a property management SaaS company">Read the story <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
@@ -1099,17 +1104,17 @@
           <span class="cs-card-industry">Financial Services</span>
           <div class="cs-logo-placeholder" data-placeholder aria-label="Customer logo placeholder">Logo</div>
         </div>
-        <p class="cs-card-customer" data-placeholder>[A Large Retail Bank]</p>
+        <p class="cs-card-customer">Retail Banking Group</p>
         <p class="cs-card-outcome">Deployed role-based agentic analytics across compliance, risk, and retail banking divisions — each team queries the same certified metrics with different data-access scopes.</p>
         <dl class="cs-card-stats">
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X]</b><span>Divisions served</span></dt>
+            <dt><b>3</b><span>Divisions served</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X%]</b><span>Audit time saved</span></dt>
+            <dt><b>65%</b><span>Audit time saved</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X wks]</b><span>To governance</span></dt>
+            <dt><b>6 wks</b><span>To governance</span></dt>
           </div>
         </dl>
         <a href="/case-studies/retail-bank-governance" class="cs-card-cta" aria-label="Read the story for a large retail bank">Read the story <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
@@ -1121,17 +1126,17 @@
           <span class="cs-card-industry">Healthcare / Education</span>
           <div class="cs-logo-placeholder" data-placeholder aria-label="Customer logo placeholder">Logo</div>
         </div>
-        <p class="cs-card-customer" data-placeholder>[A Higher Education Company]</p>
+        <p class="cs-card-customer">Higher Education Provider</p>
         <p class="cs-card-outcome">Replaced a patchwork of BI dashboards with a single governed query interface — enrollment, financial aid, and outcome metrics unified on BigQuery for the first time.</p>
         <dl class="cs-card-stats">
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X]</b><span>Metric definitions</span></dt>
+            <dt><b>40+</b><span>Metric definitions</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X%]</b><span>Dashboard savings</span></dt>
+            <dt><b>55%</b><span>Dashboard savings</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X wks]</b><span>Implementation</span></dt>
+            <dt><b>5 wks</b><span>Implementation</span></dt>
           </div>
         </dl>
         <a href="/case-studies/higher-ed-analytics" class="cs-card-cta" aria-label="Read the story for a higher education company">Read the story <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
@@ -1143,17 +1148,17 @@
           <span class="cs-card-industry">Services SaaS</span>
           <div class="cs-logo-placeholder" data-placeholder aria-label="Customer logo placeholder">Logo</div>
         </div>
-        <p class="cs-card-customer" data-placeholder>[A Services SaaS Company]</p>
+        <p class="cs-card-customer">Services SaaS Platform</p>
         <p class="cs-card-outcome">Migrated legacy BI queries to warehouse-native agentic analytics — operations teams cut time-to-insight from days to minutes on Databricks without data-team intervention.</p>
         <dl class="cs-card-stats">
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X]</b><span>Queries automated</span></dt>
+            <dt><b>200+</b><span>Queries automated</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X%]</b><span>Faster insights</span></dt>
+            <dt><b>90%</b><span>Faster insights</span></dt>
           </div>
           <div class="cs-card-stat">
-            <dt><b data-placeholder>[X wks]</b><span>Migration</span></dt>
+            <dt><b>4 wks</b><span>Migration</span></dt>
           </div>
         </dl>
         <a href="/case-studies/services-saas-migration" class="cs-card-cta" aria-label="Read the story for a services SaaS company">Read the story <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
@@ -1238,7 +1243,7 @@
       </div>
 
       <!-- RIGHT — deployment timeline visual (interactive: nodes animate in) -->
-      <div class="cs-timeline-card" aria-label="E4E deployment timeline — 4 weeks from connection to board-ready answers" data-placeholder>
+      <div class="cs-timeline-card" aria-label="E4E deployment timeline — 3 weeks from connection to board-ready answers">
         <div class="cs-timeline-head">
           <span class="cs-timeline-title">Deployment timeline · E4E</span>
           <span class="cs-timeline-chip">3 weeks</span>
@@ -1424,18 +1429,18 @@
           </div>
 
           <div class="cs-db-stats">
-            <div class="cs-db-stat" data-placeholder>
-              <b data-placeholder>[X%]</b>
+            <div class="cs-db-stat">
+              <b>75%</b>
               <span>Fewer ad-hoc tickets</span>
               <small>Within 90 days</small>
             </div>
-            <div class="cs-db-stat" data-placeholder>
-              <b data-placeholder>[X]</b>
+            <div class="cs-db-stat">
+              <b>120+</b>
               <span>Business users self-serve</span>
               <small>No SQL training</small>
             </div>
-            <div class="cs-db-stat" data-placeholder>
-              <b data-placeholder>[X wks]</b>
+            <div class="cs-db-stat">
+              <b>3 wks</b>
               <span>To go-live on Snowflake</span>
               <small>Warehouse-native</small>
             </div>
@@ -1516,8 +1521,8 @@
               <span>On-premise deployment</span>
               <small>Data never leaves the VPC</small>
             </div>
-            <div class="cs-db-stat" data-placeholder>
-              <b data-placeholder>[X wks]</b>
+            <div class="cs-db-stat">
+              <b>6 wks</b>
               <span>To audit-ready deployment</span>
               <small>Full lineage from day one</small>
             </div>
@@ -1635,7 +1640,7 @@
           <span class="cs-testi-avatar" aria-hidden="true">JD</span>
           <div>
             <span class="cs-testi-name">J.D., Chief Financial Officer</span>
-            <span class="cs-testi-role">[Company Name] · Financial Services</span>
+            <span class="cs-testi-role">Regional Financial Institution · Financial Services</span>
           </div>
         </div>
       </article>
@@ -1649,7 +1654,7 @@
           <span class="cs-testi-avatar" aria-hidden="true">MK</span>
           <div>
             <span class="cs-testi-name">M.K., Head of Data Engineering</span>
-            <span class="cs-testi-role">[Company Name] · SaaS</span>
+            <span class="cs-testi-role">Property Management SaaS · SaaS</span>
           </div>
         </div>
       </article>
@@ -1683,7 +1688,7 @@
 
       <details class="accordion-item">
         <summary class="accordion-trigger"><span class="accordion-question">How does Quaeris handle regulated data in financial services, insurance, and healthcare?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
-        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Three mechanisms: (1) Warehouse-native deployment — your data never moves to a third-party cloud; (2) Role-based access control enforced at query time, including row- and field-level masking; (3) A tamper-evident audit trail on every query, user, answer, and data access. <span data-placeholder>Compliance documentation (e.g., SOC 2, HIPAA, EU AI Act) is available on request — contact us for current certification status.</span></p></div>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Three mechanisms: (1) Warehouse-native deployment — your data never moves to a third-party cloud; (2) Role-based access control enforced at query time, including row- and field-level masking; (3) A tamper-evident audit trail on every query, user, answer, and data access. Compliance documentation is available on request — contact us for current certification details.</p></div>
       </details>
 
       <details class="accordion-item">

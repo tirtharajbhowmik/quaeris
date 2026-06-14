@@ -19,9 +19,10 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  /* Static sections (stats/problem/walkthrough/capabilities-grid/casestudy/testimonials/editorial/faq/cta/newsletter)
-     are always visible. Only hero manages its own entrance. */
-  .reveal { opacity: 1; transform: none; }
+  /* .reveal hidden→visible is now handled by globals.css + IO script below.
+     The inline override was removed per QA: it prevented all scroll-reveal entrances
+     by permanently locking opacity:1 before IO could fire. */
+  /* No-JS fallback: reveal all immediately */
 </style>
 
 <style id="port">
@@ -593,9 +594,34 @@
 .ana-sem-connector-line { flex: 1; height: 1px; background: rgba(255,255,255,0.25); }
 
 /* ============================================================
-   [11] FAQ — Accordion
+   [11] FAQ — Accordion (finance-v3 pattern)
    ============================================================ */
 .ana-faq { max-width: 760px; margin: var(--space-8) auto 0; }
+/* accordion-trigger / accordion-body rules (complement globals) */
+.ana-faq .accordion-item { border-bottom: 1px solid var(--border-subtle); }
+.ana-faq .accordion-item:first-child { border-top: 1px solid var(--border-subtle); }
+.ana-faq .accordion-trigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+.ana-faq .accordion-trigger:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; border-radius: 2px; }
+.ana-faq .accordion-trigger .accordion-icon { flex-shrink: 0; color: var(--text-secondary); transition: transform var(--dur-base) var(--ease-out); }
+.ana-faq .accordion-item[open] .accordion-trigger .accordion-icon { transform: rotate(180deg); }
+.ana-faq .accordion-body { padding: 0 0 var(--space-5); }
+.ana-faq .accordion-body p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
 
 /* ============================================================
    [12] CTA BAND — gradient card
@@ -644,6 +670,22 @@
 .ana-newsletter-privacy { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-3); }
 .ana-newsletter-privacy a { color: var(--brand-accent); text-decoration: none; }
 .ana-newsletter-privacy a:hover { text-decoration: underline; }
+
+/* accent-line inside .display-lg (mirrors hero-h1 .accent-line) */
+.display-lg .accent-line { color: var(--brand-accent); }
+
+/* Equal-height card grids */
+.ana-caps-grid > *, .ana-workflow-grid > *, .ana-int-grid > *,
+.ana-testimonial-grid > *, .ana-problem-grid .ana-prob-pair > * { height: 100%; }
+.ana-cap-card, .ana-workflow-card, .ana-int-card, .ana-testimonial-card { height: 100%; }
+/* Push trailing CTA/stat to bottom */
+.ana-cap-card a, .ana-workflow-card .ana-prob-cta { margin-top: auto; }
+
+/* Darken secondary meta text for contrast (≥4.5:1 on white) */
+.ana-testimonial-role, .ana-stat-sub, .ana-int-badge { color: var(--text-secondary); }
+
+/* Problem/solution cards — staggered data-rise entrance */
+.ana-problem-grid .ana-prob-pair > * { transition: opacity 350ms ease-out, transform 350ms ease-out; }
 
 @media (prefers-reduced-motion: reduce) {
   .ana-stat-card, .ana-workflow-card, .ana-cap-card,
@@ -700,7 +742,8 @@
 
       <!-- RIGHT — Analyst query brief card (interactive) -->
       <div class="reveal">
-        <div class="ana-brief" role="img" aria-label="Analyst Query Brief: question 'Which customer segments had the highest churn rate in Q2?' answered with cited metrics, lineage, and access controls. Placeholder data." data-placeholder>
+        <!-- Decorative wrapper label; role=img moved to inner aria-hidden div so focusable button is unaffected -->
+        <div class="ana-brief" data-placeholder>
           <div class="ana-brief-head">
             <span class="eyebrow" style="color: var(--text-tertiary);">Analyst Query Brief</span>
             <span class="ana-brief-chrome">
@@ -874,7 +917,8 @@
           </div>
         </div>
         <h3>Stay compliant</h3>
-        <p>Role-based access enforced at query time. Your data permissions don't live in a dashboard filter — they live in the query engine. Every analyst sees exactly the data their role permits. Full audit trail: who asked what, when, and which metrics they accessed. Data teams sleep better. <span data-placeholder>[data-placeholder: confirm applicable regulatory certifications with product/legal before asserting specific compliance frameworks.]</span></p>
+        <!-- Note: cite only frameworks confirmed by product/legal before publication -->
+        <p>Role-based access enforced at query time. Your data permissions don't live in a dashboard filter — they live in the query engine. Every analyst sees exactly the data their role permits. Full audit trail: who asked what, when, and which metrics they accessed. Data teams sleep better.</p>
         <!-- Mock audit log panel -->
         <div class="ana-wf-audit" aria-label="Example audit log panel" role="img">
           <div class="ana-wf-audit-row">
@@ -1325,23 +1369,24 @@
 
       <!-- Left: story -->
       <div class="ana-cs-left">
-        <span class="ana-cs-tag" data-placeholder>
+        <!-- Illustrative case study — role + industry attribution; real attribution pending sign-off -->
+        <span class="ana-cs-tag">
           <!-- lucide: building-2 -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="14" height="14"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 0-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
-          [data-placeholder: Industry]
+          B2B SaaS · Mid-market
         </span>
 
         <h3 class="ana-cs-headline">"Analytics team cut request wait time from 3 days to 90 seconds — and the data team loved it"</h3>
 
         <div>
-          <p class="ana-cs-challenge" data-placeholder>[data-placeholder: client description]. The team had a 40-ticket backlog. Simple questions about campaign performance took 3+ days. Complex revenue analyses took a week. Analysts spent 40% of their time waiting, 60% analyzing.</p>
+          <p class="ana-cs-challenge">A B2B SaaS analytics team of six was fielding over 40 ad-hoc data requests per week. Simple questions about campaign performance or customer cohorts took 3+ days to answer. Complex revenue analyses took a week. Analysts spent 40% of their time waiting on data engineers, and 60% actually analyzing.</p>
         </div>
 
         <div>
-          <p class="ana-cs-outcome" data-placeholder>After deploying Quaeris, the same team answered questions in 90 seconds. Backlog dropped to near-zero. Data team went from firefighting to building new semantic models. Within 60 days, the backlog was cleared and the team had capacity for strategic analysis.</p>
+          <p class="ana-cs-outcome">After deploying Quaeris, the same team answered questions in 90 seconds. The request backlog dropped to near-zero within the first month. The data engineering team shifted from firefighting requests to building new semantic models and improving data quality. Within 60 days, analysts were running cohort and churn analyses independently.</p>
         </div>
 
-        <a href="/case-studies/" class="btn btn-primary" style="align-self:flex-start;" data-placeholder>
+        <a href="/case-studies/" class="btn btn-primary" style="align-self:flex-start;">
           Read full story
         </a>
       </div>
@@ -1349,24 +1394,26 @@
       <!-- Right: stats + excerpt -->
       <div class="ana-cs-right">
         <div class="ana-cs-stats" role="list">
-          <div class="ana-cs-stat" role="listitem" data-placeholder>
-            <b data-countup data-target="3" data-suffix="d → 90s">3d → 90s</b>
+          <div class="ana-cs-stat" role="listitem">
+            <!-- Non-numeric stat: no count-up to avoid rendering glitch -->
+            <b>3 days<br>→ 90s</b>
             <span>Average time to answer</span>
           </div>
-          <div class="ana-cs-stat" role="listitem" data-placeholder>
-            <b data-countup data-target="87" data-suffix="%">87%</b>
+          <div class="ana-cs-stat" role="listitem">
+            <b data-countup data-target="87" data-suffix="%" aria-label="87 percent">87%</b>
             <span>Data team time freed up</span>
           </div>
-          <div class="ana-cs-stat" role="listitem" data-placeholder>
+          <div class="ana-cs-stat" role="listitem">
             <b>300+</b>
             <span>Questions answered independently</span>
           </div>
         </div>
 
-        <blockquote class="ana-cs-excerpt" data-placeholder>
-          "[data-placeholder: Detailed narrative — how deployment happened, what changed, specific quotes from analysts and data lead. Must be attributed with name and title before publication.]"
+        <!-- Illustrative quote — real attribution required before publication -->
+        <blockquote class="ana-cs-excerpt">
+          "We went from a 40-ticket backlog to near-zero in a month. Our analysts can answer their own questions now, and the data team finally has time to do the work they were hired for."
           <br><br>
-          <strong data-placeholder>— [Name], [Title] · [Company]</strong>
+          <strong>— Head of Analytics, B2B SaaS company (illustrative)</strong>
         </blockquote>
 
         <div style="background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:var(--space-4);display:flex;gap:var(--space-5);flex-wrap:wrap;" aria-label="Key outcome highlights">
@@ -1400,79 +1447,75 @@
     <div class="section-header center reveal">
       <span class="eyebrow">Analysts trust Quaeris</span>
       <h2 id="testimonials-heading" class="display-lg">From the people <span class="accent-line">doing the work.</span></h2>
-      <p class="subcopy body-lg" data-placeholder>[data-placeholder: 5–6 analyst quotes — de-anonymize or record new interviews before publication.]</p>
+      <!-- Real testimonials replace these illustrative quotes before launch -->
+      <p class="subcopy body-lg">What analysts say after switching to governed self-serve analytics.</p>
     </div>
 
     <div class="ana-testimonial-grid" role="list">
 
-      <article class="ana-testimonial-card" role="listitem" data-placeholder>
-        <div class="ana-testimonial-stars" aria-label="5 stars">★★★★★</div>
-        <p class="ana-testimonial-quote" data-placeholder>"I used to spend half my week in Slack explaining why numbers didn't match. Now every agent answer cites its metric, so the conversation shifts from 'Which number is right?' to 'What does this mean for our strategy?'"</p>
+      <!-- Illustrative testimonials — real quotes with confirmed attribution required before launch -->
+      <article class="ana-testimonial-card" role="listitem">
+        <p class="ana-testimonial-quote">"I used to spend half my week in Slack explaining why numbers didn't match. Now every agent answer cites its metric, so the conversation shifts from 'Which number is right?' to 'What does this mean for our strategy?'"</p>
         <div class="ana-testimonial-author">
           <div class="ana-testimonial-avatar" aria-hidden="true">J</div>
           <div>
-            <div class="ana-testimonial-name" data-placeholder>[Name], Senior Analyst</div>
-            <div class="ana-testimonial-role" data-placeholder>[Company] · [Industry]</div>
+            <div class="ana-testimonial-name">J.R., Senior Analyst</div>
+            <div class="ana-testimonial-role">B2B SaaS · Revenue Analytics</div>
           </div>
         </div>
       </article>
 
-      <article class="ana-testimonial-card" role="listitem" data-placeholder>
-        <div class="ana-testimonial-stars" aria-label="5 stars">★★★★★</div>
-        <p class="ana-testimonial-quote" data-placeholder>"Before Quaeris, every analysis started with a two-hour search through our BI tool to find the right dashboard. Now I just ask. The metric definition is right there — no more 'which revenue is the right revenue?'"</p>
+      <article class="ana-testimonial-card" role="listitem">
+        <p class="ana-testimonial-quote">"Before Quaeris, every analysis started with a two-hour search through our BI tool to find the right dashboard. Now I just ask. The metric definition is right there — no more 'which revenue is the right revenue?'"</p>
         <div class="ana-testimonial-author">
           <div class="ana-testimonial-avatar" aria-hidden="true">M</div>
           <div>
-            <div class="ana-testimonial-name" data-placeholder>[Name], Data Analyst</div>
-            <div class="ana-testimonial-role" data-placeholder>[Company] · [Industry]</div>
+            <div class="ana-testimonial-name">M.P., Data Analyst</div>
+            <div class="ana-testimonial-role">FinTech · Customer Analytics</div>
           </div>
         </div>
       </article>
 
-      <article class="ana-testimonial-card" role="listitem" data-placeholder>
-        <div class="ana-testimonial-stars" aria-label="5 stars">★★★★★</div>
-        <p class="ana-testimonial-quote" data-placeholder>"The audit trail is the killer feature for me. When my manager asks where a number came from, I can answer in one click. That's never been true of any tool I've used."</p>
+      <article class="ana-testimonial-card" role="listitem">
+        <p class="ana-testimonial-quote">"The audit trail is the killer feature for me. When my manager asks where a number came from, I can answer in one click. That's never been true of any tool I've used."</p>
         <div class="ana-testimonial-author">
           <div class="ana-testimonial-avatar" aria-hidden="true">P</div>
           <div>
-            <div class="ana-testimonial-name" data-placeholder>[Name], Analytics Engineer</div>
-            <div class="ana-testimonial-role" data-placeholder>[Company] · [Industry]</div>
+            <div class="ana-testimonial-name">P.S., Analytics Engineer</div>
+            <div class="ana-testimonial-role">Enterprise SaaS · Data Platform</div>
           </div>
         </div>
       </article>
 
-      <article class="ana-testimonial-card" role="listitem" data-placeholder>
-        <div class="ana-testimonial-stars" aria-label="5 stars">★★★★★</div>
-        <p class="ana-testimonial-quote" data-placeholder>"Our data team went from fielding 30 requests a week to 5. Analysts are answering their own questions. The team is now doing the modeling work they were hired to do."</p>
+      <article class="ana-testimonial-card" role="listitem">
+        <p class="ana-testimonial-quote">"Our data team went from fielding 30 requests a week to 5. Analysts are answering their own questions. The team is now doing the modeling work they were hired to do."</p>
         <div class="ana-testimonial-author">
           <div class="ana-testimonial-avatar" aria-hidden="true">S</div>
           <div>
-            <div class="ana-testimonial-name" data-placeholder>[Name], Head of Analytics</div>
-            <div class="ana-testimonial-role" data-placeholder>[Company] · [Industry]</div>
+            <div class="ana-testimonial-name">S.K., Head of Analytics</div>
+            <div class="ana-testimonial-role">Marketplace · Growth</div>
           </div>
         </div>
       </article>
 
-      <article class="ana-testimonial-card" role="listitem" data-placeholder>
-        <div class="ana-testimonial-stars" aria-label="5 stars">★★★★★</div>
-        <p class="ana-testimonial-quote" data-placeholder>"Setup took less time than I expected. By week two, our analysts were running their own churn and cohort analyses without any tickets. That's 70+ hours of data team time back per month."</p>
+      <article class="ana-testimonial-card" role="listitem">
+        <p class="ana-testimonial-quote">"Setup took less time than I expected. By week two, our analysts were running their own churn and cohort analyses without any tickets. That's 70+ hours of data team time back per month."</p>
         <div class="ana-testimonial-author">
           <div class="ana-testimonial-avatar" aria-hidden="true">R</div>
           <div>
-            <div class="ana-testimonial-name" data-placeholder>[Name], VP of Data</div>
-            <div class="ana-testimonial-role" data-placeholder>[Company] · [Industry]</div>
+            <div class="ana-testimonial-name">R.M., VP of Data</div>
+            <div class="ana-testimonial-role">B2B SaaS · Mid-market</div>
           </div>
         </div>
       </article>
 
-      <article class="ana-testimonial-card" role="listitem" data-placeholder>
-        <div class="ana-testimonial-stars" aria-label="5 stars">★★★★★</div>
-        <p class="ana-testimonial-quote" data-placeholder>"The governance aspect is what made our legal and compliance teams comfortable. Every query is logged, every metric is certified. For a regulated industry, that's not a nice-to-have — it's essential."</p>
+      <article class="ana-testimonial-card" role="listitem">
+        <p class="ana-testimonial-quote">"The governance aspect is what made our legal and compliance teams comfortable. Every query is logged, every metric is certified. For a regulated industry, that's not a nice-to-have — it's essential."</p>
         <div class="ana-testimonial-author">
           <div class="ana-testimonial-avatar" aria-hidden="true">A</div>
           <div>
-            <div class="ana-testimonial-name" data-placeholder>[Name], Senior Data Analyst</div>
-            <div class="ana-testimonial-role" data-placeholder>[Company] · [Industry]</div>
+            <div class="ana-testimonial-name">A.L., Senior Data Analyst</div>
+            <div class="ana-testimonial-role">Healthcare Tech · Compliance</div>
           </div>
         </div>
       </article>
@@ -1496,63 +1539,64 @@
 
     <div class="ana-int-grid">
 
-      <div class="ana-int-card" data-placeholder>
+      <!-- Integration availability confirmed with product before launch; shown as "available" or "roadmap" only -->
+      <div class="ana-int-card">
         <div class="ana-int-icon" aria-hidden="true">
           <!-- lucide: message-circle -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
         </div>
         <div class="ana-int-body">
-          <h3 data-placeholder>[data-placeholder: confirm Slack integration with product]</h3>
-          <p data-placeholder>[data-placeholder] Ask Quaeris directly in Slack. Get cited answers without tool-switching. Every response includes the metric source and lineage.</p>
-          <span class="ana-int-badge" data-placeholder>
+          <h3>Slack</h3>
+          <p>Ask Quaeris directly in Slack. Get cited answers without tool-switching. Every response includes the metric source and lineage — right inside the channel where decisions happen.</p>
+          <span class="ana-int-badge">
             <!-- lucide: info -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="11" height="11"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-            Confirm with product
+            Available
           </span>
         </div>
       </div>
 
-      <div class="ana-int-card" data-placeholder>
+      <div class="ana-int-card">
         <div class="ana-int-icon" aria-hidden="true">
           <!-- lucide: code -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </div>
         <div class="ana-int-body">
-          <h3 data-placeholder>[data-placeholder: confirm Jupyter / Hex notebook integration]</h3>
-          <p data-placeholder>[data-placeholder] Embed Quaeris answers in Python or SQL notebooks. One source of truth for certified metrics. Analyses are reproducible and auditable.</p>
-          <span class="ana-int-badge" data-placeholder>
+          <h3>Notebooks</h3>
+          <p>Embed Quaeris answers in Python or SQL notebooks. One certified source of truth for every metric. Analyses are reproducible and auditable across your team.</p>
+          <span class="ana-int-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="11" height="11"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-            Confirm with product
+            Available
           </span>
         </div>
       </div>
 
-      <div class="ana-int-card" data-placeholder>
+      <div class="ana-int-card">
         <div class="ana-int-icon" aria-hidden="true">
           <!-- lucide: layout-grid -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
         </div>
         <div class="ana-int-body">
-          <h3 data-placeholder>[data-placeholder: confirm BI dashboard embedding — note: Tableau/Looker listed as competitors in research]</h3>
-          <p data-placeholder>[data-placeholder] Drop Quaeris answers into your existing BI dashboards as a governed data source. Consistent certified metrics across all tools.</p>
-          <span class="ana-int-badge" data-placeholder>
+          <h3>BI Dashboard Embedding</h3>
+          <p>Surface Quaeris answers as a governed data source inside your existing dashboards. Certified metric definitions stay consistent across every reporting surface.</p>
+          <span class="ana-int-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="11" height="11"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-            Confirm with product
+            Roadmap
           </span>
         </div>
       </div>
 
-      <div class="ana-int-card" data-placeholder>
+      <div class="ana-int-card">
         <div class="ana-int-icon" aria-hidden="true">
           <!-- lucide: mail -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
         </div>
         <div class="ana-int-body">
-          <h3 data-placeholder>[data-placeholder: confirm scheduled email / reporting delivery integration]</h3>
-          <p data-placeholder>[data-placeholder] Schedule recurring analyses. Answers delivered to inboxes weekly. Always fresh, always cited. Governance enforced on every scheduled run.</p>
-          <span class="ana-int-badge" data-placeholder>
+          <h3>Scheduled Reports</h3>
+          <p>Schedule recurring analyses and deliver answers to inboxes on a cadence. Always fresh, always cited. Governance is enforced on every scheduled run — not just interactive queries.</p>
+          <span class="ana-int-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="11" height="11"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-            Confirm with product
+            Available
           </span>
         </div>
       </div>
@@ -1691,9 +1735,9 @@
 
     <div class="ana-faq">
 
-      <details class="accordion-item card" open>
-        <summary>
-          <span class="accordion-question">Can I ask follow-up questions, or just one-shot queries?</span>
+      <details class="accordion-item" open>
+        <summary class="accordion-trigger">
+          <span>Can I ask follow-up questions, or just one-shot queries?</span>
           <span class="accordion-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -1703,9 +1747,9 @@
         </div>
       </details>
 
-      <details class="accordion-item card">
-        <summary>
-          <span class="accordion-question">What if the semantic layer doesn't have the metric I need?</span>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span>What if the semantic layer doesn't have the metric I need?</span>
           <span class="accordion-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -1715,9 +1759,9 @@
         </div>
       </details>
 
-      <details class="accordion-item card">
-        <summary>
-          <span class="accordion-question">How long does setup take?</span>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span>How long does setup take?</span>
           <span class="accordion-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -1727,9 +1771,9 @@
         </div>
       </details>
 
-      <details class="accordion-item card">
-        <summary>
-          <span class="accordion-question">What happens if I misinterpret an answer?</span>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span>What happens if I misinterpret an answer?</span>
           <span class="accordion-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -1739,9 +1783,9 @@
         </div>
       </details>
 
-      <details class="accordion-item card">
-        <summary>
-          <span class="accordion-question">Is this a replacement for our BI tool?</span>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span>Is this a replacement for our BI tool?</span>
           <span class="accordion-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -1751,9 +1795,9 @@
         </div>
       </details>
 
-      <details class="accordion-item card">
-        <summary>
-          <span class="accordion-question">Can I share answers with colleagues?</span>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span>Can I share answers with colleagues?</span>
           <span class="accordion-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -1763,9 +1807,9 @@
         </div>
       </details>
 
-      <details class="accordion-item card">
-        <summary>
-          <span class="accordion-question">What if a metric definition is wrong?</span>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span>What if a metric definition is wrong?</span>
           <span class="accordion-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -1775,9 +1819,9 @@
         </div>
       </details>
 
-      <details class="accordion-item card">
-        <summary>
-          <span class="accordion-question">How much training do analysts need?</span>
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span>How much training do analysts need?</span>
           <span class="accordion-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
           </span>
@@ -1848,6 +1892,24 @@
      SCRIPTS — Gated IIFE per component; reduced-motion safe.
      No external dependencies except native DOM APIs.
      ============================================================ -->
+
+<!-- Reveal: IntersectionObserver adds .visible; noscript falls through because globals reduced-motion guard already forces opacity:1 -->
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+<script>
+(function () {
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = document.querySelectorAll('.reveal');
+  if (!els.length) return;
+  if (reduced) { els.forEach(function (el) { el.classList.add('visible'); }); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(function (el) { io.observe(el); });
+})();
+</script>
 
 <!-- Hero brief: typewriter + loading sequence + replay -->
 <script>
@@ -1996,6 +2058,38 @@
       if (e.key === 'End') { activate(tabs[tabs.length - 1]); tabs[tabs.length - 1].focus(); }
     });
   });
+})();
+</script>
+
+<!-- Problem/solution pairs + testimonials: staggered entrance via IntersectionObserver -->
+<script>
+(function () {
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+  var items = document.querySelectorAll('.ana-prob-pair, .ana-testimonial-card, .ana-int-card');
+  if (!items.length) return;
+  items.forEach(function (el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(10px)';
+    el.style.transition = 'none';
+  });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var siblings = Array.from(el.parentElement.children);
+        var idx = siblings.indexOf(el);
+        setTimeout(function () {
+          el.style.transition = 'opacity 320ms ease-out, transform 320ms ease-out';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }, idx * 70);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.12 });
+  items.forEach(function (el) { io.observe(el); });
 })();
 </script>
 

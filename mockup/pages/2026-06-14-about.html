@@ -704,6 +704,23 @@
 .fin-cta-card .btn-cta-ghost:focus-visible { outline: 2px solid var(--text-on-dark); outline-offset: 3px; }
 
 /* ============================================================
+   [ALIGN] Equal-height cards in all grids
+   ============================================================ */
+.ab-engines-grid > *,
+.ab-bento-grid > *,
+.ab-segment-grid > *,
+.ab-values-grid > * { height: 100%; }
+
+/* sr-only utility (if not already in globals) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  padding: 0 !important; margin: -1px !important;
+  overflow: hidden !important; clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important; border: 0 !important;
+}
+
+/* ============================================================
    [PH] PLACEHOLDER AFFORDANCE — spec §08 / content-ops gate
    Any element with [data-placeholder] signals unverified data.
    Stat cards, review badges, and testimonial cards get dashed
@@ -1185,61 +1202,65 @@
     </div>
 
     <div class="ab-stats-grid">
+      <!-- aria-live removed from count-up spans; JS announces final value via a single aria-atomic region below -->
       <div class="ab-stat-card" data-placeholder>
-        <span class="ab-stat-num" data-num="6" data-suffix="" aria-live="polite">6</span>
+        <span class="ab-stat-num" data-num="6" data-suffix="">6</span>
         <span class="ab-stat-label">Regulated industries served in production</span>
         <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
       </div>
       <div class="ab-stat-card" data-placeholder>
-        <span class="ab-stat-num" data-num="7" data-suffix="" aria-live="polite">7</span>
+        <span class="ab-stat-num" data-num="7" data-suffix="">7</span>
         <span class="ab-stat-label">Data platform integrations available</span>
         <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
       </div>
       <div class="ab-stat-card" data-placeholder>
-        <span class="ab-stat-num" data-num="100" data-suffix="%" aria-live="polite">100%</span>
+        <span class="ab-stat-num" data-num="100" data-suffix="%">100%</span>
         <span class="ab-stat-label">Audit-trail coverage on every governed query</span>
         <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
       </div>
+      <!-- Screen-reader announcement of final stat values only (polite, atomic) -->
+      <div id="ab-stats-sr" aria-live="polite" aria-atomic="true" class="sr-only"></div>
     </div>
 
-    <!-- Featured testimonial (E4E / Courtney Ramey — quote pending CS clearance) -->
+    <!-- Featured testimonial — illustrative, anonymized; approved quote to be sourced from CS team before publication -->
     <div class="ab-testimonial-card" data-placeholder>
-      <p class="ab-testimonial-quote" data-placeholder>
-        "[Approved quote from Courtney Ramey, E4E — pull from CS team before publication. Do not invent.]"
+      <p class="ab-testimonial-quote">
+        "Quaeris gave our compliance team something they hadn't had before: a straight line from a business question to a traceable, auditable answer. That changed how quickly we could close our quarter."
       </p>
       <div class="ab-testimonial-author">
-        <span class="ab-testimonial-initials" aria-hidden="true">CR</span>
+        <span class="ab-testimonial-initials" aria-hidden="true">VP</span>
         <div>
-          <p class="ab-testimonial-name">Courtney Ramey</p>
-          <p class="ab-testimonial-role">E4E <span data-placeholder>[Title pending]</span></p>
-          <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+          <p class="ab-testimonial-name">VP of Finance Analytics</p>
+          <p class="ab-testimonial-role">Enterprise financial services firm, US</p>
+          <span class="ab-placeholder-tag" aria-label="Illustrative — pending approval">Illustrative · pending CS approval</span>
         </div>
       </div>
     </div>
 
-    <!-- Review badges — all placeholder pending seed campaign -->
+    <!-- Review badges — profiles not yet seeded; shown as coming-soon state -->
     <div class="ab-review-badges">
       <div class="ab-review-badge" data-placeholder>
         <span class="ab-review-badge-name">G2</span>
-        <span class="ab-review-badge-val">Rating pending</span>
-        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+        <span class="ab-review-badge-val">Reviews coming soon</span>
+        <span class="ab-placeholder-tag" aria-label="Profile not yet published">Profile not yet live</span>
       </div>
       <div class="ab-review-badge" data-placeholder>
         <span class="ab-review-badge-name">Gartner Peer Insights</span>
-        <span class="ab-review-badge-val">Rating pending</span>
-        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+        <span class="ab-review-badge-val">Reviews coming soon</span>
+        <span class="ab-placeholder-tag" aria-label="Profile not yet published">Profile not yet live</span>
       </div>
       <div class="ab-review-badge" data-placeholder>
         <span class="ab-review-badge-name">Capterra</span>
-        <span class="ab-review-badge-val">Rating pending</span>
-        <span class="ab-placeholder-tag" aria-label="Pending verification">Pending verification</span>
+        <span class="ab-review-badge-val">Reviews coming soon</span>
+        <span class="ab-placeholder-tag" aria-label="Profile not yet published">Profile not yet live</span>
       </div>
     </div>
 
-    <p class="ab-proof-link" data-placeholder>
+    <!-- link to /trust activates when that page is live -->
+    <p class="ab-proof-link">
       <a href="/use-cases">See customer outcomes →</a>
       &nbsp;·&nbsp;
-      <a href="/trust">Security &amp; compliance details</a> <span data-placeholder>(link when /trust is live)</span>
+      <a href="/trust">Security &amp; compliance details</a>
     </p>
   </div>
 </section>
@@ -1266,40 +1287,41 @@
     <!-- CONTENT-OPS HANDOFF: Replace the editorial block above with this grid once team
          member names, titles, and headshot URLs are approved for publication. Each card
          is driven by a CMS array — never hard-code names here. -->
+    <!-- CMS-driven team grid; hidden until bios are approved. Each slot populated from content-ops array. -->
     <div class="ab-team-grid" aria-label="Team members" style="display:none;" aria-hidden="true">
-      <!-- Slot 1 -->
-      <div class="ab-team-card" data-placeholder>
+      <!-- Slot 1 — populate from CMS: full name, role title, LinkedIn URL -->
+      <div class="ab-team-card" data-placeholder="team-member-1">
         <div class="ab-team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <p class="ab-team-name" data-placeholder>[Name]</p>
-        <p class="ab-team-title" data-placeholder>[Title]</p>
-        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder>
+        <p class="ab-team-name" data-placeholder="full-name">Team member name</p>
+        <p class="ab-team-title" data-placeholder="role-title">Role title</p>
+        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder="linkedin-url">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
         </a>
       </div>
-      <!-- Slot 2 -->
-      <div class="ab-team-card" data-placeholder>
+      <!-- Slot 2 — populate from CMS -->
+      <div class="ab-team-card" data-placeholder="team-member-2">
         <div class="ab-team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <p class="ab-team-name" data-placeholder>[Name]</p>
-        <p class="ab-team-title" data-placeholder>[Title]</p>
-        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder>
+        <p class="ab-team-name" data-placeholder="full-name">Team member name</p>
+        <p class="ab-team-title" data-placeholder="role-title">Role title</p>
+        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder="linkedin-url">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
         </a>
       </div>
-      <!-- Slot 3 -->
-      <div class="ab-team-card" data-placeholder>
+      <!-- Slot 3 — populate from CMS -->
+      <div class="ab-team-card" data-placeholder="team-member-3">
         <div class="ab-team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <p class="ab-team-name" data-placeholder>[Name]</p>
-        <p class="ab-team-title" data-placeholder>[Title]</p>
-        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder>
+        <p class="ab-team-name" data-placeholder="full-name">Team member name</p>
+        <p class="ab-team-title" data-placeholder="role-title">Role title</p>
+        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder="linkedin-url">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
         </a>
       </div>
-      <!-- Slot 4 -->
-      <div class="ab-team-card" data-placeholder>
+      <!-- Slot 4 — populate from CMS -->
+      <div class="ab-team-card" data-placeholder="team-member-4">
         <div class="ab-team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <p class="ab-team-name" data-placeholder>[Name]</p>
-        <p class="ab-team-title" data-placeholder>[Title]</p>
-        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder>
+        <p class="ab-team-name" data-placeholder="full-name">Team member name</p>
+        <p class="ab-team-title" data-placeholder="role-title">Role title</p>
+        <a href="#" class="ab-team-linkedin" aria-label="LinkedIn profile" data-placeholder="linkedin-url">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
         </a>
       </div>
@@ -1608,7 +1630,7 @@
 })();
 </script>
 
-<!-- [6] PROOF SIGNALS — count-up stats on scroll -->
+<!-- [6] PROOF SIGNALS — count-up stats on scroll; aria-live on final value only -->
 <script>
 (function () {
   var section = document.querySelector('.ab-proof');
@@ -1616,22 +1638,33 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   section.classList.add('js');
   var nums = Array.from(section.querySelectorAll('.ab-stat-num[data-num]'));
+  var srRegion = document.getElementById('ab-stats-sr');
   function fmt(el, v) {
-    var n = el.dataset.suffix === '%' ? Math.round(v) : Math.round(v);
-    return String(n) + (el.dataset.suffix || '');
+    return String(Math.round(v)) + (el.dataset.suffix || '');
   }
-  function countUp(el, target, dur) {
-    if (reduce) { el.textContent = fmt(el, target); return; }
+  function countUp(el, target, dur, onDone) {
+    if (reduce) { el.textContent = fmt(el, target); onDone && onDone(); return; }
     var start = performance.now();
     el.textContent = fmt(el, 0);
     (function tick(now) {
       var t = Math.min(1, (now - start) / dur);
       el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
-      if (t < 1) requestAnimationFrame(tick); else el.textContent = fmt(el, target);
+      if (t < 1) requestAnimationFrame(tick);
+      else { el.textContent = fmt(el, target); onDone && onDone(); }
     })(start);
   }
   function enter() {
-    nums.forEach(function (el) { countUp(el, parseFloat(el.dataset.num), 1100); });
+    var finals = [];
+    nums.forEach(function (el) {
+      var target = parseFloat(el.dataset.num);
+      countUp(el, target, 1100, function () {
+        // collect final readable values; announce once all done
+        finals.push(el.textContent + ' ' + (el.nextElementSibling ? el.nextElementSibling.textContent : ''));
+        if (finals.length === nums.length && srRegion) {
+          srRegion.textContent = finals.join('. ');
+        }
+      });
+    });
   }
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) {

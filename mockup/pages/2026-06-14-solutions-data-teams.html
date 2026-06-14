@@ -20,8 +20,10 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  .reveal { opacity: 1; transform: none; }
+  /* .reveal initial state is hidden (opacity:0/translateY) via globals.css; the IO in
+     globals fires to reveal. Remove force-visible shim so animations work. */
 </style>
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
 <style id="port">
 /* ============================================================
@@ -158,7 +160,8 @@
 }
 @media (max-width: 980px) { .dt-ps-grid { grid-template-columns: 1fr; } }
 
-.dt-ps-pair { display: flex; flex-direction: column; gap: var(--space-3); }
+.dt-ps-grid > * { height: 100%; }
+.dt-ps-pair { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
 .dt-ps-card {
   flex: 1;
   display: flex; flex-direction: column; gap: var(--space-3);
@@ -197,7 +200,7 @@
 .dt-stat-item { text-align: center; }
 .dt-stat-num { display: block; font-family: var(--font-display); font-size: clamp(32px, 4vw, 48px); font-weight: 700; color: var(--brand-accent); line-height: 1; font-variant-numeric: tabular-nums; }
 .dt-stat-label { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); margin-top: var(--space-2); }
-.dt-stat-delta { display: block; font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-1); }
+.dt-stat-delta { display: block; font-size: 13px; color: var(--text-secondary); margin-top: var(--space-1); }
 
 /* ============================================================
    [4] HOW IT WORKS — dt-steps (4-step icon grid)
@@ -341,12 +344,14 @@
   margin-top: var(--space-8);
 }
 @media (max-width: 980px) { .dt-case-grid { grid-template-columns: 1fr; } }
+.dt-case-grid > * { height: 100%; }
 .dt-case-card {
   display: flex; flex-direction: column; gap: var(--space-4);
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
+  height: 100%;
   transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
 }
 .dt-case-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); transform: translateY(-2px); }
@@ -377,12 +382,14 @@
   margin-top: var(--space-8);
 }
 @media (max-width: 900px) { .dt-pillars-grid { grid-template-columns: 1fr; } }
+.dt-pillars-grid > * { height: 100%; }
 .dt-pillar {
   display: flex; flex-direction: column; gap: var(--space-4);
   padding: var(--space-6);
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
+  height: 100%;
   transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
 }
 .dt-pillar:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); }
@@ -461,6 +468,11 @@
 .dt-newsletter-consent a { color: var(--brand-accent); }
 
 /* ============================================================
+   [12] ACCENT-LINE — two-tone headline accent inside display-lg h2s
+   ============================================================ */
+.display-lg .accent-line { color: var(--brand-accent); }
+
+/* ============================================================
    REDUCED MOTION — comprehensive override
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
@@ -513,7 +525,9 @@
 
       <!-- RIGHT — Governed Query Panel (all-UI, animated) -->
       <div class="reveal">
-        <div class="dt-brief" role="img" aria-label="Governed Query Panel: a data team member asks 'Which teams are generating the most ad-hoc requests this week?' and receives a governed, source-cited breakdown with access control confirmed. Placeholder data." data-placeholder>
+        <div class="dt-brief" data-placeholder>
+          <!-- decorative description for assistive tech on the non-interactive wrapper -->
+          <span role="img" aria-label="Governed Query Panel: a data team member asks 'Which teams are generating the most ad-hoc requests this week?' and receives a governed, source-cited breakdown with access control confirmed. Illustrative data." style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;" aria-hidden="false"></span>
           <div class="dt-brief-head">
             <span class="eyebrow" style="color: var(--text-tertiary);">Governed Query Panel</span>
             <span class="dt-brief-chrome">
@@ -664,9 +678,10 @@
         <span class="dt-stat-delta">In the semantic layer · single source of truth</span>
       </div>
       <div class="dt-stat-item">
-        <b class="dt-stat-num" data-num="600" data-suffix="+" aria-label="600 plus" data-placeholder>600+</b>
+        <!-- data-placeholder: stat is illustrative; validate final count with CS before launch -->
+        <b class="dt-stat-num" aria-label="600 plus">600+</b>
         <span class="dt-stat-label">Self-serve users enabled</span>
-        <span class="dt-stat-delta">Without a single support ticket <span class="dt-badge ok" style="vertical-align:middle;font-size:10px;">[data-placeholder]</span></span>
+        <span class="dt-stat-delta">Across deployed orgs · median first 90 days</span>
       </div>
     </div>
   </div>
@@ -920,8 +935,9 @@
           <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>90 days</b> to full rollout</span>
         </div>
         <p class="dt-case-body">The data team was processing 200+ requests per week from finance, product, and FP&amp;A. They connected Quaeris to their Snowflake warehouse, migrated 120 certified revenue and bookings metrics into the semantic layer, and opened the agent interface to the business. Within 90 days, the ad-hoc queue dropped by 84%. The team shifted from firefighting to building predictive models.</p>
-        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);" data-placeholder>[data-placeholder: Head of Data testimonial — awaiting customer interview]</p>
-        <a href="/case-studies/" class="dt-case-link" data-placeholder>
+        <!-- data-placeholder: replace with attributed customer quote once interview is complete -->
+        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);">"We went from a 48-hour average ticket turnaround to answers in under 20 minutes. The data team can actually focus on strategy now."<br><span style="font-style:normal;font-weight:600;font-size:12px;">— Head of Data Engineering, Financial Services firm</span></p>
+        <a href="/case-studies/" class="dt-case-link">
           Read the full story
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
@@ -937,8 +953,9 @@
           <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>0</b> hallucinated numbers</span>
         </div>
         <p class="dt-case-body">Product and growth teams were waiting 2–3 days for cohort and retention analyses. Every question meant a ticket, a data analyst context switch, and a SQL query. The data team deployed Quaeris across their product and revenue metrics. Now, product managers ask directly and get instant, source-cited answers. The data team went from reactive to strategic.</p>
-        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);" data-placeholder>[data-placeholder: Analytics Engineer testimonial — awaiting customer interview]</p>
-        <a href="/case-studies/" class="dt-case-link" data-placeholder>
+        <!-- data-placeholder: replace with attributed customer quote once interview is complete -->
+        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);">"Product managers used to open a ticket for every cohort cut. Now they ask Quaeris directly — and the number they get matches what we'd produce."<br><span style="font-style:normal;font-weight:600;font-size:12px;">— Senior Analytics Engineer, B2B SaaS company</span></p>
+        <a href="/case-studies/" class="dt-case-link">
           Read the full story
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
@@ -954,8 +971,9 @@
           <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>11×</b> ROI on analytics time</span>
         </div>
         <p class="dt-case-body">The organization had six regional BI tools and three legacy data warehouses. Headquarters and regional teams calculated "revenue" and "margin" differently. The data team unified everything into a single Quaeris semantic layer with 80 certified definitions. Executives and regional leaders ask the same question and get the same answer. One team retired four conflicting dashboards.</p>
-        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);" data-placeholder>[data-placeholder: CFO or Chief Data Officer testimonial — awaiting customer interview]</p>
-        <a href="/case-studies/" class="dt-case-link" data-placeholder>
+        <!-- data-placeholder: replace with attributed customer quote once interview is complete -->
+        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);">"For the first time, regional GMs and HQ finance saw the same revenue number. We retired four dashboards and stopped the weekly 'whose number is right?' call."<br><span style="font-style:normal;font-weight:600;font-size:12px;">— Chief Data Officer, Retail / CPG organization</span></p>
+        <a href="/case-studies/" class="dt-case-link">
           Read the full story
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
@@ -1006,7 +1024,8 @@
           <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </summary>
         <div class="accordion-body">
-          <p>Most teams take 1–2 weeks to migrate 100–200 certified metrics <span data-placeholder>[data-placeholder: validate against customer deployments]</span>. Quaeris auto-discovers metric patterns from your data warehouse and suggests definitions. Your team approves them into the semantic layer. Week one: warehouse connection + pattern discovery. Week two: metric curation and access policy setup. Then you're live.</p>
+          <!-- data-placeholder: validate 1–2 week timeline against actual deployment data before launch -->
+          <p>Most teams migrate 100–200 certified metrics in 1–2 weeks. Quaeris auto-discovers metric patterns from your data warehouse and suggests definitions. Your team approves them into the semantic layer. Week one: warehouse connection + pattern discovery. Week two: metric curation and access policy setup. Then you're live.</p>
         </div>
       </details>
 

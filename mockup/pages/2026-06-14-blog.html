@@ -19,8 +19,7 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  /* v3 shim: static .reveal sections show correctly without animation. */
-  .reveal { opacity: 1; transform: none; }
+  /* Reduced-motion / no-JS fallback: reveal elements show in final state when animation is off. */
 </style>
 
 <style id="port">
@@ -294,7 +293,7 @@
   align-items: center;
   gap: var(--space-4);
   font-size: 13px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   flex-wrap: wrap;
 }
 .blog-post-meta-sep { opacity: 0.4; }
@@ -509,7 +508,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  margin-top: var(--space-2);
+  margin-top: auto;
   padding-top: var(--space-3);
   border-top: 1px solid var(--border-subtle);
 }
@@ -533,13 +532,13 @@
 }
 .blog-card-author-info { display: flex; flex-direction: column; gap: 1px; }
 .blog-card-author-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
-.blog-card-author-date { font-size: 11px; color: var(--text-tertiary); }
+.blog-card-author-date { font-size: 11px; color: var(--text-secondary); }
 .blog-card-read {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 11px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -855,13 +854,18 @@
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
-.bfs-label { font-size: 11px; color: var(--text-tertiary); }
+.bfs-label { font-size: 11px; color: var(--text-secondary); }
 
 @media (prefers-reduced-motion: reduce) {
   .bfv-typed-caret { animation: none; }
   .blog-nl-freq-btn, .blog-filter-pill { transition: none; }
+  /* Ensure reveal elements are visible under reduced-motion */
+  .reveal { opacity: 1 !important; transform: none !important; }
 }
 </style>
+
+<!-- No-JS fallback: reveal elements visible without IntersectionObserver -->
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; } .blog-card.will-reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 </head>
 <body>
 
@@ -943,7 +947,7 @@
         <h3 class="blog-featured-visual-headline" data-placeholder>Why Your BI Layer is Not Your Semantic Layer: A CFO's Guide to Governed Analytics</h3>
         <div class="blog-featured-visual-meta">
           <span class="bfv-avatar" aria-hidden="true" data-placeholder>QR</span>
-          <span class="bfv-by" data-placeholder>By <strong>Quaeris Editorial</strong> · <span data-placeholder>placeholder date</span></span>
+          <span class="bfv-by" data-placeholder>By <strong>Quaeris Editorial</strong> · <time datetime="2026-06-10">Jun 10, 2026</time></span>
         </div>
       </div>
 
@@ -956,21 +960,21 @@
         <!-- Count-up stats -->
         <div class="blog-featured-stats" aria-label="Article quick stats" data-placeholder>
           <div class="bfs-stat">
-            <span class="bfs-num" data-countup data-target="8" data-suffix=" min">8 min</span>
+            <span class="bfs-num" data-countup data-target="8" data-suffix=" min" aria-label="8 minute read">8 min</span>
             <span class="bfs-label">Read time</span>
           </div>
           <div class="bfs-stat">
-            <span class="bfs-num" data-countup data-target="5" data-suffix=" key takeaways">5 key takeaways</span>
-            <span class="bfs-label">Insights</span>
+            <span class="bfs-num" data-countup data-target="5" data-suffix="" aria-label="5 key takeaways">5</span>
+            <span class="bfs-label">Key takeaways</span>
           </div>
           <div class="bfs-stat">
-            <span class="bfs-num" data-countup data-target="3" data-suffix=" tools compared">3 tools compared</span>
-            <span class="bfs-label">Comparison</span>
+            <span class="bfs-num" data-countup data-target="3" data-suffix="" aria-label="3 tools compared">3</span>
+            <span class="bfs-label">Tools compared</span>
           </div>
         </div>
 
         <div class="blog-post-meta" data-placeholder>
-          <span data-placeholder>placeholder date</span>
+          <time datetime="2026-06-10">Jun 10, 2026</time>
           <span class="blog-post-meta-sep" aria-hidden="true">·</span>
           <span class="blog-post-meta-read" aria-label="8 minute read">
             <!-- lucide: clock -->
@@ -1055,7 +1059,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-06-12">Jun 12, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="6 minute read">
@@ -1085,7 +1089,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-06-09">Jun 9, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="9 minute read">
@@ -1114,7 +1118,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-06-05">Jun 5, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="7 minute read">
@@ -1145,7 +1149,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Engineering</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-06-02">Jun 2, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="11 minute read">
@@ -1173,7 +1177,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-05-28">May 28, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="8 minute read">
@@ -1209,7 +1213,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Product</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-05-22">May 22, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="5 minute read">
@@ -1239,7 +1243,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-05-15">May 15, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="7 minute read">
@@ -1269,7 +1273,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Engineering</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-05-08">May 8, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="10 minute read">
@@ -1301,7 +1305,7 @@
               <div class="blog-card-avatar" aria-hidden="true">QR</div>
               <div class="blog-card-author-info">
                 <span class="blog-card-author-name" data-placeholder>Quaeris Editorial</span>
-                <span class="blog-card-author-date" data-placeholder>placeholder date</span>
+                <time class="blog-card-author-date" datetime="2026-04-30">Apr 30, 2026</time>
               </div>
             </div>
             <span class="blog-card-read" aria-label="6 minute read">

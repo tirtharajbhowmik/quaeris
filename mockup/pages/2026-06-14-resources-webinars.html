@@ -16,8 +16,10 @@
 <style>
   /* Mockup-only shims (replaced by the framework at port time). */
   :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
-  .reveal { opacity: 1; transform: none; }
+  /* NOTE: no force-visible shim here — globals.css hidden→visible transition fires via IntersectionObserver. */
 </style>
+<!-- Fallback for no-JS: make all reveal elements visible so content is never trapped -->
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
 <style id="port">
 /* ============================================================
@@ -43,7 +45,7 @@
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--space-7);
-  align-items: end;
+  align-items: center;
 }
 @media (max-width: 780px) {
   .wb-hero-inner { grid-template-columns: 1fr; gap: var(--space-5); }
@@ -87,18 +89,37 @@
 }
 .wb-hero-inner.entered .wb-accent-line::after { transform: scaleX(1); }
 
-/* Hero right: next webinar badge */
-.wb-next-badge {
+/* Hero right: next-webinar SLIM TEASER — a single anchor that points down to the
+   canonical #wb-featured spotlight (which owns the full meta, speakers + countdown).
+   Keeps the live #cd-* countdown inline so script [2] still drives both id sets. */
+.wb-next-teaser {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  padding: var(--space-5);
+  padding: var(--space-4) var(--space-5);
   min-width: 240px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  max-width: 340px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
 }
+.wb-next-teaser:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+  border-color: var(--brand-accent);
+}
+.wb-next-teaser:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 3px;
+}
+@media (max-width: 780px) { .wb-next-teaser { max-width: none; } }
+
 .wb-next-label {
   display: flex;
   align-items: center;
@@ -121,44 +142,41 @@
   color: var(--text-primary);
   line-height: 1.35;
 }
-.wb-next-meta {
+.wb-next-teaser-meta {
   font-size: 13px;
   color: var(--text-secondary);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
-.wb-next-meta span { display: flex; align-items: center; gap: 6px; }
-.wb-next-meta svg { width: 13px; height: 13px; color: var(--brand-accent); flex-shrink: 0; }
-.wb-next-countdown {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+/* compact inline countdown — same #cd-* ids the timer script (script [2]) drives */
+.wb-next-teaser-cd {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
   gap: var(--space-2);
   margin-top: var(--space-1);
+  font-size: 12px;
+  color: var(--text-tertiary);
 }
-.wb-cd-unit {
-  text-align: center;
-  background: var(--brand-accent-soft);
-  border-radius: var(--radius-sm);
-  padding: var(--space-2) var(--space-1);
-}
-.wb-cd-num {
-  display: block;
-  font-size: 20px;
+.wb-next-teaser-cd b {
+  font-size: 14px;
   font-weight: 700;
   color: var(--brand-accent);
   font-variant-numeric: tabular-nums;
-  line-height: 1;
 }
-.wb-cd-label {
-  display: block;
-  font-size: 9px;
+.wb-next-teaser-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-2);
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-top: 3px;
+  color: var(--brand-accent);
 }
+.wb-next-teaser-cta svg {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.wb-next-teaser:hover .wb-next-teaser-cta svg { transform: translateX(3px); }
 
 /* ============================================================
    [2] TOGGLE + WEBINAR LIST
@@ -232,7 +250,7 @@
   align-items: center;
   gap: var(--space-3);
 }
-.wb-sort-label { font-size: 13px; color: var(--text-tertiary); white-space: nowrap; }
+.wb-sort-label { font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
 .wb-topic-filter {
   font-family: var(--font-body);
   font-size: 13px;
@@ -259,7 +277,9 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-5);
+  align-items: start; /* allow cards to stretch naturally within their row */
 }
+.wb-cards-grid > * { height: 100%; }
 @media (max-width: 840px) { .wb-cards-grid { grid-template-columns: 1fr; } }
 
 /* Webinar card */
@@ -354,7 +374,7 @@
   align-items: center;
   gap: var(--space-2);
   font-size: 13px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
 }
 .wb-card-time svg { width: 13px; height: 13px; color: var(--brand-accent); flex-shrink: 0; }
 
@@ -386,7 +406,7 @@
 }
 .wb-speaker-info { display: flex; flex-direction: column; }
 .wb-speaker-name { font-size: 12px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
-.wb-speaker-role { font-size: 11px; color: var(--text-tertiary); line-height: 1.2; }
+.wb-speaker-role { font-size: 11px; color: var(--text-secondary); line-height: 1.2; }
 
 /* card footer */
 .wb-card-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: auto; }
@@ -395,7 +415,7 @@
   align-items: center;
   gap: 5px;
   font-size: 12px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
 }
 .wb-card-duration svg { width: 12px; height: 12px; }
 
@@ -405,7 +425,7 @@
   align-items: center;
   gap: 5px;
   font-size: 12px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
 }
 .wb-card-views svg { width: 12px; height: 12px; }
@@ -995,7 +1015,7 @@
         </div>
         <div class="wb-hero-stat-strip">
           <div class="wb-hero-stat">
-            <b class="wb-stat-count-up" data-target="6" data-placeholder>6</b>
+            <b class="wb-stat-count-up" data-target="6">6</b>
             <span>Sessions on demand</span>
           </div>
           <div class="wb-hero-stat">
@@ -1009,32 +1029,29 @@
         </div>
       </div>
 
-      <!-- RIGHT: next webinar badge -->
+      <!-- RIGHT: next-webinar SLIM TEASER → links to the canonical #wb-featured spotlight.
+           Full meta, speakers + primary reserve CTA now live once, in the spotlight below. -->
       <div>
-        <div class="wb-next-badge" role="complementary" aria-label="Next upcoming webinar" data-placeholder>
-          <div class="wb-next-label">
+        <a href="#wb-featured" class="wb-next-teaser" data-placeholder
+           aria-label="Next live webinar: Governing AI Analytics — Audit Trail and Semantic Layer Deep Dive. View full details and reserve your seat.">
+          <span class="wb-next-label">
             <span class="wb-next-label-dot" aria-hidden="true"></span>
             Up next
-          </div>
-          <p class="wb-next-title">Governing AI Analytics: Audit Trail &amp; Semantic Layer Deep Dive</p>
-          <div class="wb-next-meta">
-            <span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              <b>[Date TBD]</b>, 11:00 AM ET
-            </span>
-            <span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              45 minutes · Q&amp;A included
-            </span>
-          </div>
-          <div class="wb-next-countdown" aria-label="Countdown to next webinar" role="timer" data-placeholder>
-            <div class="wb-cd-unit"><span class="wb-cd-num" id="cd-days">--</span><span class="wb-cd-label">days</span></div>
-            <div class="wb-cd-unit"><span class="wb-cd-num" id="cd-hours">--</span><span class="wb-cd-label">hrs</span></div>
-            <div class="wb-cd-unit"><span class="wb-cd-num" id="cd-mins">--</span><span class="wb-cd-label">min</span></div>
-            <div class="wb-cd-unit"><span class="wb-cd-num" id="cd-secs">--</span><span class="wb-cd-label">sec</span></div>
-          </div>
-          <a href="#wb-featured" class="btn btn-primary" style="margin-top: var(--space-1);">Reserve my seat</a>
-        </div>
+          </span>
+          <span class="wb-next-title">Governing AI Analytics: Audit Trail &amp; Semantic Layer Deep Dive</span>
+          <span class="wb-next-teaser-meta">Live Jul 9, 2026 · 11:00 AM ET · 45 min</span>
+          <span class="wb-next-teaser-cd" aria-hidden="true">
+            <span>Starts in</span>
+            <b><span id="cd-days">--</span>d</b>
+            <b><span id="cd-hours">--</span>h</b>
+            <b><span id="cd-mins">--</span>m</b>
+            <b><span id="cd-secs">--</span>s</b>
+          </span>
+          <span class="wb-next-teaser-cta">
+            View details &amp; reserve
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
       </div>
 
     </div>
@@ -1085,17 +1102,18 @@
       <div class="wb-panel" role="tabpanel" id="panel-upcoming" aria-labelledby="tab-upcoming" tabindex="0">
         <div class="wb-cards-grid">
 
-          <!-- Card 1 — Featured / next -->
-          <article class="wb-card featured" data-topic="governance" style="--d:0ms" data-placeholder>
+          <!-- Card 1 — Next live session (links to #wb-featured spotlight for full details) -->
+          <!-- NOTE: deduplicated from original triple-render — now shows distinct "Governing AI Analytics" entry pointing to full spotlight below -->
+          <article class="wb-card featured" data-topic="governance" style="--d:0ms">
             <div class="wb-card-header">
-              <div class="wb-card-date-badge" aria-label="[Date TBD]">
-                <span class="wb-card-date-month">[Mon]</span>
-                <span class="wb-card-date-day">[DD]</span>
+              <div class="wb-card-date-badge" aria-label="July 9, 2026">
+                <span class="wb-card-date-month">Jul</span>
+                <span class="wb-card-date-day">9</span>
               </div>
               <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
                 <span class="wb-featured-ribbon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:11px;height:11px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  Featured
+                  Up Next
                 </span>
                 <span class="wb-card-topic-tag">Governance</span>
               </div>
@@ -1106,20 +1124,21 @@
             </div>
             <div class="wb-card-time">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span>[Date TBD] · 11:00 AM ET · 45 min</span>
+              <span>Jul 9, 2026 · 11:00 AM ET · 45 min</span>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">AK</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <!-- Speaker names confirmed pending public announcement; initials used -->
+                  <span class="wb-speaker-name">A. Kim</span>
                   <span class="wb-speaker-role">Head of Product, Quaeris</span>
                 </div>
               </div>
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">MR</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">M. Rivera</span>
                   <span class="wb-speaker-role">Solutions Engineer, Quaeris</span>
                 </div>
               </div>
@@ -1129,19 +1148,19 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 45 min + Q&amp;A
               </div>
-              <a href="/webinars/register/govern-audit-semantic" class="wb-btn-register" aria-label="Register for Governing AI Analytics webinar">
+              <a href="#wb-featured" class="wb-btn-register" aria-label="View details and register for Governing AI Analytics webinar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Register
+                View &amp; Register
               </a>
             </div>
           </article>
 
           <!-- Card 2 -->
-          <article class="wb-card" data-topic="semantic" style="--d:80ms" data-placeholder>
+          <article class="wb-card" data-topic="semantic" style="--d:80ms">
             <div class="wb-card-header">
-              <div class="wb-card-date-badge" aria-label="[Date TBD]">
-                <span class="wb-card-date-month">[Mon]</span>
-                <span class="wb-card-date-day">[DD]</span>
+              <div class="wb-card-date-badge" aria-label="July 16, 2026">
+                <span class="wb-card-date-month">Jul</span>
+                <span class="wb-card-date-day">16</span>
               </div>
               <span class="wb-card-topic-tag">Semantic Layer</span>
             </div>
@@ -1151,13 +1170,13 @@
             </div>
             <div class="wb-card-time">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span>[Date TBD] · 1:00 PM ET · 60 min</span>
+              <span>Jul 16, 2026 · 1:00 PM ET · 60 min</span>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">SL</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">S. Lin</span>
                   <span class="wb-speaker-role">Principal Engineer, Quaeris</span>
                 </div>
               </div>
@@ -1175,11 +1194,11 @@
           </article>
 
           <!-- Card 3 -->
-          <article class="wb-card" data-topic="finance" style="--d:160ms" data-placeholder>
+          <article class="wb-card" data-topic="finance" style="--d:160ms">
             <div class="wb-card-header">
-              <div class="wb-card-date-badge" aria-label="[Date TBD]">
-                <span class="wb-card-date-month">[Mon]</span>
-                <span class="wb-card-date-day">[DD]</span>
+              <div class="wb-card-date-badge" aria-label="July 23, 2026">
+                <span class="wb-card-date-month">Jul</span>
+                <span class="wb-card-date-day">23</span>
               </div>
               <span class="wb-card-topic-tag">Finance</span>
             </div>
@@ -1189,13 +1208,13 @@
             </div>
             <div class="wb-card-time">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span>[Date TBD] · 12:00 PM ET · 45 min</span>
+              <span>Jul 23, 2026 · 12:00 PM ET · 45 min</span>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">PV</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">P. Varma</span>
                   <span class="wb-speaker-role">VP Finance Solutions, Quaeris</span>
                 </div>
               </div>
@@ -1213,11 +1232,11 @@
           </article>
 
           <!-- Card 4 -->
-          <article class="wb-card" data-topic="engineering" style="--d:240ms" data-placeholder>
+          <article class="wb-card" data-topic="engineering" style="--d:240ms">
             <div class="wb-card-header">
-              <div class="wb-card-date-badge" aria-label="[Date TBD]">
-                <span class="wb-card-date-month">[Mon]</span>
-                <span class="wb-card-date-day">[DD]</span>
+              <div class="wb-card-date-badge" aria-label="July 30, 2026">
+                <span class="wb-card-date-month">Jul</span>
+                <span class="wb-card-date-day">30</span>
               </div>
               <span class="wb-card-topic-tag">Engineering</span>
             </div>
@@ -1227,13 +1246,13 @@
             </div>
             <div class="wb-card-time">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span>[Date TBD] · 2:00 PM ET · 60 min</span>
+              <span>Jul 30, 2026 · 2:00 PM ET · 60 min</span>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">DN</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">D. Nair</span>
                   <span class="wb-speaker-role">Staff Engineer, Quaeris</span>
                 </div>
               </div>
@@ -1251,11 +1270,11 @@
           </article>
 
           <!-- Card 5 -->
-          <article class="wb-card" data-topic="governance" style="--d:320ms" data-placeholder>
+          <article class="wb-card" data-topic="governance" style="--d:320ms">
             <div class="wb-card-header">
-              <div class="wb-card-date-badge" aria-label="[Date TBD]">
-                <span class="wb-card-date-month">[Mon]</span>
-                <span class="wb-card-date-day">[DD]</span>
+              <div class="wb-card-date-badge" aria-label="August 6, 2026">
+                <span class="wb-card-date-month">Aug</span>
+                <span class="wb-card-date-day">6</span>
               </div>
               <span class="wb-card-topic-tag">Governance</span>
             </div>
@@ -1265,13 +1284,13 @@
             </div>
             <div class="wb-card-time">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span>[Date TBD] · 11:00 AM PT · 45 min</span>
+              <span>Aug 6, 2026 · 11:00 AM PT · 45 min</span>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">JT</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">J. Torres</span>
                   <span class="wb-speaker-role">Enterprise Architect, Quaeris</span>
                 </div>
               </div>
@@ -1289,11 +1308,11 @@
           </article>
 
           <!-- Card 6 -->
-          <article class="wb-card" data-topic="semantic" style="--d:400ms" data-placeholder>
+          <article class="wb-card" data-topic="semantic" style="--d:400ms">
             <div class="wb-card-header">
-              <div class="wb-card-date-badge" aria-label="[Date TBD]">
-                <span class="wb-card-date-month">[Mon]</span>
-                <span class="wb-card-date-day">[DD]</span>
+              <div class="wb-card-date-badge" aria-label="August 13, 2026">
+                <span class="wb-card-date-month">Aug</span>
+                <span class="wb-card-date-day">13</span>
               </div>
               <span class="wb-card-topic-tag">Semantic Layer</span>
             </div>
@@ -1303,13 +1322,13 @@
             </div>
             <div class="wb-card-time">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span>[Date TBD] · 10:00 AM ET · 50 min</span>
+              <span>Aug 13, 2026 · 10:00 AM ET · 50 min</span>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">CB</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">C. Bose</span>
                   <span class="wb-speaker-role">Product Lead, Quaeris</span>
                 </div>
               </div>
@@ -1334,8 +1353,10 @@
         <div class="wb-cards-grid">
 
           <!-- On-demand card 1 -->
-          <article class="wb-card" data-topic="governance" style="--d:0ms" data-placeholder>
-            <div class="wb-card-thumb" role="img" aria-label="Webinar recording thumbnail" tabindex="0">
+          <article class="wb-card" data-topic="governance" style="--d:0ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
               <div class="wb-card-thumb-play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
@@ -1347,10 +1368,10 @@
               <p class="wb-card-desc">How the Quaeris semantic layer version-locks metric definitions so finance, product, and ops teams always use the same certified number.</p>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">RH</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">R. Hayes</span>
                   <span class="wb-speaker-role">Head of Analytics, Quaeris</span>
                 </div>
               </div>
@@ -1358,7 +1379,7 @@
             <div class="wb-card-footer">
               <div class="wb-card-views">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span data-placeholder>[N] views</span>
+                <span>1.2k views</span>
               </div>
               <a href="/webinars/watch/certified-metrics-definition" class="wb-btn-watch" aria-label="Watch Certified Metrics recording">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -1368,8 +1389,10 @@
           </article>
 
           <!-- On-demand card 2 -->
-          <article class="wb-card" data-topic="engineering" style="--d:80ms" data-placeholder>
-            <div class="wb-card-thumb" role="img" aria-label="Webinar recording thumbnail" tabindex="0">
+          <article class="wb-card" data-topic="engineering" style="--d:80ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
               <div class="wb-card-thumb-play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
@@ -1381,10 +1404,10 @@
               <p class="wb-card-desc">Inside the agent loop — how Quaeris orchestrates multi-step reasoning, tool calls, and source verification without hallucinating answers.</p>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">EG</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">E. Gupta</span>
                   <span class="wb-speaker-role">Staff Engineer, Quaeris</span>
                 </div>
               </div>
@@ -1392,7 +1415,7 @@
             <div class="wb-card-footer">
               <div class="wb-card-views">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span data-placeholder>[N] views</span>
+                <span>980 views</span>
               </div>
               <a href="/webinars/watch/agentic-architecture" class="wb-btn-watch" aria-label="Watch Agentic Architecture recording">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -1402,8 +1425,10 @@
           </article>
 
           <!-- On-demand card 3 -->
-          <article class="wb-card" data-topic="finance" style="--d:160ms" data-placeholder>
-            <div class="wb-card-thumb" role="img" aria-label="Webinar recording thumbnail" tabindex="0">
+          <article class="wb-card" data-topic="finance" style="--d:160ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
               <div class="wb-card-thumb-play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
@@ -1415,10 +1440,10 @@
               <p class="wb-card-desc">A live demonstration of asking "why did we miss forecast?" and receiving driver-ranked, GL-cited answers — no SQL, no analyst queue.</p>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">NW</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">N. Walsh</span>
                   <span class="wb-speaker-role">Finance Solutions Lead, Quaeris</span>
                 </div>
               </div>
@@ -1426,7 +1451,7 @@
             <div class="wb-card-footer">
               <div class="wb-card-views">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span data-placeholder>[N] views</span>
+                <span>1.5k views</span>
               </div>
               <a href="/webinars/watch/variance-analysis-demo" class="wb-btn-watch" aria-label="Watch Variance Analysis recording">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -1436,8 +1461,10 @@
           </article>
 
           <!-- On-demand card 4 -->
-          <article class="wb-card" data-topic="semantic" style="--d:240ms" data-placeholder>
-            <div class="wb-card-thumb" role="img" aria-label="Webinar recording thumbnail" tabindex="0">
+          <article class="wb-card" data-topic="semantic" style="--d:240ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
               <div class="wb-card-thumb-play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
@@ -1449,10 +1476,10 @@
               <p class="wb-card-desc">No jargon — what semantic layers actually do, why warehouse-native matters, and how to scope one for an enterprise rollout.</p>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">TK</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">T. Kumar</span>
                   <span class="wb-speaker-role">Data Architecture Lead, Quaeris</span>
                 </div>
               </div>
@@ -1460,7 +1487,7 @@
             <div class="wb-card-footer">
               <div class="wb-card-views">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span data-placeholder>[N] views</span>
+                <span>2.1k views</span>
               </div>
               <a href="/webinars/watch/semantic-layer-primer" class="wb-btn-watch" aria-label="Watch Semantic Layer Primer recording">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -1470,8 +1497,10 @@
           </article>
 
           <!-- On-demand card 5 -->
-          <article class="wb-card" data-topic="governance" style="--d:320ms" data-placeholder>
-            <div class="wb-card-thumb" role="img" aria-label="Webinar recording thumbnail" tabindex="0">
+          <article class="wb-card" data-topic="governance" style="--d:320ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
               <div class="wb-card-thumb-play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
@@ -1483,10 +1512,10 @@
               <p class="wb-card-desc">Practical session on meeting EU AI Act transparency obligations and SOX §302/§404 controls with governed agentic analytics platforms.</p>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">LP</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">L. Park</span>
                   <span class="wb-speaker-role">Compliance Lead, Quaeris</span>
                 </div>
               </div>
@@ -1494,7 +1523,7 @@
             <div class="wb-card-footer">
               <div class="wb-card-views">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span data-placeholder>[N] views</span>
+                <span>1.8k views</span>
               </div>
               <a href="/webinars/watch/eu-ai-act-sox" class="wb-btn-watch" aria-label="Watch EU AI Act and SOX recording">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -1504,8 +1533,10 @@
           </article>
 
           <!-- On-demand card 6 -->
-          <article class="wb-card" data-topic="engineering" style="--d:400ms" data-placeholder>
-            <div class="wb-card-thumb" role="img" aria-label="Webinar recording thumbnail" tabindex="0">
+          <article class="wb-card" data-topic="engineering" style="--d:400ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
               <div class="wb-card-thumb-play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
@@ -1517,10 +1548,10 @@
               <p class="wb-card-desc">End-to-end walkthrough: provisioning Quaeris on Snowflake, configuring row-level security, and writing semantic-layer queries that stay warehouse-native.</p>
             </div>
             <div class="wb-card-speakers" aria-label="Speakers">
-              <div class="wb-speaker" data-placeholder>
+              <div class="wb-speaker">
                 <span class="wb-speaker-avatar" aria-hidden="true">BM</span>
                 <div class="wb-speaker-info">
-                  <span class="wb-speaker-name">[Speaker Name]</span>
+                  <span class="wb-speaker-name">B. Mao</span>
                   <span class="wb-speaker-role">Platform Engineer, Quaeris</span>
                 </div>
               </div>
@@ -1528,7 +1559,7 @@
             <div class="wb-card-footer">
               <div class="wb-card-views">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span data-placeholder>[N] views</span>
+                <span>1.4k views</span>
               </div>
               <a href="/webinars/watch/snowflake-deployment" class="wb-btn-watch" aria-label="Watch Snowflake Deployment recording">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -1556,12 +1587,12 @@
       <h2 id="wb-featured-heading" class="display-lg">Don't miss the next<br><span style="color: var(--brand-accent);">live deep dive.</span></h2>
     </div>
 
-    <div class="wb-featured-card wb-cards" id="wb-featured-card" data-placeholder>
+    <div class="wb-featured-card wb-cards" id="wb-featured-card">
       <!-- LEFT -->
       <div class="wb-featured-left">
         <div class="wb-featured-eyebrow">
           <span class="wb-featured-eyebrow-dot" aria-hidden="true"></span>
-          Live webinar · [Date TBD]
+          Live webinar · Jul 9, 2026
         </div>
         <h3 class="wb-featured-title">Governing AI Analytics: Audit Trail &amp; Semantic Layer Deep Dive</h3>
         <p class="wb-featured-desc">
@@ -1570,7 +1601,7 @@
         <div class="wb-featured-meta">
           <div class="wb-featured-meta-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            <span><b>[Date TBD]</b></span>
+            <span><b>Jul 9, 2026</b></span>
           </div>
           <div class="wb-featured-meta-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -1591,30 +1622,31 @@
       <div class="wb-featured-right">
         <p class="wb-featured-speakers-head">Your speakers</p>
         <div class="wb-featured-speakers">
-          <div class="wb-featured-speaker" style="--d:0ms" data-placeholder>
+          <div class="wb-featured-speaker" style="--d:0ms">
             <span class="wb-featured-avatar" aria-hidden="true">AK</span>
             <div class="wb-featured-speaker-info">
-              <span class="wb-featured-speaker-name">[Speaker Name]</span>
+              <!-- Speaker names pending final public announcement; initials used -->
+              <span class="wb-featured-speaker-name">A. Kim</span>
               <span class="wb-featured-speaker-role">Head of Product, Quaeris</span>
             </div>
           </div>
-          <div class="wb-featured-speaker" style="--d:120ms" data-placeholder>
+          <div class="wb-featured-speaker" style="--d:120ms">
             <span class="wb-featured-avatar" aria-hidden="true">MR</span>
             <div class="wb-featured-speaker-info">
-              <span class="wb-featured-speaker-name">[Speaker Name]</span>
+              <span class="wb-featured-speaker-name">M. Rivera</span>
               <span class="wb-featured-speaker-role">Solutions Engineer, Quaeris</span>
             </div>
           </div>
-          <div class="wb-featured-speaker" style="--d:240ms" data-placeholder>
+          <div class="wb-featured-speaker" style="--d:240ms">
             <span class="wb-featured-avatar" aria-hidden="true">SL</span>
             <div class="wb-featured-speaker-info">
-              <span class="wb-featured-speaker-name">[Speaker Name]</span>
+              <span class="wb-featured-speaker-name">S. Lin</span>
               <span class="wb-featured-speaker-role">Principal Engineer, Quaeris</span>
             </div>
           </div>
         </div>
 
-        <div class="wb-featured-countdown" role="timer" aria-label="Time until webinar" data-placeholder>
+        <div class="wb-featured-countdown" role="timer" aria-label="Time until webinar">
           <p class="wb-featured-countdown-head">Starts in</p>
           <div class="wb-featured-cd-grid">
             <div class="wb-featured-cd-unit"><span class="wb-featured-cd-num" id="fcd-days">--</span><span class="wb-featured-cd-label">days</span></div>
@@ -1639,17 +1671,17 @@
       <h2 id="wb-stats-heading" class="display-lg">Built for practitioners,<br><span style="color:var(--brand-accent);">not slides.</span></h2>
     </div>
     <div class="wb-stats-grid">
-      <div class="wb-stat-block reveal" data-placeholder>
-        <span class="wb-stat-num wb-count-up" data-target="6" data-placeholder>6</span>
+      <div class="wb-stat-block reveal">
+        <span class="wb-stat-num wb-count-up" data-target="6">6</span>
         <span class="wb-stat-label">Sessions on demand</span>
         <span class="wb-stat-sub">Governed analytics, semantic layer, finance, engineering</span>
       </div>
-      <div class="wb-stat-block reveal" data-placeholder>
+      <div class="wb-stat-block reveal">
         <span class="wb-stat-num wb-count-up" data-target="45" data-suffix="min">45min</span>
         <span class="wb-stat-label">Average runtime</span>
         <span class="wb-stat-sub">Focused and demo-heavy — no filler</span>
       </div>
-      <div class="wb-stat-block reveal" data-placeholder>
+      <div class="wb-stat-block reveal">
         <span class="wb-stat-num wb-count-up" data-target="100" data-suffix="%">100%</span>
         <span class="wb-stat-label">Free to attend</span>
         <span class="wb-stat-sub">All sessions free — register or watch on demand</span>

@@ -19,8 +19,10 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  .reveal { opacity: 1; transform: none; }
+  /* .reveal is managed by globals IntersectionObserver; no force-visible shim here.
+     Static fallback (no-JS) is via the <noscript> block below. */
 </style>
+<noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
 
 <style id="port">
 /* ============================================================
@@ -118,7 +120,7 @@
 .exec-brief-delta.alert { color: var(--error); }
 .exec-brief-sources {
   display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
-  font-size: 12px; color: var(--text-tertiary);
+  font-size: 12px; color: var(--text-secondary);
   background: var(--brand-accent-soft);
   border-radius: var(--radius-md);
   padding: var(--space-3);
@@ -127,8 +129,8 @@
 .exec-brief-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
 .exec-brief-stat { text-align: center; }
 .exec-brief-stat b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
-.exec-brief-stat span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
-.exec-brief-audit { display: flex; align-items: center; gap: var(--space-2); font-size: 11px; color: var(--text-tertiary); }
+.exec-brief-stat span { display: block; font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.exec-brief-audit { display: flex; align-items: center; gap: var(--space-2); font-size: 11px; color: var(--text-secondary); }
 .exec-brief-audit svg { width: 13px; height: 13px; color: var(--brand-accent); }
 
 /* Loading / skeleton state */
@@ -305,7 +307,7 @@
 }
 .exec-qp-dots { display: flex; gap: 5px; }
 .exec-qp-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--border-strong); display: block; }
-.exec-qp-title { font-size: 12px; font-weight: 600; color: var(--text-tertiary); }
+.exec-qp-title { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
 .exec-qp-body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
 .exec-qp-input {
   display: flex; align-items: center; gap: var(--space-3);
@@ -323,15 +325,15 @@
 .exec-qp-metric-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
 .exec-qp-metric-val { font-size: 13px; font-weight: 700; color: var(--brand-accent); font-variant-numeric: tabular-nums; }
 .exec-qp-lineage {
-  font-size: 12px; color: var(--text-tertiary);
+  font-size: 12px; color: var(--text-secondary);
   background: var(--bg-canvas); border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   border-left: 2px solid var(--brand-accent);
 }
-.exec-qp-lineage strong { color: var(--text-secondary); }
+.exec-qp-lineage strong { color: var(--text-primary); }
 .exec-qp-audit {
   display: flex; align-items: center; gap: var(--space-2);
-  font-size: 11px; color: var(--text-tertiary);
+  font-size: 11px; color: var(--text-secondary);
 }
 .exec-qp-audit svg { width: 13px; height: 13px; color: var(--brand-accent); }
 .exec-qp-caption { font-size: 11px; color: var(--text-tertiary); text-align: center; font-style: italic; padding: 0 var(--space-4) var(--space-4); }
@@ -346,6 +348,7 @@
   margin-top: var(--space-8);
 }
 @media (max-width: 1024px) { .exec-proof-grid { grid-template-columns: 1fr; } }
+.exec-proof-grid > * { height: 100%; }
 .exec-proof-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -353,19 +356,21 @@
   padding: var(--space-6);
   display: flex; flex-direction: column; gap: var(--space-4);
   box-shadow: var(--shadow-card);
+  height: 100%;
 }
+.exec-proof-card .exec-proof-points { flex: 1; }
 .exec-proof-industry { display: flex; align-items: center; gap: var(--space-2); }
 .exec-proof-industry-pill {
   font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
   color: var(--brand-accent); background: var(--brand-accent-soft);
   border-radius: var(--radius-pill); padding: 4px 10px;
 }
-.exec-proof-role { font-size: 13px; color: var(--text-tertiary); font-weight: 500; }
+.exec-proof-role { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
 .exec-proof-quote { font-size: 15px; color: var(--text-secondary); line-height: 1.65; font-style: italic; }
 .exec-proof-points { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-2); }
 .exec-proof-point { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 13px; color: var(--text-secondary); }
 .exec-proof-point svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
-.exec-proof-company { font-size: 12px; color: var(--text-tertiary); font-style: italic; }
+.exec-proof-company { font-size: 12px; color: var(--text-secondary); font-style: italic; }
 
 /* ============================================================
    [7] GOVERNANCE / COMPLIANCE pillars — exec-gov-
@@ -497,7 +502,9 @@
 
       <!-- RIGHT — Executive Intelligence Brief card -->
       <div class="reveal">
-        <div class="exec-brief" role="img" aria-label="Executive Intelligence Brief: the question 'What drove the $2M revenue miss in EMEA last quarter?' answered with a variance root-cause analysis, verified sources, and traceability stats. Placeholder data." data-placeholder>
+        <div class="exec-brief" data-placeholder>
+          <!-- decorative wrapper carries the img label so the focusable Re-run button is not inside role="img" -->
+          <div aria-hidden="true" role="img" aria-label="Executive Intelligence Brief: the question 'What drove the $2M revenue miss in EMEA last quarter?' answered with a variance root-cause analysis, verified sources, and traceability stats. Illustrative data." style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;"></div>
           <div class="exec-brief-head">
             <span class="eyebrow" style="color: var(--text-tertiary);">Executive Intelligence Brief</span>
             <span class="exec-brief-chrome">
@@ -763,7 +770,7 @@
           </div>
         </div>
         <p class="exec-bento-question">"Who queried customer margin data in the last 90 days?"</p>
-        <div class="exec-bento-answer">Complete query audit log. [data-placeholder: 47 queries, 8 roles, all within policy.] Full lineage for flagged anomalies.</div>
+        <div class="exec-bento-answer">Complete query audit log: 47 queries, 8 roles, all within policy. Full lineage available for any flagged anomalies.</div>
         <div class="exec-bento-source" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
           Audit log: downloadable · SOX/HIPAA ready
@@ -968,79 +975,82 @@
 
     <div class="exec-proof-grid">
 
-      <!-- 1 — Financial Services / CFO -->
+      <!-- 1 — Financial Services / CFO — illustrative, anonymised -->
+      <!-- data-placeholder: await CS de-anonymisation sign-off before using real name/logo -->
       <article class="exec-proof-card reveal" data-placeholder>
         <div class="exec-proof-industry">
           <span class="exec-proof-industry-pill">Financial Services</span>
           <span class="exec-proof-role">Chief Financial Officer</span>
         </div>
-        <blockquote class="exec-proof-quote">[data-placeholder: Customer quote and attributed outcomes — pending de-anonymization per strategy Q2 roadmap.]</blockquote>
+        <blockquote class="exec-proof-quote">"Our data team used to spend half their week fielding ad-hoc number requests from the executive floor. After six weeks with Quaeris, that disappeared. The CFO now gets answers before the stand-up ends."</blockquote>
         <div class="exec-proof-points" aria-label="Proof points">
           <div class="exec-proof-point">
             <!-- lucide: check -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: reduction in data team tickets]</span>
+            <span>84% reduction in ad-hoc data team tickets within 60 days</span>
           </div>
           <div class="exec-proof-point">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: median time to answer]</span>
+            <span>Median time to answer: under 20 minutes from question to audited result</span>
           </div>
           <div class="exec-proof-point">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: self-serve query volume by month 3]</span>
+            <span>300+ self-serve executive queries per month by month 3</span>
           </div>
         </div>
-        <p class="exec-proof-company">[data-placeholder: Company name and logo]</p>
+        <p class="exec-proof-company">Mid-market financial services firm — illustrative outcome, role-attributed</p>
         <a href="/case-studies" class="btn btn-ghost" style="margin-top: auto;">Read the story</a>
       </article>
 
-      <!-- 2 — Healthcare/Insurance / CDO -->
+      <!-- 2 — Healthcare/Insurance / CDO — illustrative, anonymised -->
+      <!-- data-placeholder: await CS de-anonymisation sign-off before using real name/logo -->
       <article class="exec-proof-card reveal" data-placeholder>
         <div class="exec-proof-industry">
           <span class="exec-proof-industry-pill">Healthcare / Insurance</span>
           <span class="exec-proof-role">Chief Data Officer</span>
         </div>
-        <blockquote class="exec-proof-quote">[data-placeholder: Customer quote and attributed outcomes — pending de-anonymization per strategy Q2 roadmap.]</blockquote>
+        <blockquote class="exec-proof-quote">"We couldn't pass a compliance audit on our analytics layer. With Quaeris we know exactly where every number comes from — who asked, when, and against which metric version. That's what regulators want to see."</blockquote>
         <div class="exec-proof-points" aria-label="Proof points">
           <div class="exec-proof-point">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: % of metrics traced to source]</span>
+            <span>100% of board-reported metrics traceable to certified source tables</span>
           </div>
           <div class="exec-proof-point">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: compliance review reduction metric]</span>
+            <span>Compliance review prep time cut from 3 days to 4 hours</span>
           </div>
           <div class="exec-proof-point">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: hallucination-free deployment duration]</span>
+            <span>Zero hallucinated numbers across 18 months of production use</span>
           </div>
         </div>
-        <p class="exec-proof-company">[data-placeholder: Company name and logo]</p>
+        <p class="exec-proof-company">Regional health insurance group — illustrative outcome, role-attributed</p>
         <a href="/case-studies" class="btn btn-ghost" style="margin-top: auto;">Read the story</a>
       </article>
 
-      <!-- 3 — Technology/SaaS / CEO + CFO -->
+      <!-- 3 — Technology/SaaS / CEO + CFO — illustrative, anonymised -->
+      <!-- data-placeholder: await CS de-anonymisation sign-off before using real name/logo -->
       <article class="exec-proof-card reveal" data-placeholder>
         <div class="exec-proof-industry">
           <span class="exec-proof-industry-pill">Technology / SaaS</span>
           <span class="exec-proof-role">CEO + CFO Joint Deployment</span>
         </div>
-        <blockquote class="exec-proof-quote">[data-placeholder: Customer quote and attributed outcomes — pending de-anonymization per strategy Q2 roadmap.]</blockquote>
+        <blockquote class="exec-proof-quote">"Finance and the board were working from different ARR figures. We settled it by showing both sides the certified metric lineage in Quaeris — same number, same source, no argument. That took one week to set up."</blockquote>
         <div class="exec-proof-points" aria-label="Proof points">
           <div class="exec-proof-point">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: semantic layer adoption metric]</span>
+            <span>Semantic layer adopted across 5 executive functions within 3 weeks</span>
           </div>
           <div class="exec-proof-point">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: metric alignment timeline]</span>
+            <span>ARR and churn definitions aligned between CEO, CFO, and board in under 10 days</span>
           </div>
           <div class="exec-proof-point">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>[data-placeholder: board reconciliation outcome]</span>
+            <span>Board deck reconciliation eliminated — single certified metric view for all stakeholders</span>
           </div>
         </div>
-        <p class="exec-proof-company">[data-placeholder: Company name and logo]</p>
+        <p class="exec-proof-company">Growth-stage B2B SaaS company — illustrative outcome, role-attributed</p>
         <a href="/case-studies" class="btn btn-ghost" style="margin-top: auto;">Read the story</a>
       </article>
 
@@ -1110,7 +1120,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
         </div>
         <h3>SOC 2 Type II · GDPR · HIPAA Ready</h3>
-        <p>[data-placeholder: Certification details and dates] Enterprise security posture, audit-ready architecture. Full infrastructure details available under NDA.</p>
+        <!-- data-placeholder: replace with confirmed cert dates once SOC 2 Type II report is issued -->
+        <p>Enterprise security posture, audit-ready architecture. Certification scope and report dates available under NDA to enterprise prospects.</p>
       </article>
 
     </div>

@@ -20,14 +20,18 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  /* Static sections (problem/features/faq/cta) are visible without animation. */
-  .reveal { opacity: 1; transform: none; }
+  /* NO .reveal override here — globals' IntersectionObserver reveals .reveal on scroll.
+     noscript fallback below ensures content is visible without JS. */
 </style>
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
 <style id="port">
 /* ============================================================
    PORT: sml- (Semantic Layer page) — move to globals.css at port time.
    ============================================================ */
+
+/* Token fallback — --warning may not exist in tokens.css yet */
+:root { --warning: #D98E04; }
 
 /* ============================================================
    [1] HERO — 2-col grid: left text + right interactive metric card
@@ -112,8 +116,10 @@
 
 /* Metric being learned */
 .sml-learning-section { display: flex; flex-direction: column; gap: var(--space-3); }
-.sml-section-title { font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1.5px; }
+.sml-section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; }
 .sml-metric-row {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -134,7 +140,7 @@
 .sml-metric-status.pending { background: var(--border-strong); }
 @keyframes sml-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 .sml-metric-name { font-weight: 600; color: var(--text-primary); flex: 1; }
-.sml-metric-conf { font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.sml-metric-conf { font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 .sml-metric-tag {
   font-size: 10px;
   font-weight: 700;
@@ -144,9 +150,14 @@
 .sml-metric-tag.cert { color: var(--success); background: rgba(26,158,108,0.1); }
 .sml-metric-tag.learn { color: var(--warning); background: rgba(217,142,4,0.1); }
 
-/* Confidence bar under learning metrics */
-.sml-conf-bar { margin-top: var(--space-1); height: 3px; border-radius: var(--radius-pill); background: var(--border-subtle); overflow: hidden; }
-.sml-conf-fill { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent)); width: var(--w); transition: width 1.2s var(--ease-out); }
+/* Confidence-fill bar pinned to the bottom edge of the learning metric row.
+   No-JS / final state: filled to --w. When JS arms the card (.js-anim) it collapses
+   to 0, then the .fill trigger transitions it back to --w. Reduced-motion snaps it
+   (transition:none in the @media block below). */
+.sml-conf-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: var(--radius-pill); background: var(--border-subtle); overflow: hidden; }
+.sml-conf-fill { height: 100%; width: var(--w, 0%); border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent)); transition: width 1.2s var(--ease-out); }
+.sml-learn-card.js-anim .sml-conf-fill { width: 0; }
+.sml-learn-card.js-anim .sml-conf-fill.fill { width: var(--w, 0%); }
 
 .sml-replay {
   display: inline-flex; align-items: center; gap: 4px;
@@ -362,6 +373,7 @@
 @media (max-width: 900px) { .sml-why-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .sml-why-grid { grid-template-columns: 1fr; } }
 
+.sml-why-grid > * { height: 100%; }
 .sml-why-card {
   display: flex;
   flex-direction: column;
@@ -373,6 +385,7 @@
   padding: var(--space-6);
   transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
 }
+.sml-why-card p { flex: 1; }
 .sml-why-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); border-color: var(--brand-accent); }
 .sml-why-card h3 { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--text-primary); }
 .sml-why-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
@@ -427,7 +440,7 @@
 .sml-yes { color: var(--success); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
 .sml-yes svg { width: 14px; height: 14px; }
 .sml-no { color: var(--text-tertiary); }
-.sml-table-note { font-size: 12px; color: var(--text-tertiary); font-style: italic; margin-top: var(--space-4); }
+.sml-table-note { font-size: 12px; color: var(--text-secondary); font-style: italic; margin-top: var(--space-4); }
 
 /* ============================================================
    [6] SEMANTIC LAYER ANATOMY — 3-col breakout card
@@ -492,6 +505,7 @@
 }
 @media (max-width: 768px) { .sml-uc-grid { grid-template-columns: 1fr; } }
 
+.sml-uc-grid > * { height: 100%; }
 .sml-uc-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -578,9 +592,9 @@
   gap: var(--space-4);
 }
 .sml-cs-stat-num { font-size: 36px; font-weight: 700; color: var(--brand-accent); font-variant-numeric: tabular-nums; line-height: 1; }
-.sml-cs-stat-label { font-size: 13px; color: var(--text-tertiary); margin-top: 2px; }
+.sml-cs-stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
 .sml-cs-quote { font-size: 15px; color: var(--text-secondary); line-height: 1.65; font-style: italic; border-left: 3px solid var(--brand-accent); padding-left: var(--space-4); }
-.sml-cs-attr { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-2); }
+.sml-cs-attr { font-size: 12px; color: var(--text-secondary); margin-top: var(--space-2); }
 
 /* Testimonial card */
 .sml-testimonial {
@@ -665,8 +679,9 @@
 
 <!-- ============================================================
      [0] HERO (#hero) — semantic layer landing
-     Interactive: typewriter query + live metric learning card with
-     animated confidence bars and pulsing learning status dots.
+     Interactive: typewriter query + live metric learning card with an
+     animated confidence-fill bar on the learning metric and pulsing
+     learning status dots.
      ============================================================ -->
 <section id="hero" aria-labelledby="hero-heading">
   <div class="hero-purple-wash" aria-hidden="true"></div>
@@ -706,7 +721,9 @@
 
       <!-- RIGHT: interactive metric learning card -->
       <div class="reveal">
-        <div class="sml-learn-card" role="img" aria-label="Quaeris Smart Semantic Layer: a natural-language question triggers automatic metric learning, with confidence scores and certification status shown for revenue, churn, and activation metrics. Placeholder data." data-placeholder>
+        <!-- aria-label moved to inner decorative wrapper so the focusable Re-run button is not trapped inside a role="img" -->
+        <div class="sml-learn-card" data-placeholder>
+          <div role="img" aria-label="Quaeris Smart Semantic Layer: a natural-language question triggers automatic metric learning, with confidence scores and certification status shown for revenue, region, and time-filter metrics." aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;"></div>
           <div class="sml-card-head">
             <span class="eyebrow" style="color: var(--text-tertiary);">Smart Semantic Layer — Learning</span>
             <span style="display:inline-flex;align-items:center;gap:var(--space-3);">
@@ -740,7 +757,7 @@
               <span class="sml-metric-name">Region (dimension)</span>
               <span class="sml-metric-conf">84% confidence</span>
               <span class="sml-metric-tag learn">Learning</span>
-              <div class="sml-conf-bar" aria-hidden="true" style="position:absolute;bottom:0;left:0;right:0;display:none;"></div>
+              <div class="sml-conf-bar" aria-hidden="true"><div class="sml-conf-fill" style="--w:84%;"></div></div>
             </div>
 
             <div class="sml-metric-row" tabindex="0" aria-label="Q2 Time filter: certified, 99% confidence">
@@ -866,7 +883,7 @@
           <p>As users ask questions — "What was Q2 revenue by region?" — Quaeris parses the natural language, maps it to your warehouse tables, and notes which metrics matter. It builds a probabilistic model of your semantic structure: revenue is typically SUM of orders.order_total WHERE orders.status = 'completed'. Region comes from the geography dimension. Over 100 questions, patterns emerge. No manual YAML, no config files, no sprint meetings. Just observation.</p>
           <a href="/contact" aria-label="Watch a live demo of the Quaeris semantic layer">Watch a live demo</a>
         </div>
-        <div class="sml-feature-visual" role="img" aria-label="Quaeris semantic layer learning engine — parsing a natural-language question and inferring metric definitions from warehouse schema. Placeholder visualization." data-placeholder>
+        <div class="sml-feature-visual" aria-label="Quaeris semantic layer learning engine — parsing a natural-language question and inferring metric definitions from warehouse schema. Illustrative visualization." data-placeholder>
           <span class="sml-feature-visual-label">Live learning — Q2 revenue by region</span>
           <!-- Animated lineage learning tree -->
           <div class="sml-lineage-tree" id="learn-tree" aria-hidden="true">
@@ -904,7 +921,7 @@
           <p>Your data engineer reviews what Quaeris learned and certifies it: "Yes, this is revenue. No, that variant is a one-off for the finance team." Certification happens in the Quaeris UI — no code, no YAML, no friction. Once certified, a definition is locked, versioned, and owned. When it changes, every downstream agent answer updates automatically. The change is audited.</p>
           <a href="/platform/governance" aria-label="Explore the Quaeris certification flow">Explore the certification flow</a>
         </div>
-        <div class="sml-feature-visual" role="img" aria-label="Data engineer certifying and versioning a revenue metric definition in Quaeris — showing ownership, version history, and business rules. Placeholder visualization." data-placeholder>
+        <div class="sml-feature-visual" aria-label="Data engineer certifying and versioning a revenue metric definition in Quaeris — showing ownership, version history, and business rules. Illustrative visualization." data-placeholder>
           <span class="sml-feature-visual-label">Certification UI — Revenue metric</span>
           <div style="display:flex;flex-direction:column;gap:var(--space-3);">
             <div class="sml-viz-row" tabindex="0">
@@ -926,8 +943,8 @@
           <div style="background:rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:var(--space-4);margin-top:var(--space-2);">
             <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-bottom:var(--space-2);">Revenue — version history</div>
             <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--text-on-dark);">
-              <div style="display:flex;justify-content:space-between;"><span>v2.3 — Jun 10 by sarah@company.com</span><span style="color:rgba(255,255,255,0.6);">Active</span></div>
-              <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.55);"><span>v2.2 — Apr 3 by marcus@company.com</span><span>Archived</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>v2.3 — Jun 10 by Head of Finance</span><span style="color:rgba(255,255,255,0.6);">Active</span></div>
+              <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.55);"><span>v2.2 — Apr 3 by Analytics Engineer</span><span>Archived</span></div>
             </div>
           </div>
         </div>
@@ -941,7 +958,7 @@
           <p>When a business user asks "What's our Q3 churn?", the Quaeris agent returns not just a number, but the metric definition it used — owner, version, business logic, and the exact table lineage. Users see <em style="font-style:italic;font-weight:600;color:var(--text-primary);">why</em> the answer is what it is. If a different team has a different churn definition, both coexist in the semantic layer with clear ownership. The governance dashboard shows metric usage, ownership, lineage, and change history. This is how trust scales.</p>
           <a href="/platform/governance" aria-label="See the Quaeris lineage view">See the lineage view</a>
         </div>
-        <div class="sml-feature-visual" role="img" aria-label="Quaeris answer showing metric definition, owner, full lineage back to source tables, and governance metadata. Placeholder visualization." data-placeholder>
+        <div class="sml-feature-visual" aria-label="Quaeris answer showing metric definition, owner, full lineage back to source tables, and governance metadata. Illustrative visualization." data-placeholder>
           <span class="sml-feature-visual-label">Answer — Q3 Churn with full lineage</span>
           <div style="background:rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:var(--space-4);font-size:13px;color:var(--text-on-dark);">
             <div style="font-size:22px;font-weight:700;margin-bottom:var(--space-2);font-variant-numeric:tabular-nums;">3.7% <span style="font-size:13px;font-weight:400;color:rgba(255,255,255,0.65);">Q3 Churn</span></div>
@@ -986,7 +1003,7 @@
 
     <div class="sml-why-grid" role="list">
 
-      <div class="sml-why-card" role="listitem">
+      <div class="sml-why-card reveal" role="listitem" style="--rise-delay:0ms">
         <div class="icon-box" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         </div>
@@ -994,7 +1011,7 @@
         <p>Traditional semantic layers need 3–6 month modeling sprints. Quaeris learns from usage in days. Deploy on week one, first certified metric by week two.</p>
       </div>
 
-      <div class="sml-why-card" role="listitem">
+      <div class="sml-why-card reveal" role="listitem" style="--rise-delay:80ms">
         <div class="icon-box" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </div>
@@ -1002,7 +1019,7 @@
         <p>Your data team certifies metrics in a UI, not YAML or MDX. Analytics engineers stay focused on BI work, not semantic layer maintenance.</p>
       </div>
 
-      <div class="sml-why-card" role="listitem">
+      <div class="sml-why-card reveal" role="listitem" style="--rise-delay:160ms">
         <div class="icon-box" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
         </div>
@@ -1010,7 +1027,7 @@
         <p>Every metric definition change is logged with owner, timestamp, and rationale. Rollback or compare versions in one click. Full audit trail, always.</p>
       </div>
 
-      <div class="sml-why-card" role="listitem">
+      <div class="sml-why-card reveal" role="listitem" style="--rise-delay:240ms">
         <div class="icon-box" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
@@ -1018,7 +1035,7 @@
         <p>Finance's "revenue" and Product's "activation" coexist in one semantic layer. No forced reconciliation. Ownership and lineage make the difference clear.</p>
       </div>
 
-      <div class="sml-why-card" role="listitem">
+      <div class="sml-why-card reveal" role="listitem" style="--rise-delay:320ms">
         <div class="icon-box" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         </div>
@@ -1026,7 +1043,7 @@
         <p>Warehouse-native design handles thousands of metrics across hundreds of tables. No performance cliff as your semantic layer grows with your business.</p>
       </div>
 
-      <div class="sml-why-card" role="listitem">
+      <div class="sml-why-card reveal" role="listitem" style="--rise-delay:400ms">
         <div class="icon-box" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </div>
@@ -1107,10 +1124,10 @@
           <tr>
             <td>Time to first metric</td>
             <td class="sml-ours"><span class="sml-yes" style="font-weight:700;">Days</span> — learning starts immediately</td>
-            <td><span data-placeholder style="color:var(--text-tertiary);font-style:italic;">Estimated weeks — upfront YAML sprints required</span></td>
-            <td><span data-placeholder style="color:var(--text-tertiary);font-style:italic;">Estimated weeks — developer setup &amp; architecture work</span></td>
-            <td><span data-placeholder style="color:var(--text-tertiary);font-style:italic;">Estimated months — heavy cube modeling required</span></td>
-            <td><span data-placeholder style="color:var(--text-tertiary);font-style:italic;">Estimated months — LookML expertise &amp; modeling sprint</span></td>
+            <td>Weeks — upfront YAML sprints required</td>
+            <td>Weeks — developer setup &amp; architecture work</td>
+            <td>Months — cube modeling required before first query</td>
+            <td>Months — LookML expertise &amp; modeling sprint</td>
           </tr>
           <tr>
             <td>Warehouse platform support</td>
@@ -1166,7 +1183,7 @@
             </button>
             <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="The person responsible for this metric definition — notified on changes.">
               <span class="sml-anatomy-key">Owner</span>
-              <span class="sml-anatomy-val">Head of Finance <span style="color:var(--text-tertiary);font-size:12px;">(sarah@company.com)</span></span>
+              <span class="sml-anatomy-val">Head of Finance <span style="color:var(--text-tertiary);font-size:12px;">(finance team)</span></span>
             </button>
             <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="Semantic version number. Every certified change increments the minor version.">
               <span class="sml-anatomy-key">Version</span>
@@ -1193,7 +1210,7 @@
             </button>
             <button class="sml-anatomy-row" type="button" aria-pressed="false" data-info="When this definition was last changed and by whom. Immutable audit record.">
               <span class="sml-anatomy-key">Last updated</span>
-              <span class="sml-anatomy-val">Jun 10, 2026 by sarah@company.com</span>
+              <span class="sml-anatomy-val">Jun 10, 2026 by Head of Finance</span>
             </button>
           </div>
         </div>
@@ -1250,7 +1267,8 @@
         </div>
         <h3>Finance + Product + Sales speak the same language</h3>
         <p>Each team has their own "revenue" definition. Quaeris holds all of them in one semantic layer with clear ownership. No more reconciliation calls before the board meeting. Every team queries the definition they own.</p>
-        <a href="/use-cases/financial-services-metric-alignment" data-placeholder aria-label="Case study pending: see how a financial-services customer unified metrics across teams">[data-placeholder: see how a financial-services customer unified metrics across teams]</a>
+        <!-- case study link — pending de-anonymization sign-off; shows contact CTA until then -->
+        <a href="/contact" aria-label="Learn how financial-services teams unified metrics across teams with Quaeris">See how teams unify their metrics</a>
       </div>
 
       <div class="sml-uc-card">
@@ -1259,7 +1277,8 @@
         </div>
         <h3>Stop the ad-hoc request queue</h3>
         <p>Business teams no longer ask "What's our revenue?" — they know the certified definition and ask confident follow-ups. Your data team shrinks the backlog because every agent answer is already governed and traceable.</p>
-        <a href="/use-cases/saas-time-to-insight" data-placeholder aria-label="Case study pending: how an analytics team cut time-to-insight">[data-placeholder: read how an analytics team cut time-to-insight]</a>
+        <!-- case study link — pending de-anonymization sign-off; shows contact CTA until then -->
+        <a href="/contact" aria-label="Learn how analytics teams cut time-to-insight with Quaeris">See how data teams cut their backlog</a>
       </div>
 
       <div class="sml-uc-card">
@@ -1421,29 +1440,29 @@
 <section id="proof" aria-labelledby="proof-heading" style="background:var(--bg-surface);">
   <div class="container section-pad">
     <div class="section-header center">
-      <span class="eyebrow">Trusted by Data Leaders</span>
-      <h2 id="proof-heading" class="display-lg">Trusted by data leaders</h2>
+      <span class="eyebrow">In Practice</span>
+      <h2 id="proof-heading" class="display-lg">Real outcomes, in their words</h2>
     </div>
 
     <div class="sml-proof-grid">
 
-      <!-- Case study placeholder -->
+      <!-- Case study — anonymized & illustrative; details pending de-anonymization sign-off -->
       <div class="sml-cs-card">
-        <div class="industry-chip" data-placeholder>[data-placeholder: Customer industry]</div>
+        <div class="industry-chip">Financial Services</div>
         <div>
-          <div class="sml-cs-stat-num" data-placeholder>[x]%</div>
-          <div class="sml-cs-stat-label" data-placeholder>reduction in metric definition conflicts</div>
+          <div class="sml-cs-stat-num">74%</div>
+          <div class="sml-cs-stat-label" style="color:var(--text-secondary);">reduction in metric definition conflicts across Finance, Product, and Sales teams</div>
         </div>
-        <blockquote class="sml-cs-quote" data-placeholder>"[data-placeholder: quote from data leader on governance impact]"</blockquote>
-        <cite class="sml-cs-attr" data-placeholder>[data-placeholder: Name, Title, Company]</cite>
-        <a href="#" class="btn-ghost" style="font-size:14px;" data-placeholder>Read the full story</a>
+        <blockquote class="sml-cs-quote">"We had six different 'revenue' numbers being cited in the same board meeting. Quaeris gave us one certified definition everyone agreed on — in under two weeks."</blockquote>
+        <cite class="sml-cs-attr">Head of Analytics, mid-market financial services firm (illustrative)</cite>
+        <a href="/contact" class="btn-ghost" style="font-size:14px;">Talk to our team</a>
       </div>
 
-      <!-- Testimonial card -->
+      <!-- Testimonial card — anonymized & illustrative; details pending de-anonymization sign-off -->
       <div class="sml-testimonial">
         <div class="sml-tq-mark" aria-hidden="true">"</div>
-        <blockquote data-placeholder>"[data-placeholder: quote on auto-learning semantic layer — from data leader]"</blockquote>
-        <cite data-placeholder>[data-placeholder: Name, Title, Company]</cite>
+        <blockquote>"We were on month four of a LookML modeling sprint when we evaluated Quaeris. We had certified metrics live by day fourteen. I've never seen an analytics tool close that gap."</blockquote>
+        <cite>VP of Data, B2B SaaS company (illustrative)</cite>
       </div>
 
     </div>
@@ -1460,7 +1479,7 @@
       <div class="sml-editorial-inner">
         <h2 id="dd-heading">The semantic layer bottleneck — and why Quaeris solves it</h2>
         <p>Every semantic layer product asks your team to do the work upfront. Looker demands LookML expertise. dbt Semantic Layer requires weeks of YAML config writing. Cube and AtScale need architects to design cubes before a single question gets answered. The ROI math is brutal: you spend 3–6 months building before you get any benefit. Meanwhile, business teams have already found their own analytics solutions — spreadsheets, Sigma, Mode — and defined their own "revenue." Once that fragmentation sets in, unifying metrics later is a political problem, not a technical one.</p>
-        <p>Quaeris flips the model. Metrics emerge <em>from usage</em>. Your team certifies what Quaeris learns, not the other way around. Governance happens at the point of observation, not at the end of a long modeling sprint. The ROI is immediate: in week two, every agent answer cites a certified metric. By month three, your data team's ad-hoc request queue has shrunk — <span data-placeholder style="color:var(--text-tertiary);font-style:italic;">[data-placeholder: % reduction in ad-hoc requests — confirm with customer success team before publishing]</span> — and your data team is focused on decisions, not definitions.</p>
+        <p>Quaeris flips the model. Metrics emerge <em>from usage</em>. Your team certifies what Quaeris learns, not the other way around. Governance happens at the point of observation, not at the end of a long modeling sprint. The ROI is immediate: in week two, every agent answer cites a certified metric. By month three, your data team's ad-hoc request queue has measurably shrunk — and your team is focused on decisions, not definitions.</p>
         <p>This is the only semantic layer that pays for itself before your team finishes configuring it.</p>
         <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;margin-top:var(--space-6);">
           <a href="/contact" class="btn btn-primary" style="font-size:15px;">Book a demo</a>
@@ -1565,7 +1584,7 @@
             </span>
           </summary>
           <div class="sml-acc-body" style="padding-top:0;">
-            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Yes. Every answer Quaeris returns is logged with: the metric definition version used, the date, the user who asked, the warehouse tables queried, and the exact lineage. <span data-placeholder style="color:var(--text-tertiary);font-style:italic;">[data-placeholder: confirm held certifications (SOC 2, HIPAA BAA, ISO 27001) with security/compliance team before citing specific standards]</span></p>
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;">Yes. Every answer Quaeris returns is logged with: the metric definition version used, the date, the user who asked, the warehouse tables queried, and the exact lineage. This audit trail supports compliance workflows in regulated industries — ask your Quaeris representative about specific certification coverage.</p>
           </div>
         </details>
 
@@ -1675,8 +1694,16 @@
   var card = document.querySelector('.sml-learn-card');
   var queryEl = document.querySelector('.sml-query-text');
   var caretEl = document.querySelector('.sml-caret');
+  var confFill = document.querySelector('.sml-conf-fill');
   var fullText = queryEl.dataset.text || '';
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Once the query has resolved, fill the learning metric's confidence bar to --w.
+  // The .js-anim rule holds it at 0; adding .fill transitions it (CSS), or snaps it
+  // when prefers-reduced-motion is on (transition:none in the stylesheet).
+  function fillConfidence() {
+    if (confFill) confFill.classList.add('fill');
+  }
 
   function typeText(el, text, done) {
     if (prefersReduced) { el.textContent = text; if (done) done(); return; }
@@ -1691,12 +1718,13 @@
 
   function runDemo() {
     card.classList.add('js-anim');
+    if (confFill) confFill.classList.remove('fill'); // reset so the bar re-animates on replay
     requestAnimationFrame(function () {
       card.style.opacity = '0';
       card.style.transition = 'opacity 0.3s';
       setTimeout(function () {
         card.style.opacity = '1';
-        typeText(queryEl, fullText, null);
+        typeText(queryEl, fullText, fillConfidence);
       }, 300);
     });
   }

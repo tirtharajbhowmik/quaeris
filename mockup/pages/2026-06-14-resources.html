@@ -19,9 +19,14 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  /* Static sections are visible WITHOUT animation */
-  .reveal { opacity: 1; transform: none; }
+  /* NOTE: .reveal hidden→visible is handled by globals.css + the IO script below.
+     Do NOT add a blanket .reveal{opacity:1} override here — it kills all entrance animations. */
 </style>
+
+<!-- No-JS fallback: make all animated elements visible if scripts are blocked -->
+<noscript><style>
+  .reveal, .res-grid-section .res-card { opacity: 1 !important; transform: none !important; }
+</style></noscript>
 
 <style id="port">
 /* ============================================================
@@ -58,7 +63,7 @@
   margin: 0 auto;
 }
 .res-hero-inner .eyebrow {
-  color: var(--text-tertiary);
+  color: var(--text-secondary); /* a11y: tertiary is ~2.6:1 on bg-surface, insufficient */
   margin-bottom: var(--space-4);
   display: block;
 }
@@ -166,7 +171,10 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-5);
+  align-items: start; /* allow auto row height; cards are flex-column so height:100% handles stretch */
 }
+/* Equal-height cards within each row */
+.res-card-grid > * { height: 100%; }
 @media (max-width: 1024px) { .res-card-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px)  { .res-card-grid { grid-template-columns: 1fr; } }
 
@@ -248,7 +256,7 @@
 }
 .res-card-meta {
   font-size: 12px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary); /* a11y: --text-tertiary fails WCAG AA on white; use secondary (~5.6:1) */
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -258,6 +266,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  margin-top: auto; /* push CTA to bottom of flex card body */
   font-size: 14px;
   font-weight: 600;
   color: var(--brand-accent);
@@ -394,7 +403,7 @@
   padding: var(--space-7);
   gap: var(--space-5);
 }
-.res-featured-label { color: var(--text-tertiary); }
+.res-featured-label { color: var(--text-secondary); } /* a11y: tertiary fails WCAG AA on white */
 .res-featured-body h3 {
   font-family: var(--font-display);
   font-size: clamp(22px, 2.5vw, 28px);
@@ -415,7 +424,7 @@
   flex-direction: column;
   gap: var(--space-2);
 }
-.res-read-label { font-size: 12px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
+.res-read-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); /* a11y: tertiary fails WCAG AA */ letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
 .res-read-label b { color: var(--brand-accent); }
 .res-read-rail { height: 6px; background: var(--border-subtle); border-radius: var(--radius-pill); overflow: hidden; }
 .res-read-fill {
@@ -438,9 +447,9 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 .res-feat-chapter:last-child { border-bottom: none; }
-.res-feat-ch-num { font-size: 11px; font-weight: 700; color: var(--text-tertiary); font-variant-numeric: tabular-nums; width: 20px; flex-shrink: 0; }
+.res-feat-ch-num { font-size: 11px; font-weight: 700; color: var(--text-secondary); /* a11y */ font-variant-numeric: tabular-nums; width: 20px; flex-shrink: 0; }
 .res-feat-ch-title { flex: 1; font-weight: 500; color: var(--text-primary); }
-.res-feat-ch-time { font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.res-feat-ch-time { font-size: 11px; color: var(--text-secondary); /* a11y */ font-variant-numeric: tabular-nums; }
 
 .res-featured-actions { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; margin-top: auto; }
 
@@ -635,23 +644,30 @@
         </span>
       </div>
 
-      <!-- Stats row -->
-      <div class="res-stat-row">
-        <div class="res-stat-item" data-placeholder>
-          <b class="res-count-num" data-target="40">40</b>
-          <span>Resources published</span>
+      <!-- Stats row — counts match the visible grid (12 cards: 4 guides, 3 webinars, 3 reports, 2 stories) -->
+      <!-- a11y: aria-live is NOT on the count-up <b> (would spam screen readers with intermediate values);
+           each stat item announces its final value atomically once the count-up settles. -->
+      <div class="res-stat-row" role="region" aria-label="Resource catalog size">
+        <div class="res-stat-item">
+          <!-- aria-live="off" while animating; JS sets aria-label on parent once final -->
+          <b class="res-count-num" data-target="12" aria-hidden="true">12</b>
+          <span aria-hidden="true">Resources available</span>
+          <span class="sr-only">12 Resources available</span>
         </div>
-        <div class="res-stat-item" data-placeholder>
-          <b class="res-count-num" data-target="12">12</b>
-          <span>In-depth guides</span>
+        <div class="res-stat-item">
+          <b class="res-count-num" data-target="4" aria-hidden="true">4</b>
+          <span aria-hidden="true">In-depth guides</span>
+          <span class="sr-only">4 In-depth guides</span>
         </div>
-        <div class="res-stat-item" data-placeholder>
-          <b class="res-count-num" data-target="8">8</b>
-          <span>On-demand webinars</span>
+        <div class="res-stat-item">
+          <b class="res-count-num" data-target="3" aria-hidden="true">3</b>
+          <span aria-hidden="true">On-demand webinars</span>
+          <span class="sr-only">3 On-demand webinars</span>
         </div>
-        <div class="res-stat-item" data-placeholder>
-          <b class="res-count-num" data-target="6">6</b>
-          <span>Original research reports</span>
+        <div class="res-stat-item">
+          <b class="res-count-num" data-target="3" aria-hidden="true">3</b>
+          <span aria-hidden="true">Original research reports</span>
+          <span class="sr-only">3 Original research reports</span>
         </div>
       </div>
     </div>

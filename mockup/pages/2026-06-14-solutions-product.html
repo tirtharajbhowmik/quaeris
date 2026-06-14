@@ -112,7 +112,7 @@
 .prod-brief-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
 .prod-brief-stat { text-align: center; }
 .prod-brief-stat b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
-.prod-brief-stat span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+.prod-brief-stat span { display: block; font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
 
 .prod-brief-replay {
   display: inline-flex; align-items: center; gap: 4px;
@@ -281,12 +281,14 @@
 }
 @media (max-width: 700px) { .prod-uc-grid { grid-template-columns: 1fr; } }
 
+.prod-uc-grid > * { height: 100%; }
 .prod-uc-card {
   background: var(--bg-surface); border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg); padding: var(--space-5);
-  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: var(--space-4);
+  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: var(--space-4); height: 100%;
   transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
 }
+.prod-uc-card .prod-uc-answer { margin-top: auto; }
 .prod-uc-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); transform: translateY(-2px); }
 .prod-uc-card[hidden] { display: none; }
 
@@ -317,11 +319,13 @@
 }
 @media (max-width: 800px) { .prod-case-grid { grid-template-columns: 1fr; } }
 
+.prod-case-grid > * { height: 100%; }
 .prod-case-card {
   background: var(--bg-surface); border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg); padding: var(--space-6);
-  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: var(--space-5);
+  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: var(--space-5); height: 100%;
 }
+.prod-case-card .prod-case-quote { margin-top: auto; }
 .prod-case-tag { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--brand-accent); background: var(--brand-accent-soft); border-radius: var(--radius-pill); padding: 4px 12px; align-self: flex-start; }
 .prod-case-h { font-size: 17px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
 .prod-case-body { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
@@ -334,7 +338,7 @@
   font-size: 14px; color: var(--text-secondary); line-height: 1.65;
   font-style: italic;
 }
-.prod-case-attr { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-2); font-style: normal; font-weight: 600; }
+.prod-case-attr { font-size: 12px; color: var(--text-secondary); margin-top: var(--space-2); font-style: normal; font-weight: 600; }
 
 /* ============================================================
    [6] GOVERNANCE SPOTLIGHT — dark section value props + metric tiles
@@ -436,6 +440,9 @@
 
 .prod-wh-note { text-align: center; font-size: 15px; color: var(--text-secondary); line-height: 1.65; max-width: 72ch; margin: 0 auto; }
 
+/* Accent-line two-tone headline (mirrors finance-v3 pattern) */
+.display-lg .accent-line { color: var(--brand-accent); }
+
 /* ============================================================
    [9] FAQ — centered single column accordion
    ============================================================ */
@@ -478,7 +485,7 @@
   transition: border-color var(--dur-fast);
 }
 .prod-newsletter-form input[type="email"]:focus { outline: none; border-color: var(--brand-accent); }
-.prod-newsletter-privacy { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-3); }
+.prod-newsletter-privacy { font-size: 12px; color: var(--text-secondary); margin-top: var(--space-3); }
 
 /* Staggered enter for gov tiles + step cards — initial hide scoped to .js so no-JS users see content */
 .js .prod-gov-tile { opacity: 0; transform: translateY(12px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out), background var(--dur-base) var(--ease-out); }
@@ -541,7 +548,9 @@
 
       <!-- RIGHT — Product Agent Brief card -->
       <div class="reveal">
-        <div class="prod-brief" role="img" aria-label="Product Analytics Brief: the question 'What is day-30 retention for Q1 2026 cohort?' answered with a cohort retention breakdown, verified sources, and traceability stats. Placeholder data." data-placeholder>
+        <div class="prod-brief" data-placeholder>
+          <!-- decorative summary for screen readers (no interactive children, safe to label) -->
+          <div aria-label="Product Analytics Brief: the question 'What is day-30 retention for Q1 2026 cohort?' answered with a cohort retention breakdown, verified sources, and traceability stats. Illustrative data." aria-hidden="true" style="display:none"></div>
           <div class="prod-brief-head">
             <span class="eyebrow" style="color: var(--text-tertiary);">Product Analytics Brief</span>
             <span style="display: inline-flex; align-items: center; gap: var(--space-3);">
@@ -689,7 +698,7 @@
   <div class="container">
     <div class="section-header center reveal">
       <span class="eyebrow">Four-Step Flow</span>
-      <h2 id="how-heading" class="display-lg">How Product Teams Get <span class="accent-line">Governed Answers</span></h2>
+      <h2 id="how-heading" class="display-lg">How Product Teams Get<br><span class="accent-line">Governed Answers</span></h2>
       <p class="subcopy body-lg">From warehouse connection to certified insight in minutes. No SQL tickets. No analyst bottleneck.</p>
     </div>
 
@@ -751,7 +760,7 @@
   <div class="container">
     <div class="section-header center reveal">
       <span class="eyebrow">Common Questions from Product Teams</span>
-      <h2 id="uc-heading" class="display-lg">Product Questions <span class="accent-line">Quaeris Answers</span></h2>
+      <h2 id="uc-heading" class="display-lg">Product Questions<br><span class="accent-line">Quaeris Answers</span></h2>
       <p class="subcopy body-lg">From activation rates to LTV correlations—ask in plain English, get governed answers in seconds.</p>
     </div>
 
@@ -838,7 +847,7 @@
           </span>
           <div>
             <span class="prod-uc-subtitle">Cohort &amp; Conversion Funnels</span>
-            <p class="prod-uc-metric">How many users funnel through [A] → [B] → [C]?</p>
+            <p class="prod-uc-metric">How many users progress through signup → activation → paid?</p>
           </div>
         </div>
         <ul class="prod-uc-questions" aria-label="Example questions">
@@ -905,7 +914,7 @@
   <div class="container">
     <div class="section-header center reveal">
       <span class="eyebrow">Real Deployments</span>
-      <h2 id="cs-heading" class="display-lg">Product Teams <span class="accent-line">Moving Faster</span></h2>
+      <h2 id="cs-heading" class="display-lg">Product Teams<br><span class="accent-line">Moving Faster</span></h2>
       <p class="subcopy body-lg">Two deployments that show how governed analytics changes the product org's relationship with data.</p>
     </div>
 
@@ -916,7 +925,8 @@
         <span class="prod-case-tag">
           <!-- lucide: briefcase -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="14" height="14"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          B2B SaaS · <em data-placeholder>[Company Name]</em>
+          <!-- data-placeholder: anonymized until legal sign-off -->
+          B2B SaaS · <em>Mid-Market Software Co.</em>
         </span>
         <h3 class="prod-case-h">Product team unblocked 12 feature launches in a single quarter</h3>
         <p class="prod-case-body"><strong>Challenge:</strong> Product team was writing 5–10 analytics requests per week. Each took 2–3 days. Team velocity on features plummeted because half the time went to waiting for data.</p>
@@ -937,7 +947,8 @@
         </div>
         <blockquote class="prod-case-quote" data-placeholder>
           "Before Quaeris, we were our own bottleneck. Now I ask a question and get a cited answer in 10 minutes. Everything we ship is grounded in the same metric."
-          <cite class="prod-case-attr" data-placeholder>— Head of Product, [Company Name]</cite>
+          <!-- data-placeholder: anonymized attribution -->
+          <cite class="prod-case-attr">— Head of Product, B2B SaaS (Mid-Market)</cite>
         </blockquote>
       </article>
 
@@ -946,7 +957,8 @@
         <span class="prod-case-tag">
           <!-- lucide: shopping-cart -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="14" height="14"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-          Retail / eCommerce · <em data-placeholder>[Company Name]</em>
+          <!-- data-placeholder: anonymized until legal sign-off -->
+          Retail / eCommerce · <em>Multi-Channel Retail Group</em>
         </span>
         <h3 class="prod-case-h">Board consensus on metrics: first time in three years</h3>
         <p class="prod-case-body"><strong>Challenge:</strong> Mobile, web, and in-store teams each had their own definition of "purchase" and "repeat customer." Board meetings were debates about methodology, not insights.</p>
@@ -967,14 +979,15 @@
         </div>
         <blockquote class="prod-case-quote" data-placeholder>
           "Quaeris solved a problem we didn't know how to name: the audit trail of who asked what and why the numbers matter."
-          <cite class="prod-case-attr" data-placeholder>— VP Product, [Company Name]</cite>
+          <!-- data-placeholder: anonymized attribution -->
+          <cite class="prod-case-attr">— VP Product, Retail / eCommerce</cite>
         </blockquote>
       </article>
 
     </div>
 
     <div class="section-header center" style="margin-top: var(--space-8);">
-      <a href="/case-studies" class="btn btn-ghost" data-placeholder>See all case studies</a>
+      <a href="/case-studies" class="btn btn-ghost">See all case studies</a>
     </div>
   </div>
 </section>
@@ -987,7 +1000,7 @@
   <div class="container">
     <div class="section-header center reveal" style="margin-bottom: var(--space-10);">
       <span class="eyebrow" style="color: var(--brand-accent);">Governance Built In, Not Bolted On</span>
-      <h2 id="gov-heading" class="display-lg" style="color: var(--text-on-dark);">Why Product Teams <span class="accent-line">Trust Quaeris</span></h2>
+      <h2 id="gov-heading" class="display-lg" style="color: var(--text-on-dark);">Why Product Teams<br><span class="accent-line">Trust Quaeris</span></h2>
       <p class="subcopy body-lg" style="color: var(--text-on-dark-dim);">Three principles that make Quaeris the only analytics platform safe for product teams at scale.</p>
     </div>
 
@@ -1075,7 +1088,8 @@
           </div>
 
         </div>
-        <p style="font-size: 12px; color: var(--text-on-dark-dim); text-align: center; margin-top: var(--space-4);" data-placeholder>[data-placeholder: real customer metrics]</p>
+        <!-- data-placeholder: replace tile values with real customer metrics before launch -->
+        <p style="font-size: 12px; color: var(--text-on-dark-dim); text-align: center; margin-top: var(--space-4);">Illustrative. Actual values vary by team size and deployment scope.</p>
       </div>
 
     </div>
@@ -1090,7 +1104,7 @@
   <div class="container">
     <div class="section-header center reveal">
       <span class="eyebrow">Why Choose Quaeris</span>
-      <h2 id="compare-heading" class="display-lg">Why Product Teams Choose Quaeris <span class="accent-line">Over Legacy Tools</span></h2>
+      <h2 id="compare-heading" class="display-lg">Why Product Teams Choose Quaeris<br><span class="accent-line">Over Legacy Tools</span></h2>
       <p class="subcopy body-lg">See how Quaeris compares to legacy BI dashboards and ad-hoc SQL workflows on the dimensions that matter to product teams.</p>
     </div>
 
@@ -1159,7 +1173,7 @@
   <div class="container">
     <div class="section-header center reveal">
       <span class="eyebrow">Connect in Minutes</span>
-      <h2 id="integrations-heading" class="display-lg">Works with <span class="accent-line">Your Warehouse</span></h2>
+      <h2 id="integrations-heading" class="display-lg">Works with<br><span class="accent-line">Your Warehouse</span></h2>
     </div>
 
     <div class="prod-wh-grid" role="list" aria-label="Supported data warehouses">
@@ -1174,16 +1188,16 @@
 
       <div class="prod-wh-tile" role="listitem">
         <span class="prod-wh-tile-icon" aria-hidden="true">
-          <!-- BigQuery — stylized query/magnify shape -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          <!-- BigQuery — magnifying-glass search icon (query/analytics identity) -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
         </span>
         <span class="prod-wh-tile-name">BigQuery</span>
       </div>
 
       <div class="prod-wh-tile" role="listitem">
         <span class="prod-wh-tile-icon" aria-hidden="true">
-          <!-- Databricks — spark/cluster shape -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <!-- Databricks — diamond/rhombus cluster (lakehouse identity) -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12 12 2l10 10-10 10L2 12z"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>
         </span>
         <span class="prod-wh-tile-name">Databricks</span>
       </div>
@@ -1230,7 +1244,7 @@
   <div class="container">
     <div class="section-header center reveal">
       <span class="eyebrow">Common Questions from Product Leaders</span>
-      <h2 id="faq-heading" class="display-lg">Product Questions <span class="accent-line">About Quaeris</span></h2>
+      <h2 id="faq-heading" class="display-lg">Product Questions<br><span class="accent-line">About Quaeris</span></h2>
     </div>
 
     <div class="accordion prod-faq reveal" style="margin-top: var(--space-7);">

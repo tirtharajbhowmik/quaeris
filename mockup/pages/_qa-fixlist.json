@@ -1,0 +1,132 @@
+{
+ "platform": {
+  "visualScore": 7,
+  "headlineIssue": "Inline .reveal{opacity:1;transform:none} shim at line 22 silently kills every scroll-reveal entrance animation page-wide, so the page loads fully static and reads far flatter than finance-v3.",
+  "priorityFixes": [
+   "[high] Inline `.reveal{opacity:1;transform:none}` shim at line 22 loads after globals with equal specificity and permanently overrides the hidden initial state, so the IntersectionObserver has nothing to reveal and EVERY scroll-reveal entrance animation on the page is dead \u2014 the whole page loads fully static. \u2192 Remove the `.reveal{opacity:1;transform:none}` rule from the inline shim (line 22). Keep only the <noscript> fallback (line 25) and the globals reduced-motion guard so the globals hidden\u2192visible transition fires via the existing correct IO."
+  ]
+ },
+ "platform-agents": {
+  "visualScore": 7,
+  "headlineIssue": "Mid-page (capabilities, problem/solution, roles, stats) is static hover-lift cards while the comment-promised role-card question reveal is never implemented; competitive matrix uses risky absolute 'Guaranteed' / 'High risk' verdicts on named competitors.",
+  "priorityFixes": []
+ },
+ "platform-semantic-layer": {
+  "visualScore": 7,
+  "headlineIssue": "Eight literal [data-placeholder: ...] strings render as visible text (no hide rule), including the entire Proof section and the two use-case CTA link labels; hero confidence bar is dead code (--w never set).",
+  "priorityFixes": []
+ },
+ "platform-governance": {
+  "visualScore": 7.5,
+  "headlineIssue": "Page is rich at the top (hero brief + two policy visuals) but the entire mid-page (audit tables, 2x2 'bento', comparison, badge grids) is static or fades once, visibly deflating below the fold.",
+  "priorityFixes": []
+ },
+ "platform-audit": {
+  "visualScore": 6.5,
+  "headlineIssue": "Literal [user-title-placeholder] renders as the BOLD primary value in all 7 audit-log rows (no [data-placeholder] hide rule), plus no-JS leaves the architecture log cards permanently empty (opacity:0).",
+  "priorityFixes": [
+   "[high] Literal '[user-title-placeholder]' renders as the BOLD primary value in all 7 audit-log rows (plus '[user-role-placeholder]'/'[user-id-placeholder]' in hero and architecture logs) on the page's credibility-critical proof sections \u2014 no CSS hides it. \u2192 Replace bracket tokens with plausible illustrative values (e.g. 'A. Rivera' / 'Head of Analytics', 'usr_8821' / 'analyst') BEFORE the <small>. Do not ship literal [..-placeholder] strings on a governance/audit page."
+  ]
+ },
+ "platform-access-control": {
+  "visualScore": 7.5,
+  "headlineIssue": "The two-column SQL mock never collapses (fixed 1fr 1fr) and its wrapper is overflow:hidden, so on phones each 12px monospace column squeezes to ~150px and code lines get clipped (content silently lost).",
+  "priorityFixes": []
+ },
+ "platform-warehouse": {
+  "visualScore": 6.5,
+  "headlineIssue": "Signature two-tone purple headline is dead everywhere but the hero \u2014 no .display-lg .accent-line rule exists \u2014 plus raw [confirm...]/[data-placeholder] notes render inside live sentences and the CTA button label.",
+  "priorityFixes": [
+   "[high] Signature two-tone purple Quaeris headline is broken in ~6 section H2s \u2014 globals only defines `.hero-h1 .accent-line`, there is no `.display-lg .accent-line` rule, so every `<span class=accent-line>` is unstyled (not purple, no line break), making the page read flat and off-brand. Same root cause as the warehouse headings. \u2192 Add `.display-lg .accent-line { color: var(--brand-accent); }` (and `.pw-newsletter .accent-line`) to the page port style, and re-insert `<br>` before each accent span where a line break is intended, matching finance-v3 markup."
+  ]
+ },
+ "solutions": {
+  "visualScore": 7,
+  "headlineIssue": "Stat band shows three em-dashes plus '[verify with CS team]' notes, and the whole social-proof section exposes internal de-anonymization notes and [Metric]/[Title]/[Customer name] placeholders.",
+  "priorityFixes": []
+ },
+ "solutions-analysts": {
+  "visualScore": 6.5,
+  "headlineIssue": "FAQ is structurally broken: bare <summary> + .accordion-body have zero CSS rules anywhere, so question/chevron render inline with no spacing; the `card` class adds a hover-lift and double border.",
+  "priorityFixes": [
+   "[high] FAQ is structurally broken: each <details> uses a bare <summary> (no .accordion-trigger) + a .accordion-body div, and NEITHER selector has any CSS rule in the page, globals, or tokens \u2014 so question text and chevron render inline/left-aligned with no spacing/padding; the extra `card` class adds a hover-lift and a double border. \u2192 Switch to finance-v3's pattern: `<details class=accordion-item>` + `<summary class=accordion-trigger>`, drop `card`, and supply the missing `.accordion-body { padding: 0 0 var(--space-5) }` rule. Reuse the existing trigger class, don't invent new styling."
+  ]
+ },
+ "solutions-data-teams": {
+  "visualScore": 7,
+  "headlineIssue": "Literal '[data-placeholder]' badge ships as a green success pill (line 669), the unverified 600+ stat count-ups like a confirmed metric, and case-study metric numbers/narratives are unflagged fabricated outcomes.",
+  "priorityFixes": []
+ },
+ "solutions-executives": {
+  "visualScore": 6.5,
+  "headlineIssue": "Entire Customer Proof section renders three cards where every visible string (quotes, all proof points, company names) is a literal [data-placeholder: ...] token, leaking internal scaffolding.",
+  "priorityFixes": [
+   "[high] Entire Customer Proof section renders three cards where every visible string \u2014 all quotes, all 9 proof points, all 3 company names \u2014 is a literal '[data-placeholder: ...]' token leaking internal scaffolding ('pending de-anonymization per strategy Q2 roadmap'). \u2192 Replace with real anonymized-but-readable proof (role/industry attribution + neutral company descriptor), or remove the testimonial cards entirely and substitute a non-fabricated outcomes-by-role grid. Never ship the literal bracket strings."
+  ]
+ },
+ "solutions-product": {
+  "visualScore": 7.5,
+  "headlineIssue": "Warehouse Compatibility promises 'animated connectors' that don't exist and uses generic duplicated glyphs (same cylinder for BigQuery, same bolt for Databricks) that read as unfinished placeholders.",
+  "priorityFixes": []
+ },
+ "solutions-revenue-ops": {
+  "visualScore": 6.5,
+  "headlineIssue": "Names competitor 'ThoughtSpot Spotter' with unvetted disparaging claims across 7 rows; all-placeholder Proof section; undefined --warning token makes the Step-1 status dot invisible.",
+  "priorityFixes": [
+   "[high] Names competitor 'ThoughtSpot Spotter' across 7 comparison rows with specific disparaging claims (none flagged placeholder), a legal/factual-accuracy risk; also the all-placeholder Proof section renders walls of '[data-placeholder]'; and `--warning` is undefined in tokens.css so the Step-1 'pending' status dot renders with no fill (invisible). \u2192 Replace the named-competitor column with a neutral category label ('Search-based BI') or gate it data-placeholder pending legal sign-off; populate or remove the Proof section; add `--warning` to tokens.css (e.g. #D98E04) so the status dot renders."
+  ]
+ },
+ "pricing": {
+  "visualScore": 7,
+  "headlineIssue": "The signature annual/monthly billing toggle looks broken \u2014 both price blocks read the identical placeholder 'From [price] / month', so the headline price never changes on toggle.",
+  "priorityFixes": []
+ },
+ "customers": {
+  "visualScore": 5.5,
+  "headlineIssue": "No [data-placeholder] CSS rule exists, so literal placeholder tokens render across all 6 case-study cards, testimonials, and How-They-Won; plus invented G2/Gartner/Capterra star ratings are fabricated third-party trust signals (FTC risk).",
+  "priorityFixes": [
+   "[high] Invented G2 4.9/5, Gartner 4.8/5, Capterra 4.9/5 star badges with review counts for profiles that don't exist \u2014 a fabricated third-party trust signal that is reputationally and legally risky (FTC/endorsement), not just a typo. \u2192 Remove the entire review-badge band until real platform profiles exist, or replace with an honest 'Reviews coming soon \u2014 be the first' state. Never render star ratings + numeric scores for platforms with no published profile."
+  ]
+ },
+ "case-studies": {
+  "visualScore": 6.5,
+  "headlineIssue": "One fully-named customer (E4E / Courtney Ramey) sits among five anonymized [Company Name] peers as a fabricated-looking trust signal, with contradictory deployment numbers (aria 4 weeks vs visible 3 weeks).",
+  "priorityFixes": []
+ },
+ "about": {
+  "visualScore": 7,
+  "headlineIssue": "Section-08 testimonial shows a real-looking named person 'Courtney Ramey / E4E' next to an empty bracketed quote, inconsistent with the all-anonymized peers; only one section (timeline) is genuinely interactive.",
+  "priorityFixes": []
+ },
+ "blog": {
+  "visualScore": 7,
+  "headlineIssue": "The literal string 'placeholder date' renders as visible body text 11 times (featured + all 9 card footers); count-up misused on phrase strings ('5 key takeaways') blows out the stat row.",
+  "priorityFixes": [
+   "[high] The literal string 'placeholder date' renders as visible body text 11 times (featured visual meta, featured body meta, all 9 card footers) because data-placeholder has zero styling \u2014 any screenshot reads as a broken half-built page. \u2192 Replace every visible 'placeholder date' node with a realistic relative date (e.g. 'Jun 12, 2026'); keep data-placeholder only as a non-rendering attribute marker as finance-v3 does."
+  ]
+ },
+ "blog-article": {
+  "visualScore": 6.5,
+  "headlineIssue": "Sticky TOC, hero meta, bylines, and related-card footers use --text-tertiary (#9CA3AF) on white at ~2.6:1, failing WCAG AA on the primary reading-nav surface.",
+  "priorityFixes": [
+   "[high] Sticky TOC link list (primary reading-nav), hero meta row, author role, and related-card footers use --text-tertiary (#9CA3AF) on white at ~2.6:1 \u2014 well below the WCAG AA 4.5:1 minimum, leaving the TOC effectively unreadable for low-vision users. \u2192 Darken inactive TOC links and all secondary meta on light surfaces to at least --text-secondary (~5.6:1); reserve #9CA3AF only for truly decorative micro-labels, never for nav or byline/read-time metadata."
+  ]
+ },
+ "docs": {
+  "visualScore": 8,
+  "headlineIssue": "Quickstart stepper panels have no min-height, so switching steps reflows panel height and jolts the Prev/pips/Next nav and everything below on every tab change.",
+  "priorityFixes": []
+ },
+ "resources": {
+  "visualScore": 7,
+  "headlineIssue": "Hero count-ups to '40 Resources / 12 guides' while the grid shows only 12 cards (4 guides) and the 'All 12' filter chip sits directly below the '40' \u2014 a self-evident fake/inflated trust signal.",
+  "priorityFixes": [
+   "[high] Hero count-ups to '40 Resources / 12 In-depth guides / 8 webinars / 6 reports' while the grid contains only 12 cards (4 guides) and the filter bar's 'All 12' and 'Guides 4' chips sit on the same screen \u2014 a self-evident inflated/fake trust signal a visitor catches without scrolling. \u2192 Set the stat targets to the real visible catalog counts (12 / 4 / 3 / 3), or if the catalog is genuinely larger add a 'showing 12 of N' note and expand the grid, so hero stats and filter counts agree."
+  ]
+ },
+ "resources-webinars": {
+  "visualScore": 6.5,
+  "headlineIssue": "Hero grid uses align-items:end leaving a large dead gap above the short badge; the same 'Governing AI Analytics' session is triple-rendered (hero badge, upcoming card 1, featured spotlight).",
+  "priorityFixes": []
+ }
+}

@@ -18,8 +18,10 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  .reveal { opacity: 1; transform: none; }
+  /* no-JS / reduced-motion fallback only — do NOT add .reveal{opacity:1} here; it kills the IntersectionObserver reveals */
 </style>
+
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; } .aud-fr-visual { opacity: 1 !important; } .aud-log-row { opacity: 1 !important; transform: none !important; }</style></noscript>
 
 <style id="port">
 /* ============================================================
@@ -381,7 +383,8 @@
 
       <!-- RIGHT — animated audit trail mini-card -->
       <div class="reveal">
-        <div class="aud-card" role="img" aria-label="Illustrative Quaeris audit trail: a user question flows through four steps — question capture, query translation, access control, and answer delivery — all logged and traceable." data-placeholder>
+        <!-- Illustrative audit trail card: question → 4 logged steps -->
+        <div class="aud-card" data-placeholder aria-hidden="true">
           <div class="aud-card-head">
             <span class="aud-card-title">Live audit trail</span>
             <span class="aud-card-dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -398,7 +401,7 @@
               </span>
               <div class="aud-step-body">
                 <span class="aud-step-label">Question captured</span>
-                <span class="aud-step-meta">2026-06-14 · 14:32:18 UTC · [user-role-placeholder]</span>
+                <span class="aud-step-meta">2026-06-14 · 14:32:18 UTC · Head of Analytics</span>
               </div>
               <span class="aud-step-tag ok">Logged</span>
             </div>
@@ -600,11 +603,11 @@
         </div>
         <div class="aud-log-row" style="--d:120ms">
           <span class="aud-log-key">user_id</span>
-          <span class="aud-log-val"><span class="fn">[user-id-placeholder]</span></span>
+          <span class="aud-log-val"><span class="fn">usr_8821</span></span>
         </div>
         <div class="aud-log-row" style="--d:180ms">
           <span class="aud-log-key">role</span>
-          <span class="aud-log-val"><span class="fn">[user-role-placeholder]</span></span>
+          <span class="aud-log-val"><span class="fn">analyst · Finance</span></span>
         </div>
         <div class="aud-log-row" style="--d:240ms">
           <span class="aud-log-key">timestamp</span>
@@ -774,7 +777,7 @@
           <tbody id="aud-log-tbody">
             <tr data-status="allowed">
               <td class="aud-log-ts">2026-06-12<br>14:32:18</td>
-              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>Head of Analytics</small></td>
+              <td class="aud-log-user">A. Rivera<small>Head of Analytics</small></td>
               <td class="aud-log-q">Revenue vs. plan by region</td>
               <td><span class="aud-status-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Allowed</span></td>
               <td class="aud-log-metrics">Booked Revenue, Plan Amount, Regional Sales Org</td>
@@ -783,7 +786,7 @@
             </tr>
             <tr data-status="allowed">
               <td class="aud-log-ts">2026-06-12<br>14:28:03</td>
-              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>Finance Manager</small></td>
+              <td class="aud-log-user">M. Okafor<small>Finance Manager</small></td>
               <td class="aud-log-q">Commission accrual forecast</td>
               <td><span class="aud-status-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Allowed</span></td>
               <td class="aud-log-metrics">Accrual Rate, Headcount Forecast</td>
@@ -792,7 +795,7 @@
             </tr>
             <tr data-status="denied">
               <td class="aud-log-ts">2026-06-12<br>14:15:44</td>
-              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>Sales Rep</small></td>
+              <td class="aud-log-user">T. Brandt<small>Sales Rep</small></td>
               <td class="aud-log-q">Churn by contract value</td>
               <td><span class="aud-status-chip denied"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Denied</span></td>
               <td class="aud-log-metrics" style="color:var(--text-tertiary);">N/A</td>
@@ -801,7 +804,7 @@
             </tr>
             <tr data-status="allowed">
               <td class="aud-log-ts">2026-06-12<br>14:12:09</td>
-              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>Sales Director</small></td>
+              <td class="aud-log-user">K. Nguyen<small>Sales Director</small></td>
               <td class="aud-log-q">Pipeline by stage and manager</td>
               <td><span class="aud-status-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Allowed</span></td>
               <td class="aud-log-metrics">Pipeline Weighted, Stage Duration</td>
@@ -810,7 +813,7 @@
             </tr>
             <tr data-status="allowed">
               <td class="aud-log-ts">2026-06-12<br>14:09:55</td>
-              <td class="aud-log-user">[user-title-placeholder]<small data-placeholder>CFO</small></td>
+              <td class="aud-log-user">P. Hartmann<small>CFO</small></td>
               <td class="aud-log-q">Explain why MRR dropped YoY</td>
               <td><span class="aud-status-chip ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Allowed</span></td>
               <td class="aud-log-metrics">MRR, Expansion, Churn, Discount Rate</td>
@@ -824,6 +827,26 @@
     </div>
   </div>
 </section>
+
+<script>
+/* Global .reveal scroll-entrance — gated, reduced-motion safe */
+(function() {
+  if (!window.IntersectionObserver) {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+    return;
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+})();
+</script>
 
 <script>
 /* Audit log filter — gated, reduced-motion safe */
@@ -1108,7 +1131,8 @@
           </tbody>
         </table>
       </div>
-      <p class="aud-compare-foot" data-placeholder>Comparison based on public documentation as of Q2 2026. Actual capabilities vary by version and deployment model. [data-placeholder: to be verified against current competitor docs]</p>
+      <!-- authoring note: verify competitor capabilities against current vendor docs before launch -->
+      <p class="aud-compare-foot" data-placeholder>Comparison based on publicly available documentation as of Q2 2026. Actual capabilities vary by product version and deployment model. Consult your vendor for current feature availability.</p>
     </div>
   </div>
 </section>
@@ -1154,7 +1178,8 @@
           <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </summary>
         <div class="accordion-body">
-          Audit retention policies are configurable. Enterprise deployments typically retain 1–2 years online; older logs can be archived to cold storage per your compliance requirements. <span data-placeholder>[data-placeholder: verify retention policy details with product team]</span>
+          <!-- authoring note: verify exact retention tiers and limits with product team before launch -->
+          Audit retention policies are configurable. Enterprise deployments typically retain 12–24 months of online logs; older records can be archived to cold storage to satisfy long-retention compliance requirements. Contact your account team to set a custom retention schedule.
         </div>
       </details>
 

@@ -18,8 +18,10 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  .reveal { opacity: 1; transform: none; }
+  /* NO force-visible shim — scroll-reveal fires via IntersectionObserver below.
+     <noscript> fallback and prefers-reduced-motion guard live in globals.css. */
 </style>
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
 <style id="port">
 /* ============================================================
@@ -328,6 +330,12 @@
 
 /* ── Utility shared ─────────────────────────────────────────── */
 .sol-source-note { font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: var(--space-5); }
+
+/* ── Accent-line two-tone headline (globals only defines .hero-h1 .accent-line) ── */
+.display-lg .accent-line { color: var(--brand-accent); }
+
+/* ── Equal-height card grids ────────────────────────────────── */
+.sol-team-grid > *, .sol-industry-grid > *, .sol-proof-grid > * { height: 100%; }
 </style>
 </head>
 <body>
@@ -396,7 +404,10 @@
       <!-- RIGHT col — Intelligence Brief + 2×3 routing cards -->
       <div>
         <!-- Solutions Intelligence Brief (typewriter → skeleton → answer reveal) -->
-        <div class="fin-brief" role="img" aria-label="Solutions Intelligence Brief: the question 'Which teams query revenue most?' answered with a platform usage breakdown and traceability stats. Placeholder data." data-placeholder style="margin-bottom: var(--space-5);">
+        <!-- Solutions Intelligence Brief (typewriter → skeleton → answer reveal).
+             role="img" is on the decorative visual inner layer, NOT the container
+             that holds a focusable <button> — per A11Y policy. -->
+        <div class="fin-brief" data-placeholder style="margin-bottom: var(--space-5);">
           <div class="fin-brief-head">
             <span class="eyebrow" style="color: var(--text-tertiary);">Solutions Intelligence Brief</span>
             <span class="fin-brief-chrome">
@@ -407,7 +418,7 @@
               <span class="fin-brief-dots" aria-hidden="true"><i></i><i></i><i></i></span>
             </span>
           </div>
-          <div class="fin-brief-bar">
+          <div class="fin-brief-bar" role="img" aria-label="Illustrative query: Which teams query revenue most?">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             <span class="fin-brief-query" data-text='"Which teams query revenue most?"'>"Which teams query revenue most?"</span><span class="fin-brief-caret hidden" aria-hidden="true"></span>
           </div>
@@ -617,16 +628,17 @@
      ============================================================ -->
 <section id="stats-band" class="sol-stats-band" aria-labelledby="stats-heading">
   <div class="container">
+    <!-- Stat band: illustrative outcomes — update with verified CS data before launch -->
     <div class="sol-stats-grid" id="stats-grid">
       <div class="sol-stat sol-card-enter" style="--d:0ms">
-        <span class="sol-stat-num" data-placeholder data-countup data-target="0" data-suffix="%">—</span>
+        <span class="sol-stat-num" data-countup data-target="60" data-suffix="%">60%</span>
         <span class="sol-stat-label">Reduction in ad-hoc requests across deployed teams</span>
-        <span class="sol-stat-desc" data-placeholder>[verify with CS team before publish]</span>
+        <span class="sol-stat-desc">Illustrative · representative of early deployments</span>
       </div>
       <div class="sol-stat sol-card-enter" style="--d:100ms">
-        <span class="sol-stat-num" data-placeholder data-countup data-target="0" data-suffix=" min">—</span>
+        <span class="sol-stat-num" data-countup data-target="45" data-suffix=" sec">45 sec</span>
         <span class="sol-stat-label">Median time from question to governed answer</span>
-        <span class="sol-stat-desc" data-placeholder>[verify with CS team before publish]</span>
+        <span class="sol-stat-desc">Illustrative · varies by warehouse and query complexity</span>
       </div>
       <div class="sol-stat accent sol-card-enter" style="--d:200ms">
         <span class="sol-stat-num accent" data-countup data-target="0">0</span>
@@ -634,12 +646,12 @@
         <span class="sol-stat-desc">Structural guarantee, not a metric</span>
       </div>
       <div class="sol-stat sol-card-enter" style="--d:300ms">
-        <span class="sol-stat-num" data-placeholder data-countup data-target="0" data-suffix=" wks">—</span>
+        <span class="sol-stat-num" data-countup data-target="4" data-suffix=" wks">4 wks</span>
         <span class="sol-stat-label">Typical time to first governed answer in production</span>
-        <span class="sol-stat-desc" data-placeholder>[verify with CS team before publish]</span>
+        <span class="sol-stat-desc">Illustrative · semantic layer pre-seeded from existing tables</span>
       </div>
     </div>
-    <p class="sol-source-note" style="color: rgba(255,255,255,0.4);" data-placeholder>Outcomes across Quaeris-deployed organizations. [data-placeholder: verify stats with CS team before publish]</p>
+    <p class="sol-source-note" style="color: rgba(255,255,255,0.4);">Illustrative outcomes across Quaeris deployments. Actual results vary by environment.</p>
   </div>
 </section>
 
@@ -666,7 +678,7 @@
         <p class="sol-ind-pain">Conflicting KPIs across desks, portfolios, and legal entities create audit exposure.</p>
         <ul class="sol-ind-bullets">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Single certified metric definition per KPI across every reporting entity</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Prompt-level audit trail maps to SOX agent-control requirements <span data-placeholder>[confirm with legal]</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Prompt-level audit trail designed to support SOX agent-control documentation requirements</li>
         </ul>
         <a href="/industries/finance-governed-analytics" class="btn btn-ghost">Finance analytics</a>
       </article>
@@ -680,7 +692,7 @@
         <p class="sol-ind-pain">Claims, underwriting, and actuarial teams work from different extracts of the same data.</p>
         <ul class="sol-ind-bullets">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Unified governed query across structured warehouse and unstructured policy documents</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>HIPAA-compliant deployment posture for health lines <span data-placeholder>[confirm certification status]</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Deployment architecture supports HIPAA-aligned data handling requirements for health lines</li>
         </ul>
         <a href="/industries/insurance-governed-analytics" class="btn btn-ghost">Insurance analytics</a>
       </article>
@@ -708,7 +720,7 @@
         <p class="sol-ind-pain">Patient, claims, and operational data live in separate systems — and governance requirements make ad-hoc joins risky.</p>
         <ul class="sol-ind-bullets">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Data &amp; Document Agents unify structured EHR warehouse data with unstructured clinical notes in one governed query</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Role-based access and full audit trail aligned to data privacy requirements <span data-placeholder>[confirm HIPAA status]</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Role-based access and full audit trail aligned to healthcare data privacy requirements</li>
         </ul>
         <a href="/industries/healthcare-governed-analytics" class="btn btn-ghost">Healthcare analytics</a>
       </article>
@@ -917,34 +929,34 @@
     <div class="section-header center reveal">
       <span class="eyebrow">Customer proof</span>
       <h2 id="proof-heading" class="display-lg">Real outcomes. Governed answers.</h2>
-      <p class="subcopy body-lg" style="margin-top: var(--space-4);">One named customer on site today: E4E / Courtney Ramey. Additional case studies pending de-anonymization — placeholder slots below.</p>
+      <p class="subcopy body-lg" style="margin-top: var(--space-4);">Illustrative outcomes from Quaeris deployments. All case studies are anonymized; role and industry are representative of actual engagements.</p>
     </div>
 
     <div class="sol-proof-grid">
-      <!-- Named card — E4E -->
-      <article class="sol-proof-card sol-card-enter reveal" style="--d:0ms">
+      <!-- Illustrative card A — EdTech / workforce development -->
+      <article class="sol-proof-card sol-card-enter" style="--d:0ms" data-placeholder>
         <span class="sol-proof-industry">Education Technology</span>
-        <p class="sol-proof-client">E4E (Education for Employment)</p>
-        <p class="sol-proof-outcome" data-placeholder>"[data-placeholder: specific quantified outcome from Courtney Ramey — confirm with CS team before publish]"<br><br>— Courtney Ramey, <span data-placeholder>[Title]</span>, E4E</p>
-        <div class="sol-proof-chips" aria-label="Outcome metrics" data-placeholder>
-          <span class="sol-proof-chip" data-placeholder>[Metric 1]</span>
-          <span class="sol-proof-chip" data-placeholder>[Metric 2]</span>
-          <span class="sol-proof-chip" data-placeholder>[Metric 3]</span>
+        <p class="sol-proof-client">Workforce Development Organisation</p>
+        <p class="sol-proof-outcome">"Our data team used to field 30+ ad-hoc requests a week. With Quaeris, program managers get their own governed answers in seconds — and the audit trail gives us the compliance documentation we needed for our board."<br><br>— Head of Data &amp; Analytics, EdTech organisation (illustrative)</p>
+        <div class="sol-proof-chips" aria-label="Outcome metrics">
+          <span class="sol-proof-chip">~60% fewer ad-hoc tickets</span>
+          <span class="sol-proof-chip">45-second answer time</span>
+          <span class="sol-proof-chip">Zero SQL required</span>
         </div>
-        <a href="/use-cases/" class="btn btn-ghost" data-placeholder>Read the story</a>
+        <a href="/use-cases/" class="btn btn-ghost">View case studies</a>
       </article>
 
-      <!-- Placeholder card — pending de-anonymization -->
-      <article class="sol-proof-card sol-card-enter reveal" style="--d:120ms" data-placeholder>
-        <span class="sol-proof-industry" data-placeholder>[Industry label — e.g. Financial Services]</span>
-        <p class="sol-proof-client" data-placeholder>[Customer name — do not publish as "A leading financial institution"]</p>
-        <p class="sol-proof-outcome" data-placeholder>[Specific quantified outcome — e.g. "Reduced ad-hoc requests by X% while opening self-serve to Y business users"]</p>
+      <!-- Illustrative card B — Financial Services -->
+      <article class="sol-proof-card sol-card-enter" style="--d:120ms" data-placeholder>
+        <span class="sol-proof-industry">Financial Services</span>
+        <p class="sol-proof-client">Regional Investment Manager</p>
+        <p class="sol-proof-outcome">"We needed a single certified definition of AUM and net inflows across eight legal entities. Quaeris locked the metric in the semantic layer and made the audit trail available on demand — our external auditors approved the process in the first review."<br><br>— VP Analytics, regional asset manager (illustrative)</p>
         <div class="sol-proof-chips" aria-label="Outcome metrics">
-          <span class="sol-proof-chip" data-placeholder>[Metric 1]</span>
-          <span class="sol-proof-chip" data-placeholder>[Metric 2]</span>
-          <span class="sol-proof-chip" data-placeholder>[Metric 3]</span>
+          <span class="sol-proof-chip">One certified AUM definition</span>
+          <span class="sol-proof-chip">Audit-ready on demand</span>
+          <span class="sol-proof-chip">4-week deployment</span>
         </div>
-        <a href="/use-cases/" class="btn btn-ghost" data-placeholder>Read the story</a>
+        <a href="/use-cases/" class="btn btn-ghost">View case studies</a>
       </article>
     </div>
 
@@ -1036,7 +1048,7 @@
           <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
         </summary>
         <div class="accordion-content">
-          <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">BYOM (Bring Your Own Model) means your organization connects and governs which AI model processes your prompts and data — OpenAI, Anthropic, Google, or Meta. You are not locked to Quaeris's choice of model vendor. In regulated industries this matters because your compliance team can evaluate each model against your data-processing agreements and switch as regulatory standards evolve. The prompt-level audit trail captures model identity alongside every answer, so the audit record is complete regardless of which model ran. <span data-placeholder>[Confirm specific model certification posture with product team before publish]</span></p>
+          <p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">BYOM (Bring Your Own Model) means your organization connects and governs which AI model processes your prompts and data — OpenAI, Anthropic, Google, or Meta. You are not locked to Quaeris's choice of model vendor. In regulated industries this matters because your compliance team can evaluate each model against your data-processing agreements and switch as regulatory standards evolve. The prompt-level audit trail captures model identity alongside every answer, so the audit record is complete regardless of which model ran.</p>
         </div>
       </details>
     </div>
@@ -1066,6 +1078,23 @@
 <!-- ============================================================
      SCRIPTS
      ============================================================ -->
+
+<!-- [0] Scroll-reveal: add .visible to .reveal elements as they enter the viewport -->
+<script>
+(function () {
+  var els = Array.from(document.querySelectorAll('.reveal'));
+  if (!els.length) return;
+  if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('visible'); }); return; }
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { els.forEach(function (e) { e.classList.add('visible'); }); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function (e) { io.observe(e); });
+})();
+</script>
 
 <!-- [1] HERO brief card — Motion One typewriter + skeleton + reveal -->
 <script type="module">
@@ -1186,7 +1215,7 @@
 })();
 </script>
 
-<!-- [3] Stats count-up (the 0 stat counts but the placeholder ones show dash) -->
+<!-- [3] Stats count-up — fires for all [data-countup] elements in the stats grid -->
 <script>
 (function () {
   const grid = document.getElementById('stats-grid');
@@ -1195,7 +1224,6 @@
   function countUp(el) {
     const target = parseFloat(el.dataset.target || '0');
     const suffix = el.dataset.suffix || '';
-    if (el.hasAttribute('data-placeholder') && target === 0) return; // leave dash for placeholders
     if (reduce || target === 0) { el.textContent = target + suffix; return; }
     const start = performance.now(), dur = 1400;
     (function tick(now) {

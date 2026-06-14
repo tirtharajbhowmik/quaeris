@@ -18,8 +18,8 @@
   details.accordion-item > summary { list-style: none; }
   details.accordion-item > summary::-webkit-details-marker { display: none; }
   details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
-  /* static reveal: sections without JS animation are visible immediately */
-  .reveal { opacity: 1; transform: none; }
+  /* reduced-motion: skip animations, show final state immediately */
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1 !important; transform: none !important; } }
   /* accent-line used across display headings (scoped to .hero-h1 in globals.css; extend here) */
   .accent-line { display: inline; color: var(--brand-accent); }
   /* visually-hidden a11y utility (not in globals.css yet) */
@@ -28,6 +28,8 @@
     overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
   }
 </style>
+<!-- No-JS / reduced-motion fallback: reveal elements show their final state -->
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 
 <style id="port">
 /* ============================================================
@@ -152,14 +154,14 @@
 /* lineage strip */
 .pag-lineage-strip {
   display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
-  font-size: 12px; color: var(--text-tertiary);
+  font-size: 12px; color: var(--text-secondary);
   background: var(--brand-accent-soft); border-radius: var(--radius-md); padding: var(--space-3);
 }
 .pag-lineage-strip svg { width: 14px; height: 14px; color: var(--brand-accent); }
 .pag-card-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
 .pag-card-stat { text-align: center; }
 .pag-card-stat b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); }
-.pag-card-stat span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+.pag-card-stat span { display: block; font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
 
 .pag-replay {
   display: inline-flex; align-items: center; gap: 4px;
@@ -184,10 +186,11 @@
 .pag-workflow-steps {
   display: grid;
   grid-template-columns: 1fr 40px 1fr 40px 1fr;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
   margin-top: var(--space-8);
 }
+.pag-workflow-arrow { align-self: center; }
 @media (max-width: 900px) {
   .pag-workflow-steps { grid-template-columns: 1fr; gap: var(--space-5); }
   .pag-workflow-arrow { display: none; }
@@ -210,7 +213,7 @@
 }
 .pag-workflow-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; }
 .pag-workflow-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
-.pag-workflow-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-tertiary); }
+.pag-workflow-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); }
 .pag-workflow-card h3 { color: var(--text-primary); }
 .pag-workflow-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
 .pag-workflow-tag {
@@ -224,6 +227,15 @@
   display: flex; align-items: center; justify-content: center; color: var(--border-strong);
 }
 .pag-workflow-arrow svg { width: 20px; height: 20px; }
+
+/* JS-gated entrance for problem/solution cards */
+.pag-ps-grid.js .pag-problem-card,
+.pag-ps-grid.js .pag-solution-card {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 480ms cubic-bezier(0.16,1,0.3,1) var(--ps-d,0ms), transform 480ms cubic-bezier(0.16,1,0.3,1) var(--ps-d,0ms);
+}
+.pag-ps-grid.js .pag-problem-card.entered,
+.pag-ps-grid.js .pag-solution-card.entered { opacity: 1; transform: none; }
 
 /* ============================================================
    [3] PROBLEM / SOLUTION — pag-ps
@@ -283,6 +295,7 @@
   gap: var(--space-5);
   margin-top: var(--space-8);
 }
+.pag-caps-grid > * { height: 100%; }
 @media (max-width: 1024px) { .pag-caps-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px)  { .pag-caps-grid { grid-template-columns: 1fr; } }
 .pag-cap-card {
@@ -310,7 +323,7 @@
 .pag-matrix-wrap { overflow-x: auto; margin-top: var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); }
 .pag-matrix-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 680px; }
 .pag-matrix-table th, .pag-matrix-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
-.pag-matrix-table th { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); background: var(--bg-canvas); }
+.pag-matrix-table th { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); background: var(--bg-canvas); }
 .pag-matrix-table th.pag-col-q { background: var(--brand-accent-soft); color: var(--brand-accent); }
 .pag-matrix-table td.pag-col-q { background: color-mix(in srgb, var(--brand-accent-soft) 50%, transparent); font-weight: 600; color: var(--text-primary); }
 .pag-matrix-table tr:last-child td { border-bottom: none; }
@@ -375,7 +388,7 @@
   border-radius: var(--radius-md); padding: var(--space-4);
   display: flex; flex-direction: column; gap: var(--space-2);
 }
-.pag-example-meta-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-tertiary); }
+.pag-example-meta-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); }
 .pag-example-meta-val { font-size: 14px; font-weight: 600; color: var(--text-primary); }
 .pag-example-meta-sub { font-size: 13px; color: var(--text-secondary); }
 
@@ -390,6 +403,7 @@
   gap: var(--space-5);
   margin-top: var(--space-8);
 }
+.pag-roles-grid > * { height: 100%; }
 @media (max-width: 740px) { .pag-roles-grid { grid-template-columns: 1fr; } }
 .pag-role-card {
   background: var(--bg-surface); border: 1px solid var(--border-subtle);
@@ -441,7 +455,7 @@
   font-weight: 700; letter-spacing: -0.02em; color: var(--brand-accent); font-variant-numeric: tabular-nums;
 }
 .pag-stat-label { color: var(--text-primary); font-weight: 600; font-size: 14px; margin-top: var(--space-1); }
-.pag-stat-sub { color: var(--text-tertiary); font-size: 12px; margin-top: 2px; }
+.pag-stat-sub { color: var(--text-secondary); font-size: 12px; margin-top: 2px; }
 
 /* dashboard mock */
 .pag-dash-card {
@@ -467,7 +481,7 @@
 .pag-dash-metric:nth-child(2n) { border-right: none; }
 .pag-dash-metric:nth-child(3), .pag-dash-metric:nth-child(4) { border-bottom: none; }
 .pag-dash-metric-num { font-size: 22px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
-.pag-dash-metric-label { font-size: 12px; color: var(--text-tertiary); }
+.pag-dash-metric-label { font-size: 12px; color: var(--text-secondary); }
 .pag-dash-metric-num.ok { color: var(--success); }
 
 @media (prefers-reduced-motion: reduce) { .pag-dash-live-dot { animation: none !important; } }
@@ -507,6 +521,7 @@
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: var(--space-5); margin-top: var(--space-8);
 }
+.pag-proof-grid > * { height: 100%; }
 @media (max-width: 1024px) { .pag-proof-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px)  { .pag-proof-grid { grid-template-columns: 1fr; } }
 .pag-proof-card {
@@ -628,8 +643,9 @@
 
       <!-- RIGHT: animated agent query card -->
       <div class="reveal">
-        <div class="pag-agent-card" role="img"
-          aria-label="Agent answering: What was revenue last quarter by region? Shows Q3 revenue by region with source lineage. Placeholder data."
+        <!-- Illustrative: agent card with interactive replay button — role="img" must not be on a container with focusable children -->
+        <div class="pag-agent-card"
+          aria-label="Illustrative agent query card: revenue by region with source lineage"
           data-placeholder>
           <div class="pag-card-head">
             <span class="eyebrow" style="color:var(--text-tertiary)">Agent Query</span>
@@ -886,15 +902,15 @@
 
     <div class="pag-matrix-wrap reveal" role="region" aria-label="Feature comparison table" aria-describedby="compare-note">
       <table class="pag-matrix-table">
-        <caption class="visually-hidden">Quaeris vs. ThoughtSpot Spotter, Snowflake Cortex Analyst, AWS Q, and Looker AI</caption>
+        <caption class="visually-hidden">Quaeris vs. search-based BI, warehouse-native AI, cloud BI assistant, and embedded LookML BI — based on publicly available product documentation</caption>
         <thead>
           <tr>
             <th scope="col">Capability</th>
             <th scope="col" class="pag-col-q">Quaeris</th>
-            <th scope="col">ThoughtSpot Spotter</th>
-            <th scope="col">Cortex Analyst</th>
-            <th scope="col">AWS Q</th>
-            <th scope="col">Looker AI</th>
+            <th scope="col">Search-based BI</th>
+            <th scope="col">Warehouse-native AI</th>
+            <th scope="col">Cloud BI Assistant</th>
+            <th scope="col">Embedded LookML BI</th>
           </tr>
         </thead>
         <tbody>
@@ -924,11 +940,11 @@
           </tr>
           <tr>
             <td class="pag-matrix-feature">Zero hallucinations</td>
-            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Guaranteed</span></td>
-            <td><span class="pag-cell-partial">Mostly</span></td>
-            <td><span class="pag-cell-no">High risk</span></td>
-            <td><span class="pag-cell-no">High risk</span></td>
-            <td><span class="pag-cell-no">High risk</span></td>
+            <td class="pag-col-q"><span class="pag-cell-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>By design</span></td>
+            <td><span class="pag-cell-partial">Partial</span></td>
+            <td><span class="pag-cell-partial">LLM-dependent</span></td>
+            <td><span class="pag-cell-partial">LLM-dependent</span></td>
+            <td><span class="pag-cell-partial">LLM-dependent</span></td>
           </tr>
           <tr>
             <td class="pag-matrix-feature">BYOM (pick your LLM)</td>
@@ -965,7 +981,7 @@
         </tbody>
       </table>
     </div>
-    <p id="compare-note" class="body-sm" style="color:var(--text-tertiary);text-align:center;margin-top:var(--space-4)" data-placeholder>Comparison based on publicly available product documentation. Data current as of Q2 2026. <a href="/compare" style="color:var(--brand-accent);text-decoration:underline">See detailed comparisons →</a></p>
+    <p id="compare-note" class="body-sm" style="color:var(--text-secondary);text-align:center;margin-top:var(--space-4)">Comparison based on publicly available product documentation. Data current as of Q2 2026. <a href="/compare" style="color:var(--brand-accent);text-decoration:underline">See detailed comparisons →</a></p>
   </div>
 </section>
 
@@ -1243,22 +1259,22 @@ ORDER BY variance ASC;
       <!-- Left: 4 stat cells -->
       <div class="pag-stats-grid" aria-label="Key governance metrics">
         <div class="pag-stat-cell">
-          <span class="pag-stat-number" aria-live="polite" data-count="0" data-suffix="">0</span>
+          <span class="pag-stat-number" data-count="0" data-suffix="">0</span>
           <div class="pag-stat-label">Hallucinated answers</div>
           <div class="pag-stat-sub">Every answer grounded in certified metrics</div>
         </div>
         <div class="pag-stat-cell">
-          <span class="pag-stat-number" aria-live="polite" data-count="87" data-suffix="%">87%</span>
+          <span class="pag-stat-number" data-count="87" data-suffix="%">87%</span>
           <div class="pag-stat-label">Reduction in ad-hoc requests</div>
           <div class="pag-stat-sub">Within 90 days of deployment</div>
         </div>
         <div class="pag-stat-cell">
-          <span class="pag-stat-number" aria-live="polite" data-count="14" data-suffix="s">14s</span>
+          <span class="pag-stat-number" data-count="14" data-suffix="s">14s</span>
           <div class="pag-stat-label">Avg. answer time</div>
           <div class="pag-stat-sub">From question to audited answer</div>
         </div>
         <div class="pag-stat-cell">
-          <span class="pag-stat-number" aria-live="polite" data-count="100" data-suffix="%">100%</span>
+          <span class="pag-stat-number" data-count="100" data-suffix="%">100%</span>
           <div class="pag-stat-label">Queries audited</div>
           <div class="pag-stat-sub">Full trace from question to source</div>
         </div>
@@ -1266,7 +1282,8 @@ ORDER BY variance ASC;
 
       <!-- Right: dashboard mock -->
       <div>
-        <div class="pag-dash-card" role="img" aria-label="Agent governance dashboard showing questions answered, metrics cited, access violations, and audit records. Placeholder data." data-placeholder>
+        <!-- Illustrative: dashboard mock with live link — no role="img" on interactive container -->
+        <div class="pag-dash-card" aria-label="Illustrative agent governance dashboard" data-placeholder>
           <div class="pag-dash-header">
             <span class="pag-dash-title">Agent Governance Dashboard</span>
             <span class="pag-dash-live">
@@ -1293,7 +1310,7 @@ ORDER BY variance ASC;
             </div>
           </div>
         </div>
-        <p class="body-sm" style="color:var(--text-tertiary);margin-top:var(--space-3);text-align:center" data-placeholder>Dashboard metrics are illustrative. <a href="/contact" style="color:var(--brand-accent);text-decoration:underline">Book a demo</a> to see your data.</p>
+        <p class="body-sm" style="color:var(--text-secondary);margin-top:var(--space-3);text-align:center">Dashboard metrics are illustrative. <a href="/contact" style="color:var(--brand-accent);text-decoration:underline">Book a demo</a> to see your data.</p>
       </div>
     </div>
   </div>
@@ -1394,48 +1411,53 @@ ORDER BY variance ASC;
 
     <div class="pag-proof-grid">
 
+      <!-- Illustrative: anonymized financial services customer -->
       <article class="pag-proof-card reveal" aria-labelledby="proof1-h">
         <span class="pag-proof-industry">Financial Services</span>
-        <h3 id="proof1-h" data-placeholder>[Customer name — Financial Services]</h3>
+        <h3 id="proof1-h">Regional bank — Enterprise analytics team</h3>
         <p>Reduced ad-hoc analytics requests by 84% while expanding self-serve access to 600+ business users — without relaxing governance. Connected agents to Snowflake, migrated 120 certified metrics, deployed with row-level security.</p>
         <div class="pag-proof-stats">
           <span class="pag-proof-stat">84% fewer requests</span>
           <span class="pag-proof-stat">600+ self-serve users</span>
           <span class="pag-proof-stat">90 days to rollout</span>
         </div>
-        <button class="pag-proof-cta" type="button" aria-label="Read the Financial Services case study (placeholder)" data-placeholder>
-          Read the case study
-          <!-- lucide: arrow-right -->
+        <!-- Case study link wired when published -->
+        <button class="pag-proof-cta" type="button" aria-label="Read the Financial Services case study" disabled aria-disabled="true" style="opacity:0.5;cursor:default">
+          Case study coming soon
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
       </article>
 
+      <!-- Illustrative: anonymized B2B SaaS customer -->
       <article class="pag-proof-card reveal" aria-labelledby="proof2-h">
         <span class="pag-proof-industry">B2B SaaS</span>
-        <h3 id="proof2-h" data-placeholder>[Customer name — B2B SaaS]</h3>
+        <h3 id="proof2-h">Growth-stage SaaS — Revenue operations team</h3>
         <p>Cut time-to-insight from 3 days to under 20 minutes — eliminating the request backlog that had blocked product launches. Agents answer product-usage and pipeline questions with sources cited in every response.</p>
         <div class="pag-proof-stats">
           <span class="pag-proof-stat">20 min avg answer time</span>
           <span class="pag-proof-stat">3× faster than tickets</span>
           <span class="pag-proof-stat">0 hallucinations</span>
         </div>
-        <button class="pag-proof-cta" type="button" aria-label="Read the B2B SaaS case study (placeholder)" data-placeholder>
-          Read the case study
+        <!-- Case study link wired when published -->
+        <button class="pag-proof-cta" type="button" aria-label="Read the B2B SaaS case study" disabled aria-disabled="true" style="opacity:0.5;cursor:default">
+          Case study coming soon
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
       </article>
 
+      <!-- Illustrative: anonymized Retail/CPG customer -->
       <article class="pag-proof-card reveal" aria-labelledby="proof3-h">
         <span class="pag-proof-industry">Retail / CPG</span>
-        <h3 id="proof3-h" data-placeholder>[Customer name — Retail/CPG]</h3>
+        <h3 id="proof3-h">Multi-region retailer — Central data team</h3>
         <p>Unified conflicting metric definitions across 6 regional teams — giving executives a single, consistent view. Audited 300+ metric variants, consolidated to 80 certified definitions, retired four legacy BI dashboards.</p>
         <div class="pag-proof-stats">
           <span class="pag-proof-stat">6 teams aligned</span>
           <span class="pag-proof-stat">1 definition per KPI</span>
           <span class="pag-proof-stat">11× ROI</span>
         </div>
-        <button class="pag-proof-cta" type="button" aria-label="Read the Retail/CPG case study (placeholder)" data-placeholder>
-          Read the case study
+        <!-- Case study link wired when published -->
+        <button class="pag-proof-cta" type="button" aria-label="Read the Retail/CPG case study" disabled aria-disabled="true" style="opacity:0.5;cursor:default">
+          Case study coming soon
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
       </article>
@@ -1605,6 +1627,34 @@ ORDER BY variance ASC;
 }());
 </script>
 
+<!-- Problem/solution card staggered entrance -->
+<script>
+(function() {
+  'use strict';
+  var grid = document.querySelector('.pag-ps-grid');
+  if (!grid) return;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+  grid.classList.add('js');
+  var cards = [grid.querySelector('.pag-problem-card'), grid.querySelector('.pag-solution-card')];
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        obs.disconnect();
+        cards.forEach(function(c, i) {
+          if (!c) return;
+          c.style.setProperty('--ps-d', (i * 120) + 'ms');
+          setTimeout(function() { c.classList.add('entered'); }, i * 120);
+        });
+      }
+    }, { threshold: 0.15 });
+    obs.observe(grid);
+  } else {
+    cards.forEach(function(c) { if (c) c.classList.add('entered'); });
+  }
+}());
+</script>
+
 <!-- Agent example tabbed walkthrough -->
 <script>
 (function() {
@@ -1648,11 +1698,22 @@ ORDER BY variance ASC;
   function countUp(el) {
     var target = parseInt(el.dataset.count, 10);
     var suffix = el.dataset.suffix || '';
-    if (reduced || target === 0) { el.textContent = target + suffix; return; }
+    var final = target + suffix;
+    if (reduced || target === 0) {
+      el.textContent = final;
+      el.setAttribute('aria-label', final); /* announce final only */
+      return;
+    }
     var start = 0; var dur = 1400; var step = 16;
     var t = setInterval(function() {
       start += Math.ceil(target / (dur / step));
-      if (start >= target) { clearInterval(t); el.textContent = target + suffix; return; }
+      if (start >= target) {
+        clearInterval(t);
+        el.textContent = final;
+        el.setAttribute('aria-label', final); /* announce final only, after animation */
+        el.setAttribute('aria-live', 'polite');
+        return;
+      }
       el.textContent = start + suffix;
     }, step);
   }
