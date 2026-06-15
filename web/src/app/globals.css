@@ -1993,3 +1993,146 @@ ul { list-style: none; }
 .ai-card-desc { color: var(--text-on-dark-dim); font-size: 0.875rem; line-height: 1.6; }
 .ai-first-cta-row { display: flex; justify-content: center; margin-top: var(--space-8); }
 .ai-cta { border-radius: var(--radius-cta); }
+
+/* ============================================================
+   Native pages: Contact (/contact) + 404 (not-found)
+   Built in the Quaeris design language using shared tokens.
+   ============================================================ */
+.contact-main { padding: clamp(40px, 6vw, 88px) 0 clamp(56px, 8vw, 104px); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+.contact-intro .display-lg { margin-top: 0.5rem; }
+.contact-lede {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  max-width: 34rem;
+  margin-top: 1.25rem;
+}
+.contact-trust { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; gap: 1.1rem; }
+.contact-trust li { display: flex; gap: 0.85rem; align-items: flex-start; }
+.contact-trust-check {
+  flex: none;
+  width: 26px; height: 26px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-accent) 14%, #fff);
+  color: var(--brand-accent);
+  font-weight: 700; font-size: 0.85rem;
+  margin-top: 2px;
+}
+.contact-trust strong { display: block; color: var(--text-primary, #1a1320); font-weight: 650; }
+.contact-trust span:last-child { display: block; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.55; margin-top: 2px; }
+.contact-alt { margin-top: 1.75rem; color: var(--text-secondary); font-size: 0.95rem; }
+.contact-alt a, .contact-consent a, .nf-home a { color: var(--brand-accent); text-decoration: underline; }
+
+.contact-card {
+  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 12%, #e7e2ee);
+  border-radius: 18px;
+  padding: clamp(22px, 3vw, 34px);
+  box-shadow: 0 18px 50px -28px color-mix(in srgb, var(--brand-accent-deep, #4E0250) 60%, transparent);
+}
+.contact-plan-note {
+  margin: 0 0 1.25rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--brand-accent) 8%, #fff);
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 22%, transparent);
+  color: var(--text-primary, #1a1320);
+  font-size: 0.92rem;
+}
+
+.contact-form { display: grid; gap: 1.05rem; }
+.contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.contact-field { display: grid; gap: 0.4rem; }
+.contact-field label { font-size: 0.9rem; font-weight: 600; color: var(--text-primary, #1a1320); }
+.contact-req { color: var(--brand-accent); }
+.contact-field input,
+.contact-field select,
+.contact-field textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--text-primary, #1a1320);
+  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 16%, #d8d2e0);
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.contact-field textarea { resize: vertical; min-height: 96px; }
+.contact-field input:focus-visible,
+.contact-field select:focus-visible,
+.contact-field textarea:focus-visible {
+  outline: none;
+  border-color: var(--brand-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent) 22%, transparent);
+}
+.contact-field input[aria-invalid="true"] { border-color: var(--error, #c0392b); }
+.contact-err { color: var(--error, #c0392b); font-size: 0.85rem; margin: 0; }
+.contact-form-error {
+  color: var(--error, #c0392b);
+  background: color-mix(in srgb, var(--error, #c0392b) 8%, #fff);
+  border: 1px solid color-mix(in srgb, var(--error, #c0392b) 30%, transparent);
+  border-radius: 8px; padding: 0.6rem 0.8rem; font-size: 0.9rem; margin: 0;
+}
+.contact-submit { width: 100%; justify-content: center; margin-top: 0.25rem; }
+.contact-submit:disabled { opacity: 0.65; cursor: progress; }
+.contact-consent { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; margin: 0; text-align: center; }
+
+/* Honeypot — present in the DOM, invisible to humans. */
+.contact-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.contact-success { text-align: center; padding: 1rem 0.5rem; }
+.contact-success:focus-visible { outline: none; }
+.contact-success-check {
+  width: 56px; height: 56px; margin: 0 auto 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-accent) 14%, #fff);
+  color: var(--brand-accent); font-size: 1.6rem; font-weight: 700;
+}
+.contact-success-title { font-size: 1.4rem; margin: 0 0 0.6rem; color: var(--text-primary, #1a1320); }
+.contact-success-body { color: var(--text-secondary); line-height: 1.6; max-width: 30rem; margin: 0 auto 1.5rem; }
+
+/* ── 404 ─────────────────────────────────────────────── */
+.nf-main { padding: clamp(48px, 8vw, 120px) 0; }
+.nf-inner { max-width: 760px; }
+.nf-lede { color: var(--text-secondary); font-size: 1.125rem; line-height: 1.6; max-width: 36rem; margin-top: 1.1rem; }
+.nf-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+  margin-top: 2.25rem;
+}
+.nf-card {
+  display: block;
+  padding: 1.05rem 1.2rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 12%, #e7e2ee);
+  background: #fff;
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.nf-card:hover {
+  border-color: color-mix(in srgb, var(--brand-accent) 40%, transparent);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -26px color-mix(in srgb, var(--brand-accent-deep, #4E0250) 70%, transparent);
+}
+.nf-card-label { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; font-weight: 650; color: var(--text-primary, #1a1320); }
+.nf-arrow { color: var(--brand-accent); transition: transform 0.15s ease; }
+.nf-card:hover .nf-arrow { transform: translateX(3px); }
+.nf-card-desc { display: block; color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.3rem; }
+.nf-home { margin-top: 2rem; color: var(--text-secondary); }
+
+@media (max-width: 900px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .contact-row { grid-template-columns: 1fr; }
+  .nf-grid { grid-template-columns: 1fr; }
+}
