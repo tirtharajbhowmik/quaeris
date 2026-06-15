@@ -501,7 +501,7 @@
         <p class="subcopy body-lg">Business users ask their own questions. Your data team writes the rules, once. Quaeris handles the governance — so you can finally build instead of firefighting.</p>
         <div class="hero-buttons">
           <a href="/contact" class="btn btn-primary">Book a Demo</a>
-          <a href="/contact" class="btn btn-secondary">See the semantic layer</a>
+          <a href="/platform/semantic-layer" class="btn btn-secondary">See the semantic layer</a>
         </div>
         <ul class="dt-trust-strip" aria-label="Key capabilities">
           <li class="dt-trust-item">
@@ -1383,22 +1383,42 @@ function slApprove(btn, rowId, name){
 (function(){
   var form = document.getElementById('nl-form');
   var msg = document.getElementById('nl-msg');
-  if(!form) return;
+  if(!form || !msg) return;
+
+  // aria-live region so screen readers announce status changes
+  msg.setAttribute('aria-live', 'polite');
+  msg.setAttribute('aria-atomic', 'true');
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    var email = document.getElementById('nl-email');
-    if(!email || !email.validity.valid){
-      email.setCustomValidity('Please enter a valid work email address.');
-      email.reportValidity();
+    var emailEl = document.getElementById('nl-email');
+    if(!emailEl || !emailEl.validity.valid){
+      if(emailEl){ emailEl.setCustomValidity('Please enter a valid work email address.'); emailEl.reportValidity(); }
       return;
     }
-    email.setCustomValidity('');
+    emailEl.setCustomValidity('');
+    var emailVal = emailEl.value.trim();
     var btn = form.querySelector('button[type=submit]');
     if(btn){ btn.disabled = true; btn.textContent = 'Subscribing…'; }
-    setTimeout(function(){
-      form.style.display = 'none';
-      if(msg) msg.textContent = 'You\'re subscribed. See you Thursday.';
-    }, 900);
+
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: emailVal, source: 'solutions-data-teams' })
+    })
+    .then(function(res){
+      if(res.ok){
+        form.style.display = 'none';
+        msg.textContent = 'You\'re subscribed. See you Thursday.';
+      } else {
+        if(btn){ btn.disabled = false; btn.textContent = 'Subscribe'; }
+        msg.textContent = 'Something went wrong — please try again in a moment.';
+      }
+    })
+    .catch(function(){
+      if(btn){ btn.disabled = false; btn.textContent = 'Subscribe'; }
+      msg.textContent = 'Could not reach the server — please check your connection and try again.';
+    });
   });
 })();
 </script>

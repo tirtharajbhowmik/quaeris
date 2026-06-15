@@ -1279,7 +1279,6 @@
         </div>
         <h3>Patient data privacy with self-serve analytics</h3>
         <p>Analysts can query patient cohorts without seeing PII. Identifier masking (names, MRNs) is delegated to warehouse-native controls — Snowflake Dynamic Data Masking, BigQuery Column-Level Security. Researchers access de-identified datasets; clinical teams see full records. All queries are logged.</p>
-        <!-- authoring note: HIPAA certification pending — surface on /trust page once earned; do not ship as visible copy -->
         <div class="ac-uc-outcomes" aria-label="Outcomes for Healthcare">
           <div class="ac-uc-outcome-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1682,10 +1681,48 @@
   var form = document.getElementById('ac-newsletter-form');
   var success = document.getElementById('ac-newsletter-success');
   if (!form || !success) return;
+
+  /* Add an error status node for accessible error messaging */
+  var errorEl = document.createElement('p');
+  errorEl.id = 'ac-newsletter-error';
+  errorEl.setAttribute('role', 'status');
+  errorEl.setAttribute('aria-live', 'polite');
+  errorEl.style.cssText = 'display:none;font-size:14px;color:var(--error);font-weight:600;margin-top:var(--space-2);';
+  form.insertAdjacentElement('afterend', errorEl);
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    form.style.display = 'none';
-    success.style.display = 'block';
+    var emailInput = form.querySelector('input[type="email"]');
+    var email = emailInput ? emailInput.value.trim() : '';
+    var btn = form.querySelector('button[type="submit"]');
+
+    /* Reset previous states */
+    errorEl.style.display = 'none';
+    errorEl.textContent = '';
+
+    if (btn) { btn.disabled = true; btn.textContent = 'Subscribing…'; }
+
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: email, source: 'platform-access-control' })
+    })
+    .then(function (res) {
+      if (res.ok) {
+        form.style.display = 'none';
+        errorEl.style.display = 'none';
+        success.style.display = 'block';
+      } else {
+        if (btn) { btn.disabled = false; btn.textContent = 'Subscribe'; }
+        errorEl.textContent = 'Something went wrong. Please try again.';
+        errorEl.style.display = 'block';
+      }
+    })
+    .catch(function () {
+      if (btn) { btn.disabled = false; btn.textContent = 'Subscribe'; }
+      errorEl.textContent = 'Could not connect. Please check your connection and try again.';
+      errorEl.style.display = 'block';
+    });
   });
 })();
 </script>

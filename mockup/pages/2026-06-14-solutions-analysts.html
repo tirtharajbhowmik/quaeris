@@ -1867,7 +1867,7 @@
       <span class="eyebrow">The Governed Analytics Brief</span>
       <h2 id="newsletter-heading">Weekly insights on agentic analytics for analysts.</h2>
       <p>One practical read every Thursday: how governed analytics is changing analyst workflows, semantic layer patterns, and agentic best practices — no generic AI hype.</p>
-      <form class="ana-newsletter-form" action="/newsletter/subscribe" method="post" aria-label="Newsletter subscription form">
+      <form class="ana-newsletter-form" id="newsletter-form" novalidate aria-label="Newsletter subscription form">
         <label for="newsletter-email" class="sr-only">Email address</label>
         <input
           type="email"
@@ -1881,6 +1881,7 @@
         />
         <button type="submit" class="btn btn-primary" style="white-space:nowrap;border-radius:10px;padding:10px 22px;min-height:44px;">Subscribe</button>
       </form>
+      <p id="newsletter-status" role="status" aria-live="polite" aria-atomic="true" style="margin-top:var(--space-3);font-size:14px;min-height:1.5em;"></p>
       <p class="ana-newsletter-privacy">No spam. Unsubscribe any time. <a href="/privacy">Privacy Policy</a></p>
     </div>
   </div>
@@ -2121,6 +2122,63 @@
     });
   }, { threshold: 0.15 });
   cards.forEach(function (c) { io.observe(c); });
+})();
+</script>
+
+<!-- Newsletter: real fetch submit handler — no native form action navigation -->
+<script>
+(function () {
+  'use strict';
+  var form = document.getElementById('newsletter-form');
+  var statusEl = document.getElementById('newsletter-status');
+  if (!form || !statusEl) return;
+
+  function setStatus(msg, isError) {
+    statusEl.textContent = msg;
+    statusEl.style.color = isError ? 'var(--error)' : 'var(--success)';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var emailInput = form.querySelector('input[type="email"]');
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var email = emailInput ? emailInput.value.trim() : '';
+
+    if (!email) {
+      setStatus('Please enter a valid email address.', true);
+      if (emailInput) emailInput.focus();
+      return;
+    }
+
+    if (submitBtn) submitBtn.disabled = true;
+    setStatus('Subscribing…', false);
+
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: email, source: 'solutions-analysts' })
+    })
+      .then(function (res) {
+        if (res.ok) {
+          setStatus('You\'re subscribed! Check your inbox for a confirmation.', false);
+          form.reset();
+        } else {
+          return res.text().then(function (body) {
+            var msg = 'Something went wrong. Please try again.';
+            try {
+              var parsed = JSON.parse(body);
+              if (parsed && parsed.message) msg = parsed.message;
+            } catch (_) {}
+            setStatus(msg, true);
+            if (submitBtn) submitBtn.disabled = false;
+          });
+        }
+      })
+      .catch(function () {
+        setStatus('Unable to subscribe right now. Please try again later.', true);
+        if (submitBtn) submitBtn.disabled = false;
+      });
+  });
 })();
 </script>
 

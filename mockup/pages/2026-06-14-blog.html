@@ -1597,10 +1597,23 @@
     });
   });
 
-  /* ── Newsletter form submit (mockup: prevents default, shows success) ── */
+  /* ── Newsletter form submit — real POST to /api/subscribe ── */
   var nlForm    = document.getElementById('blog-nl-form');
   var nlSuccess = document.getElementById('blog-nl-success');
+  /* aria-live error region (inserted once, reused for all error messages) */
+  var nlError = (function () {
+    var el = document.createElement('p');
+    el.id = 'blog-nl-error';
+    el.setAttribute('role', 'alert');
+    el.setAttribute('aria-live', 'assertive');
+    el.style.cssText = 'font-size:12px;color:var(--error);margin-top:var(--space-2);display:none;';
+    return el;
+  }());
   if (nlForm && nlSuccess) {
+    /* Attach error node just before the submit button */
+    var submitBtn = nlForm.querySelector('button[type="submit"]');
+    if (submitBtn) nlForm.insertBefore(nlError, submitBtn);
+
     nlForm.addEventListener('submit', function (e) {
       e.preventDefault();
       /* Basic client-side email check */
@@ -1611,9 +1624,42 @@
         return;
       }
       emailInput.style.borderColor = '';
-      nlForm.classList.add('hidden');
-      nlSuccess.classList.add('show');
+      nlError.style.display = 'none';
+      nlError.textContent = '';
+
+      /* Disable submit while in-flight */
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Subscribing…';
+
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: emailInput.value, source: 'blog' })
+      })
+        .then(function (res) {
+          if (res.ok) {
+            /* Success path */
+            nlForm.classList.add('hidden');
+            nlSuccess.classList.add('show');
+          } else {
+            /* Server returned a non-2xx status */
+            return res.json().catch(function () { return {}; }).then(function (data) {
+              var msg = (data && data.message) ? data.message : 'Something went wrong. Please try again.';
+              nlError.textContent = msg;
+              nlError.style.display = 'block';
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Subscribe — it’s free';
+            });
+          }
+        })
+        .catch(function () {
+          nlError.textContent = 'Unable to subscribe right now. Please check your connection and try again.';
+          nlError.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Subscribe — it’s free';
+        });
     });
+
     /* Clear error state on input */
     var emailInput2 = document.getElementById('nl-email');
     if (emailInput2) {

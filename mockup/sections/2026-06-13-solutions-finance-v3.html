@@ -1152,7 +1152,7 @@
           <span class="author-avatar" aria-hidden="true">CP</span>
           <div>
             <p class="author-name">C.P., Head of FP&amp;A</p>
-            <p class="author-role">[Company Name]</p>
+            <p class="author-role">Regional Bank</p>
           </div>
         </div>
       </article>
@@ -1164,7 +1164,7 @@
           <span class="author-avatar" aria-hidden="true">TM</span>
           <div>
             <p class="author-name">T.M., VP Controller</p>
-            <p class="author-role">[Company Name]</p>
+            <p class="author-role">Mid-Market Insurance Carrier</p>
           </div>
         </div>
       </article>
@@ -1176,7 +1176,7 @@
           <span class="author-avatar" aria-hidden="true">RK</span>
           <div>
             <p class="author-name">R.K., Director of Finance</p>
-            <p class="author-role">[Company Name]</p>
+            <p class="author-role">Specialty Finance Group</p>
           </div>
         </div>
       </article>
@@ -1188,7 +1188,7 @@
           <span class="author-avatar" aria-hidden="true">AL</span>
           <div>
             <p class="author-name">A.L., Senior FP&amp;A Analyst</p>
-            <p class="author-role">[Company Name]</p>
+            <p class="author-role">SaaS Technology Company</p>
           </div>
         </div>
       </article>
@@ -1200,7 +1200,7 @@
           <span class="author-avatar" aria-hidden="true">JD</span>
           <div>
             <p class="author-name">J.D., Chief Financial Officer</p>
-            <p class="author-role">[Company Name]</p>
+            <p class="author-role">Healthcare Network</p>
           </div>
         </div>
       </article>
@@ -1212,7 +1212,7 @@
           <span class="author-avatar" aria-hidden="true">SN</span>
           <div>
             <p class="author-name">S.N., Global Finance Director</p>
-            <p class="author-role">[Company Name]</p>
+            <p class="author-role">Manufacturing Group</p>
           </div>
         </div>
       </article>
@@ -1253,7 +1253,7 @@
       </details>
       <details class="accordion-item">
         <summary class="accordion-trigger"><span class="accordion-question">Is the AI compliant with SOX, SOC 2, GLBA, SR 11-7, and the EU AI Act?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
-        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris is SOC 2 Type II audited, supports role-based controls and full query logging for SOX and SR 11-7, and publishes an EU AI Act compliance roadmap. Data residency is enforced.</p></div>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris has a SOC 2 Type II audit in progress, supports GDPR, supports role-based controls and full query logging for SOX and SR 11-7, and publishes an EU AI Act readiness roadmap. HIPAA controls are on our roadmap. Data residency is enforced.</p></div>
       </details>
       <details class="accordion-item">
         <summary class="accordion-trigger"><span class="accordion-question">Is Quaeris an alternative to Hebbia, AlphaSense, Rogo, or FP&amp;A tools like Anaplan?</span><span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
@@ -1296,7 +1296,14 @@
     try {
       const m = await import('https://cdn.jsdelivr.net/npm/motion@11/+esm');
       animate = m.animate; inView = m.inView;
-    } catch (_) { /* CDN unavailable */ }
+    } catch (_) {
+      // CDN unavailable or blocked by CSP — ensure all animated elements are visible.
+      card.classList.remove('js-anim');
+      card.querySelectorAll('.fin-brief-title, .fin-brief-row, .fin-brief-sources, .fin-brief-stat').forEach(el => {
+        el.style.opacity = '1'; el.style.transform = 'none';
+      });
+      card.style.opacity = '1'; card.style.transform = 'none';
+    }
   }
   if (!animate) return; // reduced-motion or no engine → the static final-state card stays as-is
 

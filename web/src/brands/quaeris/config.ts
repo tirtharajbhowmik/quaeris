@@ -724,7 +724,7 @@ export const brand = {
     body: "No generic AI hype. One practical read on governed analytics, semantic layers, and agentic AI — every Thursday.",
     consentPrefix: "No spam. Unsubscribe any time. We handle your data per our",
     privacyLabel: "Privacy Policy",
-    privacyHref: "#",
+    privacyHref: "/privacy",
   },
 
   // ── Footer ─────────────────────────────────────────────────
@@ -736,44 +736,44 @@ export const brand = {
       {
         heading: "Company",
         links: [
-          { label: "About", href: "#" },
-          { label: "How it works", href: "#" },
-          { label: "Careers", href: "#" },
-          { label: "Press", href: "#" },
+          { label: "About", href: "/about" },
+          { label: "How it works", href: "/platform" },
+          { label: "Careers", href: "/careers" },
+          { label: "Press", href: "/about" },
         ],
       },
       {
         heading: "Platform",
         links: [
-          { label: "Agentic Engine", href: "#" },
-          { label: "Semantic Layer", href: "#" },
-          { label: "Governance", href: "#" },
-          { label: "Security", href: "#" },
+          { label: "Agentic Engine", href: "/platform/agents" },
+          { label: "Semantic Layer", href: "/platform/semantic-layer" },
+          { label: "Governance", href: "/platform/governance" },
+          { label: "Security", href: "/trust" },
         ],
       },
       {
         heading: "Resources",
         links: [
-          { label: "Case studies", href: "#" },
-          { label: "Blog", href: "#" },
-          { label: "Documentation", href: "#" },
-          { label: "Webinars", href: "#" },
+          { label: "Case studies", href: "/case-studies" },
+          { label: "Blog", href: "/blog" },
+          { label: "Documentation", href: "/docs" },
+          { label: "Webinars", href: "/resources/webinars" },
         ],
       },
       {
         heading: "Contact",
         links: [
-          { label: "Book a Demo", href: "#" },
-          { label: "seek@quaeris.ai", href: "#" },
+          { label: "Book a Demo", href: "/contact" },
+          { label: "seek@quaeris.ai", href: "mailto:seek@quaeris.ai" },
           { label: "LinkedIn", href: "#" },
           { label: "Twitter/X", href: "#" },
         ],
       },
     ] satisfies FooterColumn[],
-    copyright: "© 2025 Quaeris. Placeholder brand.",
+    copyright: "© 2026 Quaeris. All rights reserved.",
     legalLinks: [
-      { label: "Privacy", href: "#" },
-      { label: "Terms", href: "#" },
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
     ],
     socials: [
       { label: "LinkedIn", href: "#", icon: "linkedin" },

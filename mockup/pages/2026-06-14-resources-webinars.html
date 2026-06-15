@@ -1993,29 +1993,80 @@
 })();
 </script>
 
-<!-- [7] Newsletter form — submit toggles success state + basic validation -->
+<!-- [7] Newsletter form — real POST to /api/subscribe; success/error driven by response.ok -->
 <script>
 (function () {
-  const form = document.getElementById('wb-subscribe-form');
+  const form    = document.getElementById('wb-subscribe-form');
   const success = document.getElementById('wb-subscribe-success');
-  const input = document.getElementById('wb-email-input');
-  if (!form || !success || !input) return;
+  const input   = document.getElementById('wb-email-input');
+  const btn     = form ? form.querySelector('button[type="submit"]') : null;
+  if (!form || !success || !input || !btn) return;
 
-  form.addEventListener('submit', (e) => {
+  // Inline status region reused for both success and error messages (aria-live="polite" already set on #wb-subscribe-success)
+  // We add a separate sibling error region so success state remains visually distinct.
+  const errRegion = document.createElement('p');
+  errRegion.id = 'wb-subscribe-error';
+  errRegion.setAttribute('role', 'alert');
+  errRegion.setAttribute('aria-live', 'assertive');
+  errRegion.style.cssText = 'font-size:13px;color:var(--error,#c0392b);margin-top:var(--space-2,8px);display:none;';
+  form.insertAdjacentElement('afterend', errRegion);
+
+  function showError(msg) {
+    errRegion.textContent = msg;
+    errRegion.style.display = 'block';
+    input.setAttribute('aria-describedby', 'wb-subscribe-error');
+    input.style.borderColor = 'var(--error, #c0392b)';
+    input.focus();
+  }
+
+  function clearError() {
+    errRegion.style.display = 'none';
+    errRegion.textContent = '';
+    input.removeAttribute('aria-describedby');
+    input.style.borderColor = '';
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    clearError();
+
     const val = input.value.trim();
     if (!val || !val.includes('@') || !val.includes('.')) {
-      input.style.borderColor = 'var(--error)';
-      input.focus();
+      showError('Please enter a valid email address.');
       return;
     }
-    input.style.borderColor = '';
-    // At port time: replace with real subscription API call
-    form.style.display = 'none';
-    success.classList.add('show');
+
+    // Disable while in-flight
+    btn.disabled = true;
+    const originalLabel = btn.textContent.trim();
+    btn.textContent = 'Subscribing…';
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: val, source: 'resources-webinars' })
+      });
+
+      if (res.ok) {
+        // Show success; keep form in DOM but hidden so screen readers see the status region
+        form.style.display = 'none';
+        success.classList.add('show');
+      } else {
+        let msg = 'Something went wrong. Please try again.';
+        try { const data = await res.json(); if (data && data.message) msg = data.message; } catch (_) {}
+        showError(msg);
+        btn.disabled = false;
+        btn.textContent = originalLabel;
+      }
+    } catch (_) {
+      showError('Could not reach the server. Please check your connection and try again.');
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+    }
   });
 
-  input.addEventListener('input', () => { input.style.borderColor = ''; });
+  input.addEventListener('input', clearError);
 })();
 </script>
 

@@ -781,8 +781,7 @@
           <div class="pw-compliance-body">
             <h3>HIPAA &amp; Healthcare Data Protection</h3>
             <p>HIPAA-covered entities must maintain tight access logs and audit trails. Quaeris logs every query, every agent step, and every answer at the warehouse level — immutable, in-place. No data copy means no secondary handling; no secondary handling means lower breach risk and simpler audit trails.</p>
-            <!-- data-placeholder: HIPAA-eligible infrastructure list — confirm with engineering -->
-            <p class="pw-compliance-placeholder">Eligible infrastructure includes AWS us-east-1, us-west-2, and eu-west-1 · additional regions on request</p>
+            <p class="pw-compliance-placeholder">Runs in your cloud regions — including AWS us-east-1, us-west-2, and eu-west-1 · additional regions on request</p>
           </div>
         </div>
 
@@ -924,7 +923,7 @@
           <div class="pw-audit-tile">
             <div class="pw-audit-tile-val">2 yrs</div>
             <div class="pw-audit-tile-label">Immutable audit log retention</div>
-            <div class="pw-audit-tile-delta">SOX &amp; HIPAA ready</div>
+            <div class="pw-audit-tile-delta">SOX-ready · HIPAA controls on roadmap</div>
           </div>
         </div>
         <div class="pw-audit-query-log" aria-label="Live audit log entries">
@@ -962,7 +961,7 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Faster: no post-query filtering overhead</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Safer: permissions enforced before warehouse load</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Auditable: logs prove policy was applied at execution</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Compliant: role-based enforcement passes SOX/HIPAA audits</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Compliant: role-based enforcement supports SOX audit trails; HIPAA controls on roadmap</li>
           </ul>
         </div>
       </div>
@@ -1094,11 +1093,12 @@
       <span class="eyebrow">Governed Analytics Brief</span>
       <h2 id="newsletter-heading">Security updates and compliance tips.</h2>
       <p>Practical insights on warehouse-native architecture, data residency, and governed AI — every Thursday, no hype.</p>
-      <form class="pw-newsletter-form" action="/subscribe" method="POST" aria-label="Newsletter signup">
+      <form id="pw-newsletter-form" class="pw-newsletter-form" aria-label="Newsletter signup" novalidate>
         <label for="pw-email" class="sr-only">Email address</label>
         <input type="email" id="pw-email" name="email" class="pw-newsletter-input" placeholder="you@company.com" required autocomplete="email" />
         <button type="submit" class="btn btn-primary" style="min-height: 44px; white-space: nowrap;">Subscribe</button>
       </form>
+      <p id="pw-newsletter-status" aria-live="polite" role="status" style="font-size:14px; min-height:1.4em;"></p>
       <p class="pw-newsletter-consent">No spam. Unsubscribe any time.</p>
     </div>
   </div>
@@ -1238,6 +1238,48 @@
   } else {
     stats.forEach(s => s.classList.add('entered'));
   }
+})();
+</script>
+
+<!-- [5] Newsletter form: real POST to /api/subscribe -->
+<script>
+(function () {
+  var form = document.getElementById('pw-newsletter-form');
+  var status = document.getElementById('pw-newsletter-status');
+  if (!form || !status) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var emailInput = form.querySelector('input[type="email"]');
+    if (!emailInput || !emailInput.value) return;
+    var email = emailInput.value.trim();
+    if (!email) return;
+
+    var btn = form.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Subscribing…'; }
+    status.textContent = '';
+    status.style.color = '';
+
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: email, source: 'platform-warehouse' })
+    }).then(function (res) {
+      if (res.ok) {
+        form.style.display = 'none';
+        status.style.color = 'var(--success)';
+        status.textContent = "You’re subscribed! We’ll be in touch.";
+      } else {
+        status.style.color = 'var(--error)';
+        status.textContent = 'Something went wrong. Please try again or email us directly.';
+        if (btn) { btn.disabled = false; btn.textContent = 'Subscribe'; }
+      }
+    }).catch(function () {
+      status.style.color = 'var(--error)';
+      status.textContent = 'Could not reach the server. Please check your connection and try again.';
+      if (btn) { btn.disabled = false; btn.textContent = 'Subscribe'; }
+    });
+  });
 })();
 </script>
 

@@ -1061,7 +1061,7 @@ details.accordion-item[open] > summary .accordion-icon { transform: rotate(180de
         </div>
         <span class="gov-bento-tag">Healthcare</span>
         <h3>Healthcare (HIPAA)</h3>
-        <p>Role-based access enforced at query time — not dashboard-level — ensures PHI access is granular and auditable. Who saw what PHI? When? Why? Always logged. HIPAA-eligible architecture.</p>
+        <p>Role-based access enforced at query time — not dashboard-level — ensures PHI access is granular and auditable. Who saw what PHI? When? Why? Always logged. HIPAA controls are on our roadmap.</p>
       </div>
       <div class="gov-bento-cell">
         <div class="gov-bento-cell-icon" aria-hidden="true">
@@ -1224,9 +1224,8 @@ details.accordion-item[open] > summary .accordion-icon { transform: rotate(180de
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
         </div>
         <span class="gov-badge-name">SOC 2 Type II</span>
-        <span class="gov-badge-desc">Audited security &amp; availability</span>
-        <!-- data-placeholder: update with cert year once issued -->
-        <span class="gov-badge-status">Certification in progress</span>
+        <span class="gov-badge-desc">Security &amp; availability controls</span>
+        <span class="gov-badge-status">Audit in progress</span>
       </div>
       <div class="gov-badge-cell">
         <div class="gov-badge-shield" aria-hidden="true">
@@ -1240,10 +1239,9 @@ details.accordion-item[open] > summary .accordion-icon { transform: rotate(180de
         <div class="gov-badge-shield" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
         </div>
-        <span class="gov-badge-name">HIPAA Eligible</span>
-        <span class="gov-badge-desc">Healthcare-grade encryption &amp; audit</span>
-        <!-- data-placeholder: update once HITRUST assessment complete -->
-        <span class="gov-badge-status">HITRUST assessment underway</span>
+        <span class="gov-badge-name">HIPAA</span>
+        <span class="gov-badge-desc">Healthcare audit controls</span>
+        <span class="gov-badge-status">On our roadmap</span>
       </div>
       <div class="gov-badge-cell">
         <div class="gov-badge-shield" aria-hidden="true">
@@ -1251,7 +1249,6 @@ details.accordion-item[open] > summary .accordion-icon { transform: rotate(180de
         </div>
         <span class="gov-badge-name">ISO 27001</span>
         <span class="gov-badge-desc">Information security management</span>
-        <!-- data-placeholder: update with cert year once issued -->
         <span class="gov-badge-status">Certification in progress</span>
       </div>
     </div>
@@ -1428,9 +1425,21 @@ details.accordion-item[open] > summary .accordion-icon { transform: rotate(180de
   }
 
   if (replay) replay.addEventListener('click', () => run());
-  inView(card, () => { run(); }, { amount: 0.35 });
+  try {
+    inView(card, () => { run(); }, { amount: 0.35 });
+  } catch (_) { finalize(); return; }
   setTimeout(() => { if (!running && card.classList.contains('js-anim') && card.style.opacity === '') run(); }, 600);
-})();
+})().catch(() => {
+  /* CDN loaded but setup failed after js-anim was applied — ensure content is visible */
+  const card = document.querySelector('.gov-brief');
+  if (card) {
+    card.classList.remove('js-anim');
+    card.querySelectorAll('.gov-brief-title, .gov-brief-row, .gov-brief-sources, .gov-brief-stat').forEach(el => {
+      el.style.opacity = '1'; el.style.transform = 'none';
+    });
+    card.style.opacity = '1'; card.style.transform = 'none';
+  }
+});
 </script>
 
 <!-- [2] CERTIFIED METRICS — lineage expand/collapse IIFE -->

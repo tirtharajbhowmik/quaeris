@@ -486,7 +486,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             </span>
             <span class="sol-hcard-label">Healthcare</span>
-            <span class="sol-hcard-desc">HIPAA-compliant insight at the point of need</span>
+            <span class="sol-hcard-desc">Privacy-aligned insight at the point of need</span>
           </a>
           <a href="/industries/manufacturing-governed-analytics" class="sol-hcard industry" style="--d:480ms">
             <span class="sol-hcard-icon" aria-hidden="true">
@@ -1107,9 +1107,16 @@
     try {
       const m = await import('https://cdn.jsdelivr.net/npm/motion@11/+esm');
       animate = m.animate; inView = m.inView;
-    } catch (_) {}
+    } catch (_) {
+      // CDN blocked or failed — make all animated elements immediately visible
+      document.querySelectorAll('.fin-brief, .fin-brief .fin-brief-title, .fin-brief .fin-brief-row, .fin-brief .fin-brief-sources, .fin-brief .fin-brief-stat').forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
+    }
   }
-  if (!animate) return;
+  if (!animate) {
+    // Motion One unavailable — reset card and children to final visible state
+    document.querySelectorAll('.fin-brief, .fin-brief .fin-brief-title, .fin-brief .fin-brief-row, .fin-brief .fin-brief-sources, .fin-brief .fin-brief-stat').forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
+    return;
+  }
   const $ = s => card.querySelector(s);
   const $$ = s => Array.from(card.querySelectorAll(s));
   const query = $('.fin-brief-query');

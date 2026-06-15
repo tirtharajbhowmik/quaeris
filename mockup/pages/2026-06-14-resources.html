@@ -1367,7 +1367,7 @@
 })();
 </script>
 
-<!-- [4] NEWSLETTER: form submission confirmation -->
+<!-- [4] NEWSLETTER: form submission — real POST to /api/subscribe -->
 <script>
 (function () {
   const form = document.getElementById('res-nl-form-el');
@@ -1375,19 +1375,63 @@
   const input = document.getElementById('res-nl-email');
   if (!form || !success || !input) return;
 
+  // Inline error region (aria-live so screen readers announce it)
+  const errorEl = document.createElement('p');
+  errorEl.setAttribute('role', 'alert');
+  errorEl.setAttribute('aria-live', 'assertive');
+  errorEl.style.cssText = 'margin-top:8px;font-size:13px;color:rgba(255,255,255,0.85);display:none;';
+  form.appendChild(errorEl);
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+  }
+  function clearError() {
+    errorEl.textContent = '';
+    errorEl.style.display = 'none';
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    clearError();
     if (!input.value || !input.checkValidity()) {
       input.focus();
+      showError('Please enter a valid email address.');
       return;
     }
-    // Animate out form, show confirmation
-    form.style.transition = 'opacity 250ms';
-    form.style.opacity = '0';
-    setTimeout(() => {
-      form.style.display = 'none';
-      success.classList.add('shown');
-    }, 260);
+
+    const submit = form.querySelector('[type="submit"]');
+    if (submit) submit.disabled = true;
+
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: input.value, source: 'resources' })
+    })
+      .then(function (res) {
+        if (res.ok) {
+          // Success — animate out form, show confirmation
+          const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (reduce) {
+            form.style.display = 'none';
+            success.classList.add('shown');
+          } else {
+            form.style.transition = 'opacity 250ms';
+            form.style.opacity = '0';
+            setTimeout(function () {
+              form.style.display = 'none';
+              success.classList.add('shown');
+            }, 260);
+          }
+        } else {
+          if (submit) submit.disabled = false;
+          showError('Something went wrong. Please try again in a moment.');
+        }
+      })
+      .catch(function () {
+        if (submit) submit.disabled = false;
+        showError('Unable to subscribe right now. Please try again later.');
+      });
   });
 })();
 </script>

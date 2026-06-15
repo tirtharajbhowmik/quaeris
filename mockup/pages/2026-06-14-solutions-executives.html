@@ -773,7 +773,7 @@
         <div class="exec-bento-answer">Complete query audit log: 47 queries, 8 roles, all within policy. Full lineage available for any flagged anomalies.</div>
         <div class="exec-bento-source" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-          Audit log: downloadable · SOX/HIPAA ready
+          Audit log: downloadable · SOX-ready · HIPAA controls on roadmap
         </div>
       </article>
 
@@ -1080,7 +1080,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><line x1="9" x2="15" y1="10" y2="10"/><line x1="9" x2="12" y1="14" y2="14"/></svg>
         </div>
         <h3>Complete Audit Trail</h3>
-        <p>Every query and answer logged. Who asked the question, when, what metrics were used, and the exact business rules applied. Queryable, downloadable, SOX/HIPAA ready.</p>
+        <p>Every query and answer logged. Who asked the question, when, what metrics were used, and the exact business rules applied. Queryable, downloadable, SOX-ready; HIPAA controls on our roadmap.</p>
       </article>
 
       <!-- 2 — RBAC -->
@@ -1119,9 +1119,8 @@
           <!-- lucide: shield-alert -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
         </div>
-        <h3>SOC 2 Type II · GDPR · HIPAA Ready</h3>
-        <!-- data-placeholder: replace with confirmed cert dates once SOC 2 Type II report is issued -->
-        <p>Enterprise security posture, audit-ready architecture. Certification scope and report dates available under NDA to enterprise prospects.</p>
+        <h3>SOC 2 Type II audit in progress · GDPR supported · HIPAA controls on our roadmap</h3>
+        <p>Enterprise security posture with audit-ready architecture. SOC 2 Type II audit currently in progress; GDPR supported today; HIPAA controls on our roadmap. Details available under NDA to enterprise prospects.</p>
       </article>
 
     </div>
@@ -1237,7 +1236,13 @@
     try {
       const m = await import('https://cdn.jsdelivr.net/npm/motion@11/+esm');
       animate = m.animate; inView = m.inView;
-    } catch (_) { /* CDN unavailable */ }
+    } catch (_) {
+      /* CDN unavailable or blocked — ensure all animated elements are visible */
+      card.classList.remove('js-anim');
+      [card, ...Array.from(card.querySelectorAll('.exec-brief-title, .exec-brief-row, .exec-brief-sources, .exec-brief-stat'))].forEach(function(el) {
+        el.style.opacity = '1'; el.style.transform = 'none';
+      });
+    }
   }
   if (!animate) return;
 
