@@ -2136,3 +2136,73 @@ ul { list-style: none; }
   .contact-row { grid-template-columns: 1fr; }
   .nf-grid { grid-template-columns: 1fr; }
 }
+
+/* ── "Coming soon" stub pages ─────────────────────────── */
+.stub-main { padding: clamp(56px, 10vw, 128px) 0; }
+.stub-inner { max-width: 620px; }
+.stub-blurb { color: var(--text-secondary); font-size: 1.125rem; line-height: 1.6; margin-top: 1rem; }
+.stub-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+.stub-note { margin-top: 1.75rem; color: var(--text-secondary); font-size: 0.95rem; }
+.stub-note a, .stub-blurb a { color: var(--brand-accent); text-decoration: underline; }
+
+/* ── Legal / Trust prose pages ────────────────────────── */
+.legal-main { padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 8vw, 104px); }
+.legal-inner { max-width: 760px; }
+.legal-updated { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; }
+.legal-intro { color: var(--text-secondary); font-size: 1.125rem; line-height: 1.65; margin-top: 1.25rem; }
+.legal-prose { margin-top: 2.25rem; color: var(--text-primary, #1a1320); }
+.legal-prose h2 { font-size: 1.25rem; font-weight: 700; margin: 2rem 0 0.6rem; color: var(--text-primary, #1a1320); }
+.legal-prose p { color: var(--text-secondary); line-height: 1.7; margin: 0 0 0.9rem; }
+.legal-prose ul { margin: 0 0 1rem; padding-left: 1.2rem; color: var(--text-secondary); line-height: 1.7; }
+.legal-prose li { margin-bottom: 0.35rem; }
+.legal-prose a { color: var(--brand-accent); text-decoration: underline; }
+
+.trust-status { list-style: none; margin: 1rem 0 1.25rem; padding: 0; display: grid; gap: 0.75rem; }
+.trust-status li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 12%, #e7e2ee);
+  border-radius: 12px;
+  background: #fff;
+}
+.trust-status-name { font-weight: 650; color: var(--text-primary, #1a1320); }
+.trust-status-badge {
+  justify-self: end;
+  font-size: 0.78rem; font-weight: 600;
+  padding: 0.2rem 0.6rem; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-accent) 10%, #fff);
+  color: var(--brand-accent);
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 25%, transparent);
+  white-space: nowrap;
+}
+.trust-status-note { grid-column: 1 / -1; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+
+/* ── Integrations index ───────────────────────────────── */
+.intg-main { padding: clamp(40px, 6vw, 88px) 0 clamp(56px, 8vw, 104px); }
+.intg-hero { max-width: 720px; }
+.intg-lede { color: var(--text-secondary); font-size: 1.125rem; line-height: 1.6; margin-top: 1.25rem; }
+.intg-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
+.intg-chip {
+  padding: 0.5rem 1rem; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 18%, #d8d2e0);
+  color: var(--text-primary, #1a1320); text-decoration: none; font-weight: 600; font-size: 0.92rem;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.intg-chip:hover { border-color: var(--brand-accent); background: color-mix(in srgb, var(--brand-accent) 8%, #fff); }
+.intg-sections { margin-top: 2.5rem; display: grid; gap: 1rem; }
+.intg-section {
+  scroll-margin-top: 90px;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 12%, #e7e2ee);
+  border-radius: 14px;
+  background: #fff;
+}
+.intg-section h2 { font-size: 1.2rem; font-weight: 700; margin: 0 0 0.5rem; color: var(--text-primary, #1a1320); }
+.intg-section p { color: var(--text-secondary); line-height: 1.65; margin: 0 0 0.9rem; }
+.intg-cta { color: var(--brand-accent); font-weight: 600; text-decoration: none; }
+.intg-cta:hover { text-decoration: underline; }
+.intg-foot { margin-top: 2rem; color: var(--text-secondary); }
+.intg-foot a { color: var(--brand-accent); text-decoration: underline; }

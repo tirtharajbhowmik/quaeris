@@ -282,3 +282,152 @@ export const ROUTE_META: Record<string, RouteMeta> = {
       "One governed source of truth for pipeline and forecast — ask revenue questions in plain language, get audited answers instantly.",
   },
 };
+
+// ============================================================
+// "Coming soon" stubs — content pages linked from the site that
+// aren't written yet. They render a branded placeholder (HTTP 200)
+// instead of a 404, so no CTA dead-ends. Routes that map cleanly to
+// an existing page are redirected in next.config.ts instead.
+// ============================================================
+
+export interface StubCategory {
+  /** Short kind label, e.g. "Customer story". */
+  label: string;
+  /** One-line explanation shown on the stub. */
+  blurb: string;
+  /** Where the "browse all" link points. */
+  backHref: string;
+  backLabel: string;
+}
+
+const STUB_CATEGORIES = {
+  blog: {
+    label: "Article",
+    blurb: "This article is being written and will be published soon.",
+    backHref: "/blog",
+    backLabel: "the blog",
+  },
+  caseStudy: {
+    label: "Customer story",
+    blurb: "This customer story is being prepared for publication.",
+    backHref: "/case-studies",
+    backLabel: "all customer stories",
+  },
+  compare: {
+    label: "Comparison",
+    blurb: "This side-by-side comparison is on the way.",
+    backHref: "/platform",
+    backLabel: "the platform",
+  },
+  webinar: {
+    label: "Webinar",
+    blurb: "Registration and recordings for this session are coming soon.",
+    backHref: "/resources/webinars",
+    backLabel: "all webinars",
+  },
+  resource: {
+    label: "Resource",
+    blurb: "This guide is being finalized.",
+    backHref: "/resources",
+    backLabel: "the resource library",
+  },
+  careers: {
+    label: "Careers",
+    blurb:
+      "We're putting our open roles together. In the meantime, we'd still love to hear from you.",
+    backHref: "/about",
+    backLabel: "about Quaeris",
+  },
+} satisfies Record<string, StubCategory>;
+
+/** Known stub routes → their category. */
+export const STUB_ROUTES: Record<string, StubCategory> = {};
+const addStubs = (routes: string[], cat: StubCategory) =>
+  routes.forEach((r) => {
+    STUB_ROUTES[r] = cat;
+  });
+
+addStubs(
+  [
+    "blog/semantic-layer-cfo-guide",
+    "blog/governed-analytics-blueprint",
+    "blog/warehouse-native-analytics-architecture",
+    "blog/audit-lineage-enterprise-analytics",
+    "blog/semantic-layer-vs-bi-tool-metrics",
+  ],
+  STUB_CATEGORIES.blog,
+);
+addStubs(
+  [
+    "case-studies/finance-metric-unification",
+    "case-studies/retail-bank-governance",
+    "case-studies/property-saas-self-serve",
+    "case-studies/services-saas-migration",
+    "case-studies/higher-ed-analytics",
+    "case-studies/e4e-metric-unification",
+  ],
+  STUB_CATEGORIES.caseStudy,
+);
+addStubs(
+  [
+    "compare",
+    "compare/quaeris-vs-cube",
+    "compare/quaeris-vs-dbt-semantic-layer",
+    "compare/quaerisai-vs-looker",
+    "compare/quaerisai-vs-power-bi",
+    "compare/quaerisai-vs-tableau",
+  ],
+  STUB_CATEGORIES.compare,
+);
+addStubs(
+  [
+    "webinars/watch",
+    "webinars/watch/agentic-architecture",
+    "webinars/watch/certified-metrics-definition",
+    "webinars/watch/eu-ai-act-sox",
+    "webinars/watch/semantic-layer-primer",
+    "webinars/watch/snowflake-deployment",
+    "webinars/watch/variance-analysis-demo",
+    "webinars/register/finance-governed",
+    "webinars/register/govern-audit-semantic",
+    "webinars/register/lineage-tracking",
+    "webinars/register/mcp-integration",
+    "webinars/register/rbac-enterprise",
+    "webinars/register/warehouse-semantic",
+  ],
+  STUB_CATEGORIES.webinar,
+);
+addStubs(
+  [
+    "resources/guide",
+    "resources/report",
+    "resources/story",
+    "resources/webinar",
+    "resources/security-brief",
+    "resources/enterprise-brief",
+    "resources/sox-ai-analytics-checklist",
+    "resources/hipaa-ai-analytics-guide",
+    "resources/semantic-layer-comparison-guide",
+    "resources/sample-audit-report",
+    "resources/quaeris-audit-trail-guide",
+    "resources/bi-consolidation-roi",
+    "resources/eu-ai-act-analytics-assessment",
+    "resources/white-papers/smart-semantic-layers",
+  ],
+  STUB_CATEGORIES.resource,
+);
+addStubs(["careers"], STUB_CATEGORIES.careers);
+
+/** Stub category for a route, or null if it isn't a known stub. */
+export function stubFor(route: string): StubCategory | null {
+  return STUB_ROUTES[route] ?? null;
+}
+
+/** "audit-lineage-enterprise-analytics" → "Audit Lineage Enterprise Analytics". */
+export function humanizeSlug(route: string): string {
+  const last = route.split("/").pop() || route;
+  return last
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
