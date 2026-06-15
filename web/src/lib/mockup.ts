@@ -11,6 +11,7 @@ import path from "path";
 
 /** Canonical site routes that map to an approved mockup file. */
 export const MOCKUP_ROUTES: string[] = [
+  "home-redesign",
   "about",
   "blog",
   "blog/sample-post",
@@ -39,6 +40,8 @@ export const MOCKUP_ROUTES: string[] = [
 /** Map a route to its mockup file path (relative to the repo root). */
 export function fileForRoute(route: string): string | null {
   if (!MOCKUP_ROUTES.includes(route)) return null;
+  if (route === "home-redesign")
+    return "mockup/pages/2026-06-16-homepage-redesign.html";
   if (route === "solutions/finance")
     return "mockup/sections/2026-06-13-solutions-finance-v3.html";
   if (route === "blog/sample-post")
