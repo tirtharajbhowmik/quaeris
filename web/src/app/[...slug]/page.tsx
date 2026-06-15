@@ -8,6 +8,7 @@ import {
   MOCKUP_ROUTES,
   prettyTitle,
   readMockup,
+  ROUTE_META,
   splitMockup,
 } from "@/lib/mockup";
 
@@ -26,15 +27,23 @@ export async function generateMetadata({
   const { slug } = await params;
   const route = (slug ?? []).join("/");
   if (!MOCKUP_ROUTES.includes(route)) return {};
-  const title = `${prettyTitle(route)} — ${brand.name}`;
+  const m = ROUTE_META[route];
+  const title = `${m?.title ?? prettyTitle(route)} — ${brand.name}`;
+  const description = m?.description ?? brand.meta.description;
+  const ogDescription = m?.ogDescription ?? brand.meta.ogDescription;
   return {
     title,
-    description: brand.meta.description,
+    description,
     openGraph: {
       title,
-      description: brand.meta.ogDescription,
+      description: ogDescription,
       type: "website",
       siteName: brand.name,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: ogDescription,
     },
   };
 }

@@ -103,3 +103,182 @@ export function prettyTitle(route: string): string {
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
 }
+
+/** Per-route SEO overrides drawn from each page's actual content. */
+export interface RouteMeta {
+  /** Page title (Title Case, no brand suffix — the route's `<title>` adds it). */
+  title: string;
+  /** ~150-char meta description. */
+  description: string;
+  /** Punchier social-share (Open Graph) description. */
+  ogDescription: string;
+}
+
+/**
+ * SEO metadata per canonical route. Routes absent here fall back to
+ * prettyTitle() + the brand default description in generateMetadata.
+ * Copy is drawn from each page's actual content (eyebrow/H1/value props).
+ */
+export const ROUTE_META: Record<string, RouteMeta> = {
+  about: {
+    title: "Secure, Governed Analytics",
+    description:
+      "Quaeris builds governed agentic analytics where every AI answer is auditable, traces to a certified metric definition, and your data stays warehouse-native — governance by design, not by checkbox.",
+    ogDescription:
+      "Secure, governed analytics powered by trusted agents. Audit-first, warehouse-native, BYOM — built for regulated enterprises.",
+  },
+  blog: {
+    title: "Governed Analytics Insights",
+    description:
+      "Deep dives on semantic layers, agentic AI, and finance-grade governance from Quaeris — every article traces analytics decisions your auditors can trust.",
+    ogDescription:
+      "Insights on governed, agentic analytics — semantic layers, audit lineage, and enterprise data from Quaeris.",
+  },
+  "blog/sample-post": {
+    title: "What Is a Governed Semantic Layer",
+    description:
+      "Learn what a governed semantic layer is and why enterprise analytics stacks need one — Quaeris delivers warehouse-native, certified metrics with full audit lineage and no hallucinated numbers.",
+    ogDescription:
+      "A misaligned metric definition can derail a board presentation. See how a governed, warehouse-native semantic layer keeps every number traceable and trustworthy.",
+  },
+  "case-studies": {
+    title: "Customer Stories",
+    description:
+      "See how financial services, insurance, healthcare, and SaaS teams use Quaeris to unify metric definitions, self-serve governed answers, and eliminate conflicting board reports.",
+    ogDescription:
+      "Real outcomes from real data teams — six deployments, one certified metric layer, governed analytics in every one.",
+  },
+  customers: {
+    title: "Customer Stories",
+    description:
+      "See how enterprise data leaders in finance, insurance, retail, and healthcare deployed governed AI analytics with Quaeris — certified metrics, role-gated access, zero hallucinations, results in weeks.",
+    ogDescription:
+      "Trusted by enterprise data leaders. Six industries, six decisive deployments — governed answers from a certified semantic layer, in 2–4 weeks.",
+  },
+  docs: {
+    title: "Documentation",
+    description:
+      "Quaeris documentation covers everything from first warehouse connection to production MCP integrations — certified metrics, governed queries, audit lineage, and role-gated security in one place.",
+    ogDescription:
+      "Connect, govern, and query your data with Quaeris. From quick start to MCP integrations — all docs in one place.",
+  },
+  platform: {
+    title: "Governed Agentic Analytics Platform",
+    description:
+      "Quaeris delivers governed agentic analytics on three layers — a certified semantic layer, trusted AI agents, and enterprise security — so every answer is accurate, auditable, and role-scoped with zero hallucinations.",
+    ogDescription:
+      "Three layers. One governed answer. Quaeris turns plain-language questions into auditable, warehouse-native analytics — architecture that prevents hallucinations.",
+  },
+  "platform/access-control": {
+    title: "Access Control",
+    description:
+      "Quaeris enforces row-level security and column masking at query time — not in dashboards — so every governed answer is scoped to the user's role with a full audit trail.",
+    ogDescription:
+      "Metrics scoped to who needs them. Query-time enforcement, warehouse-native roles, zero bypass paths.",
+  },
+  "platform/agents": {
+    title: "Agentic Analytics Engine",
+    description:
+      "Quaeris agents answer plain-language questions with zero hallucinations — every number traces to a certified metric in your semantic layer, role-gated and fully audited.",
+    ogDescription:
+      "Ask in plain language. Get governed, audited answers — sources cited, hallucinations impossible.",
+  },
+  "platform/audit": {
+    title: "Full Audit Trail",
+    description:
+      "Quaeris logs every question, metric, and access decision — from plain-language query to warehouse result — giving compliance, finance, and data teams a fully traceable, exportable audit trail.",
+    ogDescription:
+      "Every question. Every answer. Every access decision. Quaeris makes AI analytics auditable — SOX, HIPAA, and EU AI Act ready.",
+  },
+  "platform/governance": {
+    title: "Analytics Governance",
+    description:
+      "Quaeris enforces certified metrics, role-based access at query time, and a complete immutable audit trail — so every enterprise analytics answer is traceable, policy-governed, and hallucination-free.",
+    ogDescription:
+      "Certified metrics. Enforced policies. Complete audit trail. Quaeris makes enterprise analytics governance the foundation, not an afterthought.",
+  },
+  "platform/semantic-layer": {
+    title: "Semantic Layer",
+    description:
+      "Quaeris auto-builds a certified semantic layer from usage — define revenue, churn, and KPIs once, role-gate access, and trace every agent answer to a versioned, audited metric definition. No LookML sprints required.",
+    ogDescription:
+      "Metrics your team can trust — auto-learned, certified, and warehouse-native. Every Quaeris answer cites a governed metric definition.",
+  },
+  "platform/warehouse": {
+    title: "Warehouse-Native Security",
+    description:
+      "Quaeris is warehouse-native: agents query Snowflake, BigQuery, Databricks, Redshift, or Synapse in place — zero data copy, row-level security enforced at query time, full audit trail in your environment.",
+    ogDescription:
+      "Your data stays where it belongs. Quaeris queries your warehouse in place — no copy, no egress, every answer governed and audited.",
+  },
+  pricing: {
+    title: "Enterprise Analytics Pricing",
+    description:
+      "Quaeris pricing scales with your warehouse connections and governance requirements — not seat counts. Every tier runs warehouse-native with a governed semantic layer and prompt-level audit log.",
+    ogDescription:
+      "Warehouse-native agentic analytics priced to your deployment — not arbitrary seats. Governed answers, full audit trail, BYOM.",
+  },
+  resources: {
+    title: "Governed Analytics Resources",
+    description:
+      "Learn how governed agentic analytics works with Quaeris — guides, webinars, research reports, and customer stories grounded in warehouse-native, audit-ready architecture.",
+    ogDescription:
+      "Guides, webinars, and reports on governed agentic analytics — every answer traces to a certified metric, no data leaves your perimeter.",
+  },
+  "resources/webinars": {
+    title: "Webinars & Live Sessions",
+    description:
+      "Watch Quaeris experts demonstrate governed agentic analytics live — semantic layer design, certified metrics, audit trail, and warehouse-native AI. Register for upcoming sessions or watch on demand.",
+    ogDescription:
+      "Live and on-demand: learn governed analytics, semantic layer design, and warehouse-native AI from Quaeris experts.",
+  },
+  solutions: {
+    title: "AI Analytics Solutions",
+    description:
+      "Quaeris delivers governed agentic analytics for data teams, analysts, and executives in regulated industries — every answer is auditable, warehouse-native, and traced to a certified metric definition.",
+    ogDescription:
+      "Governed analytics built for your team. Trusted in your industry. Quaeris surfaces auditable answers across Finance, Healthcare, and more.",
+  },
+  "solutions/analysts": {
+    title: "Analytics for Analysts",
+    description:
+      "Quaeris lets analysts ask plain-language questions and get governed, audited answers — backed by certified metrics, role-based access, and full data lineage. No SQL required.",
+    ogDescription:
+      "Ask questions. Get governed answers in seconds. Certified metrics, zero hallucinations, full audit trail — no SQL needed.",
+  },
+  "solutions/data-teams": {
+    title: "Governed Self-Serve for Data Teams",
+    description:
+      "Quaeris lets data teams define metrics once in a governed semantic layer — business users self-serve, role-based access enforces itself at query time, and every answer is fully auditable.",
+    ogDescription:
+      "Kill the ad-hoc request queue. Quaeris governed self-serve: one semantic layer, zero hallucinations, automatic role enforcement.",
+  },
+  "solutions/executives": {
+    title: "Analytics for Executives",
+    description:
+      "Quaeris gives executives governed business metrics on demand — ask in plain language, get audited answers in seconds with full lineage, role-based access, and zero hallucinations.",
+    ogDescription:
+      "Stop waiting on data tickets. Quaeris delivers certified, warehouse-native answers before your next meeting — no hallucinations, full audit trail.",
+  },
+  "solutions/finance": {
+    title: "Finance Analytics for CFOs",
+    description:
+      "Quaeris gives finance teams and CFOs one certified metric definition across every variance report, ledger reconciliation, and board deck — governed, audit-ready, and warehouse-native.",
+    ogDescription:
+      "One metric definition. Every report agrees. Quaeris delivers governed, audit-trail analytics for finance teams — no reconciliation, no SQL, no hallucinations.",
+  },
+  "solutions/product": {
+    title: "Product Analytics",
+    description:
+      "Quaeris gives product teams instant access to engagement, retention, and cohort metrics grounded in a governed semantic layer — certified answers with full audit lineage, no SQL required.",
+    ogDescription:
+      "Understand your users without writing SQL. Quaeris delivers governed product analytics — retention, cohort, and engagement answers in minutes, not days.",
+  },
+  "solutions/revenue-ops": {
+    title: "Revenue Operations Analytics",
+    description:
+      "Quaeris unifies CRM and warehouse pipeline data into a governed semantic layer — so RevOps teams query forecast and quota metrics in plain language with certified, auditable answers and zero conflicting numbers.",
+    ogDescription:
+      "One governed source of truth for pipeline and forecast — ask revenue questions in plain language, get audited answers instantly.",
+  },
+};
