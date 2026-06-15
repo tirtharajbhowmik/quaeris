@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — finance stats band v3 (simplified) — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style>
+/* ============================================================
+   PORT: fin-stat- (Outcomes stats band v3 — SIMPLIFIED)
+   "Number-plus-one-quiet-cue."
+   Number-forward. Each stat = big accent number + ONE thin
+   accent underline (the single quiet cue) + label + sublabel.
+   No cards, no borders, no icons, no index, no micro-vizzes,
+   no lineage dots, no captions, no status row.
+   Count-up is the only motion. Move to globals.css at port time.
+   ============================================================ */
+
+/* ---- Band-level scope ---- */
+.fin-stats { /* scope class — .js variant added by IIFE */ }
+
+/* ---- Grid: 4 across, generous whitespace, hairline dividers ---- */
+.fin-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: var(--space-9);
+}
+@media (max-width: 900px) {
+  .fin-stat-grid { grid-template-columns: repeat(2, 1fr); row-gap: var(--space-8); }
+}
+@media (max-width: 540px) {
+  .fin-stat-grid { grid-template-columns: 1fr; row-gap: var(--space-7); }
+}
+
+/* ---- One stat ---- */
+.fin-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  /* breathing room + thin vertical divider between columns */
+  padding: 0 var(--space-6);
+  border-left: 1px solid var(--border-subtle);
+}
+.fin-stat:first-child { border-left: none; padding-left: 0; }
+
+/* On 2-up / 1-up, dividers would land mid-row — drop them, keep rhythm via gap */
+@media (max-width: 900px) {
+  .fin-stat { border-left: none; padding: 0 var(--space-4); }
+  .fin-stat:nth-child(odd) { padding-left: 0; }
+}
+@media (max-width: 540px) {
+  .fin-stat { padding: 0; }
+}
+
+/* ---- The number — the dominant element ---- */
+.fin-stat-num {
+  /* inherits .stat-num from globals (Inter 700, clamp 36–56px, tabular) */
+  color: var(--brand-accent);
+  line-height: 1;
+}
+/* Card 2 reads as a positive: zero hallucinations = success green */
+.fin-stat--zero .fin-stat-num { color: var(--success); }
+
+/* ---- THE ONE QUIET CUE: a single thin accent underline ---- */
+.fin-stat-rule {
+  display: block;
+  height: 2px;
+  width: 36px;
+  margin-top: var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--brand-accent);
+  transform-origin: left center;
+  /* Default (no-JS): fully drawn */
+  transform: scaleX(1);
+}
+.fin-stat--zero .fin-stat-rule { background: var(--success); }
+
+/* ---- Label (the claim) ---- */
+.fin-stat-label {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: var(--space-4);
+}
+
+/* ---- Sublabel (one quiet line of context) ---- */
+.fin-stat-sub {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+  margin-top: var(--space-2);
+  max-width: 26ch;
+}
+
+/* ============================================================
+   MOTION — gated behind .fin-stats.js (IIFE adds it after paint)
+   Quiet: a soft per-stat fade/rise + the underline wiping in,
+   synced loosely with the number count-up. Nothing else moves.
+   ============================================================ */
+.fin-stats.js .fin-stat {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out) var(--d, 0ms),
+    transform var(--dur-slow) var(--ease-out) var(--d, 0ms);
+}
+.fin-stats.js .fin-stat.entered {
+  opacity: 1;
+  transform: none;
+}
+
+/* Underline: reset to 0, wipe in once the stat enters */
+.fin-stats.js .fin-stat-rule {
+  transform: scaleX(0);
+  transition: transform var(--dur-slow) var(--ease-out) calc(var(--d, 0ms) + 220ms);
+}
+.fin-stats.js .fin-stat.entered .fin-stat-rule {
+  transform: scaleX(1);
+}
+
+/* ============================================================
+   REDUCED MOTION — snap to final, no travel
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .fin-stats.js .fin-stat {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .fin-stats.js .fin-stat-rule {
+    transform: scaleX(1) !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+<body style="background: var(--bg-canvas); min-height: 100vh; display: flex; align-items: center;">
+
+<!-- ============================================================
+     MOCKUP VIEWPORT — Outcomes stats band only
+     ============================================================ -->
+<main id="main" style="width: 100%;">
+
+<section id="stats-band" class="section-pad fin-stats" aria-labelledby="stats-heading">
+  <div class="container">
+
+    <!-- Centered header — eyebrow + H2 only (extra green caption dropped) -->
+    <div class="section-header center reveal">
+      <span class="eyebrow">Outcomes</span>
+      <h2 id="stats-heading" class="display-lg">The impact of instant, governed answers.</h2>
+    </div>
+
+    <!-- 4 stats — number-forward, one quiet underline each -->
+    <div class="fin-stat-grid reveal" role="list">
+
+      <!-- 1 — 40 hours saved -->
+      <div class="fin-stat" role="listitem" style="--d:0ms">
+        <span class="stat-num fin-stat-num" data-num="40" aria-label="40">40</span>
+        <span class="fin-stat-rule" aria-hidden="true"></span>
+        <p class="fin-stat-label">Hours saved per month-end close</p>
+        <p class="fin-stat-sub">From manual reconciliation to instant query</p>
+      </div>
+
+      <!-- 2 — 0 hallucinated numbers (success green) -->
+      <div class="fin-stat fin-stat--zero" role="listitem" style="--d:80ms">
+        <span class="stat-num fin-stat-num" data-num="0" aria-label="Zero">0</span>
+        <span class="fin-stat-rule" aria-hidden="true"></span>
+        <p class="fin-stat-label">Hallucinated numbers in compliance reports</p>
+        <p class="fin-stat-sub">Every answer cites certified metrics</p>
+      </div>
+
+      <!-- 3 — 3 days faster -->
+      <div class="fin-stat" role="listitem" style="--d:160ms">
+        <span class="stat-num fin-stat-num" data-num="3" aria-label="3">3</span>
+        <span class="fin-stat-rule" aria-hidden="true"></span>
+        <p class="fin-stat-label">Days faster to board-ready variance analysis</p>
+        <p class="fin-stat-sub">vs. traditional ad-hoc query cycle</p>
+      </div>
+
+      <!-- 4 — 100% audit coverage -->
+      <div class="fin-stat" role="listitem" style="--d:240ms">
+        <span class="stat-num fin-stat-num" data-num="100" data-suffix="%" aria-label="100%">100%</span>
+        <span class="fin-stat-rule" aria-hidden="true"></span>
+        <p class="fin-stat-label">Audit-trail coverage on every financial query</p>
+        <p class="fin-stat-sub">GL lineage, user, timestamp, role enforced</p>
+      </div>
+
+    </div><!-- /.fin-stat-grid -->
+  </div><!-- /.container -->
+</section>
+
+</main>
+
+<!-- ============================================================
+     [FIN-STATS] IIFE — scroll-triggered entrance + quiet count-up
+     Same paint-then-gate pattern used elsewhere on the page.
+     ============================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  const band = document.querySelector('#stats-band .fin-stat-grid');
+  if (!band) return;
+  const scope = document.querySelector('.fin-stats') || band.closest('#stats-band');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* format helper — respects optional prefix/suffix/decimals */
+  function fmt(el, v) {
+    const dec = +(el.dataset.decimals || 0);
+    const n = dec ? (+v).toFixed(dec) : Math.round(v);
+    return (el.dataset.prefix || '') + n + (el.dataset.suffix || '');
+  }
+
+  /* quiet count-up — wall-clock timed, with a snap safety net */
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = fmt(el, target); return; }
+    const start = Date.now();
+    el.textContent = fmt(el, 0);
+    const snap = setTimeout(function () { el.textContent = fmt(el, target); }, dur + 200);
+    (function tick() {
+      const t = Math.min(1, (Date.now() - start) / dur);
+      el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick);
+      else { clearTimeout(snap); el.textContent = fmt(el, target); }
+    })();
+  }
+
+  const stats = Array.from(band.querySelectorAll('.fin-stat'));
+  let entered = false;
+
+  function enter() {
+    if (entered) return;
+    entered = true;
+    stats.forEach(function (s, i) {
+      function run() {
+        s.classList.add('entered');
+        s.querySelectorAll('[data-num]').forEach(function (n) {
+          countUp(n, +n.dataset.num, 750);
+        });
+      }
+      if (reduce) run();
+      else setTimeout(run, i * 80);
+    });
+  }
+
+  /* Add .js after first paint so the static (no-JS) final state renders,
+     then from-zero CSS states activate before .entered is added. */
+  function init() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        scope.classList.add('js');
+
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver(function (es) {
+            es.forEach(function (e) {
+              if (e.isIntersecting) { enter(); io.disconnect(); }
+            });
+          }, { threshold: 0.3 });
+          io.observe(band);
+        } else {
+          enter();
+        }
+
+        /* Safety net if IO never fires */
+        setTimeout(function () {
+          if (!band.querySelector('.fin-stat.entered')) enter();
+        }, 1500);
+      });
+    });
+  }
+
+  init();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP v3 — finance "Why Quaeris" (numbered feature rows) — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+</style>
+
+<style>
+/* ============================================================
+   PORT: "Why Quaeris" v3 — Numbered inline-expanding feature rows.
+
+   PARADIGM (wholly distinct from capabilities tabs+dashboards):
+   - Full-width stacked rows separated by hairline rules.
+   - Each row has: large display number | headline + tagline | chevron.
+   - Clicking expands a two-column inline body: prose + proof panel.
+   - One row open at a time. First row open by default.
+   - Background: --bg-surface (white) — crisp, CFO-grade.
+   - No auto-advance, no dark dashboard panels, no shared tab bar.
+   - Proof panels are light-surface, table/ledger/query-result style.
+
+   PROOF ELEMENTS (one per feature, each distinctly different):
+   1. Certified Metrics Library → versioned ledger table (the registry)
+   2. Multi-Dimensional Variance → interactive clickable matrix columns
+   3. Instant Budget Questions → NL query bar → staggered results reveal
+   4. EU AI Act & SOX Ready → audit chain timeline with node states
+
+   GATING: .wqr.js guards all JS-specific states.
+   Static fallback: first row open via aria-expanded=true; others closed
+   still show content (max-height removed without JS).
+   prefers-reduced-motion: all transitions/animations killed.
+   ============================================================ */
+
+/* ── Section shell ── */
+#wq-v3 { background: var(--bg-surface); }
+
+/* ── Accent line (reuse pattern) ── */
+.accent { color: var(--brand-accent); }
+
+/* ── Feature list ── */
+.wqr-list {
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ── Row: the outer container ── */
+.wqr-row {
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+/* ── Trigger: the always-visible header strip ── */
+.wqr-trigger {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+  padding: var(--space-6) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  min-height: 80px;
+}
+.wqr-trigger:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+@media (max-width: 640px) {
+  .wqr-trigger { grid-template-columns: 48px 1fr auto; gap: var(--space-3); min-height: 64px; padding: var(--space-4) 0; }
+}
+
+/* Number */
+.wqr-num {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.2vw, 42px);
+  font-weight: var(--weight-display);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--border-strong);
+  user-select: none;
+  transition: color var(--dur-base) var(--ease-out);
+  padding-top: 2px;
+}
+.wqr-row[aria-expanded="true"] .wqr-num { color: var(--brand-accent); }
+.wqr-row:hover .wqr-num { color: var(--text-secondary); }
+.wqr-row[aria-expanded="true"]:hover .wqr-num { color: var(--brand-accent); }
+
+/* Heading block */
+.wqr-head { display: flex; flex-direction: column; gap: 4px; }
+.wqr-title {
+  font-size: clamp(17px, 1.7vw, 21px);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  transition: color var(--dur-fast);
+}
+.wqr-row[aria-expanded="true"] .wqr-title { color: var(--brand-accent); }
+.wqr-tagline {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  line-height: 1.45;
+  max-width: 70ch;
+  transition: opacity var(--dur-base);
+}
+.wqr-row[aria-expanded="true"] .wqr-tagline { opacity: 0.6; }
+
+/* Chevron */
+.wqr-chevron {
+  width: 34px; height: 34px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out);
+}
+.wqr-chevron svg { width: 16px; height: 16px; }
+.wqr-row[aria-expanded="true"] .wqr-chevron {
+  transform: rotate(180deg);
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+}
+.wqr-trigger:hover .wqr-chevron:not([class*="rotate"]) {
+  border-color: var(--border-strong);
+  color: var(--text-secondary);
+}
+
+/* ── Collapsible body ── */
+.wqr-body {
+  overflow: hidden;
+  /* Static fallback: visible */
+  max-height: 800px;
+  opacity: 1;
+  transition:
+    max-height 0.5s var(--ease-out),
+    opacity 0.3s var(--ease-out);
+}
+/* JS: start collapsed except row 1 */
+.wqr.js .wqr-body { max-height: 0; opacity: 0; }
+.wqr.js .wqr-row[aria-expanded="true"] .wqr-body {
+  max-height: 800px;
+  opacity: 1;
+  transition:
+    max-height 0.55s var(--ease-out),
+    opacity 0.38s var(--ease-out) 0.06s;
+}
+
+/* ── Two-column inner layout ── */
+.wqr-inner {
+  display: grid;
+  grid-template-columns: 42fr 58fr;
+  gap: var(--space-9);
+  align-items: start;
+  padding: 0 0 var(--space-8);
+  /* Push content right to align with title (past the number column) */
+  padding-left: calc(64px + var(--space-5));
+}
+@media (max-width: 1024px) {
+  .wqr-inner { grid-template-columns: 1fr 1fr; padding-left: 0; gap: var(--space-6); }
+}
+@media (max-width: 768px) {
+  .wqr-inner { grid-template-columns: 1fr; gap: var(--space-5); }
+}
+
+/* ── Copy column ── */
+.wqr-copy { display: flex; flex-direction: column; gap: var(--space-5); }
+.wqr-desc { color: var(--text-secondary); font-size: 15px; line-height: 1.72; }
+.wqr-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-1);
+}
+.wqr-bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.wqr-bullet-icon {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.wqr-bullet-icon svg { width: 11px; height: 11px; color: var(--brand-accent); }
+
+/* ── Proof panel (shared frame) ── */
+.wqr-proof {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.wqr-proof-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+}
+.wqr-proof-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.wqr-proof-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  padding: 3px 9px;
+}
+.wqr-proof-pill.ok { background: rgba(26,158,108,0.10); color: var(--success); }
+.wqr-proof-pill.ok::before { content: ""; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+.wqr-proof-pill.live { background: rgba(147,51,234,0.10); color: var(--brand-accent); }
+.wqr-proof-pill.live::before { content: ""; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--brand-accent); animation: wqr-pulse 1.6s ease-in-out infinite; }
+@keyframes wqr-pulse { 0%,100% { opacity: 0.4; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
+.wqr-proof-body { padding: var(--space-4); }
+
+/* ============================================================
+   PROOF 1 — Certified Metrics Ledger
+   A registry table: metric name | GL range | version | status.
+   Rows stagger in when the panel becomes visible.
+   ============================================================ */
+.wqr-ledger { width: 100%; border-collapse: collapse; }
+.wqr-ledger thead th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0 0 var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+.wqr-ledger thead th:not(:first-child) { padding-left: var(--space-3); }
+.wqr-ledger tbody tr { border-bottom: 1px solid var(--border-subtle); }
+.wqr-ledger tbody tr:last-child { border-bottom: none; }
+.wqr-ledger tbody tr:hover td { background: var(--bg-surface); }
+.wqr-ledger td { padding: 9px 0; color: var(--text-secondary); font-size: 12px; vertical-align: middle; }
+.wqr-ledger td:not(:first-child) { padding-left: var(--space-3); }
+.wqr-ledger .wqr-mname { font-weight: 600; color: var(--text-primary); font-size: 13px; }
+.wqr-ledger .wqr-gl { color: var(--text-tertiary); font-size: 11px; display: block; margin-top: 1px; }
+.wqr-ledger .wqr-ver {
+  font-size: 11px; font-weight: 600; color: var(--brand-accent);
+  background: var(--brand-accent-soft); border-radius: var(--radius-pill);
+  padding: 2px 7px; white-space: nowrap;
+}
+.wqr-ledger .wqr-cert {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 10px; font-weight: 700; color: var(--success);
+  white-space: nowrap;
+}
+.wqr-ledger .wqr-cert svg { width: 10px; height: 10px; }
+
+/* Row stagger-in (JS) */
+.wqr.js .wqr-ledger tbody tr {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.32s var(--ease-out), transform 0.32s var(--ease-out);
+  transition-delay: var(--ld, 0ms);
+}
+.wqr.js .wqr-row[aria-expanded="true"] .wqr-ledger tbody tr {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   PROOF 2 — Multi-Dimensional Variance Matrix
+   Columns = comparison scenarios; rows = GL dimensions.
+   Click a column header to "activate" it — highlights that column.
+   ============================================================ */
+.wqr-matrix { width: 100%; border-collapse: collapse; }
+.wqr-matrix thead th {
+  font-size: 11px; font-weight: 700; color: var(--text-tertiary);
+  letter-spacing: 0.5px; padding: 0 0 var(--space-3);
+  text-align: right;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer; user-select: none; white-space: nowrap;
+  transition: color var(--dur-fast), background var(--dur-fast);
+  border-radius: 4px 4px 0 0;
+}
+.wqr-matrix thead th:first-child { text-align: left; cursor: default; }
+.wqr-matrix thead th:not(:first-child) { padding-left: var(--space-2); padding-right: var(--space-2); }
+.wqr-matrix thead th.wqr-col-on {
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+}
+.wqr-matrix tbody tr { border-bottom: 1px solid var(--border-subtle); }
+.wqr-matrix tbody tr:last-child { border-bottom: none; }
+.wqr-matrix tbody tr:hover td { background: var(--bg-surface); }
+.wqr-matrix td {
+  font-size: 12px; color: var(--text-secondary); padding: 8px 0; vertical-align: middle;
+  white-space: nowrap;
+}
+.wqr-matrix td:not(:first-child) { text-align: right; padding-left: var(--space-2); padding-right: var(--space-2); font-variant-numeric: tabular-nums; }
+.wqr-matrix .wqr-dim { font-weight: 600; color: var(--text-primary); font-size: 12px; }
+.wqr-matrix .wqr-gl-small { font-size: 10px; color: var(--text-tertiary); display: block; margin-top: 1px; }
+.wqr-matrix td.wqr-col-on { font-weight: 700; color: var(--brand-accent); background: var(--brand-accent-soft); }
+.wqr-pos { color: var(--error); }
+.wqr-neg { color: var(--success); }
+.wqr-matrix tfoot td { font-size: 11px; color: var(--text-tertiary); border-top: 1px solid var(--border-subtle); padding-top: var(--space-3); padding-bottom: 0; }
+
+/* Click-hint for matrix */
+.wqr-matrix-hint {
+  font-size: 11px; color: var(--text-tertiary); margin-top: var(--space-3);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.wqr-matrix-hint svg { width: 12px; height: 12px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* ============================================================
+   PROOF 3 — Instant Budget Questions: NL → results
+   Query bar (static pre-filled) → thinking dots → results reveal.
+   Triggered each time the row opens; resets on close.
+   ============================================================ */
+.wqr-nlq {
+  display: flex; align-items: center; gap: var(--space-2);
+  background: var(--bg-surface); border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-md); padding: 10px 14px;
+  margin-bottom: var(--space-3);
+}
+.wqr-nlq svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; }
+.wqr-nlq-text { flex: 1; font-size: 13px; font-weight: 500; color: var(--text-primary); }
+.wqr-nlq-kbd { font-size: 11px; font-weight: 600; color: var(--text-tertiary); background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: 4px; padding: 2px 6px; flex-shrink: 0; }
+
+.wqr-thinking {
+  display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) 0;
+  font-size: 12px; color: var(--text-tertiary); font-style: italic;
+}
+.wqr-dots span {
+  display: inline-block; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--brand-accent); margin: 0 1.5px;
+  animation: wqr-dot 1.2s var(--ease-out) infinite;
+}
+.wqr-dots span:nth-child(2) { animation-delay: 0.15s; }
+.wqr-dots span:nth-child(3) { animation-delay: 0.30s; }
+@keyframes wqr-dot { 0%,100% { opacity: 0.2; transform: scaleY(0.7); } 50% { opacity: 1; transform: scaleY(1); } }
+
+.wqr-results { display: flex; flex-direction: column; gap: 0; }
+.wqr-result {
+  display: grid; grid-template-columns: 1fr auto auto; align-items: center;
+  gap: var(--space-3); padding: 9px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 12px;
+  opacity: 0; transform: translateY(5px);
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.wqr-result:last-child { border-bottom: none; }
+.wqr-result.wqr-show { opacity: 1; transform: none; }
+.wqr-rdept { font-weight: 600; color: var(--text-primary); font-size: 13px; }
+.wqr-rover { font-size: 12px; font-weight: 700; color: var(--error); font-variant-numeric: tabular-nums; }
+.wqr-rgl { font-size: 10px; color: var(--text-tertiary); font-weight: 600; letter-spacing: 0.3px; }
+
+.wqr-query-foot {
+  margin-top: var(--space-3); padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 11px; color: var(--text-tertiary);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.wqr-query-foot svg { width: 12px; height: 12px; color: var(--success); flex-shrink: 0; }
+
+/* Reduced-motion: static state for query viz */
+@media (prefers-reduced-motion: reduce) {
+  .wqr-result { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .wqr-dots span { animation: none !important; opacity: 1 !important; }
+  .wqr-thinking { display: none; }
+}
+
+/* ============================================================
+   PROOF 4 — EU AI Act & SOX: Governance chain timeline
+   A vertical list of steps, each with a dot-state:
+   done (green) | active (purple pulsing) | waiting (grey).
+   Nodes stagger in when the row opens.
+   ============================================================ */
+.wqr-chain { position: relative; padding-left: 32px; display: flex; flex-direction: column; gap: 0; }
+.wqr-chain::before {
+  content: "";
+  position: absolute; left: 6px; top: 10px; bottom: 10px;
+  width: 2px; background: var(--border-subtle);
+}
+.wqr-chain-node {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: var(--space-3);
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+.wqr-chain-node:last-child { border-bottom: none; }
+.wqr-chain-dot {
+  position: absolute; left: -32px; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg-canvas); border: 2px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1;
+  transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);
+}
+.wqr-chain-dot svg { width: 7px; height: 7px; color: var(--text-on-dark); display: none; }
+.wqr-chain-dot.done { border-color: var(--success); background: var(--success); }
+.wqr-chain-dot.done svg { display: block; }
+.wqr-chain-dot.active { border-color: var(--brand-accent); background: var(--brand-accent-soft); box-shadow: 0 0 0 3px var(--brand-accent-glow); animation: wqr-node-pulse 2s ease-in-out infinite; }
+@keyframes wqr-node-pulse { 0%,100% { box-shadow: 0 0 0 3px var(--brand-accent-glow); } 50% { box-shadow: 0 0 0 6px rgba(147,51,234,0.08); } }
+.wqr-chain-text { display: flex; flex-direction: column; gap: 1px; }
+.wqr-chain-label { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.wqr-chain-sub { font-size: 11px; color: var(--text-tertiary); line-height: 1.4; }
+.wqr-chain-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.8px;
+  text-transform: uppercase; padding: 3px 8px; border-radius: var(--radius-pill);
+  white-space: nowrap; flex-shrink: 0;
+}
+.wqr-chain-tag.done { background: rgba(26,158,108,0.10); color: var(--success); }
+.wqr-chain-tag.active { background: var(--brand-accent-soft); color: var(--brand-accent); }
+.wqr-chain-tag.wait { background: var(--bg-canvas); color: var(--text-tertiary); border: 1px solid var(--border-subtle); }
+
+/* Node stagger (JS) */
+.wqr.js .wqr-chain-node {
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.36s var(--ease-out), transform 0.36s var(--ease-out);
+  transition-delay: var(--nd, 0ms);
+}
+.wqr.js .wqr-row[aria-expanded="true"] .wqr-chain-node {
+  opacity: 1; transform: none;
+}
+
+/* Compliance badges below chain */
+.wqr-comply {
+  display: flex; gap: var(--space-2); flex-wrap: wrap;
+  margin-top: var(--space-4); padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+.wqr-comply-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: var(--text-secondary);
+  background: var(--bg-surface); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill); padding: 4px 10px;
+}
+.wqr-comply-badge svg { width: 11px; height: 11px; color: var(--success); }
+
+/* ── Section header ── */
+.wqr-section-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: var(--space-7);
+  margin-bottom: var(--space-8);
+}
+@media (max-width: 768px) {
+  .wqr-section-top { grid-template-columns: 1fr; }
+  .wqr-aside { display: none; }
+}
+.wqr-aside {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-5); background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+  min-width: 220px; max-width: 260px;
+}
+.wqr-aside-item {
+  display: flex; align-items: center; gap: var(--space-2);
+  font-size: 13px; color: var(--text-secondary);
+}
+.wqr-aside-item svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* ── Reduced-motion catch-all ── */
+@media (prefers-reduced-motion: reduce) {
+  .wqr.js .wqr-body { transition: none !important; max-height: 800px !important; opacity: 1 !important; }
+  .wqr.js .wqr-ledger tbody tr { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .wqr.js .wqr-chain-node { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .wqr-chain-dot.active { animation: none !important; }
+  .wqr-proof-pill.live::before { animation: none !important; }
+  .wqr-chevron { transition: none !important; }
+  .wqr-num, .wqr-title, .wqr-tagline { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<section id="wq-v3" class="section-pad" aria-labelledby="wq3-heading">
+  <div class="container">
+
+    <!-- Section header -->
+    <div class="wqr-section-top reveal">
+      <div class="section-header">
+        <span class="eyebrow">Why Quaeris</span>
+        <h2 id="wq3-heading" class="display-lg">Built for the way<br><span class="accent">finance actually works.</span></h2>
+        <p class="subcopy body-md" style="margin-top: var(--space-4); color: var(--text-secondary);">
+          Four capabilities that CFOs, controllers, and FP&amp;A leaders trust most — and that generic BI tools consistently get wrong. Governed from the ground up, not compliance-bolted-on.
+        </p>
+      </div>
+      <!-- Trust aside card — gives CFO audience fast credibility signals -->
+      <aside class="wqr-aside" aria-label="Quick trust signals">
+        <p style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-tertiary); margin-bottom:var(--space-2);">Trusted by enterprise finance</p>
+        <div class="wqr-aside-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          SOX &amp; EU AI Act compliant
+        </div>
+        <div class="wqr-aside-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Warehouse-native — your data stays yours
+        </div>
+        <div class="wqr-aside-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Deployed at Fortune-500 finance teams
+        </div>
+        <div class="wqr-aside-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Close cycle time cut by ~40%
+        </div>
+      </aside>
+    </div>
+
+    <!-- ═══ Feature list ═══ -->
+    <div class="wqr-list wqr reveal" id="wqr-list">
+
+      <!-- ──────────────────────────────────────────────────────────── -->
+      <!-- Row 1 — Certified Metrics Library                           -->
+      <!-- ──────────────────────────────────────────────────────────── -->
+      <div class="wqr-row" id="wqr-row-1" aria-expanded="true">
+        <button
+          class="wqr-trigger"
+          type="button"
+          aria-expanded="true"
+          aria-controls="wqr-body-1"
+          id="wqr-btn-1"
+        >
+          <span class="wqr-num" aria-hidden="true">01</span>
+          <span class="wqr-head">
+            <span class="wqr-title">Certified Metrics Library</span>
+            <span class="wqr-tagline">Revenue, COGS, SG&amp;A, EBT, tax provision, headcount — defined once by finance, used everywhere. No spreadsheet variants.</span>
+          </span>
+          <span class="wqr-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+
+        <div class="wqr-body" id="wqr-body-1" role="region" aria-labelledby="wqr-btn-1">
+          <div class="wqr-inner">
+
+            <!-- Copy -->
+            <div class="wqr-copy">
+              <p class="wqr-desc">Finance teams spend weeks each quarter reconciling "which revenue number is right" — because FP&amp;A, accounting, and the board deck each pull from different spreadsheets. Quaeris certifies every metric once: versioned, locked, and referenced from a single source. When a controller updates the tax provision formula, it propagates everywhere — no hunting for variants.</p>
+              <ul class="wqr-bullets" aria-label="Key capabilities">
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  6 certified P&amp;L metrics pre-built: Revenue, COGS, SG&amp;A, EBT, Tax provision, Headcount — each with GL range, version number, and change history.
+                </li>
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Custom metric builder for company-specific KPIs — governed by the same semantic layer, accessible by the same role-based policy.
+                </li>
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Every certified metric is timestamped and immutable — auditors can pull any version for any reporting period.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Proof: metric registry ledger -->
+            <div class="wqr-proof" aria-label="Certified metrics registry — illustrative">
+              <div class="wqr-proof-header">
+                <span class="wqr-proof-label">Metrics Registry · Finance-owned</span>
+                <span class="wqr-proof-pill ok">6 certified</span>
+              </div>
+              <div class="wqr-proof-body">
+                <table class="wqr-ledger">
+                  <thead>
+                    <tr>
+                      <th scope="col">Metric</th>
+                      <th scope="col">GL Range</th>
+                      <th scope="col">Ver.</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="--ld: 80ms">
+                      <td><span class="wqr-mname">Revenue (Net)</span></td>
+                      <td><span class="wqr-gl">GL 4000–4099</span></td>
+                      <td><span class="wqr-ver">v4.2</span></td>
+                      <td><span class="wqr-cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></td>
+                    </tr>
+                    <tr style="--ld: 160ms">
+                      <td><span class="wqr-mname">Cost of Goods Sold</span></td>
+                      <td><span class="wqr-gl">GL 5000–5099</span></td>
+                      <td><span class="wqr-ver">v3.0</span></td>
+                      <td><span class="wqr-cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></td>
+                    </tr>
+                    <tr style="--ld: 240ms">
+                      <td><span class="wqr-mname">SG&amp;A</span></td>
+                      <td><span class="wqr-gl">GL 6000–6799</span></td>
+                      <td><span class="wqr-ver">v2.1</span></td>
+                      <td><span class="wqr-cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></td>
+                    </tr>
+                    <tr style="--ld: 320ms">
+                      <td><span class="wqr-mname">Earnings Before Tax</span></td>
+                      <td><span class="wqr-gl">Derived · 4000–6799</span></td>
+                      <td><span class="wqr-ver">v1.8</span></td>
+                      <td><span class="wqr-cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></td>
+                    </tr>
+                    <tr style="--ld: 400ms">
+                      <td><span class="wqr-mname">Tax Provision</span></td>
+                      <td><span class="wqr-gl">GL 8000–8099</span></td>
+                      <td><span class="wqr-ver">v2.4</span></td>
+                      <td><span class="wqr-cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></td>
+                    </tr>
+                    <tr style="--ld: 480ms">
+                      <td><span class="wqr-mname">Headcount (FTE + Contr.)</span></td>
+                      <td><span class="wqr-gl">HR · cost center mapped</span></td>
+                      <td><span class="wqr-ver">v1.5</span></td>
+                      <td><span class="wqr-cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div><!-- /wqr-inner -->
+        </div><!-- /wqr-body -->
+      </div><!-- /wqr-row-1 -->
+
+      <!-- ──────────────────────────────────────────────────────────── -->
+      <!-- Row 2 — Multi-Dimensional Variance                          -->
+      <!-- ──────────────────────────────────────────────────────────── -->
+      <div class="wqr-row" id="wqr-row-2" aria-expanded="false">
+        <button
+          class="wqr-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="wqr-body-2"
+          id="wqr-btn-2"
+        >
+          <span class="wqr-num" aria-hidden="true">02</span>
+          <span class="wqr-head">
+            <span class="wqr-title">Multi-Dimensional Variance</span>
+            <span class="wqr-tagline">Actual vs budget vs forecast vs prior year — by GL account, cost center, region, or custom hierarchy. Every variance cites its certified source.</span>
+          </span>
+          <span class="wqr-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+
+        <div class="wqr-body" id="wqr-body-2" role="region" aria-labelledby="wqr-btn-2">
+          <div class="wqr-inner">
+
+            <!-- Copy -->
+            <div class="wqr-copy">
+              <p class="wqr-desc">Board prep shouldn't mean three days of pivot tables. Quaeris lets you pivot across every comparison axis — Actual vs Budget, vs Forecast, vs Prior Year — and every dimension your GL hierarchy supports. The drivers are automatically ranked and linked back to the GL accounts that moved them, so your commentary writes itself.</p>
+              <ul class="wqr-bullets">
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Compare across four scenarios simultaneously: Actual vs Budget, Forecast, and Prior Year — click any column header to switch focus.
+                </li>
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Drillable by GL account, cost center, region, entity, or a custom hierarchy already in your ERP — no pre-configuration required.
+                </li>
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Export to Excel for board decks — with certified metric references preserved in the output.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Proof: interactive variance matrix -->
+            <div class="wqr-proof" aria-label="Variance matrix — illustrative, click columns to compare">
+              <div class="wqr-proof-header">
+                <span class="wqr-proof-label">Q3 OPEX Variance · Click column to focus</span>
+                <span class="wqr-proof-pill live">live</span>
+              </div>
+              <div class="wqr-proof-body">
+                <table class="wqr-matrix" id="wqr-matrix" aria-label="Variance comparison matrix">
+                  <thead>
+                    <tr>
+                      <th scope="col">Dimension</th>
+                      <th scope="col" class="wqr-col-on" data-col="1" aria-label="Compare vs Budget — click to focus">vs Budget</th>
+                      <th scope="col" data-col="2" aria-label="Compare vs Forecast — click to focus">vs Forecast</th>
+                      <th scope="col" data-col="3" aria-label="Compare vs Prior Year — click to focus">vs Prior Yr</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="wqr-dim">Commission<span class="wqr-gl-small">GL 6210</span></span></td>
+                      <td class="wqr-col-on wqr-pos">+5.1%</td>
+                      <td>+2.8%</td>
+                      <td class="wqr-pos">+6.4%</td>
+                    </tr>
+                    <tr>
+                      <td><span class="wqr-dim">Cloud infra<span class="wqr-gl-small">GL 6480</span></span></td>
+                      <td class="wqr-col-on wqr-pos">+2.3%</td>
+                      <td class="wqr-neg">−0.4%</td>
+                      <td class="wqr-pos">+3.6%</td>
+                    </tr>
+                    <tr>
+                      <td><span class="wqr-dim">SaaS licenses<span class="wqr-gl-small">GL 6700</span></span></td>
+                      <td class="wqr-col-on wqr-pos">+1.4%</td>
+                      <td class="wqr-neg">−1.2%</td>
+                      <td>+0.6%</td>
+                    </tr>
+                    <tr>
+                      <td><span class="wqr-dim">T&amp;E<span class="wqr-gl-small">GL 6300</span></span></td>
+                      <td class="wqr-col-on wqr-neg">−3.0%</td>
+                      <td class="wqr-neg">−3.8%</td>
+                      <td class="wqr-pos">+1.7%</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4">Certified metric · opex_variance v2.0 · drillable by cost center, region, entity</td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <div class="wqr-matrix-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 15 9 9"/><path d="m9 15 6-6"/></svg>
+                  Click a column header above to switch comparison scenario
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /wqr-row-2 -->
+
+      <!-- ──────────────────────────────────────────────────────────── -->
+      <!-- Row 3 — Instant Budget Questions                            -->
+      <!-- ──────────────────────────────────────────────────────────── -->
+      <div class="wqr-row" id="wqr-row-3" aria-expanded="false">
+        <button
+          class="wqr-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="wqr-body-3"
+          id="wqr-btn-3"
+        >
+          <span class="wqr-num" aria-hidden="true">03</span>
+          <span class="wqr-head">
+            <span class="wqr-title">Instant Budget Questions</span>
+            <span class="wqr-tagline">Ask in plain English. Get a ranked list with GL roots in under two seconds — no SQL, no analyst sprint, no waiting until Monday.</span>
+          </span>
+          <span class="wqr-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+
+        <div class="wqr-body" id="wqr-body-3" role="region" aria-labelledby="wqr-btn-3">
+          <div class="wqr-inner">
+
+            <!-- Copy -->
+            <div class="wqr-copy">
+              <p class="wqr-desc">A CFO's question during a board meeting shouldn't mean a three-day analyst request. Quaeris answers financial questions in natural language, against certified metrics, with results that include the specific GL accounts that drove each answer. Controllers can verify the math; boards get the answer in the room.</p>
+              <ul class="wqr-bullets">
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Natural language queries run against certified metrics — not raw tables, not pre-built reports.
+                </li>
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Every result includes the GL account root, so controllers can verify the number without a follow-up.
+                </li>
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Results export directly to the board-deck format — no reformatting, no copy-paste risk.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Proof: NL query → animated results -->
+            <div class="wqr-proof" aria-label="Budget question demo — illustrative">
+              <div class="wqr-proof-header">
+                <span class="wqr-proof-label">Budget Query · Q3 2026</span>
+                <span class="wqr-proof-pill ok">answered in 1.4s</span>
+              </div>
+              <div class="wqr-proof-body">
+                <!-- Query bar -->
+                <div class="wqr-nlq" role="search">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  <span class="wqr-nlq-text">Which depts exceeded budget by &gt;10%?</span>
+                  <span class="wqr-nlq-kbd" aria-label="Enter key to submit">↵</span>
+                </div>
+                <!-- Thinking state (hidden after results load) -->
+                <div class="wqr-thinking" id="wqr-thinking" aria-live="polite" aria-label="Processing query">
+                  Analyzing certified metrics<span class="wqr-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+                </div>
+                <!-- Results — staggered in via JS -->
+                <div class="wqr-results" id="wqr-results" aria-live="polite">
+                  <div class="wqr-result" data-delay="0">
+                    <span class="wqr-rdept">Sales — North America</span>
+                    <span class="wqr-rgl">GL 6100–6199</span>
+                    <span class="wqr-rover">+17.2%</span>
+                  </div>
+                  <div class="wqr-result" data-delay="110">
+                    <span class="wqr-rdept">R&amp;D — Engineering</span>
+                    <span class="wqr-rgl">GL 6300–6349</span>
+                    <span class="wqr-rover">+14.8%</span>
+                  </div>
+                  <div class="wqr-result" data-delay="220">
+                    <span class="wqr-rdept">Marketing — Digital</span>
+                    <span class="wqr-rgl">GL 6500–6529</span>
+                    <span class="wqr-rover">+11.3%</span>
+                  </div>
+                  <div class="wqr-result" data-delay="330">
+                    <span class="wqr-rdept">G&amp;A — Legal</span>
+                    <span class="wqr-rgl">GL 6700–6719</span>
+                    <span class="wqr-rover">+10.6%</span>
+                  </div>
+                </div>
+                <div class="wqr-query-foot" id="wqr-query-foot" style="display:none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  Certified metric · budget_variance v3.1 · role: Finance Executives
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /wqr-row-3 -->
+
+      <!-- ──────────────────────────────────────────────────────────── -->
+      <!-- Row 4 — EU AI Act & SOX Ready                               -->
+      <!-- ──────────────────────────────────────────────────────────── -->
+      <div class="wqr-row" id="wqr-row-4" aria-expanded="false">
+        <button
+          class="wqr-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="wqr-body-4"
+          id="wqr-btn-4"
+        >
+          <span class="wqr-num" aria-hidden="true">04</span>
+          <span class="wqr-head">
+            <span class="wqr-title">EU AI Act &amp; SOX Ready</span>
+            <span class="wqr-tagline">Full per-query audit trail, role-based access enforced at the semantic layer, and query-level lineage exportable for external auditors.</span>
+          </span>
+          <span class="wqr-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+
+        <div class="wqr-body" id="wqr-body-4" role="region" aria-labelledby="wqr-btn-4">
+          <div class="wqr-inner">
+
+            <!-- Copy -->
+            <div class="wqr-copy">
+              <p class="wqr-desc">When auditors ask where a number came from, "from the BI tool" is not an answer. Quaeris logs an immutable chain for every query — who asked, which role they had, which metric version was used, which GL accounts were touched, and when. EU AI Act Article 13 transparency requirements and SOX Section 302/404 controls are met out of the box.</p>
+              <ul class="wqr-bullets">
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Immutable per-query log: user, role, metric version, GL source, timestamp — exportable for external auditors on demand.
+                </li>
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  Role-based access enforced at the semantic layer — no governance workaround is possible because data never reaches unauthorized users.
+                </li>
+                <li class="wqr-bullet">
+                  <span class="wqr-bullet-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  EU AI Act Article 13 &amp; GDPR Article 22 transparency met natively — no custom compliance build required.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Proof: governance audit chain -->
+            <div class="wqr-proof" aria-label="Governance audit chain — illustrative">
+              <div class="wqr-proof-header">
+                <span class="wqr-proof-label">Audit Chain · Query #Q-20026</span>
+                <span class="wqr-proof-pill ok">immutable</span>
+              </div>
+              <div class="wqr-proof-body">
+                <div class="wqr-chain" aria-label="Audit trail steps" id="wqr-chain">
+
+                  <div class="wqr-chain-node" style="--nd: 80ms">
+                    <div class="wqr-chain-dot done" aria-label="Completed">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    </div>
+                    <div class="wqr-chain-text">
+                      <span class="wqr-chain-label">Query received</span>
+                      <span class="wqr-chain-sub">CFO · J. Wallace · 09:14:22 UTC</span>
+                    </div>
+                    <span class="wqr-chain-tag done">logged</span>
+                  </div>
+
+                  <div class="wqr-chain-node" style="--nd: 200ms">
+                    <div class="wqr-chain-dot done" aria-label="Completed">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    </div>
+                    <div class="wqr-chain-text">
+                      <span class="wqr-chain-label">Role &amp; access verified</span>
+                      <span class="wqr-chain-sub">Group: Finance Executives · GL 4000–6999</span>
+                    </div>
+                    <span class="wqr-chain-tag done">permitted</span>
+                  </div>
+
+                  <div class="wqr-chain-node" style="--nd: 320ms">
+                    <div class="wqr-chain-dot done" aria-label="Completed">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    </div>
+                    <div class="wqr-chain-text">
+                      <span class="wqr-chain-label">Metric version locked</span>
+                      <span class="wqr-chain-sub">revenue v4.2 · approved 2026-05-31</span>
+                    </div>
+                    <span class="wqr-chain-tag done">certified</span>
+                  </div>
+
+                  <div class="wqr-chain-node" style="--nd: 440ms" aria-current="step">
+                    <div class="wqr-chain-dot active" aria-label="In progress">
+                    </div>
+                    <div class="wqr-chain-text">
+                      <span class="wqr-chain-label">GL source resolved</span>
+                      <span class="wqr-chain-sub">GL 4000–4099 · NetSuite ledger</span>
+                    </div>
+                    <span class="wqr-chain-tag active">active</span>
+                  </div>
+
+                  <div class="wqr-chain-node" style="--nd: 560ms">
+                    <div class="wqr-chain-dot" aria-label="Pending">
+                    </div>
+                    <div class="wqr-chain-text">
+                      <span class="wqr-chain-label">Lineage record sealed</span>
+                      <span class="wqr-chain-sub">Immutable · exportable for SOX auditors</span>
+                    </div>
+                    <span class="wqr-chain-tag wait">pending</span>
+                  </div>
+
+                </div>
+
+                <!-- Compliance framework badges -->
+                <div class="wqr-comply" aria-label="Supported compliance frameworks">
+                  <span class="wqr-comply-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    SOX 302 / 404
+                  </span>
+                  <span class="wqr-comply-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    EU AI Act Art. 13
+                  </span>
+                  <span class="wqr-comply-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    GDPR Art. 22
+                  </span>
+                  <span class="wqr-comply-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    SOC 2 Type II
+                  </span>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /wqr-row-4 -->
+
+    </div><!-- /wqr-list -->
+
+  </div><!-- /container -->
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  var list = document.getElementById('wqr-list');
+  if (!list) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rows   = Array.from(list.querySelectorAll('.wqr-row'));
+  var btns   = Array.from(list.querySelectorAll('.wqr-trigger'));
+
+  // Gate JS-only states
+  list.classList.add('wqr', 'js');
+
+  // ── helpers ──────────────────────────────────────────────────
+  function isOpen(row) { return row.getAttribute('aria-expanded') === 'true'; }
+  function setOpen(row, btn, open) {
+    row.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  // ── animation hooks per row ──────────────────────────────────
+  var nlTimers = [];
+
+  function onOpen(row) {
+    var id = row.id;
+    if (id === 'wqr-row-3') startNLQ();
+    if (id === 'wqr-row-4') animateChain();
+  }
+
+  function onClose(row) {
+    var id = row.id;
+    if (id === 'wqr-row-3') resetNLQ();
+  }
+
+  function toggle(row, btn) {
+    var wasOpen = isOpen(row);
+    // Close all
+    rows.forEach(function (r, i) {
+      if (isOpen(r)) {
+        onClose(r);
+        setOpen(r, btns[i], false);
+      }
+    });
+    // Open clicked row if it was closed
+    if (!wasOpen) {
+      setOpen(row, btn, true);
+      onOpen(row);
+    }
+  }
+
+  // ── click + keyboard ─────────────────────────────────────────
+  btns.forEach(function (btn, i) {
+    btn.addEventListener('click', function () { toggle(rows[i], btn); });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); btns[Math.min(i + 1, btns.length - 1)].focus(); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); btns[Math.max(i - 1, 0)].focus(); }
+      if (e.key === 'Home')      { e.preventDefault(); btns[0].focus(); }
+      if (e.key === 'End')       { e.preventDefault(); btns[btns.length - 1].focus(); }
+    });
+  });
+
+  // ── Row 1 is open by default: trigger its animation on load ──
+  // Ledger rows stagger in via CSS transition-delay — no JS needed.
+
+  // ── Row 2: variance matrix column switching ──────────────────
+  var matrix = document.getElementById('wqr-matrix');
+  if (matrix) {
+    var mths = Array.from(matrix.querySelectorAll('thead th[data-col]'));
+    mths.forEach(function (th) {
+      th.addEventListener('click', function () {
+        var col = parseInt(th.dataset.col, 10);
+        // Header
+        mths.forEach(function (t) { t.classList.toggle('wqr-col-on', t === th); });
+        // Cells: each tbody row has 3 data cells (index 1,2,3 = col 1,2,3)
+        Array.from(matrix.querySelectorAll('tbody tr')).forEach(function (tr) {
+          var cells = Array.from(tr.querySelectorAll('td')).slice(1);
+          cells.forEach(function (td, ci) { td.classList.toggle('wqr-col-on', ci + 1 === col); });
+        });
+      });
+    });
+  }
+
+  // ── Row 3: NL query animation ────────────────────────────────
+  var thinking = document.getElementById('wqr-thinking');
+  var results  = document.getElementById('wqr-results');
+  var qfoot    = document.getElementById('wqr-query-foot');
+
+  function startNLQ() {
+    if (reduce) {
+      // Static: skip thinking, show all results
+      if (thinking) thinking.style.display = 'none';
+      if (results) Array.from(results.querySelectorAll('.wqr-result')).forEach(function (r) { r.classList.add('wqr-show'); });
+      if (qfoot)   qfoot.style.display = 'flex';
+      return;
+    }
+    if (thinking) thinking.style.display = 'flex';
+    if (qfoot)   qfoot.style.display = 'none';
+    if (results) Array.from(results.querySelectorAll('.wqr-result')).forEach(function (r) { r.classList.remove('wqr-show'); });
+
+    // After 900ms "thinking", reveal results one by one
+    nlTimers.push(setTimeout(function () {
+      if (thinking) thinking.style.display = 'none';
+      var resultEls = results ? Array.from(results.querySelectorAll('.wqr-result')) : [];
+      resultEls.forEach(function (r) {
+        var delay = parseInt(r.dataset.delay || 0, 10);
+        nlTimers.push(setTimeout(function () { r.classList.add('wqr-show'); }, delay));
+      });
+      // Show footer after last result
+      var last = resultEls.length ? parseInt(resultEls[resultEls.length - 1].dataset.delay || 0, 10) + 350 : 350;
+      nlTimers.push(setTimeout(function () { if (qfoot) qfoot.style.display = 'flex'; }, last));
+    }, 900));
+  }
+
+  function resetNLQ() {
+    nlTimers.forEach(clearTimeout);
+    nlTimers.length = 0;
+    if (thinking) thinking.style.display = 'flex';
+    if (qfoot) qfoot.style.display = 'none';
+    if (results) Array.from(results.querySelectorAll('.wqr-result')).forEach(function (r) { r.classList.remove('wqr-show'); });
+  }
+
+  // ── Row 4: audit chain node stagger ─────────────────────────
+  // Handled entirely by CSS transition-delay (--nd custom property).
+  // animateChain is a no-op: the JS class change on the row triggers the CSS.
+  function animateChain() {
+    // CSS handles it via .wqr.js .wqr-row[aria-expanded="true"] .wqr-chain-node
+    // Nothing extra needed.
+  }
+
+  // ── Intersection: animate row-1 ledger on scroll-into-view ──
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          // Row 1 is already open; CSS transition-delay on tbody tr handles stagger.
+          // We just ensure the row has the correct aria state (already set in HTML).
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+    io.observe(list);
+  }
+
+})();
+</script>
+
+</body>
+</html>

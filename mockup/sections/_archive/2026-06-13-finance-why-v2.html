@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP v2 — finance "Why Quaeris" (proof-ledger cards) — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+</style>
+
+<style>
+/* ============================================================
+   PORT: "Why Quaeris" v2 — Proof-Ledger Cards.
+
+   INTERACTION PARADIGM (distinct from capabilities tabs+dashboards):
+   - Masonry-style 2-column grid; left col cards are taller (more content).
+   - Each card has a collapsible "proof surface" — a styled GL ledger
+     preview that starts collapsed and expands on click/keypress.
+   - The active card gets a purple left-border accent; all others dim.
+   - No tabs, no auto-advance, no dark dashboards. Light surfaces,
+     table-like proof elements that feel like actual finance output.
+
+   GATING: .why2.js gates all JS-dependent animations.
+   Static fallback: all proofs fully visible (no hidden state).
+   prefers-reduced-motion: transitions killed globally (globals.css).
+   ============================================================ */
+
+/* ── Layout ── */
+.why2-section { background: var(--bg-warm); }
+
+.why2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .why2-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Card shell ── */
+.why2-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  cursor: pointer;
+  /* Left-border accent – starts transparent */
+  border-left-width: 3px;
+  border-left-color: transparent;
+  transition:
+    box-shadow var(--dur-base) var(--ease-out),
+    border-left-color var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+/* Active (expanded) card */
+.why2-card.open {
+  border-left-color: var(--brand-accent);
+  box-shadow: var(--shadow-card-hover);
+}
+/* Hover (not yet open) */
+.why2-card:not(.open):hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+.why2-card:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-lg);
+}
+
+/* Dim inactive cards when any card is open */
+.why2-grid.has-open .why2-card:not(.open) {
+  opacity: 0.5;
+  transform: none;
+}
+.why2-grid.has-open .why2-card:not(.open):hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+/* ── Card header (always visible) ── */
+.why2-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-6) var(--space-5);
+}
+.why2-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--dur-base) var(--ease-out);
+}
+.why2-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--brand-accent);
+  transition: color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.why2-card.open .why2-icon {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+}
+.why2-card.open .why2-icon svg { color: var(--text-on-dark); }
+
+.why2-htext { flex: 1; min-width: 0; }
+.why2-htext h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+.why2-htext p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Chevron toggle indicator */
+.why2-toggle {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  transition: border-color var(--dur-fast), color var(--dur-fast), transform var(--dur-base) var(--ease-out), background var(--dur-fast);
+  margin-top: 2px;
+}
+.why2-card.open .why2-toggle {
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  transform: rotate(180deg);
+}
+.why2-toggle svg { width: 14px; height: 14px; }
+
+/* ── Proof surface (collapsible) ── */
+.why2-proof {
+  overflow: hidden;
+  /* Static fallback: show proof fully visible */
+  max-height: 600px;
+  opacity: 1;
+  transition: max-height var(--dur-slow) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+}
+/* Peek line — a 1px separator before the proof area */
+.why2-proof-inner {
+  border-top: 1px solid var(--border-subtle);
+  padding: 0 var(--space-6) var(--space-6);
+  padding-top: var(--space-5);
+}
+
+/* JS-gated: start collapsed */
+.why2.js .why2-proof { max-height: 0; opacity: 0; }
+.why2.js .why2-card.open .why2-proof { max-height: 600px; opacity: 1; }
+
+/* Collapsed peek hint (JS only) */
+.why2-peek {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border-subtle);
+}
+.why2-peek svg { width: 13px; height: 13px; color: var(--brand-accent); }
+.why2.js .why2-peek { display: flex; }
+.why2.js .why2-card.open .why2-peek { display: none; }
+
+/* ── Ledger table (shared across cards) ── */
+.why2-ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-family: var(--font-body);
+  margin-top: var(--space-4);
+}
+.why2-ledger thead tr {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.why2-ledger th {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0 var(--space-3) var(--space-2) 0;
+  text-align: left;
+  white-space: nowrap;
+}
+.why2-ledger th:last-child { text-align: right; padding-right: 0; }
+.why2-ledger tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background var(--dur-fast);
+}
+.why2-ledger tbody tr:last-child { border-bottom: none; }
+.why2-ledger tbody tr:hover { background: var(--bg-canvas); }
+.why2-ledger td {
+  padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  color: var(--text-secondary);
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.why2-ledger td:first-child { color: var(--text-primary); font-weight: 500; }
+.why2-ledger td:last-child { text-align: right; padding-right: 0; font-variant-numeric: tabular-nums; }
+.why2-ledger .why2-gl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+  display: block;
+  margin-top: 1px;
+}
+.why2-ledger .why2-cert {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--success);
+}
+.why2-ledger .why2-cert svg { width: 10px; height: 10px; }
+
+/* Delta badges inside table */
+.why2-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+.why2-delta.pos { background: rgba(26,158,108,0.10); color: var(--success); }
+.why2-delta.neg { background: rgba(212,61,81,0.10); color: var(--error); }
+.why2-delta svg { width: 10px; height: 10px; }
+
+/* ── Card 1 — Certified Metrics: "version stamp" mini-table ── */
+.why2-version-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 12px;
+}
+.why2-version-row:last-child { border-bottom: none; }
+.why2-version-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.why2-version-name .why2-gl { font-size: 10px; font-weight: 500; color: var(--text-tertiary); margin-left: 4px; margin-top: 0; display: inline; }
+.why2-version-meta { display: flex; align-items: center; gap: var(--space-3); }
+.why2-tag {
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  padding: 2px 7px;
+  letter-spacing: 0.3px;
+}
+.why2-tag.certified { background: rgba(26,158,108,0.10); color: var(--success); }
+.why2-tag.v { background: var(--brand-accent-soft); color: var(--brand-accent); }
+
+/* ── Card 3 — NLQ query terminal ── */
+.why2-terminal {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: var(--space-4);
+}
+.why2-terminal-bar {
+  background: var(--border-subtle);
+  padding: 7px var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.why2-terminal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+.why2-terminal-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-left: auto;
+}
+.why2-terminal-q {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.why2-terminal-q svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; margin-top: 1px; }
+.why2-terminal-q span { font-size: 13px; font-weight: 500; color: var(--text-primary); line-height: 1.4; font-style: italic; }
+.why2-terminal-results { padding: var(--space-2) var(--space-4) var(--space-4); }
+.why2-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 12px;
+}
+.why2-result-row:last-child { border-bottom: none; }
+.why2-result-dept {
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 0;
+  flex: 1;
+}
+.why2-result-gl {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+/* Animate rows appearing */
+.why2.js .why2-terminal-results .why2-result-row {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--rd, 0ms);
+}
+.why2.js .why2-card.open .why2-terminal-results .why2-result-row {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Card 4 — Compliance: audit trail snippet ── */
+.why2-audit {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: var(--space-4);
+}
+.why2-audit-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+.why2-audit-header svg { width: 14px; height: 14px; color: var(--brand-accent); }
+.why2-audit-entry {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 11px;
+}
+.why2-audit-entry:last-child { border-bottom: none; }
+.why2-audit-ts { color: var(--text-tertiary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.why2-audit-action { color: var(--text-primary); font-weight: 500; line-height: 1.4; }
+.why2-audit-user {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--brand-accent);
+  white-space: nowrap;
+}
+.why2-audit-lineage {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-3);
+  background: rgba(147,51,234,0.06);
+  border: 1px solid var(--brand-accent-soft);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.why2-audit-lineage svg { width: 12px; height: 12px; color: var(--brand-accent); flex-shrink: 0; }
+.why2-audit-lineage b { color: var(--brand-accent); font-weight: 600; }
+
+/* Compliance badges row */
+.why2-comply-badges {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-4);
+}
+.why2-comply-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+}
+.why2-comply-badge svg { width: 11px; height: 11px; color: var(--success); }
+
+/* ── Proof footer note (illustrative data disclaimer) ── */
+.why2-note {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-4);
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+.why2-note svg { width: 11px; height: 11px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── Entrance animation (JS-gated) ──
+   Cards are VISIBLE by default (static fallback works with no JS).
+   JS adds opacity-0 + translateY BEFORE .in is added, so there's
+   always exactly one frame of invisible state before the transition.
+   We use a separate .entering class to do this safely. ── */
+.why2.js .why2-card.entering {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.why2.js .why2-card {
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    border-left-color var(--dur-base) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+
+/* ── Section stat strip above section header ── */
+.why2-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+  margin-bottom: var(--space-7);
+  padding-bottom: var(--space-7);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+.why2-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.why2-stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: var(--weight-display);
+  color: var(--brand-accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.why2-stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.3;
+  max-width: 18ch;
+}
+.why2-stats-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border-subtle);
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .why2-stats { gap: var(--space-5); }
+  .why2-stats-divider { display: none; }
+}
+
+/* ── Variance sparklines (Card 2) ── */
+.why2-variance-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.why2-vtab {
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  background: var(--bg-canvas);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all var(--dur-fast);
+  min-height: 28px;
+}
+.why2-vtab:hover { color: var(--text-primary); border-color: var(--border-strong); }
+.why2-vtab[aria-pressed="true"] {
+  background: var(--brand-accent);
+  color: var(--text-on-dark);
+  border-color: var(--brand-accent);
+}
+.why2-vtab:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+/* Variance bar rows */
+.why2-vbar-row {
+  display: grid;
+  grid-template-columns: 1fr 48px;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.why2-vbar-row:last-child { margin-bottom: 0; }
+.why2-vbar-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.why2-vbar-label .why2-gl { display: inline; margin-left: 4px; }
+.why2-vbar-track {
+  height: 6px;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+.why2-vbar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  width: var(--w, 0%);
+  transition: width var(--dur-slow) var(--ease-out), background var(--dur-base);
+}
+.why2-vbar-fill.over { background: linear-gradient(90deg, #9E1C2D, var(--error)); }
+.why2-vbar-fill.under { background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent)); }
+.why2-vbar-val {
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--text-primary);
+}
+/* JS: bar animation on open */
+.why2.js .why2-vbar-fill { width: 0 !important; }
+.why2.js .why2-card.open .why2-vbar-fill {
+  width: var(--w, 0%) !important;
+  transition-delay: var(--bd, 100ms);
+}
+
+/* Dimension context badge */
+.why2-dim-context {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.why2-dim-context svg { width: 12px; height: 12px; color: var(--brand-accent); flex-shrink: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .why2.js .why2-card,
+  .why2.js .why2-proof,
+  .why2.js .why2-vbar-fill,
+  .why2.js .why2-terminal-results .why2-result-row {
+    transition: none !important;
+    animation: none !important;
+  }
+  /* In reduced-motion, remove entering class immediately — no fade */
+  .why2.js .why2-card.entering { opacity: 1 !important; transform: none !important; }
+  .why2.js .why2-proof { max-height: 600px !important; opacity: 1 !important; }
+  .why2.js .why2-terminal-results .why2-result-row { opacity: 1 !important; transform: none !important; }
+  .why2.js .why2-vbar-fill { width: var(--w, 0%) !important; }
+}
+</style>
+</head>
+<body>
+
+<section id="why-quaeris" class="section-pad why2-section" aria-labelledby="why2-heading">
+  <div class="container">
+
+    <!-- Section header -->
+    <div class="section-header center reveal" style="margin-bottom: var(--space-8);">
+      <span class="eyebrow">Why Quaeris</span>
+      <h2 id="why2-heading" class="display-lg">Built for the way finance<br><span style="color:var(--brand-accent);">actually works.</span></h2>
+      <p class="subcopy body-lg" style="margin-top: var(--space-4);">Every feature maps directly to an audit, close-cycle, or board-prep pain. No generic BI wrapper — governed analytics from the ground up.</p>
+    </div>
+
+    <!-- ── Proof-ledger cards grid ── -->
+    <div class="why2-grid why2 reveal" role="list" aria-label="Quaeris feature proofs">
+
+      <!-- ── Card 1 — Certified Metrics Library ── -->
+      <article
+        class="why2-card"
+        role="listitem"
+        tabindex="0"
+        aria-expanded="false"
+        style="--d: 0ms"
+        aria-labelledby="why2-h1"
+      >
+        <div class="why2-header">
+          <span class="why2-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/>
+              <path d="M12 2v6h6"/>
+              <path d="M9 13h6"/><path d="M9 17h4"/>
+            </svg>
+          </span>
+          <div class="why2-htext">
+            <h3 id="why2-h1" class="heading-sm">Certified Metrics Library</h3>
+            <p>Revenue, COGS, SG&amp;A, EBT, tax provision, headcount — certified once by finance. No spreadsheet variants, no version drift.</p>
+          </div>
+          <span class="why2-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </div>
+
+        <!-- Peek hint (JS only) -->
+        <div class="why2-peek" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          See the certified metric registry
+        </div>
+
+        <!-- Proof surface -->
+        <div class="why2-proof" role="region" aria-label="Certified metric registry — illustrative">
+          <div class="why2-proof-inner">
+            <p style="font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-tertiary); margin-bottom:var(--space-4);">Metric registry — Finance-owned definitions</p>
+
+            <!-- Version-stamp rows -->
+            <div class="why2-version-row">
+              <span class="why2-version-name">
+                Revenue (Net)
+                <span class="why2-gl">GL 4000–4099</span>
+              </span>
+              <span class="why2-version-meta">
+                <span class="why2-tag v">v4.2</span>
+                <span class="why2-tag certified">Certified</span>
+              </span>
+            </div>
+            <div class="why2-version-row">
+              <span class="why2-version-name">
+                Cost of Goods Sold
+                <span class="why2-gl">GL 5000–5099</span>
+              </span>
+              <span class="why2-version-meta">
+                <span class="why2-tag v">v3.0</span>
+                <span class="why2-tag certified">Certified</span>
+              </span>
+            </div>
+            <div class="why2-version-row">
+              <span class="why2-version-name">
+                SG&amp;A
+                <span class="why2-gl">GL 6000–6799</span>
+              </span>
+              <span class="why2-version-meta">
+                <span class="why2-tag v">v2.1</span>
+                <span class="why2-tag certified">Certified</span>
+              </span>
+            </div>
+            <div class="why2-version-row">
+              <span class="why2-version-name">
+                Earnings Before Tax
+                <span class="why2-gl">Derived: 4000–5099–6000–6799</span>
+              </span>
+              <span class="why2-version-meta">
+                <span class="why2-tag v">v1.8</span>
+                <span class="why2-tag certified">Certified</span>
+              </span>
+            </div>
+            <div class="why2-version-row">
+              <span class="why2-version-name">
+                Tax Provision (Current + Deferred)
+                <span class="why2-gl">GL 8000–8099</span>
+              </span>
+              <span class="why2-version-meta">
+                <span class="why2-tag v">v2.4</span>
+                <span class="why2-tag certified">Certified</span>
+              </span>
+            </div>
+            <div class="why2-version-row">
+              <span class="why2-version-name">
+                Headcount (FTE + Contractors)
+                <span class="why2-gl">HR system · cost center mapped</span>
+              </span>
+              <span class="why2-version-meta">
+                <span class="why2-tag v">v1.5</span>
+                <span class="why2-tag certified">Certified</span>
+              </span>
+            </div>
+
+            <div class="why2-note" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              Illustrative registry structure. Actual GL ranges and version numbers reflect your chart of accounts at deployment.
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── Card 2 — Multi-Dimensional Variance ── -->
+      <article
+        class="why2-card"
+        role="listitem"
+        tabindex="0"
+        aria-expanded="false"
+        style="--d: 80ms"
+        aria-labelledby="why2-h2"
+      >
+        <div class="why2-header">
+          <span class="why2-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v16a2 2 0 0 0 2 2h16"/>
+              <path d="M7 16V9"/><path d="M11 16V5"/><path d="M15 16v-3"/><path d="M19 16V7"/>
+            </svg>
+          </span>
+          <div class="why2-htext">
+            <h3 id="why2-h2" class="heading-sm">Multi-Dimensional Variance</h3>
+            <p>Compare actual vs budget vs forecast vs prior year — by GL account, cost center, region, or any custom hierarchy. No SQL required.</p>
+          </div>
+          <span class="why2-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </div>
+
+        <div class="why2-peek" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          See Q3 OPEX variance breakdown
+        </div>
+
+        <div class="why2-proof" role="region" aria-label="Variance breakdown — illustrative">
+          <div class="why2-proof-inner">
+            <p style="font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-tertiary); margin-bottom:var(--space-2);">Q3 OPEX — Actual vs Budget</p>
+
+            <div class="why2-variance-tabs" role="group" aria-label="Compare actual against">
+              <button class="why2-vtab" type="button" aria-pressed="true" data-set="budget">vs Budget</button>
+              <button class="why2-vtab" type="button" aria-pressed="false" data-set="forecast">vs Forecast</button>
+              <button class="why2-vtab" type="button" aria-pressed="false" data-set="prioryear">vs Prior Year</button>
+            </div>
+
+            <!-- Bar rows — data-* drives both label and bar width per dimension set -->
+            <div class="why2-vbar-rows">
+              <div class="why2-vbar-row">
+                <div>
+                  <div class="why2-vbar-label">
+                    <span>Commission expense <span class="why2-gl">GL 6210</span></span>
+                  </div>
+                  <div class="why2-vbar-track">
+                    <div class="why2-vbar-fill over" style="--w: 82%" data-budget="82%" data-forecast="44%" data-prioryear="95%"></div>
+                  </div>
+                </div>
+                <span class="why2-vbar-val" data-budget="+5.1%" data-forecast="+2.8%" data-prioryear="+6.4%">+5.1%</span>
+              </div>
+
+              <div class="why2-vbar-row">
+                <div>
+                  <div class="why2-vbar-label">
+                    <span>Cloud infrastructure <span class="why2-gl">GL 6480</span></span>
+                  </div>
+                  <div class="why2-vbar-track">
+                    <div class="why2-vbar-fill over" style="--w: 37%" data-budget="37%" data-forecast="20%" data-prioryear="58%"></div>
+                  </div>
+                </div>
+                <span class="why2-vbar-val" data-budget="+2.3%" data-forecast="+1.2%" data-prioryear="+3.6%">+2.3%</span>
+              </div>
+
+              <div class="why2-vbar-row">
+                <div>
+                  <div class="why2-vbar-label">
+                    <span>SaaS licenses <span class="why2-gl">GL 6700</span></span>
+                  </div>
+                  <div class="why2-vbar-track">
+                    <div class="why2-vbar-fill over" style="--w: 22%" data-budget="22%" data-forecast="10%" data-prioryear="34%"></div>
+                  </div>
+                </div>
+                <span class="why2-vbar-val" data-budget="+1.4%" data-forecast="+0.6%" data-prioryear="+2.1%">+1.4%</span>
+              </div>
+
+              <div class="why2-vbar-row">
+                <div>
+                  <div class="why2-vbar-label">
+                    <span>Travel &amp; entertainment <span class="why2-gl">GL 6300</span></span>
+                  </div>
+                  <div class="why2-vbar-track">
+                    <div class="why2-vbar-fill under" style="--w: 48%" data-budget="48%" data-forecast="60%" data-prioryear="28%"></div>
+                  </div>
+                </div>
+                <span class="why2-vbar-val" data-budget="–3.0%" data-forecast="–3.8%" data-prioryear="+1.7%">–3.0%</span>
+              </div>
+            </div>
+
+            <div class="why2-dim-context">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              Drillable by cost center, region, entity, or custom hierarchy — same query surface.
+            </div>
+
+            <div class="why2-note" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              Illustrative GL accounts and variance percentages. Actual figures reflect your ERP and budget data.
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── Card 3 — Instant Budget Questions ── -->
+      <article
+        class="why2-card"
+        role="listitem"
+        tabindex="0"
+        aria-expanded="false"
+        style="--d: 160ms"
+        aria-labelledby="why2-h3"
+      >
+        <div class="why2-header">
+          <span class="why2-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+              <path d="M11 8v3"/><path d="M8 11h6"/>
+            </svg>
+          </span>
+          <div class="why2-htext">
+            <h3 id="why2-h3" class="heading-sm">Instant Budget Questions</h3>
+            <p>Ask in plain English. Get an instant ranked list with GL roots — no SQL, no pivot table, no three-day analyst sprint.</p>
+          </div>
+          <span class="why2-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </div>
+
+        <div class="why2-peek" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          See a live query result
+        </div>
+
+        <div class="why2-proof" role="region" aria-label="Natural-language query result — illustrative">
+          <div class="why2-proof-inner">
+            <!-- Terminal frame -->
+            <div class="why2-terminal" aria-label="Query terminal illustration">
+              <div class="why2-terminal-bar" aria-hidden="true">
+                <span class="why2-terminal-dot"></span>
+                <span class="why2-terminal-dot"></span>
+                <span class="why2-terminal-dot"></span>
+                <span class="why2-terminal-label">Quaeris · Finance Q&amp;A</span>
+              </div>
+              <div class="why2-terminal-q">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <span>"Which departments exceeded budget by more than 10% in Q3?"</span>
+              </div>
+              <div class="why2-terminal-results" role="list" aria-label="Query results">
+                <div class="why2-result-row" style="--rd: 250ms" role="listitem">
+                  <span class="why2-result-dept">Sales — North America</span>
+                  <span class="why2-result-gl">GL 6100–6199</span>
+                  <span class="why2-delta neg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                    +17.2%
+                  </span>
+                </div>
+                <div class="why2-result-row" style="--rd: 380ms" role="listitem">
+                  <span class="why2-result-dept">R&amp;D — Engineering</span>
+                  <span class="why2-result-gl">GL 6300–6349</span>
+                  <span class="why2-delta neg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                    +14.8%
+                  </span>
+                </div>
+                <div class="why2-result-row" style="--rd: 510ms" role="listitem">
+                  <span class="why2-result-dept">Marketing — Digital</span>
+                  <span class="why2-result-gl">GL 6500–6529</span>
+                  <span class="why2-delta neg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                    +11.3%
+                  </span>
+                </div>
+                <div class="why2-result-row" style="--rd: 640ms" role="listitem">
+                  <span class="why2-result-dept">G&amp;A — Legal</span>
+                  <span class="why2-result-gl">GL 6700–6719</span>
+                  <span class="why2-delta neg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                    +10.6%
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="why2-note" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              Illustrative result set. Department names, GL ranges, and variance figures reflect your chart of accounts.
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── Card 4 — EU AI Act & SOX Ready ── -->
+      <article
+        class="why2-card"
+        role="listitem"
+        tabindex="0"
+        aria-expanded="false"
+        style="--d: 240ms"
+        aria-labelledby="why2-h4"
+      >
+        <div class="why2-header">
+          <span class="why2-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </span>
+          <div class="why2-htext">
+            <h3 id="why2-h4" class="heading-sm">EU AI Act &amp; SOX Ready</h3>
+            <p>Full per-query audit trail. Role-based access enforced at query time. Query-level lineage for every financial output — export-ready for your external auditors.</p>
+          </div>
+          <span class="why2-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </div>
+
+        <div class="why2-peek" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          See the audit trail log
+        </div>
+
+        <div class="why2-proof" role="region" aria-label="Audit trail log — illustrative">
+          <div class="why2-proof-inner">
+
+            <!-- Audit trail log -->
+            <div class="why2-audit" aria-label="Sample audit trail">
+              <div class="why2-audit-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                Audit Trail — Last 24 h
+              </div>
+              <div class="why2-audit-entry">
+                <span class="why2-audit-ts">09:14:02</span>
+                <span class="why2-audit-action">Query: EBT Q3 actual by region<br><span style="font-size:10px;color:var(--text-tertiary);">Metric: ebt_actuals_v1.8 · read-only</span></span>
+                <span class="why2-audit-user">j.chen@co</span>
+              </div>
+              <div class="why2-audit-entry">
+                <span class="why2-audit-ts">11:02:47</span>
+                <span class="why2-audit-action">Export: Q3 variance report (xlsx)<br><span style="font-size:10px;color:var(--text-tertiary);">8 metrics · SOX control ref: FIN-44</span></span>
+                <span class="why2-audit-user">m.okonkwo@co</span>
+              </div>
+              <div class="why2-audit-entry">
+                <span class="why2-audit-ts">14:38:19</span>
+                <span class="why2-audit-action">Access blocked: GL 8000 (Tax prov.)<br><span style="font-size:10px;color:var(--error);">Role: FP&amp;A Analyst — no tax access</span></span>
+                <span class="why2-audit-user">t.park@co</span>
+              </div>
+            </div>
+
+            <!-- Lineage trail -->
+            <div class="why2-audit-lineage">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 11 12 6l5 5"/></svg>
+              Lineage: query → <b>ebt_actuals_v1.8</b> → GL 4000–4099, 5000–5099, 6000–6799 → NetSuite ledger
+            </div>
+
+            <!-- Compliance frameworks -->
+            <div class="why2-comply-badges">
+              <span class="why2-comply-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                SOX Section 302/404
+              </span>
+              <span class="why2-comply-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                EU AI Act Art. 13
+              </span>
+              <span class="why2-comply-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                GDPR Art. 22
+              </span>
+              <span class="why2-comply-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                SOC 2 Type II
+              </span>
+            </div>
+
+            <div class="why2-note" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              Illustrative audit log. SOX control references and user names reflect your access policy and org structure at deployment.
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div><!-- /.why2-grid -->
+  </div><!-- /.container -->
+</section>
+
+<script>
+(function () {
+  'use strict';
+  const grid = document.querySelector('.why2-grid');
+  if (!grid) return;
+
+  // Gate JS-dependent styles
+  grid.classList.add('why2', 'js');
+  var cards = Array.from(grid.querySelectorAll('.why2-card'));
+
+  // ── Entrance: staggered reveal on scroll into view ──
+  // Add .entering FIRST (opacity 0) before the element is in view.
+  // When IO fires, remove .entering one by one to trigger the transition.
+  function prepEntrance() {
+    cards.forEach(function(c) { c.classList.add('entering'); });
+  }
+  function revealIn() {
+    cards.forEach(function(c, i) {
+      setTimeout(function() { c.classList.remove('entering'); }, i * 80);
+    });
+  }
+  // Prep immediately (synchronous, before first paint of cards)
+  prepEntrance();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { revealIn(); io.disconnect(); }
+      });
+    }, { threshold: 0.15 });
+    io.observe(grid);
+  } else {
+    revealIn();
+  }
+
+  // ── Card toggle: click/Enter/Space ──
+  function openCard(targetCard) {
+    var isOpen = targetCard.classList.contains('open');
+    // Close all
+    cards.forEach(function (c) {
+      c.classList.remove('open');
+      c.setAttribute('aria-expanded', 'false');
+    });
+    grid.classList.remove('has-open');
+
+    if (!isOpen) {
+      targetCard.classList.add('open');
+      targetCard.setAttribute('aria-expanded', 'true');
+      grid.classList.add('has-open');
+    }
+  }
+
+  cards.forEach(function (c) {
+    c.addEventListener('click', function () { openCard(c); });
+    c.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openCard(c);
+      }
+    });
+  });
+
+  // ── Card 2 — Variance dimension toggle ──
+  var vtabs = Array.from(grid.querySelectorAll('.why2-vtab'));
+  var vbarFills = Array.from(grid.querySelectorAll('.why2-vbar-fill'));
+  var vbarVals  = Array.from(grid.querySelectorAll('.why2-vbar-val'));
+
+  vtabs.forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation(); // don't toggle card
+      var set = btn.dataset.set;
+      vtabs.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+      vbarFills.forEach(function (fill) {
+        var w = fill.dataset[set];
+        if (w) { fill.style.setProperty('--w', w); fill.style.width = w; }
+        // Colour: treat negative values (under) as under-spend
+        var val = vbarVals[vbarFills.indexOf(fill)];
+        if (val && val.dataset[set]) {
+          var v = val.dataset[set];
+          val.textContent = v;
+          fill.classList.toggle('over', !v.startsWith('–') && !v.startsWith('-') && parseFloat(v) > 0);
+          fill.classList.toggle('under', v.startsWith('–') || v.startsWith('-') || parseFloat(v) <= 0);
+        }
+      });
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

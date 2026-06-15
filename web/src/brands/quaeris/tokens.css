@@ -43,4 +43,21 @@
   /* Typography */
   --font-display: var(--font-roboto), Arial, sans-serif;
   --font-body:    var(--font-inter), system-ui, -apple-system, sans-serif;
+
+  /* On-dark semantic delta tints (lighter than --success/--error; safe on purple gradient) */
+  --success-on-dark: #6EE7B7;
+  --error-on-dark:   #FCA5A5;
+
+  /* Code-block syntax tints (scoped to dark ink surface; not brand colors) */
+  --code-base:    #E2D4F0;   /* default text on dark code surface */
+  --code-tok-kw:  #C084FC;   /* keyword */
+  --code-tok-fn:  #7DD3FC;   /* function / identifier */
+  --code-tok-str: #86EFAC;   /* string */
+  --code-tok-cm:  #6B7280;   /* comment (muted) */
+  --code-tok-nu:  #FCA5A5;   /* number */
+
+  /* macOS window chrome dots (decorative; not brand palette) */
+  --win-dot-red:   #FF5F57;
+  --win-dot-amber: #FEBC2E;
+  --win-dot-green: #28C840;
 }
