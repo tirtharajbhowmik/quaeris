@@ -40,7 +40,8 @@
 .cap-visual { position: relative; overflow: hidden; background: linear-gradient(155deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%); border-radius: var(--radius-lg); padding: var(--space-6); color: var(--text-on-dark); box-shadow: 0 24px 60px -20px var(--brand-accent-glow); min-height: 300px; display: flex; flex-direction: column; gap: var(--space-5); }
 .cap-viz-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .cap-viz-title { font-size: 15px; font-weight: 700; color: var(--text-on-dark); }
-.cap-viz-metric b { font-size: 22px; font-weight: 700; color: var(--text-on-dark); font-variant-numeric: tabular-nums; }
+.cap-viz-metric { text-align: right; flex-shrink: 0; }
+.cap-viz-metric b { font-size: 22px; font-weight: 700; color: var(--text-on-dark); font-variant-numeric: tabular-nums; display: inline-block; max-width: 7.5em; line-height: 1.12; text-wrap: balance; }
 .cap-viz-chip { font-size: 11px; font-weight: 600; color: var(--text-on-dark); background: rgba(255,255,255,0.16); border-radius: var(--radius-pill); padding: 3px 10px; display: inline-flex; align-items: center; gap: 4px; }
 .cap-viz-chip svg { width: 12px; height: 12px; }
 .caps.js .cap-panel.play .cap-viz-chip { animation: cap-breathe 3s var(--ease-out) infinite 1.4s; }
