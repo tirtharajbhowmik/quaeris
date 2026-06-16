@@ -14,6 +14,7 @@ export const MOCKUP_ROUTES: string[] = [
   "home-redesign",
   "home-redesign-v2",
   "solutions-variations",
+  "capabilities-rollout",
   "about",
   "blog",
   "blog/sample-post",
@@ -48,6 +49,8 @@ export function fileForRoute(route: string): string | null {
     return "mockup/pages/2026-06-16-homepage-redesign-v2.html";
   if (route === "solutions-variations")
     return "mockup/pages/2026-06-16-solutions-variations.html";
+  if (route === "capabilities-rollout")
+    return "mockup/sections/2026-06-16-capabilities-rollout.html";
   if (route === "solutions/finance")
     return "mockup/sections/2026-06-13-solutions-finance-v3.html";
   if (route === "blog/sample-post")
