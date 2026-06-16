@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quaeris — Mockup Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../web/src/app/globals.css" />
+<style>
+  :root { --font-roboto:"Roboto"; --font-inter:"Inter"; }
+  body { background: var(--bg-canvas, #FAF8FF); font-family: var(--font-inter), system-ui, sans-serif; color: var(--text-primary, #200123); margin: 0; }
+  .g-wrap { max-width: 1120px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) 24px 96px; }
+  .g-head h1 { font-family: var(--font-roboto), sans-serif; font-size: clamp(30px, 4vw, 46px); font-weight: 800; letter-spacing: -.02em; margin: 0 0 .4rem; }
+  .g-head h1 .a { color: var(--brand-accent, #9333EA); }
+  .g-head p { color: var(--text-secondary, #6B4D72); font-size: 15px; line-height: 1.6; margin: 0 0 .5rem; max-width: 60ch; }
+  .g-meta { display:flex; flex-wrap:wrap; gap:.5rem; margin-top: .6rem; font-size:12px; }
+  .g-meta code { background: color-mix(in srgb, var(--brand-accent) 8%, #fff); border:1px solid color-mix(in srgb, var(--brand-accent) 18%, #e7e2ee); border-radius:6px; padding:.2rem .5rem; color: var(--text-primary,#200123); }
+  .g-group { margin-top: clamp(36px, 5vw, 56px); }
+  .g-group-head { display:flex; align-items:baseline; gap:.6rem; border-bottom:1px solid color-mix(in srgb, var(--brand-accent) 16%, #e7e2ee); padding-bottom:.5rem; }
+  .g-group-head h2 { font-family: var(--font-roboto), sans-serif; font-size: 20px; font-weight: 700; margin: 0; }
+  .g-count { font-size:12px; font-weight:700; color: var(--brand-accent, #9333EA); background: color-mix(in srgb, var(--brand-accent) 10%, #fff); border-radius: 100px; padding: .15rem .6rem; }
+  .g-sub { color: var(--text-secondary,#6B4D72); font-size:13px; margin:.6rem 0 0; }
+  .g-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 14px; margin-top: 18px; }
+  .g-card { background:#fff; border:1px solid color-mix(in srgb, var(--brand-accent) 12%, #e7e2ee); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:8px; transition: border-color .15s, box-shadow .15s, transform .15s; }
+  .g-card:hover { border-color: color-mix(in srgb, var(--brand-accent) 40%, transparent); box-shadow: 0 14px 36px -24px color-mix(in srgb, var(--brand-accent-deep, #581C87) 70%, transparent); transform: translateY(-2px); }
+  .g-card-top { display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
+  .g-card h3 { font-size: 14.5px; font-weight: 700; margin:0; text-transform: capitalize; }
+  .g-route { font-size:10.5px; font-weight:700; color: var(--brand-accent,#9333EA); background: color-mix(in srgb, var(--brand-accent) 8%, #fff); border:1px solid color-mix(in srgb, var(--brand-accent) 18%, transparent); border-radius:6px; padding:.12rem .45rem; white-space:nowrap; }
+  .g-route.g-muted { color: var(--text-tertiary,#9CA3AF); background:#f6f4f8; border-color:#eee; }
+  .g-file { font-family: ui-monospace, Menlo, monospace; font-size:11px; color: var(--text-tertiary,#9CA3AF); word-break: break-all; }
+  .g-actions { display:flex; gap:8px; margin-top:auto; padding-top:6px; }
+  .g-btn { font-size:12.5px; font-weight:600; text-decoration:none; padding:.4rem .75rem; border-radius:8px; border:1px solid color-mix(in srgb, var(--brand-accent) 22%, #e7e2ee); color: var(--brand-accent,#9333EA); background:#fff; transition: background .15s; }
+  .g-btn:hover { background: color-mix(in srgb, var(--brand-accent) 8%, #fff); }
+  .g-btn-primary { background: var(--brand-accent,#9333EA); color:#fff; border-color: transparent; }
+  .g-btn-primary:hover { background: var(--brand-accent-hover, #7E22CE); }
+</style>
+</head>
+<body>
+<div class="g-wrap">
+  <div class="g-head">
+    <h1>Quaeris <span class="a">Mockup Gallery</span></h1>
+    <p>Every mockup in the project — 55 files. <strong>In‑app</strong> opens the live route (best experience, needs <code>:3101</code>). <strong>Standalone</strong> opens the raw mockup file (needs the static server on <code>:3200</code>, where this page is served).</p>
+    <div class="g-meta"><code>npm run dev:quaeris → :3101</code><code>npx serve -l 3200 . → :3200</code></div>
+  </div>
+  <section class="g-group">
+    <div class="g-group-head"><h2>Live site pages</h2><span class="g-count">22</span></div>
+    <p class="g-sub">The core site, served through the Next.js catch-all.</p>
+    <div class="g-grid"><article class="g-card">
+      <div class="g-card-top"><h3>about</h3><span class="g-route">/about</span></div>
+      <div class="g-file">pages/2026-06-14-about.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/about" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-about.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>blog article</h3><span class="g-route">/blog/sample-post</span></div>
+      <div class="g-file">pages/2026-06-14-blog-article.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/blog/sample-post" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-blog-article.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>blog</h3><span class="g-route">/blog</span></div>
+      <div class="g-file">pages/2026-06-14-blog.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/blog" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-blog.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>case studies</h3><span class="g-route">/case-studies</span></div>
+      <div class="g-file">pages/2026-06-14-case-studies.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/case-studies" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-case-studies.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>customers</h3><span class="g-route">/customers</span></div>
+      <div class="g-file">pages/2026-06-14-customers.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/customers" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-customers.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>docs</h3><span class="g-route">/docs</span></div>
+      <div class="g-file">pages/2026-06-14-docs.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/docs" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-docs.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform access control</h3><span class="g-route">/platform/access-control</span></div>
+      <div class="g-file">pages/2026-06-14-platform-access-control.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/platform/access-control" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-platform-access-control.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform agents</h3><span class="g-route">/platform/agents</span></div>
+      <div class="g-file">pages/2026-06-14-platform-agents.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/platform/agents" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-platform-agents.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform audit</h3><span class="g-route">/platform/audit</span></div>
+      <div class="g-file">pages/2026-06-14-platform-audit.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/platform/audit" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-platform-audit.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform governance</h3><span class="g-route">/platform/governance</span></div>
+      <div class="g-file">pages/2026-06-14-platform-governance.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/platform/governance" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-platform-governance.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform semantic layer</h3><span class="g-route">/platform/semantic-layer</span></div>
+      <div class="g-file">pages/2026-06-14-platform-semantic-layer.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/platform/semantic-layer" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-platform-semantic-layer.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform warehouse</h3><span class="g-route">/platform/warehouse</span></div>
+      <div class="g-file">pages/2026-06-14-platform-warehouse.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/platform/warehouse" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-platform-warehouse.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform</h3><span class="g-route">/platform</span></div>
+      <div class="g-file">pages/2026-06-14-platform.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/platform" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-platform.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>pricing</h3><span class="g-route">/pricing</span></div>
+      <div class="g-file">pages/2026-06-14-pricing.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/pricing" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-pricing.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>resources webinars</h3><span class="g-route">/resources/webinars</span></div>
+      <div class="g-file">pages/2026-06-14-resources-webinars.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/resources/webinars" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-resources-webinars.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>resources</h3><span class="g-route">/resources</span></div>
+      <div class="g-file">pages/2026-06-14-resources.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/resources" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-resources.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions analysts</h3><span class="g-route">/solutions/analysts</span></div>
+      <div class="g-file">pages/2026-06-14-solutions-analysts.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/solutions/analysts" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-solutions-analysts.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions data teams</h3><span class="g-route">/solutions/data-teams</span></div>
+      <div class="g-file">pages/2026-06-14-solutions-data-teams.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/solutions/data-teams" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-solutions-data-teams.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions executives</h3><span class="g-route">/solutions/executives</span></div>
+      <div class="g-file">pages/2026-06-14-solutions-executives.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/solutions/executives" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-solutions-executives.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions product</h3><span class="g-route">/solutions/product</span></div>
+      <div class="g-file">pages/2026-06-14-solutions-product.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/solutions/product" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-solutions-product.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions revenue ops</h3><span class="g-route">/solutions/revenue-ops</span></div>
+      <div class="g-file">pages/2026-06-14-solutions-revenue-ops.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/solutions/revenue-ops" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-solutions-revenue-ops.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions</h3><span class="g-route">/solutions</span></div>
+      <div class="g-file">pages/2026-06-14-solutions.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/solutions" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-14-solutions.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article></div>
+  </section>
+  <section class="g-group">
+    <div class="g-group-head"><h2>Homepage redesign explorations</h2><span class="g-count">3</span></div>
+    <p class="g-sub">2026-06-16 — competitor-informed homepage + Solutions variations.</p>
+    <div class="g-grid"><article class="g-card">
+      <div class="g-card-top"><h3>homepage redesign v2</h3><span class="g-route">/home-redesign-v2</span></div>
+      <div class="g-file">pages/2026-06-16-homepage-redesign-v2.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/home-redesign-v2" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-16-homepage-redesign-v2.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>homepage redesign</h3><span class="g-route">/home-redesign</span></div>
+      <div class="g-file">pages/2026-06-16-homepage-redesign.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/home-redesign" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-16-homepage-redesign.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions variations</h3><span class="g-route">/solutions-variations</span></div>
+      <div class="g-file">pages/2026-06-16-solutions-variations.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/solutions-variations" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="pages/2026-06-16-solutions-variations.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article></div>
+  </section>
+  <section class="g-group">
+    <div class="g-group-head"><h2>Finance gold-standard lineage & modern sections</h2><span class="g-count">8</span></div>
+    <p class="g-sub">The flagship /solutions/finance page and the blocks it was built from.</p>
+    <div class="g-grid"><article class="g-card">
+      <div class="g-card-top"><h3>finance capabilities interactive</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-13-finance-capabilities-interactive.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-13-finance-capabilities-interactive.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>finance hero combined</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-13-finance-hero-combined.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-13-finance-hero-combined.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>finance stats v2</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-13-finance-stats-v2.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-13-finance-stats-v2.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>finance stats v4</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-13-finance-stats-v4.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-13-finance-stats-v4.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>finance why v5</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-13-finance-why-v5.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-13-finance-why-v5.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions finance v2</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-13-solutions-finance-v2.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-13-solutions-finance-v2.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions finance v3</h3><span class="g-route">/solutions/finance</span></div>
+      <div class="g-file">sections/2026-06-13-solutions-finance-v3.html</div>
+      <div class="g-actions"><a class="g-btn g-btn-primary" href="http://localhost:3101/solutions/finance" target="_blank" rel="noopener">In‑app ↗</a><a class="g-btn" href="sections/2026-06-13-solutions-finance-v3.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>finance stats v3</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-14-finance-stats-v3.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-14-finance-stats-v3.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article></div>
+  </section>
+  <section class="g-group">
+    <div class="g-group-head"><h2>First-pass section drafts (2026-06-12, superseded)</h2><span class="g-count">18</span></div>
+    <p class="g-sub">Early per-page drafts, since rebuilt into the live pages. Design history.</p>
+    <div class="g-grid"><article class="g-card">
+      <div class="g-card-top"><h3>about</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-about.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-about.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>case studies</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-case-studies.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-case-studies.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>customers</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-customers.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-customers.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform access control</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-platform-access-control.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-platform-access-control.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform agents</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-platform-agents.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-platform-agents.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform audit</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-platform-audit.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-platform-audit.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform governance</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-platform-governance.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-platform-governance.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform semantic layer</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-platform-semantic-layer.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-platform-semantic-layer.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform warehouse</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-platform-warehouse.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-platform-warehouse.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>platform</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-platform.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-platform.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>pricing</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-pricing.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-pricing.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions analysts</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-solutions-analysts.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-solutions-analysts.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions data teams</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-solutions-data-teams.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-solutions-data-teams.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions executives</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-solutions-executives.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-solutions-executives.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions finance</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-solutions-finance.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-solutions-finance.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions product</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-solutions-product.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-solutions-product.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions revenue ops</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-solutions-revenue-ops.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-solutions-revenue-ops.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>solutions</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/2026-06-12-solutions.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/2026-06-12-solutions.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article></div>
+  </section>
+  <section class="g-group">
+    <div class="g-group-head"><h2>Archived iterations</h2><span class="g-count">4</span></div>
+    <p class="g-sub">Design-tournament rejects, kept for reference.</p>
+    <div class="g-grid"><article class="g-card">
+      <div class="g-card-top"><h3>finance why interactive</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/_archive/2026-06-13-finance-why-interactive.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/_archive/2026-06-13-finance-why-interactive.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>finance why v2</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/_archive/2026-06-13-finance-why-v2.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/_archive/2026-06-13-finance-why-v2.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>finance why v3</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/_archive/2026-06-13-finance-why-v3.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/_archive/2026-06-13-finance-why-v3.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article><article class="g-card">
+      <div class="g-card-top"><h3>finance why v4</h3><span class="g-route g-muted">standalone only</span></div>
+      <div class="g-file">sections/_archive/2026-06-13-finance-why-v4.html</div>
+      <div class="g-actions"><a class="g-btn" href="sections/_archive/2026-06-13-finance-why-v4.html" target="_blank" rel="noopener">Standalone ↗</a></div>
+    </article></div>
+  </section>
+</div>
+</body>
+</html>
