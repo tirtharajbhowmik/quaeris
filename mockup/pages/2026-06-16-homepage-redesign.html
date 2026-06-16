@@ -3818,6 +3818,63 @@
   width: fit-content;
 }
 
+/* === Graphics-forward card visuals (replace the prose with a small proof viz) === */
+.sbf-viz { margin: .15rem 0 .1rem; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--brand-accent) 12%, #ece7f2); background: color-mix(in srgb, var(--brand-accent) 3%, #fbfafd); padding: .8rem .85rem; }
+.sbf-cap { font-size: 12.5px; line-height: 1.45; color: var(--text-secondary, #5a4f6a); margin: .1rem 0 0; }
+.sbf-cap b { color: var(--text-primary, #1a1320); font-weight: 700; }
+
+/* 1 · Finance — certified board slide */
+.sbf-slide { position: relative; border-radius: 10px; background: #fff; border: 1px solid color-mix(in srgb, var(--brand-accent) 14%, #e7e2ee); padding: .7rem .8rem .65rem; box-shadow: 0 6px 18px -13px color-mix(in srgb, var(--brand-accent) 45%, transparent); overflow: hidden; }
+.sbf-slide-label { font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-secondary, #5a4f6a); }
+.sbf-slide-val { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; color: var(--text-primary, #1a1320); display: flex; align-items: baseline; gap: .45rem; margin-top: .05rem; }
+.sbf-slide-delta { font-size: 11px; font-weight: 800; color: #15803d; }
+.sbf-seal { position: absolute; top: .55rem; right: .55rem; display: inline-flex; align-items: center; gap: .2rem; transform: rotate(7deg); border: 1.5px solid #16a34a; color: #15803d; border-radius: 6px; padding: .1rem .38rem; font-size: 8.5px; font-weight: 800; letter-spacing: .06em; background: color-mix(in srgb, #16a34a 8%, #fff); }
+.sbf-spark { display: flex; align-items: flex-end; gap: 2px; height: 20px; margin-top: .55rem; }
+.sbf-spark span { flex: 1; border-radius: 2px 2px 0 0; background: color-mix(in srgb, var(--brand-accent) 18%, transparent); }
+.sbf-spark span.hi { background: var(--brand-accent); }
+
+/* 2 · Data — request queue collapses into one certified metric */
+.sbf-queue { display: flex; align-items: center; gap: .55rem; }
+.sbf-queue-stack { display: grid; gap: 3px; flex: 1.1; min-width: 0; }
+.sbf-q-chip { font-size: 10px; color: var(--text-secondary, #5a4f6a); background: #fff; border: 1px dashed color-mix(in srgb, var(--brand-accent) 26%, #e7e2ee); border-radius: 6px; padding: .2rem .45rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sbf-q-chip:nth-child(2) { opacity: .68; } .sbf-q-chip:nth-child(3) { opacity: .42; }
+.sbf-queue-arrow { color: var(--brand-accent); flex-shrink: 0; }
+.sbf-queue-one { flex: 1; background: #fff; border: 1px solid color-mix(in srgb, #16a34a 32%, #e7e2ee); border-radius: 8px; padding: .4rem .55rem; }
+.sbf-queue-one b { font-size: 12px; color: var(--text-primary, #1a1320); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.sbf-queue-one small { display: flex; align-items: center; gap: .2rem; font-size: 9.5px; color: #15803d; font-weight: 800; margin-top: 1px; }
+
+/* 3 · Compliance — access gate (allowed vs denied) */
+.sbf-gate { display: grid; gap: .35rem; }
+.sbf-gate-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; background: #fff; border: 1px solid color-mix(in srgb, var(--brand-accent) 10%, #e7e2ee); border-radius: 8px; padding: .4rem .55rem; }
+.sbf-gate-row.no { background: color-mix(in srgb, #dc2626 4%, #fff); border-color: color-mix(in srgb, #dc2626 24%, transparent); }
+.sbf-gate-who { font-size: 11.5px; color: var(--text-primary, #1a1320); font-weight: 700; line-height: 1.1; }
+.sbf-gate-who small { display: block; font-size: 9.5px; color: var(--text-secondary, #5a4f6a); font-weight: 600; }
+.sbf-gate-res { font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; gap: .25rem; white-space: nowrap; }
+.sbf-gate-res.ok { color: #15803d; } .sbf-gate-res.no { color: #b91c1c; }
+
+/* 4 · Financial Services — lineage chain */
+.sbf-chain { display: flex; align-items: stretch; gap: .3rem; }
+.sbf-chain-node { flex: 1; text-align: center; background: #fff; border: 1px solid color-mix(in srgb, var(--brand-accent) 14%, #e7e2ee); border-radius: 7px; padding: .4rem .25rem; font-size: 9.5px; font-weight: 800; color: var(--text-primary, #1a1320); display: flex; flex-direction: column; justify-content: center; gap: 1px; }
+.sbf-chain-node small { font-size: 8px; font-weight: 600; color: var(--text-secondary, #5a4f6a); letter-spacing: .02em; }
+.sbf-chain-node.end { border-color: color-mix(in srgb, #16a34a 32%, #e7e2ee); }
+.sbf-chain-arrow { align-self: center; color: var(--brand-accent); flex-shrink: 0; }
+
+/* 5 · Healthcare — PHI masking */
+.sbf-mask { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+.sbf-mask th { text-align: left; font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-secondary, #5a4f6a); padding: .15rem .35rem .25rem; border-bottom: 1px solid color-mix(in srgb, var(--brand-accent) 14%, #e7e2ee); }
+.sbf-mask td { padding: .25rem .35rem; color: var(--text-primary, #1a1320); border-bottom: 1px solid color-mix(in srgb, var(--brand-accent) 6%, #eee); }
+.sbf-mask tr:last-child td { border-bottom: none; }
+.sbf-mask .masked { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #b91c1c; letter-spacing: 1.5px; font-weight: 700; }
+
+/* 6 · Insurance — version stamp */
+.sbf-ver { display: flex; align-items: center; gap: .6rem; }
+.sbf-ver-fig { font-size: 1.15rem; font-weight: 800; color: var(--text-primary, #1a1320); letter-spacing: -.01em; }
+.sbf-ver-chips { display: flex; gap: .25rem; }
+.sbf-ver-chip { font-size: 9px; font-weight: 800; padding: .12rem .42rem; border-radius: 5px; background: color-mix(in srgb, var(--brand-accent) 8%, #fff); color: var(--brand-accent); border: 1px solid color-mix(in srgb, var(--brand-accent) 18%, transparent); }
+.sbf-ver-chip.active { background: var(--brand-accent); color: #fff; border-color: transparent; }
+.sbf-ver-owner { font-size: 10px; color: var(--text-secondary, #5a4f6a); margin-top: .5rem; display: flex; align-items: center; gap: .3rem; }
+.sbf-ver-owner svg { width: 11px; height: 11px; stroke: #15803d; flex-shrink: 0; }
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .solutions-by-fit-card,
@@ -7174,22 +7231,15 @@
         </div>
         <p class="solutions-by-fit-card-persona">Finance Teams</p>
         <h3 class="solutions-by-fit-card-title">Defensible numbers for board decks &amp; filings.</h3>
-        <p class="solutions-by-fit-card-pain">Every board cycle: another round of "can you re-verify this?" before anyone trusts the slide.</p>
-
-        <!-- Illustrative mini answer -->
-        <div class="solutions-by-fit-sparkbar" aria-hidden="true">
-          <span style="height:35%"></span>
-          <span style="height:52%"></span>
-          <span style="height:44%"></span>
-          <span style="height:63%"></span>
-          <span style="height:58%"></span>
-          <span style="height:72%"></span>
-          <span class="hi" style="height:88%"></span>
+        <div class="sbf-viz">
+          <div class="sbf-slide">
+            <span class="sbf-seal" aria-hidden="true">✓ CERTIFIED</span>
+            <div class="sbf-slide-label">Q3 APAC · Net revenue</div>
+            <div class="sbf-slide-val">$48.2M <span class="sbf-slide-delta">▲ 6.1% QoQ</span></div>
+            <div class="sbf-spark" aria-hidden="true"><span style="height:38%"></span><span style="height:50%"></span><span style="height:44%"></span><span style="height:64%"></span><span style="height:56%"></span><span style="height:74%"></span><span class="hi" style="height:92%"></span></div>
+          </div>
         </div>
-
-        <p class="solutions-by-fit-card-outcome">
-          Q3 APAC net revenue: $48.2M, +6.1% QoQ
-        </p>
+        <p class="sbf-cap">Every figure ships <b>with its certificate</b> — board-ready.</p>
         <span class="solutions-by-fit-certified-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
           Certified · net_revenue · v3 · #A-10293
@@ -7209,10 +7259,21 @@
         </div>
         <p class="solutions-by-fit-card-persona">Data &amp; Analytics Teams</p>
         <h3 class="solutions-by-fit-card-title">Certify once, stop re-answering the same question.</h3>
-        <p class="solutions-by-fit-card-pain">Ten Slack threads a week from Finance, all asking for the same net-revenue number you already built.</p>
-        <p class="solutions-by-fit-card-outcome">
-          Metric certified by FP&amp;A on 2026-04-12. Owner on record. Query runs in place — 0 rows copied, 0 egress.
-        </p>
+        <div class="sbf-viz">
+          <div class="sbf-queue">
+            <div class="sbf-queue-stack" aria-hidden="true">
+              <div class="sbf-q-chip">"net revenue?" — Finance</div>
+              <div class="sbf-q-chip">"net revenue?" — FP&amp;A</div>
+              <div class="sbf-q-chip">"net revenue?" — Sales</div>
+            </div>
+            <svg class="sbf-queue-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <div class="sbf-queue-one">
+              <b>net_revenue</b>
+              <small><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Certified · reused</small>
+            </div>
+          </div>
+        </div>
+        <p class="sbf-cap">Define it <b>once</b> — every repeat ask reuses the certified answer.</p>
         <span class="solutions-by-fit-certified-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
           FINANCE_DW.fct_revenue · Snowflake
@@ -7232,10 +7293,19 @@
         </div>
         <p class="solutions-by-fit-card-persona">Compliance &amp; Risk</p>
         <h3 class="solutions-by-fit-card-title">Every answer pre-audited, access enforced at query time.</h3>
-        <p class="solutions-by-fit-card-pain">A Marketing user asks for APAC revenue — a number outside their scope.</p>
-        <p class="solutions-by-fit-card-outcome">
-          Priya (Analyst, APAC scope) → $48.2M, log #A-10293. Marketing user → blocked, log #A-10294.
-        </p>
+        <div class="sbf-viz">
+          <div class="sbf-gate">
+            <div class="sbf-gate-row">
+              <span class="sbf-gate-who">Priya <small>Analyst · APAC scope</small></span>
+              <span class="sbf-gate-res ok"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> $48.2M</span>
+            </div>
+            <div class="sbf-gate-row no">
+              <span class="sbf-gate-who">Marketing user <small>no Finance scope</small></span>
+              <span class="sbf-gate-res no"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg> Denied</span>
+            </div>
+          </div>
+        </div>
+        <p class="sbf-cap">Enforced at query time — <b>allowed or denied, both logged</b>.</p>
         <span class="solutions-by-fit-denied-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
           Access denied at query time · #A-10294
@@ -7268,10 +7338,16 @@
         <span class="solutions-by-fit-reg-tag">SOX · SEC · GAAP</span>
         <p class="solutions-by-fit-card-persona">Financial Services</p>
         <h3 class="solutions-by-fit-card-title">Every disclosure tied to a certified, auditable metric.</h3>
-        <p class="solutions-by-fit-card-pain">Regulators expect a traceable chain from board filing back to the source row — not a screenshot.</p>
-        <p class="solutions-by-fit-card-outcome">
-          Q3 APAC net revenue $48.2M, certified v3, sourced from FINANCE_DW.fct_revenue, audit entry #A-10293 — ready for your external auditor.
-        </p>
+        <div class="sbf-viz">
+          <div class="sbf-chain">
+            <div class="sbf-chain-node">Board filing<small>$48.2M</small></div>
+            <svg class="sbf-chain-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <div class="sbf-chain-node">net_revenue<small>certified v3</small></div>
+            <svg class="sbf-chain-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <div class="sbf-chain-node end">fct_revenue<small>source row</small></div>
+          </div>
+        </div>
+        <p class="sbf-cap">An unbroken chain — <b>filing → metric → source row</b>.</p>
         <span class="solutions-by-fit-certified-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
           SOX-traceable · zero data movement
@@ -7292,10 +7368,16 @@
         <span class="solutions-by-fit-reg-tag">HIPAA · HL7 · 21 CFR Part 11</span>
         <p class="solutions-by-fit-card-persona">Healthcare</p>
         <h3 class="solutions-by-fit-card-title">PHI-scoped answers with built-in data minimisation.</h3>
-        <p class="solutions-by-fit-card-pain">Analytics teams can't let analysts query patient-linked revenue tables without consent controls and field-level masking.</p>
-        <p class="solutions-by-fit-card-outcome">
-          Analysts see de-identified aggregates. PHI columns never leave the warehouse. Every access logged against the BAA.
-        </p>
+        <div class="sbf-viz">
+          <table class="sbf-mask">
+            <thead><tr><th>Region</th><th>Revenue</th><th>Patient ID</th></tr></thead>
+            <tbody>
+              <tr><td>APAC</td><td>$48.2M</td><td class="masked">••••••</td></tr>
+              <tr><td>EMEA</td><td>$61.7M</td><td class="masked">••••••</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="sbf-cap">Aggregates out, <b>PHI columns stay masked</b> in the warehouse.</p>
         <span class="solutions-by-fit-certified-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
           0 PHI rows egressed · field-level masking
@@ -7316,10 +7398,14 @@
         <span class="solutions-by-fit-reg-tag">NAIC · Solvency II · IFRS 17</span>
         <p class="solutions-by-fit-card-persona">Insurance</p>
         <h3 class="solutions-by-fit-card-title">Reserve calculations regulators can follow, not just trust.</h3>
-        <p class="solutions-by-fit-card-pain">Actuaries produce reserve figures; examiners need the lineage — which table, which version, who signed off.</p>
-        <p class="solutions-by-fit-card-outcome">
-          Each reserve metric version-stamped, owner-assigned, and sourced to the exact warehouse table — examiner-ready on demand.
-        </p>
+        <div class="sbf-viz">
+          <div class="sbf-ver">
+            <span class="sbf-ver-fig">Reserve $214.7M</span>
+            <span class="sbf-ver-chips" aria-hidden="true"><span class="sbf-ver-chip">v1</span><span class="sbf-ver-chip">v2</span><span class="sbf-ver-chip active">v3</span></span>
+          </div>
+          <div class="sbf-ver-owner"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Owner: Actuarial · signed off 2026-04-12</div>
+        </div>
+        <p class="sbf-cap">Every reserve <b>version-stamped &amp; owned</b> — examiner-ready.</p>
         <span class="solutions-by-fit-certified-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
           Version-stamped · examiner-ready lineage
