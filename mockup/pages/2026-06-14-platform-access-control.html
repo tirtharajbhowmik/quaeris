@@ -894,6 +894,39 @@
   </div>
 </section>
 
+<!-- Core Capabilities (rolled out 2026-06-16) -->
+<section class="section-pad" style="background: var(--bg-surface);" aria-labelledby="platform-access-control-cap-h">
+    <div class="container">
+      <div class="section-header center reveal"><span class="eyebrow">Core Capabilities</span>
+        <h2 id="platform-access-control-cap-h" class="display-lg">Governed access,<br><span class="accent-line">enforced at the query.</span></h2>
+        <p class="subcopy body-lg">Row-level security and column masking that activate the instant a query runs — role-scoped, warehouse-native, with zero bypass paths for any downstream tool or dashboard.</p></div>
+      <div class="caps reveal"><div class="cap-tabs" role="tablist" aria-label="Core capabilities"><button class="cap-tab" role="tab" id="platform-access-control-tab-1" aria-controls="platform-access-control-panel-1" aria-selected="true" tabindex="0">Query-Time RLS<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="platform-access-control-tab-2" aria-controls="platform-access-control-panel-2" aria-selected="false" tabindex="-1">Column Masking<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="platform-access-control-tab-3" aria-controls="platform-access-control-panel-3" aria-selected="false" tabindex="-1">Role Hierarchy<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="platform-access-control-tab-4" aria-controls="platform-access-control-panel-4" aria-selected="false" tabindex="-1">Audit Trail<span class="cap-tab-bar" aria-hidden="true"></span></button></div><div class="cap-panel" role="tabpanel" id="platform-access-control-panel-1" aria-labelledby="platform-access-control-tab-1">
+      <div><h3 class="display-md">Security that fires before a single row leaves the warehouse</h3><p class="body-md cap-panel-lead">Row-level security predicates are injected into every SQL statement at query execution — not enforced in a dashboard layer that users can route around. The warehouse sees only the WHERE clause the role is permitted to satisfy.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Predicates are injected server-side: no client, no BI tool, no export path can bypass them</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Works across ad-hoc questions, scheduled reports, and API calls — the same rule fires every time</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Zero-trust by default: a row is invisible until an explicit role grant makes it visible</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Query Execution Path</span><span class="cap-viz-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>verified</span></div>
+      <div class="cap-lineage"><span class="cap-progress"></span><span class="cap-trace"></span><div class="cap-node" data-rise style="--d:80ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">User question submitted</span><span class="cap-node-v">Natural-language query received; session role resolved</span></div><div class="cap-node" data-rise style="--d:220ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">RLS predicate injected</span><span class="cap-node-v">Row filter appended to generated SQL before warehouse execution</span></div><div class="cap-node" data-rise style="--d:360ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Filtered result returned</span><span class="cap-node-v">Only permitted rows delivered — warehouse enforces, not the app</span></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:1200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Predicate injection adds &lt; 2 ms to median query latency.</div></div></div><div class="cap-panel" role="tabpanel" id="platform-access-control-panel-2" aria-labelledby="platform-access-control-tab-2" hidden>
+      <div><h3 class="display-md">Sensitive fields masked by role before data leaves the source</h3><p class="body-md cap-panel-lead">Column-level masking policies redact or hash regulated fields — PII, salary bands, margin figures — for every role that lacks explicit read grants. Analysts see the schema; they see only the data their role permits.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Masking is defined once in the governance layer and inherited by every downstream query automatically</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Supports full redaction, partial masking, and hash-token substitution per column per role</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Audit logs capture the original column reference and the masking rule applied, for full traceability</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Columns Masked by Data Classification</span><span class="cap-viz-metric"><b>94%</b></span></div><div class="cap-bars"><div class="cap-bar-item" data-rise style="--d:80ms"><div class="cap-bar-top"><span>PII (name, email, SSN)</span><b>100% masked below VP-Data</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:100%; --d:120ms"></div></div></div><div class="cap-bar-item" data-rise style="--d:200ms"><div class="cap-bar-top"><span>Financial (margin, salary)</span><b>87% masked below Finance-L3</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:87%; --d:240ms"></div></div></div><div class="cap-bar-item" data-rise style="--d:320ms"><div class="cap-bar-top"><span>Health &amp; benefits data</span><b>96% masked below HR-Exec</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:96%; --d:360ms"></div></div></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:520ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Masking policies certified against SOC 2 Type II control set.</div></div></div><div class="cap-panel" role="tabpanel" id="platform-access-control-panel-3" aria-labelledby="platform-access-control-tab-3" hidden>
+      <div><h3 class="display-md">Granular roles — no wildcard grants, no governance escape hatches</h3><p class="body-md cap-panel-lead">Access permissions are built on a typed role hierarchy that flows from the warehouse identity layer into every Quaeris query surface. A role grants exactly what it names — no implicit inheritance, no permissive defaults.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Roles are warehouse-native: grants defined in Snowflake or BigQuery propagate to Quaeris automatically — no duplicate policy layer to drift out of sync</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Least-privilege defaults: every new role starts with zero access; grants are additive only</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Role conflicts are detected and surfaced in the governance console before they reach production</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">One Access Layer Across All Sources</span><span class="cap-viz-metric"><b>12,000+</b></span></div><div class="cap-union">
+    <div class="cap-union-sources"><div class="cap-src from-l" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>Snowflake</span><small>Row + column policies · 4,800 roles</small></div><div class="cap-src from-t" style="--d:200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg><span>BigQuery</span><small>IAM-native grants · 3,900 roles</small></div><div class="cap-src from-r" style="--d:320ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg><span>Redshift / Databricks</span><small>SQL GRANT sync · 3,400 roles</small></div></div><div class="cap-union-merge"><svg viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+  <path class="cap-union-base" d="M50 4 C50 26 150 16 150 38" /><path class="cap-union-base" d="M150 4 L150 38" /><path class="cap-union-base" d="M250 4 C250 26 150 16 150 38" />
+  <path class="cap-flow" d="M50 4 C50 26 150 16 150 38" /><path class="cap-flow" d="M150 4 L150 38" /><path class="cap-flow" d="M250 4 C250 26 150 16 150 38" />
+</svg></div>
+    <div class="cap-core">Governed semantic layer<small>Unified role graph — enforced identically at every query entry point.</small></div></div></div></div><div class="cap-panel" role="tabpanel" id="platform-access-control-panel-4" aria-labelledby="platform-access-control-tab-4" hidden>
+      <div><h3 class="display-md">Every query logged with the exact role and row filter applied</h3><p class="body-md cap-panel-lead">Quaeris writes an immutable audit record for every query: who asked, which role resolved, what RLS predicate was injected, and which columns were masked. Compliance teams get a complete, queryable log — no gaps, no sampling.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Audit records are written before results are returned — a failed query still produces a complete log entry</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Logs include the resolved role, injected predicate, masked columns, and exact warehouse SQL emitted</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Exportable to SIEM and data-governance platforms; retention policy configurable per compliance requirement</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Query Audit Coverage Over Time</span><span class="cap-viz-metric"><b>100%</b></span></div><div class="cap-chart-wrap"><svg class="cap-chart" viewBox="0 0 460 200" aria-hidden="true">
+  <path class="cap-chart-area" d="M 22 146 C 30 144 54 135 70 134 C 86 133 102 143.7 118 140 C 134 136.3 150 115.3 166 112 C 182 108.7 196.3 124.3 214 120 C 231.7 115.7 262.3 91.7 272 86 L 272 180 L 22 180 Z" />
+  <path class="cap-chart-line" d="M 22 146 C 30 144 54 135 70 134 C 86 133 102 143.7 118 140 C 134 136.3 150 115.3 166 112 C 182 108.7 196.3 124.3 214 120 C 231.7 115.7 262.3 91.7 272 86" />
+  <path class="cap-chart-fc" d="M 272 86 C 281.7 83 310.7 73.7 330 68 C 349.3 62.3 370 56.7 388 52 C 406 47.3 429.7 42 438 40" />
+  <circle class="cap-chart-dot" cx="166" cy="112" r="4" /><circle class="cap-chart-dot" cx="438" cy="40" r="4.5" />
+  <circle class="cap-chart-ping" cx="272" cy="86" r="6" /><circle class="cap-chart-dot" cx="272" cy="86" r="4.5" />
+</svg></div>
+      <div class="cap-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Alert: audit log export to SIEM confirmed — 0 gaps detected in last 90 days.</div></div></div></div>
+    </div></section>
+
+
 <!-- ============================================================
      [2] PROBLEM / SOLUTION (#problem)
      ============================================================ -->
@@ -1755,5 +1788,125 @@
 }
 </script>
 
+
+<script>/* caps-controller (shared, from cap-shared.js) */
+/* Core Capabilities — shared interactive controller (multi-instance: inits every .caps on the page) */
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function fmt(el, v) {
+    const dec = +(el.dataset.decimals || 0);
+    let n = dec ? (+v).toFixed(dec) : Math.round(v);
+    if (el.hasAttribute('data-comma')) n = Number(dec ? (+v).toFixed(dec) : Math.round(v)).toLocaleString('en-US');
+    return (el.dataset.prefix || '') + n + (el.dataset.suffix || '');
+  }
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = fmt(el, target); return; }
+    const start = performance.now();
+    el.textContent = fmt(el, 0);
+    (function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick); else el.textContent = fmt(el, target);
+    })(start);
+  }
+  function makeEaseInverter(x1, y1, x2, y2) {
+    const bz = (t, a, b) => { const c = 3 * a, d = 3 * (b - a) - c, e = 1 - c - d; return ((e * t + d) * t + c) * t; };
+    return function (out) {
+      if (out <= 0) return 0; if (out >= 1) return 1;
+      let lo = 0, hi = 1, t = out;
+      for (let k = 0; k < 24; k++) { t = (lo + hi) / 2; if (bz(t, y1, y2) < out) lo = t; else hi = t; }
+      return bz(t, x1, x2);
+    };
+  }
+  const lineageEaseInvert = makeEaseInverter(0.22, 1, 0.36, 1);
+  const LINEAGE_DUR = 1250, LINEAGE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+  function initCaps(caps) {
+    const tabs = Array.from(caps.querySelectorAll('.cap-tab'));
+    const panels = Array.from(caps.querySelectorAll('.cap-panel'));
+    if (!tabs.length || !panels.length) return;
+    caps.classList.add('js');
+
+    function playLineage(panel) {
+      const lineage = panel.querySelector('.cap-lineage');
+      if (!lineage) return;
+      const trace = lineage.querySelector('.cap-trace');
+      const progress = lineage.querySelector('.cap-progress');
+      const nodes = Array.from(lineage.querySelectorAll('.cap-node'));
+      if (!nodes.length) return;
+      const dots = nodes.map(n => n.querySelector('.cap-node-dot'));
+      if (trace && trace._anim) { trace._anim.cancel(); trace._anim = null; }
+      if (progress && progress._anim) { progress._anim.cancel(); progress._anim = null; }
+      if (lineage._timers) lineage._timers.forEach(clearTimeout);
+      lineage._timers = [];
+      nodes.forEach(n => n.classList.remove('lit'));
+      const waapi = typeof Element !== 'undefined' && typeof Element.prototype.animate === 'function';
+      const centerY = dots.map((dot, i) => nodes[i].offsetTop + dot.offsetTop + dot.offsetHeight / 2);
+      const firstY = centerY[0], lastY = centerY[centerY.length - 1];
+      const span = Math.max(1, lastY - firstY);
+      if (progress) { progress.style.top = firstY + 'px'; progress.style.height = span + 'px'; }
+      const dotHalf = (trace ? trace.offsetHeight : 16) / 2 || 8;
+      const startY = firstY - dotHalf, endY = lastY - dotHalf;
+      if (reduce || !waapi) {
+        if (trace) trace.style.opacity = '0';
+        if (progress) progress.style.transform = 'scaleY(1)';
+        nodes.forEach(n => n.classList.add('lit'));
+        return;
+      }
+      trace.style.top = '0px'; trace.style.opacity = '1';
+      const dotAnim = trace.animate(
+        [{ transform: `translateY(${startY}px)`, opacity: 1, offset: 0 },
+         { transform: `translateY(${endY}px)`, opacity: 1, offset: 0.9 },
+         { transform: `translateY(${endY}px)`, opacity: 0, offset: 1 }],
+        { duration: LINEAGE_DUR, easing: LINEAGE_EASE, fill: 'forwards' });
+      trace._anim = dotAnim;
+      if (progress) progress._anim = progress.animate(
+        [{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }],
+        { duration: LINEAGE_DUR, easing: LINEAGE_EASE, fill: 'forwards' });
+      centerY.forEach((y, i) => {
+        const distFrac = (y - firstY) / span;
+        const at = Math.max(0, Math.min(1, lineageEaseInvert(distFrac))) * LINEAGE_DUR;
+        lineage._timers.push(setTimeout(() => nodes[i].classList.add('lit'), at));
+      });
+      dotAnim.addEventListener('finish', () => nodes.forEach(n => n.classList.add('lit')), { once: true });
+    }
+
+    function activate(i, focus) {
+      tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+      panels.forEach((p, j) => { if (j === i) p.hidden = false; else { p.hidden = true; p.classList.remove('play'); } });
+      const panel = panels[i];
+      panel.classList.remove('play'); void panel.offsetWidth; panel.classList.add('play');
+      const bar = tabs[i].querySelector('.cap-tab-bar');
+      if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+      panel.querySelectorAll('[data-num]').forEach(el => countUp(el, parseFloat(el.dataset.num), 850));
+      if (panel.querySelector('.cap-lineage')) requestAnimationFrame(() => requestAnimationFrame(() => playLineage(panel)));
+      if (focus) tabs[i].focus();
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => activate(i, false));
+      tab.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          activate((i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length, true);
+        }
+      });
+      const bar = tab.querySelector('.cap-tab-bar');
+      if (bar) bar.addEventListener('animationend', () => {
+        if (tab.getAttribute('aria-selected') === 'true') activate((i + 1) % tabs.length, false);
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { activate(0, false); io.disconnect(); } }), { threshold: 0.3 });
+      io.observe(caps);
+    } else { activate(0, false); }
+  }
+
+  document.querySelectorAll('.caps').forEach(initCaps);
+})();
+
+</script>
 </body>
 </html>

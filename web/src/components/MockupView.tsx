@@ -20,9 +20,10 @@ import type { SplitMockup } from "@/lib/mockup";
  */
 export default function MockupView({ css, html, scripts }: SplitMockup) {
   useEffect(() => {
-    // Run each script in its own function scope, after the markup is mounted.
-    const timers: number[] = [];
+    let ran = false;
     const run = () => {
+      if (ran) return;
+      ran = true;
       for (const code of scripts) {
         try {
           // eslint-disable-next-line no-new-func
@@ -32,11 +33,14 @@ export default function MockupView({ css, html, scripts }: SplitMockup) {
         }
       }
     };
-    // rAF ensures layout is committed before scripts measure/observe.
-    const id = window.requestAnimationFrame(run);
+    // rAF lets layout settle before scripts measure/observe. The setTimeout is
+    // a required fallback: rAF is paused for backgrounded/non-visible tabs, so
+    // without it the mockup scripts would never run there. `ran` dedupes.
+    const raf = window.requestAnimationFrame(run);
+    const to = window.setTimeout(run, 60);
     return () => {
-      window.cancelAnimationFrame(id);
-      timers.forEach((t) => window.clearTimeout(t));
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(to);
     };
   }, [scripts]);
 
