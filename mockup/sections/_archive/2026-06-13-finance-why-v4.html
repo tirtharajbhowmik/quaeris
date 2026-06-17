@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — finance "Why Quaeris" v4 (Ledger Cards) — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+</style>
+
+<style>
+/* ============================================================
+   PORT: wq- (Why Quaeris v4 — "Ledger Cards", cohesive-calm).
+   4 equal-height numbered cards, one signature interaction each,
+   one unified motion language ("ledger settle, inked left-to-right").
+   CSS transitions + small vanilla JS, gated by .wq.js, reduced-motion
+   safe, no-JS correct → framer-motion at port. White surface on purpose.
+   ============================================================ */
+
+.wq-grid { display: grid; grid-template-columns: repeat(4, 1fr); align-items: stretch; gap: var(--space-5); margin-top: var(--space-8); }
+@media (max-width: 1100px) { .wq-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px)  { .wq-grid { grid-template-columns: 1fr; } }
+.wq-grid > * { height: 100%; }
+
+/* --- Card shell + equal-height contract --- */
+.wq-card {
+  position: relative; display: flex; flex-direction: column; height: 100%;
+  background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card); padding: var(--space-6);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.wq-card:hover, .wq-card:focus-within { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); }
+.wq-card:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+
+.wq-head { display: flex; align-items: center; justify-content: space-between; min-height: 34px; }
+.wq-num { font-family: var(--font-display); font-size: clamp(26px, 3vw, 34px); font-weight: 400; line-height: 1; letter-spacing: -0.02em; color: var(--border-strong); font-variant-numeric: tabular-nums; }
+.wq-num-tick { display: block; height: 2px; width: 22px; margin-top: 6px; background: var(--brand-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-slow) var(--ease-out); }
+.wq-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background var(--dur-base) var(--ease-out); }
+.wq-icon svg { width: 20px; height: 20px; color: var(--brand-accent); transition: color var(--dur-base) var(--ease-out); }
+.wq-card:hover .wq-icon, .wq-card:focus-within .wq-icon { background: var(--brand-accent); }
+.wq-card:hover .wq-icon svg, .wq-card:focus-within .wq-icon svg { color: var(--text-on-dark); }
+
+.wq-card h3 { color: var(--text-primary); margin-top: var(--space-4); }
+.wq-claim { color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-top: var(--space-3); flex: 1; }
+
+.wq-proof { border-top: 1px solid var(--border-subtle); margin-top: var(--space-5); padding-top: var(--space-5); min-height: 188px; display: flex; flex-direction: column; gap: var(--space-3); }
+.wq-disclaimer { font-size: 10px; color: var(--text-tertiary); line-height: 1.4; margin-top: auto; }
+
+/* --- Entrance (gated) — ledger settle + inked rows --- */
+.wq.js .wq-card { opacity: 0; transform: translateY(14px); transition: opacity var(--dur-slow) var(--ease-out) var(--d, 0ms), transform var(--dur-slow) var(--ease-out) var(--d, 0ms), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out); }
+.wq.js .wq-card.entered { opacity: 1; transform: none; }
+.wq.js .wq-card.entered .wq-num-tick { transform: scaleX(1); }
+.wq.js [data-ink] { opacity: 0; transform: translateX(-6px); transition: opacity var(--dur-base) var(--ease-out) var(--rd, 0ms), transform var(--dur-base) var(--ease-out) var(--rd, 0ms); }
+.wq.js .wq-card.entered [data-ink] { opacity: 1; transform: none; }
+
+@keyframes wq-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(26,158,108,0); } 50% { box-shadow: 0 0 0 5px rgba(26,158,108,0.18); } }
+
+/* --- Card 1: certified-metrics registry --- */
+.wq-cert-bar { display: flex; align-items: center; gap: var(--space-2); background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 8px 10px; }
+.wq-cert-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+.wq.js .wq-cert-dot { animation: wq-pulse 2.4s ease-in-out infinite; }
+.wq-cert-text { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.wq-cert-ts { margin-left: auto; font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wq-reg { display: flex; flex-direction: column; }
+.wq-reg-head, .wq-reg-row { display: grid; grid-template-columns: 1.5fr 1.3fr 0.6fr 1fr; align-items: center; gap: var(--space-2); }
+.wq-reg-head { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); padding: 0 6px var(--space-2); }
+.wq-reg-row { width: 100%; min-height: 44px; text-align: left; background: none; border: none; border-top: 1px solid var(--border-subtle); cursor: pointer; font-family: var(--font-body); font-size: 13px; color: var(--text-secondary); padding: 8px 6px; transition: background var(--dur-fast); }
+.wq-reg-row:hover { background: var(--bg-canvas); }
+.wq-reg-row:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: -2px; border-radius: var(--radius-sm); }
+.wq-reg-metric { font-weight: 600; color: var(--text-primary); }
+.wq-reg-row span:nth-child(2), .wq-reg-row span:nth-child(3) { color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.wq-reg-status { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--success); font-weight: 600; }
+.wq-reg-status svg { width: 13px; height: 13px; }
+.wq-reg-lineage { max-height: 0; opacity: 0; overflow: hidden; font-size: 12px; color: var(--text-tertiary); line-height: 1.5; border-left: 2px solid var(--brand-accent); margin: 0 6px; padding: 0 0 0 10px; transition: max-height var(--dur-base) var(--ease-out), opacity var(--dur-fast), padding var(--dur-base); }
+.wq-reg-lineage.open { max-height: 64px; opacity: 1; padding: 8px 0 8px 10px; }
+
+/* --- Card 2: variance toggle + matrix --- */
+.wq-dim-toolbar { display: inline-flex; gap: 4px; background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: var(--radius-pill); padding: 3px; align-self: flex-start; }
+.wq-dim-btn { font-family: var(--font-body); font-size: 11px; font-weight: 600; color: var(--text-secondary); background: none; border: none; border-radius: var(--radius-pill); padding: 5px 10px; min-height: 32px; cursor: pointer; transition: color var(--dur-fast), background var(--dur-fast); }
+.wq-dim-btn:hover { color: var(--text-primary); }
+.wq-dim-btn[aria-pressed="true"] { color: var(--text-on-dark); background: var(--brand-accent); }
+.wq-dim-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.wq-dim-rows { display: flex; flex-direction: column; gap: var(--space-3); }
+.wq-dim-row-top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); margin-bottom: 5px; }
+.wq-dim-label { font-size: 13px; color: var(--text-primary); font-weight: 600; }
+.wq-dim-gl { font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; margin-left: 6px; font-weight: 400; }
+.wq-dim-delta { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--error); background: color-mix(in srgb, var(--error) 9%, transparent); border-radius: var(--radius-pill); padding: 2px 8px; }
+.wq-dim-track { height: 8px; border-radius: var(--radius-pill); background: var(--bg-canvas); border: 1px solid var(--border-subtle); overflow: hidden; }
+.wq-dim-fill { height: 100%; width: 0; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent)); transition: width var(--dur-slow) var(--ease-out); }
+.wq-dim-foot { font-size: 11px; color: var(--text-tertiary); display: flex; align-items: center; gap: 5px; }
+.wq-dim-foot svg { width: 13px; height: 13px; color: var(--brand-accent); }
+
+/* --- Card 3: question -> ranked answer --- */
+.wq-q { display: flex; align-items: center; gap: var(--space-2); background: var(--brand-accent-soft); border: 1px solid color-mix(in srgb, var(--brand-accent) 20%, transparent); border-radius: var(--radius-md); padding: 8px 10px; font-size: 12px; font-weight: 500; color: var(--brand-accent-deep); }
+.wq-q svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; }
+.wq-run { align-self: flex-start; font-family: var(--font-body); font-size: 12px; font-weight: 600; color: var(--brand-accent); background: none; border: 1px solid color-mix(in srgb, var(--brand-accent) 35%, transparent); border-radius: var(--radius-pill); padding: 6px 14px; min-height: 36px; cursor: pointer; transition: color var(--dur-fast), background var(--dur-fast); }
+.wq-run:hover { color: var(--text-on-dark); background: var(--brand-accent); }
+.wq-run:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.wq-ans { display: flex; flex-direction: column; gap: 6px; }
+.wq-ans-row { display: flex; align-items: center; gap: var(--space-3); background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 7px 10px; font-size: 12px; }
+.wq.js .wq-ans-row { opacity: 0; transform: translateX(-6px); transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+.wq.js .wq-ans-row.show { opacity: 1; transform: none; }
+.wq-rank { width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%; background: var(--brand-accent-soft); color: var(--brand-accent); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.wq-ans-dept { font-weight: 600; color: var(--text-primary); }
+.wq-ans-gl { color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.wq-ans-over { margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--error); background: color-mix(in srgb, var(--error) 9%, transparent); border-radius: var(--radius-pill); padding: 2px 8px; }
+.wq-ans-foot { font-size: 11px; color: var(--text-tertiary); display: flex; align-items: center; gap: 5px; opacity: 0; transition: opacity var(--dur-base) var(--ease-out); }
+.wq-ans-foot.show { opacity: 1; }
+.wq-ans-foot svg { width: 13px; height: 13px; color: var(--brand-accent); }
+
+/* --- Card 4: audit trail timeline --- */
+.wq-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.wq-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--text-primary); background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: var(--radius-pill); padding: 4px 10px; }
+.wq-tag svg { width: 12px; height: 12px; color: var(--brand-accent); }
+.wq-chain-live { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+.wq-chain-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+.wq.js .wq-chain-live-dot { animation: wq-pulse 1.8s ease-in-out infinite; }
+.wq-chain { position: relative; display: flex; flex-direction: column; gap: var(--space-3); padding-left: var(--space-5); }
+.wq-chain-line { position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: var(--border-strong); transform: scaleY(0); transform-origin: top; transition: transform var(--dur-slow) var(--ease-out); }
+.wq.js .wq-card.entered .wq-chain-line { transform: scaleY(1); }
+.wq-node { position: relative; display: flex; align-items: flex-start; gap: var(--space-3); }
+.wq-node-dot { position: absolute; left: calc(-1 * var(--space-5) + 1px); top: 3px; width: 12px; height: 12px; border-radius: 50%; background: var(--border-strong); box-shadow: 0 0 0 3px var(--bg-surface); transition: background var(--dur-base) var(--ease-out); }
+.wq-node-body { display: flex; flex-direction: column; gap: 1px; }
+.wq-node-ts { font-size: 10px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.wq-node-main { font-size: 12px; color: var(--text-primary); font-weight: 600; line-height: 1.4; }
+.wq-node-sub { font-size: 11px; color: var(--text-tertiary); }
+.wq-node-tag { margin-left: auto; align-self: center; flex-shrink: 0; display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; border-radius: var(--radius-pill); padding: 2px 7px; }
+.wq-node-tag svg { width: 11px; height: 11px; }
+.wq-node-tag.ok { color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); }
+.wq-node-tag.info { color: var(--brand-accent); background: var(--brand-accent-soft); }
+.wq.js .wq-node { opacity: 0; transform: translateX(-6px); transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+.wq.js .wq-node.show { opacity: 1; transform: none; }
+.wq.js .wq-node .wq-node-dot { background: var(--border-strong); }
+.wq.js .wq-node.show.ok .wq-node-dot { background: var(--success); }
+.wq.js .wq-node.show.info .wq-node-dot { background: var(--brand-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .wq.js .wq-card, .wq.js [data-ink], .wq.js .wq-dim-fill, .wq.js .wq-reg-lineage, .wq.js .wq-ans-row, .wq.js .wq-ans-foot, .wq.js .wq-node, .wq.js .wq-num-tick, .wq.js .wq-chain-line { transition: none !important; }
+  .wq.js .wq-card, .wq.js [data-ink], .wq.js .wq-ans-row, .wq.js .wq-node { opacity: 1 !important; transform: none !important; }
+  .wq.js .wq-ans-foot { opacity: 1 !important; }
+  .wq.js .wq-num-tick { transform: scaleX(1) !important; }
+  .wq.js .wq-card.entered .wq-chain-line, .wq.js .wq-chain-line { transform: scaleY(1) !important; }
+  .wq.js .wq-cert-dot, .wq.js .wq-chain-live-dot { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<section id="why-quaeris" class="section-pad wq" aria-labelledby="why-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Why Quaeris</span>
+      <h2 id="why-heading" class="display-lg">Built for the way finance<br><span class="accent-line">actually works.</span></h2>
+      <p class="subcopy body-lg">Every feature is designed for the audit, compliance, and reporting workflows that keep CFOs and controllers up at night.</p>
+    </div>
+
+    <div class="wq-grid reveal">
+
+      <!-- 01 -->
+      <div class="reveal"><article class="wq-card" style="--d:0ms" aria-label="Certified Metrics Library">
+        <div class="wq-head"><span class="wq-num">01<span class="wq-num-tick" aria-hidden="true"></span></span>
+          <span class="wq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        </div>
+        <h3 class="heading-sm">Certified Metrics Library</h3>
+        <p class="wq-claim">Revenue, COGS, SG&amp;A, EBT, tax provision and headcount — each defined once at the semantic layer and version-locked, so every team closes month-end on the same certified number, not nine spreadsheet variants.</p>
+        <div class="wq-proof">
+          <div class="wq-cert-bar" data-ink style="--rd:0ms"><span class="wq-cert-dot" aria-hidden="true"></span><span class="wq-cert-text">All metrics certified &amp; version-locked</span><span class="wq-cert-ts" aria-live="polite">v3.1 · 14:32:00 UTC</span></div>
+          <div class="wq-reg" role="table" aria-label="Certified metrics registry">
+            <div class="wq-reg-head" role="row" data-ink style="--rd:55ms"><span>Metric</span><span>GL root</span><span>Ver</span><span>Status</span></div>
+            <button class="wq-reg-row" data-ink style="--rd:110ms" aria-expanded="false" aria-controls="ln-rev" aria-labelledby="m-rev"><span id="m-rev" class="wq-reg-metric">Revenue</span><span>GL 4000–4099</span><span>v3.1</span><span class="wq-reg-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></button>
+            <div class="wq-reg-lineage" id="ln-rev" role="region">Revenue = sum(GL 4000–4099) net of returns · owner: Controller · certified 2026-09-30</div>
+            <button class="wq-reg-row" data-ink style="--rd:150ms" aria-expanded="false" aria-controls="ln-cogs" aria-labelledby="m-cogs"><span id="m-cogs" class="wq-reg-metric">COGS</span><span>GL 5000–5199</span><span>v3.1</span><span class="wq-reg-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></button>
+            <div class="wq-reg-lineage" id="ln-cogs" role="region">COGS = sum(GL 5000–5199) at standard cost · owner: Controller · certified 2026-09-30</div>
+            <button class="wq-reg-row" data-ink style="--rd:190ms" aria-expanded="false" aria-controls="ln-sga" aria-labelledby="m-sga"><span id="m-sga" class="wq-reg-metric">SG&amp;A</span><span>GL 6000–6499</span><span>v2.4</span><span class="wq-reg-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></button>
+            <div class="wq-reg-lineage" id="ln-sga" role="region">SG&amp;A = sum(GL 6000–6499) · owner: FP&amp;A Lead · certified 2026-08-31</div>
+            <button class="wq-reg-row" data-ink style="--rd:230ms" aria-expanded="false" aria-controls="ln-ebt" aria-labelledby="m-ebt"><span id="m-ebt" class="wq-reg-metric">EBT</span><span>derived</span><span>v3.1</span><span class="wq-reg-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></button>
+            <div class="wq-reg-lineage" id="ln-ebt" role="region">EBT = Revenue − COGS − SG&amp;A − interest · derived · certified 2026-09-30</div>
+            <button class="wq-reg-row" data-ink style="--rd:270ms" aria-expanded="false" aria-controls="ln-tax" aria-labelledby="m-tax"><span id="m-tax" class="wq-reg-metric">Tax provision</span><span>GL 7200</span><span>v1.9</span><span class="wq-reg-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></button>
+            <div class="wq-reg-lineage" id="ln-tax" role="region">Tax provision = GL 7200 effective-rate model · owner: Tax · certified 2026-09-15</div>
+            <button class="wq-reg-row" data-ink style="--rd:310ms" aria-expanded="false" aria-controls="ln-hc" aria-labelledby="m-hc"><span id="m-hc" class="wq-reg-metric">Headcount</span><span>HR master</span><span>v2.0</span><span class="wq-reg-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Certified</span></button>
+            <div class="wq-reg-lineage" id="ln-hc" role="region">Headcount = HR master active FTE · owner: People Ops · certified 2026-09-30</div>
+          </div>
+          <p class="wq-disclaimer" data-ink style="--rd:350ms">GL ranges &amp; versions reflect your chart of accounts at deployment.</p>
+        </div>
+      </article></div>
+
+      <!-- 02 -->
+      <div class="reveal"><article class="wq-card" style="--d:80ms" aria-label="Multi-Dimensional Variance">
+        <div class="wq-head"><span class="wq-num">02<span class="wq-num-tick" aria-hidden="true"></span></span>
+          <span class="wq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M13 17V9"/><path d="M18 17V5"/><path d="M8 17v-3"/></svg></span>
+        </div>
+        <h3 class="heading-sm">Multi-Dimensional Variance</h3>
+        <p class="wq-claim">Compare actual against budget, forecast, or prior year — sliced by GL account, cost center, region, or any custom hierarchy. Drivers ranked and GL-cited in seconds, not a two-day SQL sprint.</p>
+        <div class="wq-proof">
+          <div class="wq-dim-toolbar" role="group" aria-label="Compare actuals against" data-ink style="--rd:0ms">
+            <button class="wq-dim-btn" type="button" aria-pressed="true" data-rows='[["+8.8%",72],["+5.1%",42],["+2.3%",19]]'>vs Budget</button>
+            <button class="wq-dim-btn" type="button" aria-pressed="false" data-rows='[["+3.2%",26],["+1.8%",15],["+0.9%",7]]'>vs Forecast</button>
+            <button class="wq-dim-btn" type="button" aria-pressed="false" data-rows='[["+12.4%",100],["+7.6%",61],["+3.1%",25]]'>Prior Year</button>
+          </div>
+          <div class="wq-dim-rows" aria-live="polite">
+            <div class="wq-dim-row" data-ink style="--rd:55ms"><div class="wq-dim-row-top"><span class="wq-dim-label">OPEX total</span><span class="wq-dim-delta">+8.8%</span></div><div class="wq-dim-track"><div class="wq-dim-fill"></div></div></div>
+            <div class="wq-dim-row" data-ink style="--rd:110ms"><div class="wq-dim-row-top"><span class="wq-dim-label">Commission<span class="wq-dim-gl">GL 6210</span></span><span class="wq-dim-delta">+5.1%</span></div><div class="wq-dim-track"><div class="wq-dim-fill"></div></div></div>
+            <div class="wq-dim-row" data-ink style="--rd:165ms"><div class="wq-dim-row-top"><span class="wq-dim-label">Cloud infra<span class="wq-dim-gl">GL 6480</span></span><span class="wq-dim-delta">+2.3%</span></div><div class="wq-dim-track"><div class="wq-dim-fill"></div></div></div>
+          </div>
+          <p class="wq-dim-foot" data-ink style="--rd:220ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sourced from certified metric · opex_variance v2.1</p>
+          <p class="wq-disclaimer" data-ink style="--rd:260ms">Figures are illustrative; bound to your certified variance metric at deployment.</p>
+        </div>
+      </article></div>
+
+      <!-- 03 -->
+      <div class="reveal"><article class="wq-card" style="--d:160ms" aria-label="Instant Budget Questions">
+        <div class="wq-head"><span class="wq-num">03<span class="wq-num-tick" aria-hidden="true"></span></span>
+          <span class="wq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span>
+        </div>
+        <h3 class="heading-sm">Instant Budget Questions</h3>
+        <p class="wq-claim">Ask in plain English — "which departments exceeded budget by &gt;10%?" — and get a ranked list with GL roots and the certified metric version behind every number.</p>
+        <div class="wq-proof">
+          <div class="wq-q" data-ink style="--rd:0ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Which departments exceeded budget by &gt;10%?</div>
+          <button class="wq-run" type="button" aria-controls="wq-ans3">Run question</button>
+          <div class="wq-ans" id="wq-ans3" aria-live="polite">
+            <div class="wq-ans-row"><span class="wq-rank">1</span><span class="wq-ans-dept">Marketing</span><span class="wq-ans-gl">GL 6100</span><span class="wq-ans-over">+14.0%</span></div>
+            <div class="wq-ans-row"><span class="wq-rank">2</span><span class="wq-ans-dept">R&amp;D</span><span class="wq-ans-gl">GL 6300</span><span class="wq-ans-over">+11.0%</span></div>
+            <div class="wq-ans-row"><span class="wq-rank">3</span><span class="wq-ans-dept">Legal</span><span class="wq-ans-gl">GL 6550</span><span class="wq-ans-over">+10.2%</span></div>
+          </div>
+          <p class="wq-ans-foot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Answered from certified metric · budget_query v1.4 · 0.6s</p>
+          <p class="wq-disclaimer" data-ink style="--rd:80ms">Sample question &amp; results; live results query your governed semantic layer.</p>
+        </div>
+      </article></div>
+
+      <!-- 04 -->
+      <div class="reveal"><article class="wq-card" style="--d:240ms" aria-label="EU AI Act and SOX Ready">
+        <div class="wq-head"><span class="wq-num">04<span class="wq-num-tick" aria-hidden="true"></span></span>
+          <span class="wq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+        </div>
+        <h3 class="heading-sm">EU AI Act &amp; SOX Ready</h3>
+        <p class="wq-claim">Every query carries a tamper-evident audit trail, role-based access, and lineage to source — so your next audit or regulator review is a lookup, not a two-week reconstruction.</p>
+        <div class="wq-proof">
+          <div class="wq-tags" data-ink style="--rd:0ms">
+            <span class="wq-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>SOX §302 / §404</span>
+            <span class="wq-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>EU AI Act Art. 13</span>
+          </div>
+          <div class="wq-chain-live" data-ink style="--rd:55ms" role="status"><span class="wq-chain-live-dot" aria-hidden="true"></span>Live audit trail</div>
+          <div class="wq-chain" role="log" aria-live="polite">
+            <span class="wq-chain-line" aria-hidden="true"></span>
+            <div class="wq-node ok"><span class="wq-node-dot" aria-hidden="true"></span><div class="wq-node-body"><span class="wq-node-ts">14:31:08</span><span class="wq-node-main">Controller · A. Chen ran "Q3 OPEX vs budget by region"</span><span class="wq-node-sub">metric opex_variance v2.1</span></div><span class="wq-node-tag ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Permitted</span></div>
+            <div class="wq-node ok"><span class="wq-node-dot" aria-hidden="true"></span><div class="wq-node-body"><span class="wq-node-ts">14:31:09</span><span class="wq-node-main">Access check · role CFO_EMEA</span><span class="wq-node-sub">cost centres EU-01 / EU-02</span></div><span class="wq-node-tag ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Approved</span></div>
+            <div class="wq-node info"><span class="wq-node-dot" aria-hidden="true"></span><div class="wq-node-body"><span class="wq-node-ts">14:31:09</span><span class="wq-node-main">Lineage traced to GL 6000–6499</span><span class="wq-node-sub">NetSuite snapshot 2026-09-30</span></div><span class="wq-node-tag info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Traced</span></div>
+          </div>
+          <button class="wq-run wq-replay" type="button">Replay trail</button>
+        </div>
+      </article></div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  const grid = document.querySelector('.wq-grid');
+  const section = document.querySelector('#why-quaeris');
+  if (!grid || !section) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.classList.add('wq', 'js');
+  const cards = Array.from(grid.querySelectorAll('.wq-card'));
+
+  // ---- Card initializers ----
+  function initCard1(card) {
+    const ts = card.querySelector('.wq-cert-ts');
+    if (ts && !reduce) {
+      const tick = () => { const s = String(new Date().getSeconds()).padStart(2, '0'); ts.textContent = 'v3.1 · 14:32:' + s + ' UTC'; };
+      tick(); setInterval(tick, 1000);
+    } else if (ts) { ts.textContent = 'v3.1 · 14:32:00 UTC'; }
+    const rows = Array.from(card.querySelectorAll('.wq-reg-row'));
+    rows.forEach(btn => btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      rows.forEach(b => { b.setAttribute('aria-expanded', 'false'); const ln = document.getElementById(b.getAttribute('aria-controls')); if (ln) ln.classList.remove('open'); });
+      if (!open) { btn.setAttribute('aria-expanded', 'true'); const ln = document.getElementById(btn.getAttribute('aria-controls')); if (ln) ln.classList.add('open'); }
+    }));
+  }
+  function initCard2(card) {
+    const btns = Array.from(card.querySelectorAll('.wq-dim-btn'));
+    const rows = Array.from(card.querySelectorAll('.wq-dim-row'));
+    function apply(btn, animate) {
+      btns.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      let data; try { data = JSON.parse(btn.dataset.rows); } catch (_) { return; }
+      rows.forEach((row, i) => {
+        const d = data[i]; if (!d) return;
+        row.querySelector('.wq-dim-delta').textContent = d[0];
+        const fill = row.querySelector('.wq-dim-fill');
+        if (animate && !reduce) { fill.style.width = '0%'; requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = d[1] + '%'; })); }
+        else fill.style.width = d[1] + '%';
+      });
+    }
+    btns.forEach(b => b.addEventListener('click', () => apply(b, true)));
+    apply(btns[0], true);
+  }
+  function initCard3(card) {
+    const rows = Array.from(card.querySelectorAll('.wq-ans-row'));
+    const foot = card.querySelector('.wq-ans-foot');
+    const runBtn = card.querySelector('.wq-run');
+    let timers = [];
+    function run() {
+      timers.forEach(clearTimeout); timers = [];
+      rows.forEach(r => r.classList.remove('show')); if (foot) foot.classList.remove('show');
+      runBtn.textContent = 'Ask again';
+      if (reduce) { rows.forEach(r => r.classList.add('show')); if (foot) foot.classList.add('show'); return; }
+      rows.forEach((r, i) => timers.push(setTimeout(() => r.classList.add('show'), i * 120)));
+      timers.push(setTimeout(() => { if (foot) foot.classList.add('show'); }, rows.length * 120 + 120));
+    }
+    runBtn.addEventListener('click', run);
+    run();
+  }
+  function initCard4(card) {
+    const nodes = Array.from(card.querySelectorAll('.wq-node'));
+    const replayBtn = card.querySelector('.wq-replay');
+    let timers = [];
+    function replay() {
+      timers.forEach(clearTimeout); timers = [];
+      nodes.forEach(n => n.classList.remove('show'));
+      if (reduce) { nodes.forEach(n => n.classList.add('show')); return; }
+      nodes.forEach((n, i) => timers.push(setTimeout(() => n.classList.add('show'), 200 + i * 220)));
+    }
+    replayBtn.addEventListener('click', replay);
+    replay();
+  }
+  const inits = [initCard1, initCard2, initCard3, initCard4];
+
+  function enter() {
+    cards.forEach((card, i) => {
+      const run = () => { card.classList.add('entered'); if (inits[i]) inits[i](card); };
+      if (reduce) run(); else setTimeout(run, i * 90);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { enter(); io.disconnect(); } }), { threshold: 0.18 });
+    io.observe(grid);
+  } else { enter(); }
+})();
+</script>
+
+</body>
+</html>

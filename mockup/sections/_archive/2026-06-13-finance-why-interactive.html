@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — finance "Why Quaeris" (interactive feature cards v2) — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+</style>
+
+<style>
+/* ============================================================
+   PORT: "Why Quaeris" v2 — asymmetric 2×2 bento + full-width
+   compliance banner. Auto-play proof animations triggered by
+   IntersectionObserver on section entry. No hover required for
+   value discovery. Ambient motion (scrolling rail, ticking
+   timestamp, cycling variance toggle). CSS only + minimal vanilla
+   JS, gated by .why.js, fully reduced-motion safe.
+   Distinctly different from the caps section: NO tabs, NO dark
+   dashboards, NO auto-advance timer bars.
+   ============================================================ */
+
+/* ── 1. Asymmetric bento layout ────────────────────────────── */
+.why-bento {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+/* Left column: card 1 spans both rows */
+.why-c1 { grid-column: 1; grid-row: 1 / 3; }
+/* Right column: card 2 top, card 3 bottom */
+.why-c2 { grid-column: 2; grid-row: 1; }
+.why-c3 { grid-column: 2; grid-row: 2; }
+/* Full-width compliance banner below */
+.why-c4 { grid-column: 1 / -1; grid-row: 3; }
+
+@media (max-width: 900px) {
+  .why-bento { grid-template-columns: 1fr; }
+  .why-c1, .why-c2, .why-c3, .why-c4 { grid-column: 1; grid-row: auto; }
+}
+
+/* ── 2. Card shell ──────────────────────────────────────────── */
+.why-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-7) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  transition:
+    box-shadow var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+.why-card:hover, .why-card:focus-within {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--brand-accent);
+  transform: translateY(-2px);
+}
+.why-card:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+
+/* Accent bar — draws in on card entry (JS adds .entered) and on hover */
+.why-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.why-card:hover::after,
+.why-card:focus-within::after,
+.why-card.entered::after { transform: scaleX(1); }
+
+/* Card header */
+.why-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--dur-base) var(--ease-out);
+}
+.why-icon svg {
+  width: 22px; height: 22px;
+  color: var(--brand-accent);
+  transition: color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.why-card:hover .why-icon,
+.why-card:focus-within .why-icon { background: var(--brand-accent); }
+.why-card:hover .why-icon svg,
+.why-card:focus-within .why-icon svg { color: var(--text-on-dark); transform: scale(1.1) rotate(-3deg); }
+
+.why-card h3 { color: var(--text-primary); }
+.why-card-desc { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+
+/* Proof zone */
+.why-proof {
+  margin-top: auto;
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ── 3. Entrance (gated by .why.js) ────────────────────────── */
+.why.js .why-card {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.why.js .why-card.entered { opacity: 1; transform: none; }
+
+/* ── 4. Card 1 proof: stats + scrolling chip rail ───────────── */
+.why-metrics-stat {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.why-metrics-count {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 56px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--brand-accent);
+  font-variant-numeric: tabular-nums;
+}
+.why-metrics-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); line-height: 1.4; }
+
+.why-cert-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+.why-cert-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+}
+.why.js .why-cert-dot { animation: why-certpulse 2.4s ease-in-out infinite; }
+@keyframes why-certpulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(26,158,108,0); }
+  50%      { box-shadow: 0 0 0 5px rgba(26,158,108,0.18); }
+}
+.why-cert-text { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.why-cert-ts   { margin-left: auto; font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Scrolling chip rail */
+.why-rail-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.why-rail-wrap::before,
+.why-rail-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 36px;
+  z-index: 2;
+  pointer-events: none;
+}
+.why-rail-wrap::before { left: 0;  background: linear-gradient(to right, var(--bg-surface), transparent); }
+.why-rail-wrap::after  { right: 0; background: linear-gradient(to left,  var(--bg-surface), transparent); }
+.why-rail {
+  display: flex;
+  gap: var(--space-2);
+  width: max-content;
+  padding: var(--space-1) 0;
+}
+.why.js .why-rail { animation: why-rail-scroll 24s linear infinite; }
+.why.js:hover .why-rail,
+.why.js:focus-within .why-rail { animation-play-state: paused; }
+@keyframes why-rail-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.why-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast);
+}
+.why-chip svg { width: 11px; height: 11px; color: var(--success); flex-shrink: 0; }
+.why-chip:hover { color: var(--brand-accent); background: var(--brand-accent-soft); border-color: var(--brand-accent); }
+
+/* ── 5. Card 2 proof: auto-cycling variance toggle ──────────── */
+.why-dim-toolbar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.why-dim-btn {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+  min-height: 32px;
+}
+.why-dim-btn:hover { color: var(--text-primary); border-color: var(--border-strong); }
+.why-dim-btn[aria-pressed="true"] {
+  color: var(--text-on-dark);
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+}
+.why-dim-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+.why-dim-rows { display: flex; flex-direction: column; gap: var(--space-3); }
+.why-dim-row  { display: flex; flex-direction: column; gap: 5px; }
+.why-dim-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+.why-dim-row-head b {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.why-dim-track {
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+.why-dim-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+/* ── 6. Card 3 proof: typewriter question → staggered answers ─ */
+.why-ask-bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background: var(--brand-accent-soft);
+  border: 1px solid rgba(147,51,234,0.18);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+.why-ask-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.why-ask-avatar svg { width: 14px; height: 14px; color: var(--text-on-dark); }
+.why-ask-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--brand-accent-deep);
+  line-height: 1.5;
+}
+.why-cursor {
+  display: inline-block;
+  width: 2px; height: 0.9em;
+  background: var(--brand-accent);
+  vertical-align: middle;
+  margin-left: 1px;
+}
+.why.js .why-cursor { animation: why-blink 0.95s step-end infinite; }
+@keyframes why-blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+.why-cursor.done { display: none; }
+
+.why-ans-rows { display: flex; flex-direction: column; gap: 6px; }
+.why-ans-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 7px var(--space-3);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.why-ans-row.show { opacity: 1; transform: none; }
+.why-ans-dept { flex: 1; font-weight: 600; color: var(--text-primary); }
+.why-ans-gl   { font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.why-ans-pct  {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--error);
+  background: rgba(212,61,81,0.08);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  font-variant-numeric: tabular-nums;
+}
+.why-ans-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.why-ans-foot svg { width: 12px; height: 12px; color: var(--brand-accent); }
+
+/* ── 7. Card 4 (compliance banner): horizontal layout ─────── */
+.why-c4 {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--space-9);
+}
+@media (max-width: 900px) { .why-c4 { flex-direction: column; gap: var(--space-6); } }
+
+.why-compliance-left  { flex: 0 0 auto; display: flex; flex-direction: column; gap: var(--space-5); max-width: 340px; }
+.why-compliance-right { flex: 1; display: flex; flex-direction: column; gap: var(--space-4); }
+@media (max-width: 900px) { .why-compliance-left { max-width: 100%; } }
+
+/* Compliance badge 2×2 grid */
+.why-cbadges {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+.why-cbadge {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  opacity: 0;
+  transform: scale(0.94);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+.why-cbadge.show { opacity: 1; transform: none; }
+.why-cbadge:hover { border-color: var(--brand-accent); }
+.why-cbadge-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.why-cbadge-icon.green  { background: rgba(26,158,108,0.12); }
+.why-cbadge-icon.purple { background: var(--brand-accent-soft); }
+.why-cbadge-icon.green  svg { color: var(--success); }
+.why-cbadge-icon.purple svg { color: var(--brand-accent); }
+.why-cbadge-icon svg { width: 18px; height: 18px; }
+.why-cbadge-text { display: flex; flex-direction: column; gap: 2px; }
+.why-cbadge-label { font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+.why-cbadge-desc  { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+
+/* Audit trail log */
+.why-trail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-1);
+}
+.why-trail-head .eyebrow { color: var(--text-tertiary); }
+.why-trail-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--success);
+}
+.why-trail-live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+}
+.why.js .why-trail-live-dot { animation: why-certpulse 1.8s ease-in-out infinite; }
+
+.why-trail { display: flex; flex-direction: column; }
+.why-trail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.why-trail-row:first-child { border-top: 1px solid var(--border-subtle); }
+.why-trail-row.show { opacity: 1; transform: none; }
+.why-trail-ts {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  padding-top: 3px;
+  min-width: 92px;
+}
+.why-trail-body { flex: 1; }
+.why-trail-actor { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.why-trail-desc  { font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin-top: 2px; }
+.why-trail-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  padding: 3px 9px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.why-trail-tag.ok   { color: var(--success);       background: rgba(26,158,108,0.10);  }
+.why-trail-tag.info { color: var(--brand-accent);   background: var(--brand-accent-soft); }
+.why-trail-tag svg  { width: 10px; height: 10px; }
+
+/* ── 8. Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .why.js .why-card,
+  .why-ans-row,
+  .why-trail-row,
+  .why-cbadge,
+  .why-dim-fill {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .why.js .why-rail          { animation: none !important; }
+  .why.js .why-cursor        { animation: none !important; }
+  .why.js .why-cert-dot,
+  .why.js .why-trail-live-dot { animation: none !important; }
+}
+
+/* ── Shared accent-line span ────────────────────────────────── */
+.accent-line { color: var(--brand-accent); }
+</style>
+</head>
+<body>
+
+<section id="why-quaeris" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="why-heading">
+  <div class="container">
+
+    <div class="section-header center reveal">
+      <span class="eyebrow">Why Quaeris</span>
+      <h2 id="why-heading" class="display-lg">Built for the way finance<br><span class="accent-line">actually works.</span></h2>
+      <p class="subcopy body-lg">Every feature is engineered for the audit trails, certified metrics, and compliance workflows that keep CFOs and controllers accountable at close.</p>
+    </div>
+
+    <div class="why-bento reveal">
+
+      <!-- ══════════════════════════════════════════════════════
+           Card 1 — Certified Metrics Library (left col, 2 rows)
+           ══════════════════════════════════════════════════════ -->
+      <article class="why-card why-c1" tabindex="0" style="--d:0ms"
+               aria-label="Certified Metrics Library">
+        <span class="why-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <h3 class="heading-sm">Certified Metrics Library</h3>
+        <p class="why-card-desc">Revenue, COGS, SG&amp;A, EBT, tax provision, headcount — each defined once at the semantic layer. When your controller runs month-end close, every team sees the same certified number.</p>
+
+        <div class="why-proof">
+          <div class="why-metrics-stat">
+            <span class="why-metrics-count" id="why-metric-count" aria-live="polite">0</span>
+            <span class="why-metrics-label">certified metrics<br>zero spreadsheet variants</span>
+          </div>
+
+          <div class="why-cert-bar" role="status" aria-label="All metrics certified and version-locked">
+            <span class="why-cert-dot" aria-hidden="true"></span>
+            <span class="why-cert-text">All metrics certified &amp; version-locked</span>
+            <span class="why-cert-ts" id="why-cert-ts" aria-live="polite">v3.1 · 14:32:00 UTC</span>
+          </div>
+
+          <div class="why-rail-wrap" role="list" aria-label="Examples of certified metrics">
+            <div class="why-rail" aria-hidden="true">
+              <!-- 8 chips, duplicated for seamless scroll loop -->
+              <span class="why-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Revenue · GL 4000–4099</span>
+              <span class="why-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>COGS · GL 5000–5199</span>
+              <span class="why-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>SG&amp;A · GL 6000–6499</span>
+              <span class="why-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>EBT · derived</span>
+              <span class="why-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tax provision · GL 7200</span>
+              <span class="why-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Headcount · HR master</span>
+              <span class="why-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Gross margin · derived</span>
+              <span class="why-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>EBITDA · multi-source</span>
+              <!-- duplicate set for seamless loop -->
+              <span class="why-chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Revenue · GL 4000–4099</span>
+              <span class="why-chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>COGS · GL 5000–5199</span>
+              <span class="why-chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>SG&amp;A · GL 6000–6499</span>
+              <span class="why-chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>EBT · derived</span>
+              <span class="why-chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tax provision · GL 7200</span>
+              <span class="why-chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Headcount · HR master</span>
+              <span class="why-chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Gross margin · derived</span>
+              <span class="why-chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>EBITDA · multi-source</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ══════════════════════════════════════════════════════
+           Card 2 — Multi-Dimensional Variance (top right)
+           ══════════════════════════════════════════════════════ -->
+      <article class="why-card why-c2" tabindex="0" style="--d:100ms"
+               aria-label="Multi-Dimensional Variance">
+        <span class="why-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M13 17V9"/><path d="M18 17V5"/><path d="M8 17v-3"/></svg>
+        </span>
+        <h3 class="heading-sm">Multi-Dimensional Variance</h3>
+        <p class="why-card-desc">Compare actual vs budget vs forecast vs prior year — sliced by GL account, cost center, region, or custom hierarchy. Drivers ranked and GL-cited in seconds.</p>
+
+        <div class="why-proof">
+          <div class="why-dim-toolbar" role="group" aria-label="Compare actuals against">
+            <button class="why-dim-btn" type="button" aria-pressed="true"
+              data-rows='[{"label":"OPEX total","val":"+8.8%","w":"72%"},{"label":"Commission · GL 6210","val":"+5.1%","w":"42%"},{"label":"Cloud infra · GL 6480","val":"+2.3%","w":"19%"}]'>
+              vs Budget
+            </button>
+            <button class="why-dim-btn" type="button" aria-pressed="false"
+              data-rows='[{"label":"OPEX total","val":"+3.2%","w":"26%"},{"label":"Commission · GL 6210","val":"+1.8%","w":"15%"},{"label":"Cloud infra · GL 6480","val":"+0.9%","w":"7%"}]'>
+              vs Forecast
+            </button>
+            <button class="why-dim-btn" type="button" aria-pressed="false"
+              data-rows='[{"label":"OPEX total","val":"+12.4%","w":"100%"},{"label":"Commission · GL 6210","val":"+7.6%","w":"61%"},{"label":"Cloud infra · GL 6480","val":"+3.1%","w":"25%"}]'>
+              vs Prior Yr
+            </button>
+          </div>
+          <div class="why-dim-rows" aria-live="polite" aria-label="Variance breakdown">
+            <div class="why-dim-row">
+              <div class="why-dim-row-head"><span class="why-dim-row-label">OPEX total</span><b class="why-dim-row-val">+8.8%</b></div>
+              <div class="why-dim-track"><div class="why-dim-fill" style="width:72%"></div></div>
+            </div>
+            <div class="why-dim-row">
+              <div class="why-dim-row-head"><span class="why-dim-row-label">Commission · GL 6210</span><b class="why-dim-row-val">+5.1%</b></div>
+              <div class="why-dim-track"><div class="why-dim-fill" style="width:42%"></div></div>
+            </div>
+            <div class="why-dim-row">
+              <div class="why-dim-row-head"><span class="why-dim-row-label">Cloud infra · GL 6480</span><b class="why-dim-row-val">+2.3%</b></div>
+              <div class="why-dim-track"><div class="why-dim-fill" style="width:19%"></div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ══════════════════════════════════════════════════════
+           Card 3 — Instant Budget Questions (bottom right)
+           ══════════════════════════════════════════════════════ -->
+      <article class="why-card why-c3" tabindex="0" style="--d:200ms"
+               aria-label="Instant Budget Questions">
+        <span class="why-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        <h3 class="heading-sm">Instant Budget Questions</h3>
+        <p class="why-card-desc">Ask in plain English, get ranked results with GL roots and metric versions. No SQL sprint. No waiting until close.</p>
+
+        <div class="why-proof">
+          <div class="why-ask-bubble" role="status" aria-label="Example query and response">
+            <span class="why-ask-avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <span class="why-ask-text" id="why-ask-text" aria-live="polite">Which departments exceeded budget by &gt;10%?</span>
+          </div>
+          <div class="why-ans-rows" aria-live="polite">
+            <div class="why-ans-row" id="why-ans-1">
+              <span class="why-ans-dept">Marketing</span>
+              <span class="why-ans-gl">GL 6100</span>
+              <span class="why-ans-pct">+14%</span>
+            </div>
+            <div class="why-ans-row" id="why-ans-2">
+              <span class="why-ans-dept">R&amp;D</span>
+              <span class="why-ans-gl">GL 6300</span>
+              <span class="why-ans-pct">+11%</span>
+            </div>
+            <div class="why-ans-row" id="why-ans-3">
+              <span class="why-ans-dept">Legal</span>
+              <span class="why-ans-gl">GL 6550</span>
+              <span class="why-ans-pct">+10.2%</span>
+            </div>
+          </div>
+          <div class="why-ans-foot" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Sourced from certified metric · <strong>budget_variance v2.1</strong>
+          </div>
+        </div>
+      </article>
+
+      <!-- ══════════════════════════════════════════════════════
+           Card 4 — EU AI Act & SOX Ready (full-width banner)
+           ══════════════════════════════════════════════════════ -->
+      <article class="why-card why-c4" tabindex="0" style="--d:300ms"
+               aria-label="EU AI Act and SOX compliance">
+
+        <div class="why-compliance-left">
+          <span class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </span>
+          <h3 class="heading-sm">EU AI Act &amp; SOX Ready</h3>
+          <p class="why-card-desc">Full query-level audit trail, role-based access, and lineage to source system — so your next audit or regulator review is a lookup, not a two-week reconstruction.</p>
+          <div class="why-cbadges" aria-label="Compliance standards">
+            <div class="why-cbadge" id="why-cb-1">
+              <span class="why-cbadge-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span class="why-cbadge-text"><div class="why-cbadge-label">SOX Controls</div><div class="why-cbadge-desc">302 &amp; 404 audit trail per query</div></span>
+            </div>
+            <div class="why-cbadge" id="why-cb-2">
+              <span class="why-cbadge-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span class="why-cbadge-text"><div class="why-cbadge-label">EU AI Act Art. 13</div><div class="why-cbadge-desc">Transparency &amp; human oversight built in</div></span>
+            </div>
+            <div class="why-cbadge" id="why-cb-3">
+              <span class="why-cbadge-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+              <span class="why-cbadge-text"><div class="why-cbadge-label">Role-Based Access</div><div class="why-cbadge-desc">Query-level permissions, no workarounds</div></span>
+            </div>
+            <div class="why-cbadge" id="why-cb-4">
+              <span class="why-cbadge-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+              <span class="why-cbadge-text"><div class="why-cbadge-label">Immutable Log</div><div class="why-cbadge-desc">Tamper-evident, timestamped records</div></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="why-compliance-right">
+          <div class="why-trail-head">
+            <span class="eyebrow" style="color:var(--text-tertiary)">Live audit trail</span>
+            <span class="why-trail-live" aria-label="Live feed">
+              <span class="why-trail-live-dot" aria-hidden="true"></span>Live
+            </span>
+          </div>
+          <div class="why-trail" role="log" aria-label="Audit trail log" aria-live="polite">
+            <div class="why-trail-row" id="why-tr-1">
+              <span class="why-trail-ts">14:31:08 UTC</span>
+              <span class="why-trail-body">
+                <div class="why-trail-actor">Controller · A. Chen</div>
+                <div class="why-trail-desc">"Q3 OPEX vs budget by region" · metric: opex_variance v2.1</div>
+              </span>
+              <span class="why-trail-tag ok">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Permitted
+              </span>
+            </div>
+            <div class="why-trail-row" id="why-tr-2">
+              <span class="why-trail-ts">14:31:09 UTC</span>
+              <span class="why-trail-body">
+                <div class="why-trail-actor">System · lineage engine</div>
+                <div class="why-trail-desc">Traced to GL 6000–6499 · NetSuite snapshot 2026-09-30</div>
+              </span>
+              <span class="why-trail-tag info">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Traced
+              </span>
+            </div>
+            <div class="why-trail-row" id="why-tr-3">
+              <span class="why-trail-ts">14:31:09 UTC</span>
+              <span class="why-trail-body">
+                <div class="why-trail-actor">Access check</div>
+                <div class="why-trail-desc">Role CFO_EMEA · cost centres EU-01, EU-02 · approved</div>
+              </span>
+              <span class="why-trail-tag ok">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Approved
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </article>
+
+    </div><!-- /why-bento -->
+  </div><!-- /container -->
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  const bento = document.querySelector('.why-bento');
+  if (!bento) return;
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const section = bento.closest('section');
+  section.classList.add('why', 'js');
+
+  const cards = Array.from(bento.querySelectorAll('.why-card'));
+
+  /* ── Entrance choreography ────────────────────────────────── */
+  function enterAll() {
+    cards.forEach((card, i) => {
+      const delay = reduce ? 0 : 60 + i * 110;
+      setTimeout(() => {
+        card.classList.add('entered');
+        if (i === 0) initCard1(card);
+        if (i === 1) initCard2(card);
+        if (i === 2) initCard3(card);
+        if (i === 3) initCard4(card);
+      }, delay);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    let fired = false;
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !fired) { fired = true; enterAll(); io.disconnect(); }
+      });
+    }, { threshold: 0.15 });
+    io.observe(bento);
+  } else {
+    enterAll();
+  }
+
+  /* ── Card 1: count-up + live ticking timestamp ───────────── */
+  function initCard1() {
+    const countEl = document.getElementById('why-metric-count');
+    if (countEl) {
+      if (reduce) {
+        countEl.textContent = '200+';
+      } else {
+        const target = 200, dur = 1100;
+        const start = performance.now();
+        (function tick(now) {
+          const t = Math.min(1, (now - start) / dur);
+          const ease = 1 - Math.pow(1 - t, 3);
+          countEl.textContent = Math.round(target * ease) + (t >= 1 ? '+' : '');
+          if (t < 1) requestAnimationFrame(tick);
+        })(start);
+      }
+    }
+
+    if (!reduce) {
+      const tsEl = document.getElementById('why-cert-ts');
+      if (tsEl) {
+        let min = 32, sec = 0;
+        setInterval(() => {
+          sec = (sec + 1) % 60;
+          if (sec === 0) min = (min + 1) % 60;
+          tsEl.textContent = 'v3.1 · 14:' + String(min).padStart(2,'0') + ':' + String(sec).padStart(2,'0') + ' UTC';
+        }, 1000);
+      }
+    }
+  }
+
+  /* ── Card 2: auto-cycling dimension toggle ─────────────────── */
+  function initCard2(card) {
+    const btns  = Array.from(card.querySelectorAll('.why-dim-btn'));
+    const fills = Array.from(card.querySelectorAll('.why-dim-fill'));
+    const vals  = Array.from(card.querySelectorAll('.why-dim-row-val'));
+    const lbls  = Array.from(card.querySelectorAll('.why-dim-row-label'));
+    let cycleTimer;
+
+    function applyData(btn, animate) {
+      btns.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      const rows = JSON.parse(btn.dataset.rows);
+      rows.forEach((rd, i) => {
+        if (vals[i])  vals[i].textContent  = rd.val;
+        if (lbls[i])  lbls[i].textContent  = rd.label;
+        if (fills[i]) {
+          if (animate && !reduce) {
+            fills[i].style.width = '0%';
+            requestAnimationFrame(() => { fills[i].style.width = rd.w; });
+          } else {
+            fills[i].style.width = rd.w;
+          }
+        }
+      });
+    }
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyData(btn, true);
+        clearInterval(cycleTimer); // manual selection pauses auto-cycle
+      });
+    });
+
+    function startCycle() {
+      if (reduce) return;
+      let idx = 0;
+      cycleTimer = setInterval(() => {
+        if (card.matches(':hover') || card.matches(':focus-within')) return;
+        idx = (idx + 1) % btns.length;
+        applyData(btns[idx], true);
+      }, 2800);
+    }
+    startCycle();
+  }
+
+  /* ── Card 3: typewriter → staggered answer reveal ─────────── */
+  function initCard3() {
+    const textEl = document.getElementById('why-ask-text');
+    const ansEls = [
+      document.getElementById('why-ans-1'),
+      document.getElementById('why-ans-2'),
+      document.getElementById('why-ans-3')
+    ];
+    const question = 'Which departments exceeded budget by >10%?';
+
+    if (reduce) {
+      // Static: just show everything
+      if (textEl) textEl.textContent = question;
+      ansEls.forEach(el => { if (el) el.classList.add('show'); });
+      return;
+    }
+
+    // Clear text and add cursor
+    if (textEl) {
+      textEl.textContent = '';
+      const cursor = document.createElement('span');
+      cursor.className = 'why-cursor';
+      cursor.setAttribute('aria-hidden', 'true');
+      textEl.appendChild(cursor);
+
+      const textNode = document.createTextNode('');
+      textEl.insertBefore(textNode, cursor);
+      let i = 0;
+      function typeChar() {
+        if (i < question.length) {
+          textNode.textContent = question.slice(0, ++i);
+          setTimeout(typeChar, 26 + Math.random() * 22);
+        } else {
+          cursor.classList.add('done');
+          // reveal answers with stagger
+          ansEls.forEach((el, idx) => {
+            if (el) setTimeout(() => el.classList.add('show'), 320 + idx * 190);
+          });
+        }
+      }
+      setTimeout(typeChar, 600); // start after card entrance
+    }
+  }
+
+  /* ── Card 4: staggered trail rows + badge reveals ─────────── */
+  function initCard4() {
+    const trailIds = ['why-tr-1','why-tr-2','why-tr-3'];
+    const badgeIds = ['why-cb-1','why-cb-2','why-cb-3','why-cb-4'];
+    const tGap = reduce ? 0 : 230;
+    const bGap = reduce ? 0 : 140;
+
+    trailIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) setTimeout(() => el.classList.add('show'), tGap * i);
+    });
+    badgeIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) setTimeout(() => el.classList.add('show'), bGap * i);
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>

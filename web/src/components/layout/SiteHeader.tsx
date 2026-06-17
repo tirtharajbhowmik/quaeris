@@ -326,7 +326,7 @@ export default function SiteHeader() {
               Contact
             </a>
             <a
-              href="#cta-band"
+              href={brand.nav.contactHref}
               className="btn btn-primary header-cta"
               style={{ fontSize: "14px", padding: "10px 22px" }}
             >
@@ -421,7 +421,7 @@ export default function SiteHeader() {
 
         <div className="mobile-nav-cta">
           <a
-            href="#cta-band"
+            href={brand.nav.contactHref}
             className="btn btn-primary"
             style={{ width: "100%", justifyContent: "center" }}
             onClick={() => setMobileOpen(false)}

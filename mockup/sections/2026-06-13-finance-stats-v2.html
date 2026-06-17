@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — finance stats band v2 — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  /* Static reveal — the scripted .fin-stats sections manage their own opacity gating */
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style>
+/* ============================================================
+   PORT: fin-stat- (stats band v2)
+   Modernised Outcomes stats band — 4-card grid with micro-vizzes,
+   count-up numbers, staggered scroll entrance.
+   Move this block to globals.css at port time.
+   ============================================================ */
+
+/* ---- Band-level scope ---- */
+.fin-stats { /* scope class — .js variant added by IIFE */ }
+
+/* ---- Status row (below H2) ---- */
+.fin-stat-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-3);
+  margin-bottom: 0;
+  line-height: 1.4;
+}
+.fin-stat-livedot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* ---- Grid ---- */
+.fin-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  align-items: stretch;
+  margin-top: var(--space-8);
+}
+.fin-stat-grid > * { height: 100%; }
+@media (max-width: 768px) {
+  .fin-stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fin-stat-grid { grid-template-columns: 1fr; }
+}
+
+/* ---- Card shell ---- */
+.fin-stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+  transition:
+    box-shadow var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+.fin-stat-card:hover,
+.fin-stat-card:focus-within {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+  border-color: var(--brand-accent);
+}
+
+/* ---- Card top row: index + tick + icon ---- */
+.fin-stat-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 40px;
+}
+.fin-stat-idx {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.fin-stat-tick {
+  display: block;
+  height: 2px;
+  width: 20px;
+  background: var(--brand-accent);
+  transform-origin: left;
+  flex-shrink: 0;
+  /* Default (no-JS): visible, fully extended */
+  transform: scaleX(1);
+}
+.fin-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  transition: background var(--dur-base) var(--ease-out);
+}
+.fin-stat-icon svg {
+  width: 20px;
+  height: 20px;
+  color: var(--brand-accent);
+  transition: color var(--dur-base) var(--ease-out);
+}
+.fin-stat-card:hover .fin-stat-icon,
+.fin-stat-card:focus-within .fin-stat-icon {
+  background: var(--brand-accent);
+}
+.fin-stat-card:hover .fin-stat-icon svg,
+.fin-stat-card:focus-within .fin-stat-icon svg {
+  color: var(--text-on-dark);
+}
+
+/* ---- Fixed-height micro-viz slot (guarantees number baseline alignment) ---- */
+.fin-stat-viz {
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* ---- Number ---- */
+.fin-stat-num {
+  /* inherits .stat-num from globals */
+  color: var(--brand-accent);
+  font-variant-numeric: tabular-nums;
+}
+/* Card 2: green zero */
+.fin-stat-card--zero .fin-stat-num {
+  color: var(--success);
+}
+
+/* ---- Label & sublabel ---- */
+.fin-stat-label {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.fin-stat-sub {
+  color: var(--text-tertiary);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: auto;
+}
+/* Card 2 register micro-caption */
+.fin-stat-cap {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+  margin-top: var(--space-1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   MICRO-VIZ — Card 1: hours bar
+   ============================================================ */
+.fin-stat-track {
+  width: 100%;
+  height: 9px;
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  position: relative;
+}
+.fin-stat-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  position: relative;
+  overflow: hidden;
+  /* Default (no-JS): full width */
+  width: var(--w);
+  transition: background var(--dur-fast);
+}
+.fin-stat-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(100%); /* default: sweep gone */
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+}
+
+/* ============================================================
+   MICRO-VIZ — Card 2: pulsing success dot + shield-check draw
+   ============================================================ */
+.fin-stat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+  margin-right: var(--space-3);
+}
+.fin-stat-seal {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+.fin-stat-seal-check {
+  /* Default (no-JS): check drawn */
+  stroke-dasharray: 30;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-out);
+}
+
+/* ============================================================
+   MICRO-VIZ — Card 3: 3-step timeline rail
+   ============================================================ */
+.fin-stat-rail-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+.fin-stat-rail {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 50%;
+  height: 2px;
+  background: var(--border-subtle);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+.fin-stat-nodes {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.fin-stat-node {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border-subtle);
+  box-shadow: 0 0 0 3px var(--bg-surface);
+  transition: background var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  flex-shrink: 0;
+}
+/* Default (no-JS): all lit */
+.fin-stat-node.lit {
+  background: var(--brand-accent);
+  box-shadow: 0 0 0 3px var(--brand-accent-soft);
+}
+
+/* ============================================================
+   MICRO-VIZ — Card 4: SVG progress ring + lineage dots
+   ============================================================ */
+.fin-stat-ring-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.fin-stat-ring {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  overflow: visible;
+}
+.fin-stat-ring-base {
+  fill: none;
+  stroke: var(--brand-accent-soft);
+  stroke-width: 3.5;
+}
+.fin-stat-ring-arc {
+  fill: none;
+  stroke: var(--brand-accent);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  /* circumference of r=18: 2π×18 ≈ 113.1 */
+  stroke-dasharray: 113.1;
+  /* Default (no-JS): fully drawn */
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  transform: rotate(-90deg);
+  transition: stroke-dashoffset 750ms var(--ease-out);
+}
+.fin-stat-linedots {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.fin-stat-linedot-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--text-tertiary);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.fin-stat-linedot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-subtle);
+  flex-shrink: 0;
+  transition: background var(--dur-base) var(--ease-out);
+}
+/* Default (no-JS): all lit */
+.fin-stat-linedot.lit {
+  background: var(--brand-accent);
+}
+
+/* ============================================================
+   ENTRANCE — gated behind .fin-stats.js (IIFE adds this)
+   ============================================================ */
+
+/* From-zero states — only applied when .js class is present */
+.fin-stats.js .fin-stat-card {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out) var(--d, 0ms),
+    transform var(--dur-slow) var(--ease-out) var(--d, 0ms),
+    box-shadow var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+.fin-stats.js .fin-stat-card.entered {
+  opacity: 1;
+  transform: none;
+}
+
+/* Tick: .js resets to 0, .entered wipes it */
+.fin-stats.js .fin-stat-tick {
+  transform: scaleX(0);
+  transition: transform var(--dur-slow) var(--ease-out) calc(var(--d, 0ms) + 200ms);
+}
+.fin-stats.js .fin-stat-card.entered .fin-stat-tick {
+  transform: scaleX(1);
+}
+
+/* Bar fill: .js resets to 0 width */
+.fin-stats.js .fin-stat-fill {
+  width: 0;
+  transition: width var(--dur-slow) var(--ease-out) calc(var(--d, 0ms) + 280ms);
+}
+.fin-stats.js .fin-stat-card.entered .fin-stat-fill {
+  width: var(--w);
+}
+/* Bar shine: fires once on entered */
+.fin-stats.js .fin-stat-card.entered .fin-stat-fill::after {
+  animation: cap-barshine 1.1s var(--ease-out) calc(var(--d, 0ms) + 730ms) 1;
+}
+
+/* Progress ring: .js resets to empty */
+.fin-stats.js .fin-stat-ring-arc {
+  stroke-dashoffset: 113.1;
+  transition: stroke-dashoffset 750ms var(--ease-out) calc(var(--d, 0ms) + 280ms);
+}
+.fin-stats.js .fin-stat-card.entered .fin-stat-ring-arc {
+  stroke-dashoffset: 0;
+}
+
+/* Timeline nodes: .js resets to unlit, .lit class added by JS timeouts */
+.fin-stats.js .fin-stat-node {
+  background: var(--border-subtle);
+  box-shadow: 0 0 0 3px var(--bg-surface);
+}
+.fin-stats.js .fin-stat-node.lit {
+  background: var(--brand-accent);
+  box-shadow: 0 0 0 3px var(--brand-accent-soft);
+}
+
+/* Lineage dots: .js resets to unlit */
+.fin-stats.js .fin-stat-linedot {
+  background: var(--border-subtle);
+}
+.fin-stats.js .fin-stat-linedot.lit {
+  background: var(--brand-accent);
+}
+
+/* Shield-check: .js resets to undrawn */
+.fin-stats.js .fin-stat-seal-check {
+  stroke-dashoffset: 30;
+}
+.fin-stats.js .fin-stat-card.entered .fin-stat-seal-check {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-out) calc(var(--d, 0ms) + 320ms);
+}
+
+/* Card 2 success dot: ambient pulse (only one ambient loop on the whole band) */
+.fin-stats.js .fin-stat-dot {
+  animation: wq-pulse 2.4s ease-in-out infinite;
+}
+
+/* Live dot in status row */
+.fin-stats.js .fin-stat-livedot {
+  animation: wq-pulse 2.4s ease-in-out infinite 0.8s;
+}
+
+/* ============================================================
+   REDUCED MOTION — snap everything to final
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .fin-stats.js .fin-stat-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: box-shadow var(--dur-base) var(--ease-out),
+                border-color var(--dur-base) var(--ease-out) !important;
+  }
+  .fin-stats.js .fin-stat-tick {
+    transform: scaleX(1) !important;
+    transition: none !important;
+  }
+  .fin-stats.js .fin-stat-fill {
+    width: var(--w) !important;
+    transition: none !important;
+  }
+  .fin-stats.js .fin-stat-fill::after {
+    animation: none !important;
+  }
+  .fin-stats.js .fin-stat-ring-arc {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .fin-stats.js .fin-stat-node {
+    background: var(--brand-accent) !important;
+    box-shadow: 0 0 0 3px var(--brand-accent-soft) !important;
+  }
+  .fin-stats.js .fin-stat-linedot {
+    background: var(--brand-accent) !important;
+  }
+  .fin-stats.js .fin-stat-seal-check {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .fin-stats.js .fin-stat-dot,
+  .fin-stats.js .fin-stat-livedot {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   NOTE: wq-pulse and cap-barshine keyframes are defined in the
+   [3] WHY QUAERIS and [2] CAPABILITIES CSS blocks in globals.css /
+   the parent finance-v3.html. They are reused here verbatim.
+   In this standalone mockup they are redeclared once below.
+   ============================================================ */
+@keyframes wq-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(26,158,108,0); }
+  50%       { box-shadow: 0 0 0 5px rgba(26,158,108,0.18); }
+}
+@keyframes cap-barshine {
+  to { transform: translateX(100%); }
+}
+
+</style>
+</head>
+<body style="background: var(--bg-canvas); min-height: 100vh; display: flex; align-items: center;">
+
+<!-- ============================================================
+     MOCKUP VIEWPORT — stats band only
+     ============================================================ -->
+<main id="main" style="width: 100%;">
+
+<section id="stats-band" class="section-pad fin-stats" aria-labelledby="stats-heading">
+  <div class="container">
+
+    <!-- Centered header — verbatim structure from the page -->
+    <div class="section-header center reveal">
+      <span class="eyebrow">Outcomes</span>
+      <h2 id="stats-heading" class="display-lg">The impact of instant, governed answers.</h2>
+      <!-- Proof status row — under the H2, centered -->
+      <p class="fin-stat-status" aria-hidden="true">
+        <span class="fin-stat-livedot" role="presentation"></span>
+        Verified against certified GL metrics
+      </p>
+    </div>
+
+    <!-- 4-card grid -->
+    <div class="fin-stat-grid reveal" role="list">
+
+      <!-- ======================================================
+           CARD 1 — 40 hrs saved per month-end close
+           Micro-viz: horizontal hours bar (83 % = 40/48 hrs)
+           ====================================================== -->
+      <article class="fin-stat-card" role="listitem"
+               style="--d:0ms"
+               aria-label="Outcome 1: 40 hours saved per month-end close. From manual reconciliation to instant query.">
+        <!-- Row 1: index + tick + icon -->
+        <div class="fin-stat-head" aria-hidden="true">
+          <span class="fin-stat-idx">01</span>
+          <span class="fin-stat-tick"></span>
+          <span class="fin-stat-icon">
+            <!-- lucide: clock -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Row 2: micro-viz (fixed 64px slot) -->
+        <div class="fin-stat-viz" aria-hidden="true">
+          <div class="fin-stat-track" role="presentation">
+            <div class="fin-stat-fill" style="--w:83%"></div>
+          </div>
+        </div>
+
+        <!-- Row 3: number -->
+        <span class="stat-num fin-stat-num" data-num="40" aria-label="40">40</span>
+
+        <!-- Row 4: label -->
+        <p class="fin-stat-label">Hours saved per month-end close</p>
+
+        <!-- Row 5: sublabel (pinned bottom) -->
+        <p class="fin-stat-sub">From manual reconciliation to instant query</p>
+      </article>
+
+      <!-- ======================================================
+           CARD 2 — 0 hallucinated numbers
+           Micro-viz: pulsing success dot + shield-check draw
+           ====================================================== -->
+      <article class="fin-stat-card fin-stat-card--zero" role="listitem"
+               style="--d:80ms"
+               aria-label="Outcome 2: Zero hallucinated numbers in compliance reports. Every answer cites certified metrics.">
+        <!-- Row 1 -->
+        <div class="fin-stat-head" aria-hidden="true">
+          <span class="fin-stat-idx">02</span>
+          <span class="fin-stat-tick"></span>
+          <span class="fin-stat-icon">
+            <!-- lucide: shield -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" focusable="false">
+              <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Row 2: micro-viz -->
+        <div class="fin-stat-viz" aria-hidden="true">
+          <span class="fin-stat-dot" role="presentation"></span>
+          <!-- Shield-check SVG with animated check-draw -->
+          <svg class="fin-stat-seal" viewBox="0 0 44 44"
+               aria-hidden="true" focusable="false">
+            <!-- Shield body (filled tint) -->
+            <path d="M22 4 C22 4 7 8 7 20 C7 30 14 36 22 40 C30 36 37 30 37 20 C37 8 22 4 22 4Z"
+                  fill="var(--brand-accent-soft)" stroke="none"/>
+            <!-- Shield outline -->
+            <path d="M22 4 C22 4 7 8 7 20 C7 30 14 36 22 40 C30 36 37 30 37 20 C37 8 22 4 22 4Z"
+                  fill="none" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Check mark (animated draw) -->
+            <path class="fin-stat-seal-check"
+                  d="M15 22 L20 27 L30 17"
+                  fill="none" stroke="var(--success)" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- Row 3: number (green) -->
+        <span class="stat-num fin-stat-num" data-num="0" aria-label="Zero">0</span>
+
+        <!-- Row 4: label -->
+        <p class="fin-stat-label">Hallucinated numbers in compliance reports</p>
+
+        <!-- Row 5: sublabel + register micro-caption -->
+        <p class="fin-stat-sub">Every answer cites certified metrics</p>
+        <p class="fin-stat-cap" aria-label="0 flagged — by design">0 flagged · by design</p>
+      </article>
+
+      <!-- ======================================================
+           CARD 3 — 3 days faster variance analysis
+           Micro-viz: 3-step timeline rail
+           ====================================================== -->
+      <article class="fin-stat-card" role="listitem"
+               style="--d:160ms"
+               aria-label="Outcome 3: 3 days faster to board-ready variance analysis versus traditional ad-hoc query cycle.">
+        <!-- Row 1 -->
+        <div class="fin-stat-head" aria-hidden="true">
+          <span class="fin-stat-idx">03</span>
+          <span class="fin-stat-tick"></span>
+          <span class="fin-stat-icon">
+            <!-- lucide: trending-down -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" focusable="false">
+              <polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/>
+              <polyline points="16 17 22 17 22 11"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Row 2: micro-viz — 3-node timeline rail -->
+        <div class="fin-stat-viz" aria-hidden="true">
+          <div class="fin-stat-rail-wrap">
+            <div class="fin-stat-rail"></div>
+            <div class="fin-stat-nodes">
+              <span class="fin-stat-node lit" data-node="0"></span>
+              <span class="fin-stat-node lit" data-node="1"></span>
+              <span class="fin-stat-node lit" data-node="2"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: number -->
+        <span class="stat-num fin-stat-num" data-num="3" aria-label="3">3</span>
+
+        <!-- Row 4: label -->
+        <p class="fin-stat-label">Days faster to board-ready variance analysis</p>
+
+        <!-- Row 5: sublabel -->
+        <p class="fin-stat-sub">vs. traditional ad-hoc query cycle</p>
+      </article>
+
+      <!-- ======================================================
+           CARD 4 — 100% audit-trail coverage
+           Micro-viz: SVG progress ring + 4 lineage dots
+           ====================================================== -->
+      <article class="fin-stat-card" role="listitem"
+               style="--d:240ms"
+               aria-label="Outcome 4: 100% audit-trail coverage on every financial query. GL lineage, user, timestamp, role enforced.">
+        <!-- Row 1 -->
+        <div class="fin-stat-head" aria-hidden="true">
+          <span class="fin-stat-idx">04</span>
+          <span class="fin-stat-tick"></span>
+          <span class="fin-stat-icon">
+            <!-- lucide: shield-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" focusable="false">
+              <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Row 2: micro-viz — progress ring + lineage dots -->
+        <div class="fin-stat-viz" aria-hidden="true">
+          <div class="fin-stat-ring-wrap">
+            <!-- SVG ring: r=18, cx=cy=22, circumference ≈ 113.1 -->
+            <svg class="fin-stat-ring" viewBox="0 0 44 44"
+                 aria-hidden="true" focusable="false">
+              <circle class="fin-stat-ring-base" cx="22" cy="22" r="18"/>
+              <circle class="fin-stat-ring-arc" cx="22" cy="22" r="18"/>
+            </svg>
+            <!-- Lineage dots: GL · user · timestamp · role -->
+            <div class="fin-stat-linedots" aria-hidden="true">
+              <span class="fin-stat-linedot-row">
+                <span class="fin-stat-linedot lit" data-linedot="0"></span>GL
+              </span>
+              <span class="fin-stat-linedot-row">
+                <span class="fin-stat-linedot lit" data-linedot="1"></span>User
+              </span>
+              <span class="fin-stat-linedot-row">
+                <span class="fin-stat-linedot lit" data-linedot="2"></span>Timestamp
+              </span>
+              <span class="fin-stat-linedot-row">
+                <span class="fin-stat-linedot lit" data-linedot="3"></span>Role
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: number -->
+        <span class="stat-num fin-stat-num" data-num="100" data-suffix="%" aria-label="100%">100%</span>
+
+        <!-- Row 4: label -->
+        <p class="fin-stat-label">Audit-trail coverage on every financial query</p>
+
+        <!-- Row 5: sublabel -->
+        <p class="fin-stat-sub">GL lineage, user, timestamp, role enforced</p>
+      </article>
+
+    </div><!-- /.fin-stat-grid -->
+  </div><!-- /.container -->
+</section>
+
+</main>
+
+<!-- ============================================================
+     [FIN-STATS] IIFE — scroll-triggered entrance + micro-vizzes
+     Mirrors the wq / caps observer pattern from finance-v3.html.
+     ============================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  /* 1. Find the grid; bail if not present (safety) */
+  const band = document.querySelector('#stats-band .fin-stat-grid');
+  if (!band) return;
+
+  /* 2. Scope element — the section itself */
+  const scope = document.querySelector('.fin-stats') || band.closest('#stats-band');
+
+  /* 3. Reduced-motion flag (needed before any class changes) */
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 4. fmt / countUp helpers */
+  function fmt(el, v) {
+    const dec = +(el.dataset.decimals || 0);
+    const n = dec ? (+v).toFixed(dec) : Math.round(v);
+    return (el.dataset.prefix || '') + n + (el.dataset.suffix || '');
+  }
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = fmt(el, target); return; }
+    /* Use Date.now() so timing is wall-clock accurate even in throttled tabs. */
+    const start = Date.now();
+    el.textContent = fmt(el, 0);
+    /* Safety: snap to final value after dur + 200ms in case rAF is suspended. */
+    const snap = setTimeout(() => { el.textContent = fmt(el, target); }, dur + 200);
+    (function tick() {
+      const t = Math.min(1, (Date.now() - start) / dur);
+      el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick);
+      else { clearTimeout(snap); el.textContent = fmt(el, target); }
+    })();
+  }
+
+  /* 5. Per-card micro-viz initialisation */
+  function playCardViz(card, idx) {
+    if (reduce) {
+      card.querySelectorAll('.fin-stat-node').forEach(n => n.classList.add('lit'));
+      card.querySelectorAll('.fin-stat-linedot').forEach(d => d.classList.add('lit'));
+      return;
+    }
+    if (idx === 2) {
+      const nodes = Array.from(card.querySelectorAll('.fin-stat-node'));
+      nodes.forEach((n, i) => {
+        n.classList.remove('lit');
+        setTimeout(() => n.classList.add('lit'), i * 180);
+      });
+    }
+    if (idx === 3) {
+      const dots = Array.from(card.querySelectorAll('.fin-stat-linedot'));
+      dots.forEach((d, i) => {
+        d.classList.remove('lit');
+        setTimeout(() => d.classList.add('lit'), 280 + i * 160);
+      });
+    }
+  }
+
+  /* 6. Cards list + enter function */
+  const cards = Array.from(band.querySelectorAll('.fin-stat-card'));
+  let entered = false;
+
+  function enter() {
+    if (entered) return;
+    entered = true;
+    cards.forEach(function (c, i) {
+      function run() {
+        c.classList.add('entered');
+        playCardViz(c, i);
+        c.querySelectorAll('[data-num]').forEach(function (n) {
+          countUp(n, +n.dataset.num, 750);
+        });
+      }
+      if (reduce) run();
+      else setTimeout(run, i * 80);
+    });
+  }
+
+  /* 7. Add .js class after the FIRST paint so the browser has rendered the
+        static (no-.js) final state, THEN establishing from-zero CSS states
+        before the IntersectionObserver callback adds .entered. Two rAFs give
+        us paint-frame + next-frame, which is the reliable pattern for CSS
+        transition gating. */
+  function init() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        /* NOW add .js — browser has painted, from-zero states activate */
+        scope.classList.add('js');
+
+        /* Set up the observer immediately after .js lands */
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver(function (es) {
+            es.forEach(function (e) {
+              if (e.isIntersecting) { enter(); io.disconnect(); }
+            });
+          }, { threshold: 0.3 });
+          io.observe(band);
+        } else {
+          enter();
+        }
+
+        /* Safety net: fire enter() if IO never triggers within 1.5s */
+        setTimeout(function () {
+          if (!band.querySelector('.fin-stat-card.entered')) enter();
+        }, 1500);
+      });
+    });
+  }
+
+  init();
+
+})();
+</script>
+
+</body>
+</html>

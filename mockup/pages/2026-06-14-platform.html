@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /platform — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* inline shim intentionally empty — globals.css provides hidden initial state; IO fires visible transition */
+</style>
+<!-- No-JS fallback: ensure .reveal elements are visible without JavaScript. -->
+<noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+
+<style id="port">
+/* ============================================================
+   PORT: plat- — /platform page. Move to globals.css at port time.
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — two-column: text left + architecture diagram right
+   ============================================================ */
+.plat-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  padding: var(--space-9) 0 var(--space-8);
+}
+@media (max-width: 900px) { .plat-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+/* --- Trust strip (3-item row below CTAs) --- */
+.plat-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  margin-top: var(--space-7);
+}
+.plat-trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.plat-trust-item svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+.plat-trust-item strong { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.plat-trust-item span { display: block; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+
+/* --- Architecture diagram card (right column) --- */
+.plat-arch-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.plat-arch-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.plat-arch-dots { display: flex; gap: 6px; }
+.plat-arch-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+.plat-arch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+}
+.plat-arch-badge svg { width: 12px; height: 12px; }
+.plat-arch-pillars { display: flex; flex-direction: column; gap: var(--space-3); }
+.plat-arch-pillar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+  cursor: default;
+}
+.plat-arch-pillar:hover { border-color: var(--brand-accent); background: var(--brand-accent-soft); }
+.plat-arch-pillar-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--dur-fast);
+}
+.plat-arch-pillar:hover .plat-arch-pillar-icon { background: var(--brand-accent); }
+.plat-arch-pillar-icon svg { width: 18px; height: 18px; color: var(--brand-accent); transition: color var(--dur-fast); }
+.plat-arch-pillar:hover .plat-arch-pillar-icon svg { color: var(--text-on-dark); }
+.plat-arch-pillar-label strong { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.plat-arch-pillar-label span { display: block; font-size: 11px; color: var(--text-tertiary); }
+.plat-arch-connectors { position: relative; height: 32px; margin: calc(-1 * var(--space-2)) 0; }
+.plat-arch-connectors svg { display: block; width: 100%; height: 100%; }
+.plat-arch-engine-row {
+  display: flex;
+  gap: var(--space-2);
+}
+.plat-arch-engine {
+  flex: 1;
+  text-align: center;
+  background: linear-gradient(135deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  color: var(--text-on-dark);
+  transition: transform var(--dur-fast);
+}
+.plat-arch-engine:hover { transform: translateY(-2px); }
+.plat-arch-engine strong { display: block; font-size: 11px; font-weight: 700; }
+.plat-arch-engine span { display: block; font-size: 9px; color: var(--text-on-dark-dim); margin-top: 2px; }
+
+/* ============================================================
+   [2] MARQUEE — integration logos (reuse globals marquee classes)
+   ============================================================ */
+/* marquee classes from globals.css: #logo-marquee, .marquee-label, etc. */
+.plat-marquee { background: var(--bg-surface); padding: var(--space-7) 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); overflow: hidden; }
+
+/* ============================================================
+   [3] THREE PILLARS — #architecture, card with animated accent border
+   ============================================================ */
+.plat-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .plat-pillars-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .plat-pillars-grid { grid-template-columns: 1fr; } }
+.plat-pillars-grid > * { height: 100%; }
+.plat-pillar-card {
+  display: flex; flex-direction: column; height: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base);
+}
+.plat-pillar-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); border-color: var(--brand-accent); }
+.plat-pillar-icon {
+  width: 48px; height: 48px;
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--space-5);
+}
+.plat-pillar-icon svg { width: 24px; height: 24px; color: var(--brand-accent); }
+.plat-pillar-card h3 { color: var(--text-primary); margin-bottom: var(--space-3); }
+.plat-pillar-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; flex: 1; margin-bottom: var(--space-5); }
+
+/* ============================================================
+   [4] HOW IT WORKS — 4-step stepper with animated progress line
+   ============================================================ */
+.plat-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+  position: relative;
+}
+@media (max-width: 1024px) { .plat-steps-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .plat-steps-grid { grid-template-columns: 1fr; } }
+.plat-steps-grid::before {
+  content: "";
+  position: absolute;
+  top: 23px; left: 24px; right: 24px;
+  height: 2px;
+  background: var(--border-subtle);
+  z-index: 0;
+}
+@media (max-width: 600px) { .plat-steps-grid::before { display: none; } }
+.plat-step { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--space-4); }
+.plat-step-num-wrap {
+  width: 48px; height: 48px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-subtle);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color var(--dur-base), background var(--dur-base);
+}
+.plat-step:hover .plat-step-num-wrap { border-color: var(--brand-accent); background: var(--brand-accent-soft); }
+.plat-step-num {
+  font-size: 13px; font-weight: 700;
+  color: var(--text-tertiary);
+  transition: color var(--dur-base);
+}
+.plat-step:hover .plat-step-num { color: var(--brand-accent); }
+.plat-step h3 { color: var(--text-primary); font-size: 17px; font-weight: 600; line-height: 1.3; }
+.plat-step p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+.plat-step-link { font-size: 13px; color: var(--brand-accent); font-weight: 600; }
+.plat-step-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   [5] SIX CAPABILITIES — 3×2 icon grid
+   ============================================================ */
+.plat-cap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .plat-cap-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .plat-cap-grid { grid-template-columns: 1fr; } }
+.plat-cap-item {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.plat-cap-item:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+.plat-cap-item h3 { color: var(--text-primary); font-size: 17px; font-weight: 600; }
+.plat-cap-item p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+
+/* ============================================================
+   [6] THREE-ENGINE BENTO — tabbed bento
+   ============================================================ */
+.plat-engine-tabs {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
+  flex-wrap: wrap;
+}
+.plat-engine-tab {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: 10px 20px; min-height: 44px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  font-size: 14px; font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.plat-engine-tab svg { width: 16px; height: 16px; }
+.plat-engine-tab:hover { border-color: var(--brand-accent); color: var(--brand-accent); background: var(--brand-accent-soft); }
+.plat-engine-tab[aria-selected="true"] { background: var(--brand-accent); border-color: var(--brand-accent); color: var(--text-on-dark); }
+.plat-engine-tab:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.plat-engine-panel { display: none; }
+.plat-engine-panel[aria-hidden="false"] { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; margin-top: var(--space-7); }
+@media (max-width: 900px) { .plat-engine-panel[aria-hidden="false"] { grid-template-columns: 1fr; gap: var(--space-5); } }
+.plat-engine-body h3 { color: var(--text-primary); margin-bottom: var(--space-4); }
+.plat-engine-body p { color: var(--text-secondary); font-size: 15px; line-height: 1.65; }
+.plat-engine-sub-links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+.plat-engine-sub-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13px; font-weight: 600; color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.plat-engine-sub-link:hover { background: var(--brand-accent); color: var(--text-on-dark); }
+.plat-engine-sub-link svg { width: 12px; height: 12px; }
+.plat-engine-visual {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  color: var(--text-on-dark);
+  box-shadow: 0 16px 48px -12px var(--brand-accent-glow);
+  display: flex; flex-direction: column; gap: var(--space-5);
+  min-height: 240px;
+}
+.plat-engine-visual-title { font-size: 14px; font-weight: 700; color: var(--text-on-dark); }
+.plat-engine-rows { display: flex; flex-direction: column; gap: var(--space-3); }
+.plat-engine-row {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px; font-weight: 500; color: var(--text-on-dark);
+  transition: background var(--dur-fast);
+}
+.plat-engine-row:hover { background: rgba(255,255,255,0.2); }
+.plat-engine-row svg { width: 14px; height: 14px; flex-shrink: 0; color: rgba(255,255,255,0.7); }
+
+/* ============================================================
+   [7] COMPETITIVE DIFFERENTIATION — dark section, compare cards
+   ============================================================ */
+.plat-diff-section {
+  background: var(--bg-ink);
+  position: relative;
+  overflow: hidden;
+}
+.plat-diff-glow {
+  position: absolute;
+  bottom: -30%; right: -10%;
+  width: 50vw; height: 50vw;
+  max-width: 600px; max-height: 600px;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 70%);
+  opacity: 0.15;
+  pointer-events: none; border-radius: 50%;
+}
+.plat-diff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+  position: relative; z-index: 1;
+}
+@media (max-width: 1024px) { .plat-diff-grid { grid-template-columns: 1fr; } }
+.plat-diff-card {
+  background: var(--bg-ink-elevated);
+  border: 1px solid rgba(236,220,240,0.15);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-4);
+  transition: border-color var(--dur-base);
+}
+.plat-diff-card:hover { border-color: rgba(236,220,240,0.35); }
+.plat-diff-problem-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-on-dark-dim);
+}
+.plat-diff-problem-text {
+  font-size: 14px; color: var(--text-on-dark-dim); line-height: 1.6;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(236,220,240,0.12);
+}
+.plat-diff-solution-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--brand-accent);
+  display: flex; align-items: center; gap: 5px;
+}
+.plat-diff-solution-label svg { width: 12px; height: 12px; }
+.plat-diff-solution-title { font-size: 15px; font-weight: 700; color: var(--text-on-dark); line-height: 1.35; }
+.plat-diff-solution-text { font-size: 14px; color: var(--text-on-dark-dim); line-height: 1.6; }
+
+/* ============================================================
+   [8] STATS BAND — count-up tiles, JS-gated
+   ============================================================ */
+.plat-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+@media (max-width: 768px) { .plat-stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .plat-stats-grid { grid-template-columns: 1fr; } }
+.plat-stat {
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  position: relative;
+}
+.plat-stat + .plat-stat::before {
+  content: ""; position: absolute;
+  left: 0; top: 20%; bottom: 20%;
+  width: 1px; background: var(--border-subtle);
+}
+@media (max-width: 768px) {
+  .plat-stat:nth-child(3)::before { display: none; }
+}
+.plat-stat-num {
+  display: block;
+  font-size: clamp(36px,4vw,52px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-accent);
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+.plat-stat-label { font-size: 14px; color: var(--text-tertiary); line-height: 1.4; }
+.plat-stat-note { font-size: 12px; color: var(--text-tertiary); margin-top: var(--space-2); }
+
+/* ============================================================
+   [9] PROOF STRIP — horizontal scroll case study cards
+   ============================================================ */
+.plat-proof-scroll {
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  margin-top: var(--space-8);
+}
+.plat-proof-scroll::-webkit-scrollbar { height: 4px; }
+.plat-proof-scroll::-webkit-scrollbar-track { background: transparent; }
+.plat-proof-scroll::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+.plat-proof-card {
+  flex: 0 0 380px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  scroll-snap-align: start;
+  display: flex; flex-direction: column; gap: var(--space-5);
+  transition: box-shadow var(--dur-base), transform var(--dur-base);
+}
+.plat-proof-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+.plat-proof-industry {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+}
+.plat-proof-client { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.plat-proof-outcome { font-size: 14px; color: var(--text-secondary); line-height: 1.6; flex: 1; }
+.plat-proof-stats {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
+}
+.plat-proof-stat {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px;
+}
+.plat-proof-stat span { color: var(--text-tertiary); }
+.plat-proof-stat strong { color: var(--brand-accent); font-weight: 700; }
+
+/* ============================================================
+   [10] SUBPAGE NAV — 3×2 segment cards (6 cards)
+   ============================================================ */
+.plat-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 1024px) { .plat-nav-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .plat-nav-grid { grid-template-columns: 1fr; } }
+.plat-nav-card {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  text-decoration: none;
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base);
+}
+.plat-nav-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); border-color: var(--brand-accent); }
+.plat-nav-card:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.plat-nav-card h3 { color: var(--text-primary); font-size: 16px; font-weight: 600; }
+.plat-nav-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.55; flex: 1; }
+.plat-nav-card-foot {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 13px; font-weight: 600; color: var(--brand-accent);
+  margin-top: auto;
+}
+.plat-nav-card-foot svg { width: 14px; height: 14px; }
+
+/* ============================================================
+   [11] TRUST BADGE ROW — horizontal strip
+   ============================================================ */
+.plat-trust-row-section {
+  background: var(--bg-canvas);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-7) 0;
+}
+.plat-trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-7);
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+.plat-trust-badge {
+  display: flex; align-items: center; gap: var(--space-3);
+  font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+.plat-trust-badge:hover { border-color: var(--brand-accent); color: var(--text-primary); }
+.plat-trust-badge svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+.plat-trust-badge[data-placeholder] { opacity: 0.6; font-style: italic; }
+
+/* ============================================================
+   [12] FAQ — native details accordion
+   ============================================================ */
+.plat-faq { max-width: 760px; margin: 0 auto; }
+.plat-faq-mini-card {
+  background: var(--brand-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 20%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-6);
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.accordion-item {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.accordion-item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: var(--space-5) 0;
+  font-size: 16px; font-weight: 600; color: var(--text-primary);
+  cursor: pointer;
+  transition: color var(--dur-fast);
+  min-height: 60px;
+}
+.accordion-item summary:hover { color: var(--brand-accent); }
+.accordion-item summary:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: 4px; }
+.accordion-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--text-tertiary); transition: transform var(--dur-base) var(--ease-out); }
+.accordion-item[open] .accordion-icon { transform: rotate(180deg); }
+.accordion-body {
+  padding: 0 0 var(--space-5);
+  font-size: 15px; color: var(--text-secondary); line-height: 1.7;
+}
+
+/* ============================================================
+   [13] CTA BAND — gradient card
+   ============================================================ */
+.plat-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.plat-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.plat-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.plat-cta-card .btn-on-dark {
+  background: var(--bg-surface); color: var(--brand-accent-deep);
+  padding: 12px 28px; border-radius: var(--radius-cta);
+  font-weight: 600; min-height: 44px;
+}
+
+/* Two-tone headline accent — mirrors finance-v3 .hero-h1 .accent-line */
+.display-lg .accent-line { color: var(--brand-accent); display: inline; }
+
+@media (prefers-reduced-motion: reduce) {
+  .plat-arch-pillar, .plat-pillar-card, .plat-cap-item, .plat-proof-card, .plat-nav-card,
+  .plat-engine-tab, .plat-diff-card, .plat-trust-badge { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<!-- OMIT: Header — injected by SiteHeader at port time. -->
+<!-- OMIT: Footer — injected by SiteFooter at port time. -->
+
+<main id="main">
+
+<!-- ============================================================
+     [1] HERO (#hero) — architecture diagram right, text left
+     Interactive: hover-animated pillar cards in diagram
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading" style="position:relative; overflow:hidden;">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container">
+    <div class="plat-hero-grid">
+
+      <!-- LEFT — headline + CTAs + trust strip -->
+      <div class="hero-inner reveal">
+        <span class="eyebrow" style="color:var(--text-tertiary); display:block; margin-bottom:var(--space-4);">Governed Agentic Analytics</span>
+        <h1 id="hero-heading" class="display-lg" style="color:var(--text-primary); margin-bottom:var(--space-5);">Three layers. One governed answer.</h1>
+        <p class="body-lg" style="color:var(--text-secondary); margin-bottom:var(--space-7); max-width:52ch;">Quaeris is built on a governed semantic layer, trusted AI agents, and enterprise-grade security controls — so every answer your team gets is accurate, auditable, and role-scoped. Architecture is not a marketing claim. It is what prevents hallucinations.</p>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+          <a href="#architecture" class="btn btn-secondary">Explore the architecture</a>
+        </div>
+        <ul class="plat-trust-strip">
+          <li class="plat-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            <p><strong>Warehouse-native</strong> <span>Your data never leaves your environment</span></p>
+          </li>
+          <li class="plat-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <p><strong>Prompt-level audit trail</strong> <span>Every question, every answer, logged</span></p>
+          </li>
+          <li class="plat-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M23 13h-4a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h4v-5z"/><path d="M18 10h.01"/></svg>
+            <p><strong>BYOM</strong> <span>Connect OpenAI, Anthropic, Google, or Meta</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT — all-UI architecture diagram card -->
+      <div class="reveal">
+        <div class="plat-arch-card" role="img" aria-label="Quaeris three-pillar architecture: Governed Semantic Layer, Trusted AI Agents, and Enterprise Security feeding into Context, Answer, and Decision Engines." data-placeholder>
+          <div class="plat-arch-head">
+            <span class="eyebrow" style="color:var(--text-tertiary);">Platform Architecture</span>
+            <span class="plat-arch-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </div>
+          <div class="plat-arch-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Governance-first by design
+          </div>
+
+          <div class="plat-arch-pillars" aria-hidden="true">
+            <div class="plat-arch-pillar">
+              <span class="plat-arch-pillar-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+              </span>
+              <span class="plat-arch-pillar-label">
+                <strong>Governed Semantic Layer</strong>
+                <span>Certified metrics · Auto-learning</span>
+              </span>
+            </div>
+            <div class="plat-arch-pillar">
+              <span class="plat-arch-pillar-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+              </span>
+              <span class="plat-arch-pillar-label">
+                <strong>Trusted AI Agents</strong>
+                <span>Multi-step · Governed · Audited</span>
+              </span>
+            </div>
+            <div class="plat-arch-pillar">
+              <span class="plat-arch-pillar-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <span class="plat-arch-pillar-label">
+                <strong>Enterprise Security</strong>
+                <span>RBAC at query time · Warehouse-native</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Connector SVG -->
+          <div class="plat-arch-connectors" aria-hidden="true">
+            <svg viewBox="0 0 340 32" preserveAspectRatio="xMidYMid meet">
+              <line x1="57" y1="0" x2="57" y2="32" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="170" y1="0" x2="170" y2="32" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="283" y1="0" x2="283" y2="32" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <path d="M57 32 C57 20 170 20 170 32" fill="none" stroke="var(--brand-accent)" stroke-width="1.5" opacity="0.5"/>
+              <path d="M283 32 C283 20 170 20 170 32" fill="none" stroke="var(--brand-accent)" stroke-width="1.5" opacity="0.5"/>
+            </svg>
+          </div>
+
+          <div class="plat-arch-engine-row" aria-hidden="true">
+            <div class="plat-arch-engine">
+              <strong>Context Engine</strong>
+              <span>Ask · Integrate · Activate</span>
+            </div>
+            <div class="plat-arch-engine">
+              <strong>Answer Engine</strong>
+              <span>Search · Share · Accelerate</span>
+            </div>
+            <div class="plat-arch-engine">
+              <strong>Decision Engine</strong>
+              <span>Pin · Embed · Resonate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Core Capabilities (rolled out 2026-06-16) -->
+<section class="section-pad" style="background: var(--bg-surface);" aria-labelledby="platform-cap-h">
+    <div class="container">
+      <div class="section-header center reveal"><span class="eyebrow">Core Capabilities</span>
+        <h2 id="platform-cap-h" class="display-lg">One platform. Four pillars of<br><span class="accent-line">governed, provable analytics.</span></h2>
+        <p class="subcopy body-lg">From a plain-language question to a board-ready answer — every step certified, every metric traceable, every result grounded in your warehouse.</p></div>
+      <div class="caps reveal"><div class="cap-tabs" role="tablist" aria-label="Core capabilities"><button class="cap-tab" role="tab" id="platform-tab-1" aria-controls="platform-panel-1" aria-selected="true" tabindex="0">Trusted Agents<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="platform-tab-2" aria-controls="platform-panel-2" aria-selected="false" tabindex="-1">Semantic Layer<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="platform-tab-3" aria-controls="platform-panel-3" aria-selected="false" tabindex="-1">Governance &amp; Audit<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="platform-tab-4" aria-controls="platform-panel-4" aria-selected="false" tabindex="-1">Warehouse-Native<span class="cap-tab-bar" aria-hidden="true"></span></button></div><div class="cap-panel" role="tabpanel" id="platform-panel-1" aria-labelledby="platform-tab-1">
+      <div><h3 class="display-md">Plain-language questions. Governed, audited answers.</h3><p class="body-md cap-panel-lead">Quaeris Trusted Agents translate any business question into a query that runs against your certified semantic layer — returning an answer with a full trace to its source, never a hallucination.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Role-gated from the first token: agents only surface metrics the asking user is permitted to see.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Every answer cites its certified metric, the semantic definition used, and the warehouse table queried.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Natural-language clarification loop catches ambiguous questions before a query fires — no silent misinterpretation.</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Question to governed answer</span><span class="cap-viz-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>verified</span></div>
+      <div class="cap-lineage"><span class="cap-progress"></span><span class="cap-trace"></span><div class="cap-node" data-rise style="--d:80ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Business question</span><span class="cap-node-v">"What drove the Q2 EMEA shortfall?"</span></div><div class="cap-node" data-rise style="--d:220ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Certified metric resolved</span><span class="cap-node-v">Net Revenue · v4.2 · owner: Finance</span></div><div class="cap-node" data-rise style="--d:360ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Governed answer returned</span><span class="cap-node-v">Source: Snowflake · dw_prod.revenue_fact</span></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:1200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Full lineage traced in 0.6 s — illustrative data</div></div></div><div class="cap-panel" role="tabpanel" id="platform-panel-2" aria-labelledby="platform-tab-2" hidden>
+      <div><h3 class="display-md">One certified metric definition. Everywhere.</h3><p class="body-md cap-panel-lead">The Governed Semantic Layer is the single source of truth that every agent, every dashboard, and every export reads from — eliminating the spreadsheet wars that undermine board-level decisions.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Metric definitions are versioned, owner-assigned, and change-logged so disagreements have a canonical resolution path.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Any edit triggers an impact analysis across all downstream dashboards and agent queries before it is promoted.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Business glossary attaches natural-language synonyms to certified metrics so "ARR", "annual run rate", and "booked revenue" all resolve to the same certified definition.</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Sources unified into one semantic core</span><span class="cap-viz-metric"><b>2,400+</b></span></div><div class="cap-union">
+    <div class="cap-union-sources"><div class="cap-src from-l" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>ERP / Finance</span><small>NetSuite · SAP · Snowflake</small></div><div class="cap-src from-t" style="--d:200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg><span>CRM / Revenue</span><small>Salesforce · HubSpot · BigQuery</small></div><div class="cap-src from-r" style="--d:320ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg><span>Ops / Product</span><small>dbt models · Redshift · Databricks</small></div></div><div class="cap-union-merge"><svg viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+  <path class="cap-union-base" d="M50 4 C50 26 150 16 150 38" /><path class="cap-union-base" d="M150 4 L150 38" /><path class="cap-union-base" d="M250 4 C250 26 150 16 150 38" />
+  <path class="cap-flow" d="M50 4 C50 26 150 16 150 38" /><path class="cap-flow" d="M150 4 L150 38" /><path class="cap-flow" d="M250 4 C250 26 150 16 150 38" />
+</svg></div>
+    <div class="cap-core">Governed semantic layer<small>Certified metrics governed in one layer — illustrative data</small></div></div></div></div><div class="cap-panel" role="tabpanel" id="platform-panel-3" aria-labelledby="platform-tab-3" hidden>
+      <div><h3 class="display-md">Every query. Every answer. Fully traceable.</h3><p class="body-md cap-panel-lead">Governance is not a feature you bolt on — it is the architecture. Quaeris logs every question asked, every metric resolved, every role check applied, and every result returned, with immutable audit trails ready for compliance review.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Immutable query log captures who asked, what was asked, which metric version resolved, and what the agent returned.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Policy enforcement runs at query time — no answer escapes role-based data access controls, regardless of how the question is phrased.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Audit exports produce compliance-ready artifacts (JSON or CSV) scoped by user, time range, or metric — in minutes, not days.</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Audit trail for a single query event</span><span class="cap-viz-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>verified</span></div>
+      <div class="cap-lineage"><span class="cap-progress"></span><span class="cap-trace"></span><div class="cap-node" data-rise style="--d:80ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Query received</span><span class="cap-node-v">User: s.r@corp · Role: Finance Analyst · 09:14 UTC</span></div><div class="cap-node" data-rise style="--d:220ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Policy checkpoint</span><span class="cap-node-v">Row-level filter applied · 3 columns redacted</span></div><div class="cap-node" data-rise style="--d:360ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Audit record sealed</span><span class="cap-node-v">Hash: a3f9… · Immutable · Exportable</span></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:1200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Audit record written in &lt; 1 s — illustrative data</div></div></div><div class="cap-panel" role="tabpanel" id="platform-panel-4" aria-labelledby="platform-tab-4" hidden>
+      <div><h3 class="display-md">Your data never leaves your environment.</h3><p class="body-md cap-panel-lead">Quaeris runs compute inside your existing warehouse — Snowflake, BigQuery, Redshift, or Databricks — so there is no data copy, no egress charge, and no shadow data store to secure.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Zero-copy architecture: queries run as native SQL in your warehouse; Quaeris never materialises a copy of your data outside it.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Performance scales with your warehouse tier — burst capacity, concurrency controls, and cost governance stay in tools your data team already manages.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Warehouse-level encryption, VPC isolation, and existing IAM policies apply automatically — nothing to re-implement at the analytics layer.</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Query performance vs. extract-and-load alternatives</span><span class="cap-viz-metric"><b>0 copies</b></span></div><div class="cap-bars"><div class="cap-bar-item" data-rise style="--d:80ms"><div class="cap-bar-top"><span>Warehouse-native (Quaeris)</span><b>&lt; 2 s median</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:96%; --d:120ms"></div></div></div><div class="cap-bar-item" data-rise style="--d:200ms"><div class="cap-bar-top"><span>Extract-and-load BI tool</span><b>8–14 s median</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:38%; --d:240ms"></div></div></div><div class="cap-bar-item" data-rise style="--d:320ms"><div class="cap-bar-top"><span>Spreadsheet export workflow</span><b>Hours (manual)</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:8%; --d:360ms"></div></div></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:520ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Zero data copies · Certified warehouse connection — illustrative benchmarks</div></div></div></div>
+    </div></section>
+
+
+<!-- ============================================================
+     [2] INTEGRATION MARQUEE (#logo-marquee)
+     Interactive: auto-scrolling marquee, pauses on hover
+     ============================================================ -->
+<section id="logo-marquee" class="plat-marquee" aria-label="Connects to your existing stack">
+  <div class="container">
+    <p class="marquee-label eyebrow" style="color:var(--text-tertiary);">Connects to your existing stack</p>
+  </div>
+  <div class="marquee-track-wrap">
+    <div class="marquee-track" aria-hidden="true">
+      <!-- Set 1 -->
+      <div class="marquee-logo">Snowflake</div>
+      <div class="marquee-logo">BigQuery</div>
+      <div class="marquee-logo">Databricks</div>
+      <div class="marquee-logo">Azure Synapse</div>
+      <div class="marquee-logo">Amazon Redshift</div>
+      <div class="marquee-logo">SharePoint</div>
+      <div class="marquee-logo">Google Drive</div>
+      <!-- Set 2 — duplicate for seamless loop -->
+      <div class="marquee-logo">Snowflake</div>
+      <div class="marquee-logo">BigQuery</div>
+      <div class="marquee-logo">Databricks</div>
+      <div class="marquee-logo">Azure Synapse</div>
+      <div class="marquee-logo">Amazon Redshift</div>
+      <div class="marquee-logo">SharePoint</div>
+      <div class="marquee-logo">Google Drive</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] THREE PILLARS (#architecture)
+     Interactive: hover-lift cards with accent border + deep-dive links
+     ============================================================ -->
+<section id="architecture" class="section-pad" style="background:var(--bg-canvas);" aria-labelledby="arch-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color:var(--text-tertiary);">Platform architecture</span>
+      <h2 id="arch-heading" class="display-lg">Governance-first by design.<br><span class="accent-line">Not by dashboard filter.</span></h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary); margin-top:var(--space-4);">Most AI analytics tools apply governance as a permission layer on top of an existing BI stack. Quaeris encodes it at three levels simultaneously — in the semantic layer that defines your metrics, in the agents that answer questions, and in the security controls that scope every query. Each layer reinforces the others.</p>
+    </div>
+
+    <div class="plat-pillars-grid">
+
+      <article class="plat-pillar-card reveal">
+        <div class="plat-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        </div>
+        <h3 class="heading-sm">Governed Semantic Layer</h3>
+        <p>Your data team defines metrics once — revenue, activation rate, churn — inside Quaeris's Smart Semantic Layer. The layer auto-learns business definitions from user interaction; no upfront LookML or MDX modeling sprint is required. Every agent answer traces back to these certified definitions. Conflicting numbers across teams stop being a problem.</p>
+        <a href="/platform/semantic-layer" class="btn-ghost" style="margin-top:auto;">Deep dive</a>
+      </article>
+
+      <article class="plat-pillar-card reveal">
+        <div class="plat-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="M8 5V3"/><path d="M16 5V3"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/><path d="M8 16h.01"/><path d="M12 16h.01"/></svg>
+        </div>
+        <h3 class="heading-sm">Trusted AI Agents</h3>
+        <p>Business users ask questions in plain language. Quaeris agents plan and execute multi-step analyses — fetch, filter, join, forecast, anomaly-detect, root-cause — without a human in every step. Critically, agents query the governed semantic layer, not raw tables or a language model's memory. Every number is traceable to a certified metric.</p>
+        <a href="/platform/agents" class="btn-ghost" style="margin-top:auto;">Deep dive</a>
+      </article>
+
+      <article class="plat-pillar-card reveal">
+        <div class="plat-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="heading-sm">Enterprise Security</h3>
+        <p>Role-based access controls are enforced at query time, not as a dashboard filter. Quaeris runs warehouse-native — your data never leaves your environment. Every query, every agent step, and every answer is logged in a full prompt-level audit trail. Bring your own model: connect OpenAI, Anthropic, Google, or Meta and switch as your compliance posture evolves.</p>
+        <a href="/platform/governance" class="btn-ghost" style="margin-top:auto;">Deep dive</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] HOW IT WORKS (#how-it-works)
+     Interactive: hover-highlight step numbers + connector line
+     ============================================================ -->
+<section id="how-it-works" class="section-pad" style="background:var(--bg-surface);" aria-labelledby="hiw-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color:var(--text-tertiary);">How Quaeris works</span>
+      <h2 id="hiw-heading" class="display-lg">From plain-language question to governed answer — in four steps.</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary); margin-top:var(--space-4);">A transparent pipeline. No black boxes, no unexplained numbers, no hallucinations.</p>
+    </div>
+
+    <div class="plat-steps-grid" role="list">
+
+      <div class="plat-step reveal" role="listitem">
+        <div class="plat-step-num-wrap" aria-hidden="true">
+          <span class="plat-step-num">01</span>
+        </div>
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8"/><path d="m5 12-3 3 3 3"/><path d="m19 12 3 3-3 3"/><path d="M2 15h13"/><path d="M22 15H9"/><path d="M12 2a5 5 0 0 1 5 5"/><path d="M12 2a5 5 0 0 0-5 5"/></svg>
+        </div>
+        <h3>Connect your warehouse</h3>
+        <p>Quaeris connects directly to your existing Snowflake, BigQuery, Databricks, Azure Synapse, or Amazon Redshift instance. No data copying, no pipelines to rebuild. SharePoint and Google Drive connect for document ingestion alongside structured warehouse data.</p>
+        <a href="/platform/warehouse" class="plat-step-link">See supported warehouses →</a>
+      </div>
+
+      <div class="plat-step reveal" role="listitem">
+        <div class="plat-step-num-wrap" aria-hidden="true">
+          <span class="plat-step-num">02</span>
+        </div>
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        </div>
+        <h3>Build the governed semantic layer</h3>
+        <p>Your data team defines certified metric definitions, business rules, ownership, and lineage. The Smart Semantic Layer also auto-learns business context from user interaction — reducing the upfront authoring burden that every other semantic-layer product requires.</p>
+        <a href="/platform/semantic-layer" class="plat-step-link">Explore the semantic layer →</a>
+      </div>
+
+      <div class="plat-step reveal" role="listitem">
+        <div class="plat-step-num-wrap" aria-hidden="true">
+          <span class="plat-step-num">03</span>
+        </div>
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Ask in plain language</h3>
+        <p>Business users type questions as they would to a colleague. Quaeris agents interpret the question, traverse the semantic layer, plan multi-step analysis where needed, and return a precise, source-cited answer. Data and Document Agents can join structured and unstructured data in a single query.</p>
+        <a href="/contact" class="plat-step-link">See a live demo →</a>
+      </div>
+
+      <div class="plat-step reveal" role="listitem">
+        <div class="plat-step-num-wrap" aria-hidden="true">
+          <span class="plat-step-num">04</span>
+        </div>
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+        </div>
+        <h3>Audited, role-scoped answers</h3>
+        <p>Every answer shows the metric definitions it used and the agent steps it took. Role-based access controls enforce what each user can see — at query time, not dashboard level. The full prompt-level audit trail logs who asked what and when, satisfying internal governance and emerging obligations such as the EU AI Act.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] SIX CORE CAPABILITIES (#capabilities)
+     Interactive: hover-lift cards with staggered reveal on scroll
+     ============================================================ -->
+<section id="capabilities" class="section-pad" style="background:var(--bg-canvas);" aria-labelledby="cap-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color:var(--text-tertiary);">Core capabilities</span>
+      <h2 id="cap-heading" class="display-lg">Six capabilities that make every answer trustworthy.</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary); margin-top:var(--space-4);">Quaeris is not a single feature wrapped in a product shell. Six integrated capabilities work together — and each one is governed by the semantic layer beneath it.</p>
+    </div>
+
+    <div class="plat-cap-grid" id="cap-grid">
+
+      <article class="plat-cap-item reveal" style="--d:0ms">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+        </div>
+        <h3 class="heading-sm">Natural Language to SQL</h3>
+        <p>Plain-English questions translate into precise, governed SQL — checked against the semantic layer, not generated freeform. No query goes to the warehouse without passing through certified metric definitions.</p>
+      </article>
+
+      <article class="plat-cap-item reveal" style="--d:80ms">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><rect width="8" height="8" x="13" y="3" rx="2"/><rect width="8" height="8" x="3" y="13" rx="2"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg>
+        </div>
+        <h3 class="heading-sm">Autonomous Multi-Step Workflows</h3>
+        <p>Agents plan and execute analyses that span multiple steps — fetch, filter, join, forecast, anomaly-detect, root-cause — without requiring a human to hand off each stage.</p>
+      </article>
+
+      <article class="plat-cap-item reveal" style="--d:160ms">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3 class="heading-sm">Predictive and Proactive Analysis</h3>
+        <p>Forecasts, anomaly flags, root-cause diagnosis, and proactive alerts surface issues before they reach the board. The agent tells you what changed and why, not just what the current number is.</p>
+      </article>
+
+      <article class="plat-cap-item reveal" style="--d:0ms">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 1 8 8c0 3.5-2.5 6.5-6 8.5-3.5-2-6-5-6-8.5a8 8 0 0 1 8-8Z"/><path d="M12 2v18"/><path d="M4.5 9h15"/></svg>
+        </div>
+        <h3 class="heading-sm">Smart Semantic Layer</h3>
+        <p>Auto-learns business definitions and data relationships from user interaction. No upfront LookML or MDX modeling sprint. The layer improves as usage grows and is controlled by your data team.</p>
+      </article>
+
+      <article class="plat-cap-item reveal" style="--d:80ms">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></svg>
+        </div>
+        <h3 class="heading-sm">BYOM — Bring Your Own Model</h3>
+        <p>Connect OpenAI, Anthropic, Google, or Meta models and switch as the landscape evolves. Quaeris is not the model gatekeeper. Your compliance team chooses the model; the governed layer stays constant.</p>
+      </article>
+
+      <article class="plat-cap-item reveal" style="--d:160ms">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        </div>
+        <h3 class="heading-sm">Data and Document Agents</h3>
+        <p>Extract structured fields from contracts, invoices, and resumes — then join with warehouse fact tables in a single natural-language query. Structured and unstructured data as co-equal citizens in one governed query.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [6] THREE-ENGINE ARCHITECTURE (#three-engines)
+     Interactive: tab switcher between Context / Answer / Decision engines
+     ============================================================ -->
+<section id="three-engines" class="section-pad" style="background:var(--bg-surface);" aria-labelledby="eng-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color:var(--text-tertiary);">Three-engine information architecture</span>
+      <h2 id="eng-heading" class="display-lg">Context Engine. Answer Engine. Decision Engine.</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary); margin-top:var(--space-4);">Quaeris organizes its capabilities into three named engines. Each engine is a cluster of sub-capabilities with its own URL, so your team can navigate directly to the feature that serves their workflow.</p>
+    </div>
+
+    <div class="plat-engine-section" id="engine-section">
+      <div class="plat-engine-tabs" role="tablist" aria-label="Quaeris engines">
+        <button class="plat-engine-tab" role="tab" id="eng-tab-1" aria-controls="eng-panel-1" aria-selected="true" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.343-4.343"/><circle cx="11" cy="11" r="8"/><path d="m11 8-3 3 3 3"/><path d="M14 11H8"/></svg>
+          Context Engine
+        </button>
+        <button class="plat-engine-tab" role="tab" id="eng-tab-2" aria-controls="eng-panel-2" aria-selected="false" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Answer Engine
+        </button>
+        <button class="plat-engine-tab" role="tab" id="eng-tab-3" aria-controls="eng-panel-3" aria-selected="false" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
+          Decision Engine
+        </button>
+      </div>
+
+      <!-- Panel 1: Context Engine -->
+      <div class="plat-engine-panel" role="tabpanel" id="eng-panel-1" aria-labelledby="eng-tab-1" aria-hidden="false">
+        <div class="plat-engine-body">
+          <h3 class="display-md">Context Engine</h3>
+          <p>The Context Engine is where questions enter the system. Natural-language queries are parsed, mapped to the semantic layer, and enriched with the business context the Smart Semantic Layer has learned. This is where NL-to-SQL translation happens — checked, not generated. Sub-capabilities: Ask · Integrate · Activate.</p>
+          <div class="plat-engine-sub-links">
+            <a href="/conversational-queries" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Ask
+            </a>
+            <a href="/integrations" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22V8"/><path d="m5 12-3 3 3 3"/><path d="m19 12 3 3-3 3"/><path d="M2 15h13"/><path d="M22 15H9"/></svg>
+              Integrate
+            </a>
+            <a href="/activate" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Activate
+            </a>
+          </div>
+        </div>
+        <div class="plat-engine-visual" aria-hidden="true">
+          <span class="plat-engine-visual-title">Context Engine — NL query pipeline</span>
+          <div class="plat-engine-rows">
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              "Show me revenue by region this quarter"
+            </div>
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+              Mapped to certified metric: revenue · v3.1
+            </div>
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              Governed SQL generated — passed to warehouse
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Answer Engine -->
+      <div class="plat-engine-panel" role="tabpanel" id="eng-panel-2" aria-labelledby="eng-tab-2" aria-hidden="true">
+        <div class="plat-engine-body">
+          <h3 class="display-md">Answer Engine</h3>
+          <p>The Answer Engine executes the analysis. Agents fetch, join, compute, and — where needed — forecast or anomaly-detect across multi-step workflows. Answers are assembled with source citations and delivered with full lineage. Sub-capabilities: Search · Share · Accelerate.</p>
+          <div class="plat-engine-sub-links">
+            <a href="/search" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Search
+            </a>
+            <a href="/communities" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Share
+            </a>
+            <a href="/accelerate" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Accelerate
+            </a>
+          </div>
+        </div>
+        <div class="plat-engine-visual" aria-hidden="true">
+          <span class="plat-engine-visual-title">Answer Engine — multi-step execution</span>
+          <div class="plat-engine-rows">
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Step 1: Fetch Q3 revenue · Q3 forecast
+            </div>
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              Step 2: Anomaly detect — variance +12.4%
+            </div>
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              Answer cited · lineage attached · delivered
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Decision Engine -->
+      <div class="plat-engine-panel" role="tabpanel" id="eng-panel-3" aria-labelledby="eng-tab-3" aria-hidden="true">
+        <div class="plat-engine-body">
+          <h3 class="display-md">Decision Engine</h3>
+          <p>The Decision Engine surfaces answers where decisions happen. Pin insights to pinboards, embed governed analytics in your own applications or portals, or push proactive alerts to the stakeholders who need them — all with the same governed data beneath. Sub-capabilities: Pin · Embed · Resonate.</p>
+          <div class="plat-engine-sub-links">
+            <a href="/pinboards" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" x2="12" y1="17" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/></svg>
+              Pin
+            </a>
+            <a href="/embedded-analytics" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/></svg>
+              Embed
+            </a>
+            <a href="/resonate" class="plat-engine-sub-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12a10 10 0 1 0 20 0"/><path d="M12 2v10l4.2 4.2"/></svg>
+              Resonate
+            </a>
+          </div>
+        </div>
+        <div class="plat-engine-visual" aria-hidden="true">
+          <span class="plat-engine-visual-title">Decision Engine — surfaces governed answers</span>
+          <div class="plat-engine-rows">
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
+              Pinboard: Q3 Executive Summary
+            </div>
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="m3 10 3-3 4 4 4-4 4 3"/></svg>
+              Embedded in partner portal — role-scoped
+            </div>
+            <div class="plat-engine-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              Proactive alert pushed to CFO
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [7] COMPETITIVE DIFFERENTIATION (#why-architecture)
+     Interactive: hover-reveal solution panels on dark cards
+     ============================================================ -->
+<section id="why-architecture" class="section-pad plat-diff-section" aria-labelledby="diff-heading">
+  <div class="plat-diff-glow" aria-hidden="true"></div>
+  <div class="container" style="position:relative; z-index:1;">
+    <div class="section-header center reveal" style="max-width:720px; margin:0 auto; text-align:center;">
+      <span class="eyebrow" style="color:var(--text-on-dark-dim);">Why architecture matters</span>
+      <h2 id="diff-heading" class="display-lg" style="color:var(--text-on-dark); margin-top:var(--space-3);">Every competitor claims AI.<br>Not every architecture prevents hallucinations.</h2>
+      <p class="body-lg" style="color:rgba(255,255,255,0.75); margin-top:var(--space-4); max-width:60ch; margin-left:auto; margin-right:auto;">The difference is not the language model. It is whether governance is encoded at the architecture level or applied as a filter on top.</p>
+    </div>
+
+    <div class="plat-diff-grid">
+
+      <article class="plat-diff-card reveal">
+        <span class="plat-diff-problem-label">Incumbent BI platforms</span>
+        <p class="plat-diff-problem-text">Power BI Copilot is Azure-OpenAI bound. Tableau leans Einstein. Snowflake Cortex Analyst locks you to one warehouse and one model. When the compliance landscape changes, you cannot switch.</p>
+        <span class="plat-diff-solution-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Quaeris answer
+        </span>
+        <h3 class="plat-diff-solution-title">BYOM as a compliance feature</h3>
+        <p class="plat-diff-solution-text">Quaeris is not the model gatekeeper. Connect OpenAI, Anthropic, Google, or Meta — and switch as your compliance posture or cost math evolves. The governed layer underneath stays constant regardless of which model sits above it.</p>
+      </article>
+
+      <article class="plat-diff-card reveal">
+        <span class="plat-diff-problem-label">Manual semantic layers</span>
+        <p class="plat-diff-problem-text">Cube, dbt Semantic Layer, AtScale, and Honeydew all require your team to author semantic definitions upfront — LookML, SML, or MetricFlow YAML. That is weeks of modeling before users can ask a single governed question.</p>
+        <span class="plat-diff-solution-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Quaeris answer
+        </span>
+        <h3 class="plat-diff-solution-title">Auto-learning Smart Semantic Layer</h3>
+        <p class="plat-diff-solution-text">Quaeris's Smart Semantic Layer learns business definitions and data relationships from user interaction. It reduces the upfront authoring sprint every other semantic-layer product demands. Your team defines the rules; the layer handles the learning.</p>
+      </article>
+
+      <article class="plat-diff-card reveal">
+        <span class="plat-diff-problem-label">Document AI and BI as separate stacks</span>
+        <p class="plat-diff-problem-text">Tableau, Power BI, Looker, Qlik, and Sigma are structured-data-only. Glean and Hebbia are document-only. Every workflow that spans a contract and a warehouse fact table requires manual extraction and a second query tool.</p>
+        <span class="plat-diff-solution-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Quaeris answer
+        </span>
+        <h3 class="plat-diff-solution-title">Data and Document Agents in one query</h3>
+        <p class="plat-diff-solution-text">Quaeris's Document Agents extract structured fields from contracts, invoices, and reports, then join them with warehouse data in a single natural-language query. Structured and unstructured data are co-equal citizens in the same governed system.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [8] STATS BAND (#stats)
+     Interactive: JS count-up on scroll entry (gated, reduced-motion safe)
+     ============================================================ -->
+<section id="stats" class="section-pad" style="background:var(--bg-surface);" aria-labelledby="stats-heading">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom:var(--space-7);">
+      <span class="eyebrow" style="color:var(--text-tertiary);">Platform performance</span>
+      <h2 id="stats-heading" class="display-md" style="color:var(--text-primary);">Numbers that matter to governed analytics teams.</h2>
+    </div>
+
+    <div class="plat-stats-grid" id="stats-grid" aria-label="Platform performance statistics">
+
+      <!-- stat-1: illustrative figure — confirm with CS before launch -->
+      <div class="plat-stat">
+        <span class="plat-stat-num" id="stat-1" data-num="87" data-suffix="%" aria-label="87 percent">—%</span>
+        <span class="plat-stat-label">Reduction in ad-hoc analytics requests</span>
+        <span class="plat-stat-note">Across deployed organizations (illustrative)</span>
+      </div>
+
+      <!-- stat-2: illustrative figure — confirm with CS before launch -->
+      <div class="plat-stat">
+        <span class="plat-stat-num" id="stat-2" data-num="50" data-suffix="+" aria-label="50 plus deployments">—</span>
+        <span class="plat-stat-label">Named customer deployments</span>
+        <span class="plat-stat-note">Finance · Insurance · Retail · Healthcare · Manufacturing</span>
+      </div>
+
+      <!-- stat-3: illustrative figure — confirm with CS before launch -->
+      <div class="plat-stat">
+        <span class="plat-stat-num" id="stat-3" data-num="90" data-suffix="s" aria-label="90 seconds">—</span>
+        <span class="plat-stat-label">Median time from question to governed answer</span>
+        <span class="plat-stat-note">Warehouse-native, no data movement</span>
+      </div>
+
+      <div class="plat-stat">
+        <span class="plat-stat-num" id="stat-4" aria-label="Zero hallucinated numbers">Zero</span>
+        <span class="plat-stat-label">Hallucinated numbers</span>
+        <span class="plat-stat-note">Every answer grounded in the certified semantic layer</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [9] PROOF STRIP (#proof)
+     Interactive: horizontal scroll snapping, hover-lift cards
+     ============================================================ -->
+<section id="proof" class="section-pad" style="background:var(--bg-canvas);" aria-labelledby="proof-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color:var(--text-tertiary);">Customer proof</span>
+      <h2 id="proof-heading" class="display-lg">Real deployments. Governed answers.</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary); margin-top:var(--space-4);">Enterprise teams across financial services, SaaS, and insurance are getting governed, auditable answers from Quaeris — without moving their data.</p>
+    </div>
+
+    <div class="plat-proof-scroll" role="list" aria-label="Customer case studies">
+
+      <!-- case-study-1: illustrative — confirm attribution with CS before launch -->
+      <article class="plat-proof-card" role="listitem">
+        <div>
+          <span class="plat-proof-industry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+            Financial Services
+          </span>
+        </div>
+        <p class="plat-proof-client">Head of Analytics, Regional Bank</p>
+        <p class="plat-proof-outcome">Replaced a manual reporting process that required three analyst-hours per request. Business users now ask questions directly and receive governed, source-cited answers within seconds — with a full audit trail for compliance review.</p>
+        <div class="plat-proof-stats">
+          <div class="plat-proof-stat"><span>Ad-hoc request volume</span><strong>↓ 80%</strong></div>
+          <div class="plat-proof-stat"><span>Answer turnaround</span><strong>&lt; 2 min</strong></div>
+          <div class="plat-proof-stat"><span>Deployment timeline</span><strong>12 days</strong></div>
+        </div>
+        <a href="/customers" class="btn-ghost" style="margin-top:auto;">See customer stories</a>
+      </article>
+
+      <!-- case-study-2: illustrative — confirm attribution with CS before launch -->
+      <article class="plat-proof-card" role="listitem">
+        <div>
+          <span class="plat-proof-industry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Property Management SaaS
+          </span>
+        </div>
+        <p class="plat-proof-client">VP of Operations, Property Management Platform</p>
+        <p class="plat-proof-outcome">Unified structured lease data with unstructured maintenance reports in a single governed query — eliminating the manual extraction step that previously required a separate tool and a half-day delay.</p>
+        <div class="plat-proof-stats">
+          <div class="plat-proof-stat"><span>Cross-source query time</span><strong>↓ 90%</strong></div>
+          <div class="plat-proof-stat"><span>Analyst hours saved / week</span><strong>14 hrs</strong></div>
+          <div class="plat-proof-stat"><span>Data sources connected</span><strong>6</strong></div>
+        </div>
+        <a href="/customers" class="btn-ghost" style="margin-top:auto;">See customer stories</a>
+      </article>
+
+      <!-- case-study-3: illustrative — confirm attribution with CS before launch -->
+      <article class="plat-proof-card" role="listitem">
+        <div>
+          <span class="plat-proof-industry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            Insurance
+          </span>
+        </div>
+        <p class="plat-proof-client">Chief Data Officer, Mid-Market Insurer</p>
+        <p class="plat-proof-outcome">Met internal audit requirements for prompt-level logging of every AI-assisted query — a regulatory ask that legacy BI tools could not satisfy. The full audit trail now feeds directly into quarterly compliance reviews.</p>
+        <div class="plat-proof-stats">
+          <div class="plat-proof-stat"><span>Audit coverage</span><strong>100%</strong></div>
+          <div class="plat-proof-stat"><span>Compliance prep time</span><strong>↓ 60%</strong></div>
+          <div class="plat-proof-stat"><span>Time to first governed answer</span><strong>9 days</strong></div>
+        </div>
+        <a href="/customers" class="btn-ghost" style="margin-top:auto;">See customer stories</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [10] SUBPAGE NAVIGATION (#explore)
+     Interactive: hover-accent-border cards with chevron arrow
+     ============================================================ -->
+<section id="explore" class="section-pad" style="background:var(--bg-surface);" aria-labelledby="explore-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow" style="color:var(--text-tertiary);">Explore by capability</span>
+      <h2 id="explore-heading" class="display-lg">Go deeper into the layer that matters most to your team.</h2>
+      <p class="subcopy body-lg" style="color:var(--text-secondary); margin-top:var(--space-4);">Every pillar has a dedicated subpage with technical detail, integration diagrams, and relevant FAQs. Pick the layer that matches your team's current priority.</p>
+    </div>
+
+    <div class="plat-nav-grid">
+
+      <a href="/platform/agents" class="plat-nav-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="M8 5V3"/><path d="M16 5V3"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+        </div>
+        <h3>Agentic Query Engine</h3>
+        <p>How Trusted AI Agents plan and execute multi-step analyses — governed by the semantic layer at every step.</p>
+        <span class="plat-nav-card-foot" aria-hidden="true">
+          Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <a href="/platform/semantic-layer" class="plat-nav-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        </div>
+        <h3>Semantic Layer</h3>
+        <p>The Smart Semantic Layer: how certified metric definitions are built, auto-learned, and enforced across every query.</p>
+        <span class="plat-nav-card-foot" aria-hidden="true">
+          Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <a href="/platform/governance" class="plat-nav-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+        </div>
+        <h3>Governance and Lineage</h3>
+        <p>Full trace from plain-language question to source table — versioned, auditable, and ownership-stamped.</p>
+        <span class="plat-nav-card-foot" aria-hidden="true">
+          Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <a href="/platform/access-control" class="plat-nav-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Role-Based Access</h3>
+        <p>How query-time access controls scope data to exactly what each user's role permits — no dashboard-filter workarounds.</p>
+        <span class="plat-nav-card-foot" aria-hidden="true">
+          Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <a href="/platform/warehouse" class="plat-nav-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+        </div>
+        <h3>Warehouse-Native Architecture</h3>
+        <p>Why your data never leaves your environment, and how Quaeris connects without pipelines or data copies.</p>
+        <span class="plat-nav-card-foot" aria-hidden="true">
+          Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <a href="/platform/audit" class="plat-nav-card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        </div>
+        <h3>Audit Logs</h3>
+        <p>The full prompt-level audit trail: who asked what, which agent steps ran, which metric definitions answered.</p>
+        <span class="plat-nav-card-foot" aria-hidden="true">
+          Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [11] TRUST BADGE ROW (#trust)
+     Interactive: hover-highlight badges, data-placeholder for unverified certs
+     ============================================================ -->
+<section id="trust" class="plat-trust-row-section" aria-labelledby="trust-heading">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom:0;">
+      <span class="eyebrow" style="color:var(--text-tertiary);">Security and compliance</span>
+      <h2 id="trust-heading" class="display-md" style="color:var(--text-primary); margin-top:var(--space-3);">Built for regulated enterprise environments</h2>
+    </div>
+
+    <ul class="plat-trust-badges" role="list">
+
+      <li class="plat-trust-badge" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+        Warehouse-native — data never leaves your environment
+      </li>
+
+      <li class="plat-trust-badge" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Role-based access enforced at query time
+      </li>
+
+      <li class="plat-trust-badge" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+        Prompt-level audit trail
+      </li>
+
+      <li class="plat-trust-badge" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M23 13h-4a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h4v-5z"/><path d="M18 10h.01"/></svg>
+        BYOM — OpenAI, Anthropic, Google, Meta
+      </li>
+
+      <li class="plat-trust-badge" role="listitem" data-placeholder style="opacity:0.6;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        SOC 2 Type II <span style="font-size:11px; color:var(--text-tertiary); font-style:italic;">(audit in progress)</span>
+      </li>
+
+      <li class="plat-trust-badge" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        GDPR <span style="font-size:11px; color:var(--text-tertiary); font-style:italic;">(supported)</span>
+      </li>
+
+      <li class="plat-trust-badge" role="listitem" data-placeholder style="opacity:0.6;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        HIPAA <span style="font-size:11px; color:var(--text-tertiary); font-style:italic;">(controls on roadmap)</span>
+      </li>
+
+    </ul>
+    <p class="body-sm" style="text-align:center; color:var(--text-tertiary); margin-top:var(--space-5);">
+      <a href="/trust" style="color:var(--brand-accent); font-weight:600; margin-left:4px;">Full compliance documentation →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     [12] FAQ (#faq)
+     Interactive: native <details> accordion (open/close, ARIA)
+     ============================================================ -->
+<section id="faq" class="section-pad" style="background:var(--bg-canvas);" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom:var(--space-7);">
+      <span class="eyebrow" style="color:var(--text-tertiary);">Common questions</span>
+      <h2 id="faq-heading" class="display-lg">Architecture questions, answered plainly.</h2>
+    </div>
+
+    <div class="plat-faq" id="faq-list">
+
+      <div class="plat-faq-mini-card reveal">
+        Still have questions? Book a 30-minute platform walkthrough with a Quaeris solutions engineer. We will connect to your warehouse and show you a governed answer against your own data.
+        <a href="/contact" class="btn btn-primary" style="display:inline-flex; margin-top:var(--space-4);">Book a walkthrough</a>
+      </div>
+
+      <details class="accordion-item reveal" open>
+        <summary>
+          Does Quaeris hallucinate numbers?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">No. Quaeris agents query the governed semantic layer — they do not generate numbers from a language model's training data. Every answer is grounded in the certified metric definitions your data team controls. If a question cannot be answered from the semantic layer, the agent says so rather than guessing.</div>
+      </details>
+
+      <details class="accordion-item reveal">
+        <summary>
+          Does my data ever leave my environment?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">No. Quaeris is warehouse-native. It connects directly to your existing Snowflake, BigQuery, Databricks, Azure Synapse, or Amazon Redshift instance and queries it in place. No data is copied, cached, or stored on Quaeris infrastructure.</div>
+      </details>
+
+      <details class="accordion-item reveal">
+        <summary>
+          What is the Smart Semantic Layer and how is it different from dbt or LookML?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">The Smart Semantic Layer is Quaeris's auto-learning layer for certified metric definitions and business context. Unlike dbt's MetricFlow or LookML, it learns business definitions from user interaction — reducing the upfront authoring sprint every other semantic-layer product requires. Your team still controls and certifies definitions; the layer handles the inference work.</div>
+      </details>
+
+      <details class="accordion-item reveal">
+        <summary>
+          What does BYOM mean in practice?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">BYOM (Bring Your Own Model) means Quaeris connects to the LLM of your choice — OpenAI, Anthropic, Google, or Meta — and lets you switch as the landscape evolves. Quaeris is not the model gatekeeper. Your compliance team chooses the model; the governed semantic layer underneath stays constant.</div>
+      </details>
+
+      <details class="accordion-item reveal">
+        <summary>
+          How long does deployment take?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Most teams connect to their warehouse and serve governed answers within two weeks. Week one covers warehouse integration and semantic layer setup. Week two covers user onboarding and access policy configuration. There is no data migration — your existing warehouse is the deployment target.</div>
+      </details>
+
+      <details class="accordion-item reveal">
+        <summary>
+          How does the audit trail work?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Every query, every agent step, and every answer is logged in a full prompt-level audit trail. The log records who asked, what question they asked, which agent steps ran, which metric definitions were used, and which data was returned. This trail is accessible to your governance and compliance teams and is designed to satisfy both internal audit requirements and emerging external obligations such as the EU AI Act and expanding SOX provisions for AI agents.</div>
+      </details>
+
+      <details class="accordion-item reveal">
+        <summary>
+          Can Quaeris query documents alongside warehouse data?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Yes. Data and Document Agents extract structured fields from contracts, invoices, resumes, and reports — then join them with warehouse fact tables in a single natural-language query. Structured and unstructured data are co-equal citizens in the same governed query. SharePoint and Google Drive are supported as document sources.</div>
+      </details>
+
+      <details class="accordion-item reveal">
+        <summary>
+          Does Quaeris replace our existing BI tool?
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">Quaeris complements your BI stack rather than replacing it. It sits above your warehouse and semantic layer, giving business users a governed natural-language interface for exploratory and investigative questions. Scheduled, structured reports and dashboards continue to serve their current purpose. Quaeris handles the questions that do not fit a pre-built dashboard.</div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [13] CTA BAND (#cta)
+     Interactive: gradient card with primary + ghost CTAs
+     ============================================================ -->
+<section id="cta" class="section-pad" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="plat-cta-card reveal">
+      <span class="eyebrow" style="color:rgba(255,255,255,0.6); display:block; margin-bottom:var(--space-4);">Ready to see it live?</span>
+      <h2 id="cta-heading" class="display-lg">Stop explaining why your numbers disagree.<br>Start governed analytics.</h2>
+      <p>Book a demo. We will connect to your warehouse, walk through the semantic layer setup, and return a governed answer against your own data — in 30 minutes.</p>
+      <div style="display:flex; gap:var(--space-4); justify-content:center; flex-wrap:wrap;">
+        <a href="/contact" class="btn btn-on-dark" style="border-radius:var(--radius-cta);">Book a Demo</a>
+        <a href="/customers" class="btn btn-secondary-dark">See customer stories</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     VANILLA JS — gated IIFEs, reduced-motion safe
+     ============================================================ -->
+
+<!-- Scroll-reveal observer (reuses globals .reveal pattern) -->
+<script>
+(function () {
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    // Graceful degradation: show all content immediately when IO is unsupported.
+    els.forEach(el => el.classList.add('visible'));
+    return;
+  }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  }), { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+})();
+</script>
+
+<!-- Engine tabs IIFE -->
+<script>
+(function () {
+  const section = document.getElementById('engine-section');
+  if (!section) return;
+  const tabs = Array.from(section.querySelectorAll('[role="tab"]'));
+  const panels = Array.from(section.querySelectorAll('[role="tabpanel"]'));
+
+  function activate(i, focus) {
+    tabs.forEach((t, j) => {
+      t.setAttribute('aria-selected', j === i ? 'true' : 'false');
+      t.tabIndex = j === i ? 0 : -1;
+    });
+    panels.forEach((p, j) => {
+      p.setAttribute('aria-hidden', j === i ? 'false' : 'true');
+    });
+    if (focus) tabs[i].focus();
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => activate(i, false));
+    tab.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); activate((i + 1) % tabs.length, true); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); activate((i - 1 + tabs.length) % tabs.length, true); }
+      if (e.key === 'Home') { e.preventDefault(); activate(0, true); }
+      if (e.key === 'End')  { e.preventDefault(); activate(tabs.length - 1, true); }
+    });
+  });
+})();
+</script>
+
+<!-- Stats count-up IIFE (gated, reduced-motion safe) -->
+<script>
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const grid = document.getElementById('stats-grid');
+  if (!grid) return;
+
+  const nums = Array.from(grid.querySelectorAll('[data-num]'));
+
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = (el.dataset.prefix || '') + target + (el.dataset.suffix || ''); return; }
+    const start = performance.now();
+    const step = ts => {
+      const p = Math.min((ts - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = (el.dataset.prefix || '') + Math.round(target * ease) + (el.dataset.suffix || '');
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    nums.forEach(el => countUp(el, parseFloat(el.dataset.num), 1200));
+    return;
+  }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) {
+      nums.forEach(el => countUp(el, parseFloat(el.dataset.num), 1200));
+      io.disconnect();
+    }
+  }), { threshold: 0.3 });
+  io.observe(grid);
+})();
+</script>
+
+
+<script>/* caps-controller (shared, from cap-shared.js) */
+/* Core Capabilities — shared interactive controller (multi-instance: inits every .caps on the page) */
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function fmt(el, v) {
+    const dec = +(el.dataset.decimals || 0);
+    let n = dec ? (+v).toFixed(dec) : Math.round(v);
+    if (el.hasAttribute('data-comma')) n = Number(dec ? (+v).toFixed(dec) : Math.round(v)).toLocaleString('en-US');
+    return (el.dataset.prefix || '') + n + (el.dataset.suffix || '');
+  }
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = fmt(el, target); return; }
+    const start = performance.now();
+    el.textContent = fmt(el, 0);
+    (function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick); else el.textContent = fmt(el, target);
+    })(start);
+  }
+  function makeEaseInverter(x1, y1, x2, y2) {
+    const bz = (t, a, b) => { const c = 3 * a, d = 3 * (b - a) - c, e = 1 - c - d; return ((e * t + d) * t + c) * t; };
+    return function (out) {
+      if (out <= 0) return 0; if (out >= 1) return 1;
+      let lo = 0, hi = 1, t = out;
+      for (let k = 0; k < 24; k++) { t = (lo + hi) / 2; if (bz(t, y1, y2) < out) lo = t; else hi = t; }
+      return bz(t, x1, x2);
+    };
+  }
+  const lineageEaseInvert = makeEaseInverter(0.22, 1, 0.36, 1);
+  const LINEAGE_DUR = 1250, LINEAGE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+  function initCaps(caps) {
+    const tabs = Array.from(caps.querySelectorAll('.cap-tab'));
+    const panels = Array.from(caps.querySelectorAll('.cap-panel'));
+    if (!tabs.length || !panels.length) return;
+    caps.classList.add('js');
+
+    function playLineage(panel) {
+      const lineage = panel.querySelector('.cap-lineage');
+      if (!lineage) return;
+      const trace = lineage.querySelector('.cap-trace');
+      const progress = lineage.querySelector('.cap-progress');
+      const nodes = Array.from(lineage.querySelectorAll('.cap-node'));
+      if (!nodes.length) return;
+      const dots = nodes.map(n => n.querySelector('.cap-node-dot'));
+      if (trace && trace._anim) { trace._anim.cancel(); trace._anim = null; }
+      if (progress && progress._anim) { progress._anim.cancel(); progress._anim = null; }
+      if (lineage._timers) lineage._timers.forEach(clearTimeout);
+      lineage._timers = [];
+      nodes.forEach(n => n.classList.remove('lit'));
+      const waapi = typeof Element !== 'undefined' && typeof Element.prototype.animate === 'function';
+      const centerY = dots.map((dot, i) => nodes[i].offsetTop + dot.offsetTop + dot.offsetHeight / 2);
+      const firstY = centerY[0], lastY = centerY[centerY.length - 1];
+      const span = Math.max(1, lastY - firstY);
+      if (progress) { progress.style.top = firstY + 'px'; progress.style.height = span + 'px'; }
+      const dotHalf = (trace ? trace.offsetHeight : 16) / 2 || 8;
+      const startY = firstY - dotHalf, endY = lastY - dotHalf;
+      if (reduce || !waapi) {
+        if (trace) trace.style.opacity = '0';
+        if (progress) progress.style.transform = 'scaleY(1)';
+        nodes.forEach(n => n.classList.add('lit'));
+        return;
+      }
+      trace.style.top = '0px'; trace.style.opacity = '1';
+      const dotAnim = trace.animate(
+        [{ transform: `translateY(${startY}px)`, opacity: 1, offset: 0 },
+         { transform: `translateY(${endY}px)`, opacity: 1, offset: 0.9 },
+         { transform: `translateY(${endY}px)`, opacity: 0, offset: 1 }],
+        { duration: LINEAGE_DUR, easing: LINEAGE_EASE, fill: 'forwards' });
+      trace._anim = dotAnim;
+      if (progress) progress._anim = progress.animate(
+        [{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }],
+        { duration: LINEAGE_DUR, easing: LINEAGE_EASE, fill: 'forwards' });
+      centerY.forEach((y, i) => {
+        const distFrac = (y - firstY) / span;
+        const at = Math.max(0, Math.min(1, lineageEaseInvert(distFrac))) * LINEAGE_DUR;
+        lineage._timers.push(setTimeout(() => nodes[i].classList.add('lit'), at));
+      });
+      dotAnim.addEventListener('finish', () => nodes.forEach(n => n.classList.add('lit')), { once: true });
+    }
+
+    function activate(i, focus) {
+      tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+      panels.forEach((p, j) => { if (j === i) p.hidden = false; else { p.hidden = true; p.classList.remove('play'); } });
+      const panel = panels[i];
+      panel.classList.remove('play'); void panel.offsetWidth; panel.classList.add('play');
+      const bar = tabs[i].querySelector('.cap-tab-bar');
+      if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+      panel.querySelectorAll('[data-num]').forEach(el => countUp(el, parseFloat(el.dataset.num), 850));
+      if (panel.querySelector('.cap-lineage')) requestAnimationFrame(() => requestAnimationFrame(() => playLineage(panel)));
+      if (focus) tabs[i].focus();
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => activate(i, false));
+      tab.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          activate((i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length, true);
+        }
+      });
+      const bar = tab.querySelector('.cap-tab-bar');
+      if (bar) bar.addEventListener('animationend', () => {
+        if (tab.getAttribute('aria-selected') === 'true') activate((i + 1) % tabs.length, false);
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { activate(0, false); io.disconnect(); } }), { threshold: 0.3 });
+      io.observe(caps);
+    } else { activate(0, false); }
+  }
+
+  document.querySelectorAll('.caps').forEach(initCaps);
+})();
+
+</script>
+</body>
+</html>

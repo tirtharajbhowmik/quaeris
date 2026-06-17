@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /resources/webinars — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  /* NOTE: no force-visible shim here — globals.css hidden→visible transition fires via IntersectionObserver. */
+</style>
+<!-- Fallback for no-JS: make all reveal elements visible so content is never trapped -->
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+
+<style id="port">
+/* ============================================================
+   PORT: resources-webinars- — move to globals.css at port time.
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — Webinars hero
+   Purple wash + headline + eyebrow + two search/filter controls
+   ============================================================ */
+
+.wb-hero-purple-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 100% at 60% 0%, var(--brand-accent-soft) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+#wb-hero { position: relative; overflow: hidden; }
+#wb-hero .container { position: relative; z-index: 1; }
+
+.wb-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-7);
+  align-items: center;
+}
+@media (max-width: 780px) {
+  .wb-hero-inner { grid-template-columns: 1fr; gap: var(--space-5); }
+}
+
+.wb-hero-stat-strip {
+  display: flex;
+  gap: var(--space-6);
+  margin-top: var(--space-7);
+  flex-wrap: wrap;
+}
+.wb-hero-stat { text-align: left; }
+.wb-hero-stat b {
+  display: block;
+  font-family: var(--font-body);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.wb-hero-stat span {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Animated headline accent underline */
+.wb-accent-line { position: relative; display: inline; color: var(--brand-accent); }
+.wb-accent-line::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -3px; right: 0; height: 3px;
+  border-radius: 2px;
+  background: var(--brand-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-slow) var(--ease-out) 0.4s;
+}
+.wb-hero-inner.entered .wb-accent-line::after { transform: scaleX(1); }
+
+/* Hero right: next-webinar SLIM TEASER — a single anchor that points down to the
+   canonical #wb-featured spotlight (which owns the full meta, speakers + countdown).
+   Keeps the live #cd-* countdown inline so script [2] still drives both id sets. */
+.wb-next-teaser {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-4) var(--space-5);
+  min-width: 240px;
+  max-width: 340px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
+}
+.wb-next-teaser:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+  border-color: var(--brand-accent);
+}
+.wb-next-teaser:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 3px;
+}
+@media (max-width: 780px) { .wb-next-teaser { max-width: none; } }
+
+.wb-next-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+}
+.wb-next-label-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  flex-shrink: 0;
+}
+.wb-next-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+.wb-next-teaser-meta {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+/* compact inline countdown — same #cd-* ids the timer script (script [2]) drives */
+.wb-next-teaser-cd {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.wb-next-teaser-cd b {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  font-variant-numeric: tabular-nums;
+}
+.wb-next-teaser-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-2);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-accent);
+}
+.wb-next-teaser-cta svg {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.wb-next-teaser:hover .wb-next-teaser-cta svg { transform: translateX(3px); }
+
+/* ============================================================
+   [2] TOGGLE + WEBINAR LIST
+   Upcoming / On-demand pill toggle + staggered card grid
+   ============================================================ */
+
+.wb-toggle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-7);
+  flex-wrap: wrap;
+}
+.wb-pill-toggle {
+  display: inline-flex;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 2px;
+  box-shadow: var(--shadow-card);
+}
+.wb-pill-btn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 8px 22px;
+  min-height: 40px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  position: relative;
+}
+.wb-pill-btn:hover { color: var(--text-primary); }
+.wb-pill-btn[aria-selected="true"] {
+  color: var(--text-on-dark);
+  background: var(--brand-accent);
+}
+.wb-pill-btn:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+/* count badge on each tab */
+.wb-pill-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: var(--radius-pill);
+  padding: 0 5px;
+  margin-left: 6px;
+  background: rgba(255,255,255,0.22);
+  color: inherit;
+  vertical-align: middle;
+}
+.wb-pill-btn[aria-selected="false"] .wb-pill-count {
+  background: var(--border-subtle);
+  color: var(--text-tertiary);
+}
+
+/* sort/filter row right side */
+.wb-sort-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.wb-sort-label { font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
+.wb-topic-filter {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+  min-height: 36px;
+}
+.wb-topic-filter:hover { border-color: var(--brand-accent); color: var(--text-primary); }
+.wb-topic-filter.active { border-color: var(--brand-accent); color: var(--brand-accent); font-weight: 600; }
+.wb-topic-filter:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+/* Tab panels */
+.wb-panel { display: flex; flex-direction: column; gap: var(--space-5); }
+.wb-panel[hidden] { display: none; }
+
+/* grid → single column on mobile */
+.wb-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  align-items: start; /* allow cards to stretch naturally within their row */
+}
+.wb-cards-grid > * { height: 100%; }
+@media (max-width: 840px) { .wb-cards-grid { grid-template-columns: 1fr; } }
+
+/* Webinar card */
+.wb-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
+}
+.wb-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+  border-color: var(--brand-accent);
+}
+/* JS-gated stagger entrance */
+.wb-cards.js .wb-card {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d, 0ms),
+              transform var(--dur-slow) var(--ease-out) var(--d, 0ms),
+              box-shadow var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
+}
+.wb-cards.js .wb-card.entered {
+  opacity: 1;
+  transform: none;
+}
+
+.wb-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.wb-card-date-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+.wb-card-date-month {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+}
+.wb-card-date-day {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.wb-card-topic-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+.wb-card-body { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; }
+.wb-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.4vw, 18px);
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.wb-card-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* time row */
+.wb-card-time {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.wb-card-time svg { width: 13px; height: 13px; color: var(--brand-accent); flex-shrink: 0; }
+
+/* speakers */
+.wb-card-speakers {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.wb-speaker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.wb-speaker-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-accent-deep), var(--brand-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  flex-shrink: 0;
+  border: 2px solid var(--bg-surface);
+}
+.wb-speaker-info { display: flex; flex-direction: column; }
+.wb-speaker-name { font-size: 12px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+.wb-speaker-role { font-size: 11px; color: var(--text-secondary); line-height: 1.2; }
+
+/* card footer */
+.wb-card-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: auto; }
+.wb-card-duration {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.wb-card-duration svg { width: 12px; height: 12px; }
+
+/* on-demand view count */
+.wb-card-views {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.wb-card-views svg { width: 12px; height: 12px; }
+
+/* Register / Watch CTA buttons on card */
+.wb-btn-register {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-on-dark);
+  background: var(--cta-bg);
+  border: none;
+  border-radius: var(--radius-cta);
+  padding: 9px 18px;
+  min-height: 40px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  box-shadow: var(--shadow-cta);
+}
+.wb-btn-register:hover { background: var(--cta-bg-hover); transform: translateY(-1px); }
+.wb-btn-register:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.wb-btn-register svg { width: 13px; height: 13px; }
+
+.wb-btn-watch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 25%, transparent);
+  border-radius: var(--radius-cta);
+  padding: 9px 18px;
+  min-height: 40px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.wb-btn-watch:hover {
+  background: var(--brand-accent);
+  color: var(--text-on-dark);
+  transform: translateY(-1px);
+}
+.wb-btn-watch:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.wb-btn-watch svg { width: 13px; height: 13px; }
+
+/* "Live" badge for upcoming cards */
+.wb-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 3px 8px;
+}
+.wb-live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+}
+.wb-cards.js .wb-live-dot { animation: wb-pulse 1.8s ease-in-out infinite; }
+
+/* "Featured" ribbon on a card */
+.wb-card.featured { border-color: color-mix(in srgb, var(--brand-accent) 40%, transparent); }
+.wb-featured-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+}
+
+/* ============================================================
+   [3] FEATURED NEXT WEBINAR — Full-width spotlight
+   ============================================================ */
+
+.wb-featured-section { background: var(--bg-surface); }
+
+.wb-featured-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+  background: linear-gradient(150deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-7);
+  color: var(--text-on-dark);
+  box-shadow: 0 24px 60px -20px var(--brand-accent-glow);
+  overflow: hidden;
+  position: relative;
+}
+@media (max-width: 860px) {
+  .wb-featured-card { grid-template-columns: 1fr; gap: var(--space-6); }
+}
+/* decorative orb */
+.wb-featured-card::before {
+  content: "";
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  top: -100px; right: -80px;
+  pointer-events: none;
+}
+
+.wb-featured-left { display: flex; flex-direction: column; gap: var(--space-4); position: relative; z-index: 1; }
+.wb-featured-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+}
+.wb-featured-eyebrow-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--text-on-dark);
+}
+.wb-cards.js .wb-featured-eyebrow-dot { animation: wb-pulse 1.6s ease-in-out infinite; }
+
+.wb-featured-title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.8vw, 34px);
+  font-weight: 400;
+  color: var(--text-on-dark);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+.wb-featured-desc {
+  font-size: 15px;
+  color: var(--text-on-dark-dim);
+  line-height: 1.6;
+  max-width: 52ch;
+}
+.wb-featured-meta {
+  display: flex;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+.wb-featured-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text-on-dark-dim);
+}
+.wb-featured-meta-item svg { width: 14px; height: 14px; color: rgba(255,255,255,0.65); flex-shrink: 0; }
+.wb-featured-meta-item b { color: var(--text-on-dark); font-weight: 600; }
+.wb-featured-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-1); }
+
+/* Featured right: speakers + countdown */
+.wb-featured-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  position: relative;
+  z-index: 1;
+}
+.wb-featured-speakers-head {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+.wb-featured-speakers { display: flex; flex-direction: column; gap: var(--space-4); }
+.wb-featured-speaker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  transition: background var(--dur-fast);
+}
+.wb-featured-speaker:hover { background: rgba(255,255,255,0.18); }
+.wb-featured-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.25);
+}
+.wb-featured-speaker-info { display: flex; flex-direction: column; gap: 1px; }
+.wb-featured-speaker-name { font-size: 14px; font-weight: 600; color: var(--text-on-dark); }
+.wb-featured-speaker-role { font-size: 12px; color: rgba(255,255,255,0.65); }
+
+/* Countdown inside featured */
+.wb-featured-countdown {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.wb-featured-countdown-head {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+.wb-featured-cd-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+}
+.wb-featured-cd-unit {
+  text-align: center;
+  background: rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-1);
+}
+.wb-featured-cd-num {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.wb-featured-cd-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-top: 4px;
+}
+
+/* JS-driven entrance for featured card */
+.wb-cards.js .wb-featured-speaker {
+  opacity: 0;
+  transform: translateX(12px);
+  transition: opacity var(--dur-slow) var(--ease-out) var(--d, 0ms),
+              transform var(--dur-slow) var(--ease-out) var(--d, 0ms),
+              background var(--dur-fast);
+}
+.wb-cards.js .wb-featured-card.entered .wb-featured-speaker {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   [4] NEWSLETTER — email capture
+   ============================================================ */
+
+.wb-newsletter-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-7);
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-7) var(--space-7);
+}
+@media (max-width: 780px) {
+  .wb-newsletter-card { grid-template-columns: 1fr; gap: var(--space-5); }
+}
+
+.wb-newsletter-left { display: flex; flex-direction: column; gap: var(--space-3); }
+.wb-newsletter-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-1);
+}
+.wb-newsletter-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+.wb-newsletter-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.wb-newsletter-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 52ch;
+  line-height: 1.6;
+}
+.wb-newsletter-perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+}
+.wb-newsletter-perk {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.wb-newsletter-perk svg { width: 13px; height: 13px; color: var(--brand-accent); flex-shrink: 0; }
+
+.wb-newsletter-right { display: flex; flex-direction: column; gap: var(--space-3); min-width: 280px; }
+@media (max-width: 780px) { .wb-newsletter-right { min-width: unset; } }
+.wb-email-form { display: flex; flex-direction: column; gap: var(--space-3); }
+.wb-email-field {
+  position: relative;
+}
+.wb-email-input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-canvas);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 11px 14px 11px 40px;
+  min-height: 44px;
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.wb-email-input:focus { border-color: var(--brand-accent); }
+.wb-email-input::placeholder { color: var(--text-tertiary); }
+.wb-email-icon {
+  position: absolute;
+  left: 13px; top: 50%;
+  transform: translateY(-50%);
+  width: 15px; height: 15px;
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+.wb-subscribe-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-on-dark);
+  background: var(--cta-bg);
+  border: none;
+  border-radius: var(--radius-cta);
+  padding: 12px var(--space-6);
+  min-height: 44px;
+  width: 100%;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  box-shadow: var(--shadow-cta);
+}
+.wb-subscribe-btn:hover { background: var(--cta-bg-hover); transform: translateY(-1px); }
+.wb-subscribe-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.wb-subscribe-btn svg { width: 15px; height: 15px; }
+.wb-email-disclaimer {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Subscribe success state */
+.wb-subscribe-success {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--success) 8%, transparent);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--success) 25%, transparent);
+}
+.wb-subscribe-success.show { display: flex; }
+.wb-subscribe-success svg { width: 24px; height: 24px; color: var(--success); }
+.wb-subscribe-success p { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+
+/* ============================================================
+   [5] CLOSING CTA
+   ============================================================ */
+
+.wb-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.wb-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.wb-cta-card p {
+  color: rgba(255,255,255,0.85);
+  max-width: 56ch;
+  margin: 0 auto var(--space-6);
+  font-size: 17px;
+  line-height: 1.6;
+}
+.wb-cta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   SHARED HELPERS — stats-grid, testimonial-card reuse from globals
+   ============================================================ */
+
+/* Stats grid (3-up) */
+.wb-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-7);
+}
+@media (max-width: 700px) { .wb-stats-grid { grid-template-columns: 1fr; gap: var(--space-5); } }
+.wb-stat-block {
+  text-align: center;
+  padding: var(--space-5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+.wb-stat-num {
+  display: block;
+  font-family: var(--font-body);
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--brand-accent);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.wb-stat-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: var(--space-2);
+  line-height: 1.35;
+}
+.wb-stat-sub {
+  display: block;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-1);
+}
+
+/* past-webinar "replay" card variant — on-demand list cards get a play icon overlay */
+.wb-card-thumb {
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(135deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: filter var(--dur-fast);
+}
+.wb-card-thumb:hover { filter: brightness(1.08); }
+.wb-card-thumb::before {
+  content: "";
+  position: absolute;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  bottom: -20px; right: -20px;
+}
+.wb-card-thumb-play {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-fast) var(--ease-out);
+  position: relative;
+  z-index: 1;
+}
+.wb-card-thumb:hover .wb-card-thumb-play { transform: scale(1.1); }
+.wb-card-thumb-play svg { width: 14px; height: 14px; color: var(--brand-accent-deep); margin-left: 2px; }
+.wb-card-thumb-duration {
+  position: absolute;
+  bottom: 8px; left: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  background: rgba(0,0,0,0.3);
+  border-radius: var(--radius-pill);
+  padding: 2px 7px;
+  font-variant-numeric: tabular-nums;
+}
+.wb-card-thumb-topic {
+  position: absolute;
+  top: 8px; right: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes wb-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes wb-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Toggle panel swap animation */
+.wb-panel.switching {
+  animation: wb-fade-up 0.28s var(--ease-out);
+}
+
+/* reduced-motion safe */
+@media (prefers-reduced-motion: reduce) {
+  .wb-cards.js .wb-card,
+  .wb-cards.js .wb-featured-speaker { transition: none !important; opacity: 1 !important; transform: none !important; }
+  .wb-accent-line::after { transition: none; transform: scaleX(1); }
+  .wb-live-dot,
+  .wb-featured-eyebrow-dot,
+  .wb-cards.js .wb-live-dot { animation: none !important; }
+  .wb-panel.switching { animation: none !important; }
+}
+</style>
+
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#wb-hero) — headline + next-webinar badge + scroll reveal
+     Interactive: countdown timer updates live via JS; accent underline draws on scroll entry
+     ============================================================ -->
+<section id="wb-hero" class="section-pad" aria-labelledby="wb-hero-heading">
+  <div class="wb-hero-purple-wash" aria-hidden="true"></div>
+  <div class="container">
+    <div class="wb-hero-inner reveal" id="wb-hero-inner">
+
+      <!-- LEFT: headline -->
+      <div>
+        <span class="eyebrow" style="color: var(--brand-accent); display: block; margin-bottom: var(--space-3);">Webinars &amp; Live Sessions</span>
+        <h1 id="wb-hero-heading" class="display-xl" style="max-width: 18ch;">
+          Learn governed agentic analytics.<br>
+          <span class="wb-accent-line">Live and on demand.</span>
+        </h1>
+        <p class="body-lg" style="color: var(--text-secondary); margin-top: var(--space-4); max-width: 52ch;">
+          Join finance, data, and enterprise analytics leaders as Quaeris experts walk through real governance workflows, semantic layer design, and warehouse-native AI in action.
+        </p>
+        <div class="hero-buttons" style="margin-top: var(--space-6);">
+          <a href="#wb-list" class="btn btn-primary">Browse all webinars</a>
+          <a href="#wb-newsletter" class="btn btn-secondary">Get notified of new sessions</a>
+        </div>
+        <div class="wb-hero-stat-strip">
+          <div class="wb-hero-stat">
+            <b class="wb-stat-count-up" data-target="6">6</b>
+            <span>Sessions on demand</span>
+          </div>
+          <div class="wb-hero-stat">
+            <b class="wb-stat-count-up" data-target="6">6</b>
+            <span>Upcoming live dates</span>
+          </div>
+          <div class="wb-hero-stat">
+            <b class="wb-stat-count-up" data-target="45" data-suffix="min">45min</b>
+            <span>Average runtime</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: next-webinar SLIM TEASER → links to the canonical #wb-featured spotlight.
+           Full meta, speakers + primary reserve CTA now live once, in the spotlight below. -->
+      <div>
+        <a href="#wb-featured" class="wb-next-teaser" data-placeholder
+           aria-label="Next live webinar: Governing AI Analytics — Audit Trail and Semantic Layer Deep Dive. View full details and reserve your seat.">
+          <span class="wb-next-label">
+            <span class="wb-next-label-dot" aria-hidden="true"></span>
+            Up next
+          </span>
+          <span class="wb-next-title">Governing AI Analytics: Audit Trail &amp; Semantic Layer Deep Dive</span>
+          <span class="wb-next-teaser-meta">Live Jul 9, 2026 · 11:00 AM ET · 45 min</span>
+          <span class="wb-next-teaser-cd" aria-hidden="true">
+            <span>Starts in</span>
+            <b><span id="cd-days">--</span>d</b>
+            <b><span id="cd-hours">--</span>h</b>
+            <b><span id="cd-mins">--</span>m</b>
+            <b><span id="cd-secs">--</span>s</b>
+          </span>
+          <span class="wb-next-teaser-cta">
+            View details &amp; reserve
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] WEBINAR LIST (#wb-list) — TOGGLE + FILTERED CARDS
+     Interactive: pill toggle switches Upcoming / On-demand panels;
+     topic filter chips filter cards; staggered entrance on panel switch
+     ============================================================ -->
+<section id="wb-list" class="section-pad" aria-labelledby="wb-list-heading">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom: var(--space-7);">
+      <span class="eyebrow">Webinar Library</span>
+      <h2 id="wb-list-heading" class="display-lg">All sessions, one place.</h2>
+      <p class="subcopy body-lg">Live sessions you can join. Recordings you can watch at your pace.</p>
+    </div>
+
+    <!-- Toggle + filter row -->
+    <div class="wb-toggle-wrap">
+      <!-- Upcoming / On-demand pill toggle -->
+      <div class="wb-pill-toggle" role="tablist" aria-label="Webinar type">
+        <button class="wb-pill-btn" role="tab" id="tab-upcoming" aria-controls="panel-upcoming" aria-selected="true">
+          Upcoming
+          <span class="wb-pill-count" aria-label="6 sessions">6</span>
+        </button>
+        <button class="wb-pill-btn" role="tab" id="tab-ondemand" aria-controls="panel-ondemand" aria-selected="false">
+          On-demand
+          <span class="wb-pill-count" aria-label="6 recordings">6</span>
+        </button>
+      </div>
+
+      <!-- Topic filter chips -->
+      <div class="wb-sort-row" role="group" aria-label="Filter by topic">
+        <span class="wb-sort-label" id="filter-label">Filter:</span>
+        <button class="wb-topic-filter active" data-topic="all" aria-pressed="true" aria-describedby="filter-label">All</button>
+        <button class="wb-topic-filter" data-topic="governance" aria-pressed="false" aria-describedby="filter-label">Governance</button>
+        <button class="wb-topic-filter" data-topic="semantic" aria-pressed="false" aria-describedby="filter-label">Semantic Layer</button>
+        <button class="wb-topic-filter" data-topic="finance" aria-pressed="false" aria-describedby="filter-label">Finance</button>
+        <button class="wb-topic-filter" data-topic="engineering" aria-pressed="false" aria-describedby="filter-label">Engineering</button>
+      </div>
+    </div>
+
+    <div class="wb-cards" id="wb-cards-root">
+
+      <!-- ── UPCOMING PANEL ── -->
+      <div class="wb-panel" role="tabpanel" id="panel-upcoming" aria-labelledby="tab-upcoming" tabindex="0">
+        <div class="wb-cards-grid">
+
+          <!-- Card 1 — Next live session (links to #wb-featured spotlight for full details) -->
+          <!-- NOTE: deduplicated from original triple-render — now shows distinct "Governing AI Analytics" entry pointing to full spotlight below -->
+          <article class="wb-card featured" data-topic="governance" style="--d:0ms">
+            <div class="wb-card-header">
+              <div class="wb-card-date-badge" aria-label="July 9, 2026">
+                <span class="wb-card-date-month">Jul</span>
+                <span class="wb-card-date-day">9</span>
+              </div>
+              <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                <span class="wb-featured-ribbon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:11px;height:11px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  Up Next
+                </span>
+                <span class="wb-card-topic-tag">Governance</span>
+              </div>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">Governing AI Analytics: Audit Trail &amp; Semantic Layer Deep Dive</h3>
+              <p class="wb-card-desc">How the Quaeris semantic layer enforces certified metric definitions, traces every query to source, and satisfies SOX/EU AI Act audit requirements — end-to-end demo.</p>
+            </div>
+            <div class="wb-card-time">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Jul 9, 2026 · 11:00 AM ET · 45 min</span>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">AK</span>
+                <div class="wb-speaker-info">
+                  <!-- Speaker names confirmed pending public announcement; initials used -->
+                  <span class="wb-speaker-name">A. Kim</span>
+                  <span class="wb-speaker-role">Head of Product, Quaeris</span>
+                </div>
+              </div>
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">MR</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">M. Rivera</span>
+                  <span class="wb-speaker-role">Solutions Engineer, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-duration">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                45 min + Q&amp;A
+              </div>
+              <a href="#wb-featured" class="wb-btn-register" aria-label="View details and register for Governing AI Analytics webinar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                View &amp; Register
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="wb-card" data-topic="semantic" style="--d:80ms">
+            <div class="wb-card-header">
+              <div class="wb-card-date-badge" aria-label="July 16, 2026">
+                <span class="wb-card-date-month">Jul</span>
+                <span class="wb-card-date-day">16</span>
+              </div>
+              <span class="wb-card-topic-tag">Semantic Layer</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">Building a Warehouse-Native Semantic Layer with Quaeris</h3>
+              <p class="wb-card-desc">Step-by-step walkthrough of modeling certified metrics on Snowflake and BigQuery without extracting data from your environment.</p>
+            </div>
+            <div class="wb-card-time">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Jul 16, 2026 · 1:00 PM ET · 60 min</span>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">SL</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">S. Lin</span>
+                  <span class="wb-speaker-role">Principal Engineer, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-duration">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                60 min + Q&amp;A
+              </div>
+              <a href="/webinars/register/warehouse-semantic" class="wb-btn-register" aria-label="Register for Warehouse-Native Semantic Layer webinar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Register
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="wb-card" data-topic="finance" style="--d:160ms">
+            <div class="wb-card-header">
+              <div class="wb-card-date-badge" aria-label="July 23, 2026">
+                <span class="wb-card-date-month">Jul</span>
+                <span class="wb-card-date-day">23</span>
+              </div>
+              <span class="wb-card-topic-tag">Finance</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">From Month-End Close to Board Deck: Governed Finance Analytics</h3>
+              <p class="wb-card-desc">How FP&amp;A teams use Quaeris to run variance analysis, GL reconciliation, and board-ready reporting — all from a single governed query surface.</p>
+            </div>
+            <div class="wb-card-time">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Jul 23, 2026 · 12:00 PM ET · 45 min</span>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">PV</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">P. Varma</span>
+                  <span class="wb-speaker-role">VP Finance Solutions, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-duration">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                45 min + Q&amp;A
+              </div>
+              <a href="/webinars/register/finance-governed" class="wb-btn-register" aria-label="Register for Finance Analytics webinar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Register
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="wb-card" data-topic="engineering" style="--d:240ms">
+            <div class="wb-card-header">
+              <div class="wb-card-date-badge" aria-label="July 30, 2026">
+                <span class="wb-card-date-month">Jul</span>
+                <span class="wb-card-date-day">30</span>
+              </div>
+              <span class="wb-card-topic-tag">Engineering</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">MCP Integration: Connecting Quaeris Agents to Your Data Stack</h3>
+              <p class="wb-card-desc">Deep technical session on Model Context Protocol (MCP) integration, connecting Quaeris agents to Snowflake, BigQuery, and enterprise data warehouses.</p>
+            </div>
+            <div class="wb-card-time">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Jul 30, 2026 · 2:00 PM ET · 60 min</span>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">DN</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">D. Nair</span>
+                  <span class="wb-speaker-role">Staff Engineer, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-duration">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                60 min, technical
+              </div>
+              <a href="/webinars/register/mcp-integration" class="wb-btn-register" aria-label="Register for MCP Integration webinar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Register
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="wb-card" data-topic="governance" style="--d:320ms">
+            <div class="wb-card-header">
+              <div class="wb-card-date-badge" aria-label="August 6, 2026">
+                <span class="wb-card-date-month">Aug</span>
+                <span class="wb-card-date-day">6</span>
+              </div>
+              <span class="wb-card-topic-tag">Governance</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">Role-Based Access in Agentic Analytics: Enterprise Patterns</h3>
+              <p class="wb-card-desc">Row-level and field-level masking enforced at query time — configuring enterprise access policies on Quaeris for regulated industries.</p>
+            </div>
+            <div class="wb-card-time">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Aug 6, 2026 · 11:00 AM PT · 45 min</span>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">JT</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">J. Torres</span>
+                  <span class="wb-speaker-role">Enterprise Architect, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-duration">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                45 min + Q&amp;A
+              </div>
+              <a href="/webinars/register/rbac-enterprise" class="wb-btn-register" aria-label="Register for Role-Based Access webinar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Register
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="wb-card" data-topic="semantic" style="--d:400ms">
+            <div class="wb-card-header">
+              <div class="wb-card-date-badge" aria-label="August 13, 2026">
+                <span class="wb-card-date-month">Aug</span>
+                <span class="wb-card-date-day">13</span>
+              </div>
+              <span class="wb-card-topic-tag">Semantic Layer</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">Lineage Tracking: Tracing Every Answer Back to its Source</h3>
+              <p class="wb-card-desc">How Quaeris maps the full query lineage — from natural-language question through certified metric definition to underlying data source — in one click.</p>
+            </div>
+            <div class="wb-card-time">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Aug 13, 2026 · 10:00 AM ET · 50 min</span>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">CB</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">C. Bose</span>
+                  <span class="wb-speaker-role">Product Lead, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-duration">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                50 min + Q&amp;A
+              </div>
+              <a href="/webinars/register/lineage-tracking" class="wb-btn-register" aria-label="Register for Lineage Tracking webinar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Register
+              </a>
+            </div>
+          </article>
+
+        </div><!-- /wb-cards-grid upcoming -->
+      </div><!-- /panel-upcoming -->
+
+      <!-- ── ON-DEMAND PANEL ── -->
+      <div class="wb-panel" role="tabpanel" id="panel-ondemand" aria-labelledby="tab-ondemand" hidden tabindex="-1">
+        <div class="wb-cards-grid">
+
+          <!-- On-demand card 1 -->
+          <article class="wb-card" data-topic="governance" style="--d:0ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
+              <div class="wb-card-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <span class="wb-card-thumb-duration">47:32</span>
+              <span class="wb-card-thumb-topic">Governance</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">Certified Metrics: One Definition Across Every Report</h3>
+              <p class="wb-card-desc">How the Quaeris semantic layer version-locks metric definitions so finance, product, and ops teams always use the same certified number.</p>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">RH</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">R. Hayes</span>
+                  <span class="wb-speaker-role">Head of Analytics, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-views">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>1.2k views</span>
+              </div>
+              <a href="/webinars/watch/certified-metrics-definition" class="wb-btn-watch" aria-label="Watch Certified Metrics recording">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Watch now
+              </a>
+            </div>
+          </article>
+
+          <!-- On-demand card 2 -->
+          <article class="wb-card" data-topic="engineering" style="--d:80ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
+              <div class="wb-card-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <span class="wb-card-thumb-duration">58:14</span>
+              <span class="wb-card-thumb-topic">Engineering</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">Agentic Architecture: How Quaeris AI Agents Reason Over Data</h3>
+              <p class="wb-card-desc">Inside the agent loop — how Quaeris orchestrates multi-step reasoning, tool calls, and source verification without hallucinating answers.</p>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">EG</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">E. Gupta</span>
+                  <span class="wb-speaker-role">Staff Engineer, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-views">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>980 views</span>
+              </div>
+              <a href="/webinars/watch/agentic-architecture" class="wb-btn-watch" aria-label="Watch Agentic Architecture recording">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Watch now
+              </a>
+            </div>
+          </article>
+
+          <!-- On-demand card 3 -->
+          <article class="wb-card" data-topic="finance" style="--d:160ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
+              <div class="wb-card-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <span class="wb-card-thumb-duration">43:08</span>
+              <span class="wb-card-thumb-topic">Finance</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">Variance Analysis in Plain English: Live Finance Demo</h3>
+              <p class="wb-card-desc">A live demonstration of asking "why did we miss forecast?" and receiving driver-ranked, GL-cited answers — no SQL, no analyst queue.</p>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">NW</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">N. Walsh</span>
+                  <span class="wb-speaker-role">Finance Solutions Lead, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-views">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>1.5k views</span>
+              </div>
+              <a href="/webinars/watch/variance-analysis-demo" class="wb-btn-watch" aria-label="Watch Variance Analysis recording">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Watch now
+              </a>
+            </div>
+          </article>
+
+          <!-- On-demand card 4 -->
+          <article class="wb-card" data-topic="semantic" style="--d:240ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
+              <div class="wb-card-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <span class="wb-card-thumb-duration">52:41</span>
+              <span class="wb-card-thumb-topic">Semantic Layer</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">What is a Governed Semantic Layer? A Practical Primer</h3>
+              <p class="wb-card-desc">No jargon — what semantic layers actually do, why warehouse-native matters, and how to scope one for an enterprise rollout.</p>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">TK</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">T. Kumar</span>
+                  <span class="wb-speaker-role">Data Architecture Lead, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-views">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>2.1k views</span>
+              </div>
+              <a href="/webinars/watch/semantic-layer-primer" class="wb-btn-watch" aria-label="Watch Semantic Layer Primer recording">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Watch now
+              </a>
+            </div>
+          </article>
+
+          <!-- On-demand card 5 -->
+          <article class="wb-card" data-topic="governance" style="--d:320ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
+              <div class="wb-card-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <span class="wb-card-thumb-duration">39:55</span>
+              <span class="wb-card-thumb-topic">Governance</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">EU AI Act &amp; SOX Compliance in AI Analytics: What You Need Now</h3>
+              <p class="wb-card-desc">Practical session on meeting EU AI Act transparency obligations and SOX §302/§404 controls with governed agentic analytics platforms.</p>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">LP</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">L. Park</span>
+                  <span class="wb-speaker-role">Compliance Lead, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-views">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>1.8k views</span>
+              </div>
+              <a href="/webinars/watch/eu-ai-act-sox" class="wb-btn-watch" aria-label="Watch EU AI Act and SOX recording">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Watch now
+              </a>
+            </div>
+          </article>
+
+          <!-- On-demand card 6 -->
+          <article class="wb-card" data-topic="engineering" style="--d:400ms">
+            <div class="wb-card-thumb">
+              <!-- decorative thumbnail visual -->
+              <span role="img" aria-label="Webinar recording thumbnail" aria-hidden="true" style="position:absolute;inset:0"></span>
+              <div class="wb-card-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <span class="wb-card-thumb-duration">61:22</span>
+              <span class="wb-card-thumb-topic">Engineering</span>
+            </div>
+            <div class="wb-card-body">
+              <h3 class="wb-card-title">Quaeris on Snowflake: Deployment, Security, and Query Patterns</h3>
+              <p class="wb-card-desc">End-to-end walkthrough: provisioning Quaeris on Snowflake, configuring row-level security, and writing semantic-layer queries that stay warehouse-native.</p>
+            </div>
+            <div class="wb-card-speakers" aria-label="Speakers">
+              <div class="wb-speaker">
+                <span class="wb-speaker-avatar" aria-hidden="true">BM</span>
+                <div class="wb-speaker-info">
+                  <span class="wb-speaker-name">B. Mao</span>
+                  <span class="wb-speaker-role">Platform Engineer, Quaeris</span>
+                </div>
+              </div>
+            </div>
+            <div class="wb-card-footer">
+              <div class="wb-card-views">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>1.4k views</span>
+              </div>
+              <a href="/webinars/watch/snowflake-deployment" class="wb-btn-watch" aria-label="Watch Snowflake Deployment recording">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Watch now
+              </a>
+            </div>
+          </article>
+
+        </div><!-- /wb-cards-grid on-demand -->
+      </div><!-- /panel-ondemand -->
+
+    </div><!-- /wb-cards-root -->
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] FEATURED / NEXT WEBINAR SPOTLIGHT (#wb-featured)
+     Interactive: staggered speaker card entrance on scroll;
+     live-dot pulse; countdown ticking
+     ============================================================ -->
+<section id="wb-featured" class="section-pad wb-featured-section" aria-labelledby="wb-featured-heading">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom: var(--space-7);">
+      <span class="eyebrow">Featured Session</span>
+      <h2 id="wb-featured-heading" class="display-lg">Don't miss the next<br><span style="color: var(--brand-accent);">live deep dive.</span></h2>
+    </div>
+
+    <div class="wb-featured-card wb-cards" id="wb-featured-card">
+      <!-- LEFT -->
+      <div class="wb-featured-left">
+        <div class="wb-featured-eyebrow">
+          <span class="wb-featured-eyebrow-dot" aria-hidden="true"></span>
+          Live webinar · Jul 9, 2026
+        </div>
+        <h3 class="wb-featured-title">Governing AI Analytics: Audit Trail &amp; Semantic Layer Deep Dive</h3>
+        <p class="wb-featured-desc">
+          Walk through a real Quaeris deployment — from certifying your first metric definition to satisfying a regulator's lineage request in under a minute. Includes live Q&amp;A.
+        </p>
+        <div class="wb-featured-meta">
+          <div class="wb-featured-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span><b>Jul 9, 2026</b></span>
+          </div>
+          <div class="wb-featured-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span><b>11:00 AM ET</b> · 45 min</span>
+          </div>
+          <div class="wb-featured-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+            <span>Live Q&amp;A included</span>
+          </div>
+        </div>
+        <div class="wb-featured-actions">
+          <a href="/webinars/register/govern-audit-semantic" class="btn btn-on-dark">Reserve my seat</a>
+          <a href="/webinars/watch" class="btn btn-secondary-dark">Browse all recordings</a>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="wb-featured-right">
+        <p class="wb-featured-speakers-head">Your speakers</p>
+        <div class="wb-featured-speakers">
+          <div class="wb-featured-speaker" style="--d:0ms">
+            <span class="wb-featured-avatar" aria-hidden="true">AK</span>
+            <div class="wb-featured-speaker-info">
+              <!-- Speaker names pending final public announcement; initials used -->
+              <span class="wb-featured-speaker-name">A. Kim</span>
+              <span class="wb-featured-speaker-role">Head of Product, Quaeris</span>
+            </div>
+          </div>
+          <div class="wb-featured-speaker" style="--d:120ms">
+            <span class="wb-featured-avatar" aria-hidden="true">MR</span>
+            <div class="wb-featured-speaker-info">
+              <span class="wb-featured-speaker-name">M. Rivera</span>
+              <span class="wb-featured-speaker-role">Solutions Engineer, Quaeris</span>
+            </div>
+          </div>
+          <div class="wb-featured-speaker" style="--d:240ms">
+            <span class="wb-featured-avatar" aria-hidden="true">SL</span>
+            <div class="wb-featured-speaker-info">
+              <span class="wb-featured-speaker-name">S. Lin</span>
+              <span class="wb-featured-speaker-role">Principal Engineer, Quaeris</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="wb-featured-countdown" role="timer" aria-label="Time until webinar">
+          <p class="wb-featured-countdown-head">Starts in</p>
+          <div class="wb-featured-cd-grid">
+            <div class="wb-featured-cd-unit"><span class="wb-featured-cd-num" id="fcd-days">--</span><span class="wb-featured-cd-label">days</span></div>
+            <div class="wb-featured-cd-unit"><span class="wb-featured-cd-num" id="fcd-hours">--</span><span class="wb-featured-cd-label">hrs</span></div>
+            <div class="wb-featured-cd-unit"><span class="wb-featured-cd-num" id="fcd-mins">--</span><span class="wb-featured-cd-label">min</span></div>
+            <div class="wb-featured-cd-unit"><span class="wb-featured-cd-num" id="fcd-secs">--</span><span class="wb-featured-cd-label">sec</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] STATS BAND — 3-up count-up on scroll
+     Interactive: IntersectionObserver-triggered count-up animation
+     ============================================================ -->
+<section class="section-pad" aria-labelledby="wb-stats-heading" style="background: var(--bg-warm);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Webinar program</span>
+      <h2 id="wb-stats-heading" class="display-lg">Built for practitioners,<br><span style="color:var(--brand-accent);">not slides.</span></h2>
+    </div>
+    <div class="wb-stats-grid">
+      <div class="wb-stat-block reveal">
+        <span class="wb-stat-num wb-count-up" data-target="6">6</span>
+        <span class="wb-stat-label">Sessions on demand</span>
+        <span class="wb-stat-sub">Governed analytics, semantic layer, finance, engineering</span>
+      </div>
+      <div class="wb-stat-block reveal">
+        <span class="wb-stat-num wb-count-up" data-target="45" data-suffix="min">45min</span>
+        <span class="wb-stat-label">Average runtime</span>
+        <span class="wb-stat-sub">Focused and demo-heavy — no filler</span>
+      </div>
+      <div class="wb-stat-block reveal">
+        <span class="wb-stat-num wb-count-up" data-target="100" data-suffix="%">100%</span>
+        <span class="wb-stat-label">Free to attend</span>
+        <span class="wb-stat-sub">All sessions free — register or watch on demand</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] NEWSLETTER (#wb-newsletter) — email capture
+     Interactive: submit toggles form to success state; real-time
+     focus states on input; form validation via JS
+     ============================================================ -->
+<section id="wb-newsletter" class="section-pad" aria-labelledby="wb-newsletter-heading">
+  <div class="container">
+    <div class="wb-newsletter-card reveal">
+      <div class="wb-newsletter-left">
+        <div class="wb-newsletter-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+        <h2 id="wb-newsletter-heading" class="wb-newsletter-title">
+          New session every two weeks.<br>Never miss one.
+        </h2>
+        <p class="wb-newsletter-desc">
+          Get early access to upcoming webinars and on-demand recordings delivered straight to your inbox. Unsubscribe any time.
+        </p>
+        <div class="wb-newsletter-perks">
+          <span class="wb-newsletter-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Early seat access
+          </span>
+          <span class="wb-newsletter-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Session recaps + slides
+          </span>
+          <span class="wb-newsletter-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            No marketing noise
+          </span>
+        </div>
+      </div>
+
+      <div class="wb-newsletter-right">
+        <!-- Subscribe form -->
+        <form class="wb-email-form" id="wb-subscribe-form" novalidate>
+          <div class="wb-email-field">
+            <svg class="wb-email-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <input
+              class="wb-email-input"
+              type="email"
+              id="wb-email-input"
+              name="email"
+              placeholder="you@company.com"
+              autocomplete="email"
+              aria-label="Work email address"
+              aria-required="true"
+            />
+          </div>
+          <button type="submit" class="wb-subscribe-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Get webinar notifications
+          </button>
+          <p class="wb-email-disclaimer">By subscribing you agree to receive webinar communications from Quaeris. Unsubscribe any time.</p>
+        </form>
+        <!-- Success state — shown by JS after submit -->
+        <div class="wb-subscribe-success" id="wb-subscribe-success" role="status" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          <p>You're subscribed — check your inbox for the next session invite.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [6] CLOSING CTA
+     Interactive: hover lift on both buttons; scroll-reveal entrance
+     ============================================================ -->
+<section class="section-pad" aria-labelledby="wb-cta-heading">
+  <div class="container">
+    <div class="wb-cta-card reveal">
+      <h2 id="wb-cta-heading" class="display-lg">See Quaeris in action.<br>Not just on a slide.</h2>
+      <p>Book a live, hands-on demo — we'll run your own finance questions through the governed semantic layer. Audit trail, role access, lineage, all live.</p>
+      <div class="wb-cta-actions">
+        <a href="/contact" class="btn btn-on-dark">Book a demo</a>
+        <a href="/resources/webinars" class="btn btn-secondary-dark">Browse all webinars</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPTS — vanilla IIFEs, gated by JS, reduced-motion safe
+     ============================================================ -->
+
+<!-- [1] Scroll-reveal: IntersectionObserver for .reveal elements -->
+<script>
+(function () {
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduce) {
+    document.querySelectorAll('.reveal').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+</script>
+
+<!-- [2] Countdown timer — targets both hero badge + featured section -->
+<script>
+(function () {
+  // Placeholder target: 14 days, 6 hours from page load (replace with real date at port time).
+  // At port time: replace with ISO date string from the CMS.
+  const TARGET_MS = Date.now() + (14 * 24 * 60 * 60 * 1000) + (6 * 60 * 60 * 1000);
+  const pads = [
+    { days: 'cd-days',   hours: 'cd-hours',   mins: 'cd-mins',   secs: 'cd-secs'  },
+    { days: 'fcd-days',  hours: 'fcd-hours',  mins: 'fcd-mins',  secs: 'fcd-secs' }
+  ];
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    const diff = Math.max(0, TARGET_MS - Date.now());
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000) / 60000);
+    const secs  = Math.floor((diff % 60000) / 1000);
+    pads.forEach(ids => {
+      const dEl = document.getElementById(ids.days);
+      const hEl = document.getElementById(ids.hours);
+      const mEl = document.getElementById(ids.mins);
+      const sEl = document.getElementById(ids.secs);
+      if (dEl) dEl.textContent = pad(days);
+      if (hEl) hEl.textContent = pad(hours);
+      if (mEl) mEl.textContent = pad(mins);
+      if (sEl) sEl.textContent = pad(secs);
+    });
+    if (diff > 0 && !prefersReduce) requestAnimationFrame(tick);
+  }
+  tick();
+  if (!prefersReduce) setInterval(tick, 1000);
+})();
+</script>
+
+<!-- [3] Hero accent underline draw-on + hero count-up -->
+<script>
+(function () {
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const inner = document.getElementById('wb-hero-inner');
+  if (!inner) return;
+
+  // Accent underline — draws on when the hero enters the viewport
+  if (!prefersReduce) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) { inner.classList.add('entered'); io.disconnect(); }
+    }, { threshold: 0.3 });
+    io.observe(inner);
+  } else {
+    inner.classList.add('entered');
+  }
+})();
+</script>
+
+<!-- [4] Webinar count-up (stats band) -->
+<script>
+(function () {
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function countUp(el) {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    if (prefersReduce || isNaN(target)) { el.textContent = target + suffix; return; }
+    const dur = 900;
+    const start = performance.now();
+    const isInt = Number.isInteger(target);
+    el.textContent = (isInt ? 0 : '0') + suffix;
+    (function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const val = isInt ? Math.round(target * ease) : (target * ease).toFixed(1);
+      el.textContent = val + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.wb-count-up').forEach(countUp);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.25 });
+  document.querySelectorAll('.wb-stats-grid').forEach(g => io.observe(g));
+})();
+</script>
+
+<!-- [5] Tab toggle (Upcoming / On-demand) + topic filter chips -->
+<script>
+(function () {
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = document.getElementById('wb-cards-root');
+  if (!root) return;
+
+  const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+  const panels = Array.from(root.querySelectorAll('[role="tabpanel"]'));
+
+  function activateTab(tab) {
+    tabs.forEach(t => {
+      const selected = t === tab;
+      t.setAttribute('aria-selected', selected);
+      t.tabIndex = selected ? 0 : -1;
+    });
+    panels.forEach(p => {
+      const isActive = p.id === tab.getAttribute('aria-controls');
+      p.hidden = !isActive;
+      p.tabIndex = isActive ? 0 : -1;
+      if (isActive && !prefersReduce) {
+        p.classList.add('switching');
+        p.addEventListener('animationend', () => p.classList.remove('switching'), { once: true });
+        // Stagger card entrance
+        enterCards(p);
+      } else if (isActive) {
+        enterCards(p);
+      }
+    });
+    // re-apply current topic filter
+    applyTopicFilter(root.querySelector('.wb-topic-filter.active')?.dataset.topic || 'all');
+  }
+
+  // keyboard roving tabindex
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => activateTab(tab));
+    tab.addEventListener('keydown', (e) => {
+      const idx = tabs.indexOf(tab);
+      if (e.key === 'ArrowRight') { e.preventDefault(); activateTab(tabs[(idx + 1) % tabs.length]); tabs[(idx + 1) % tabs.length].focus(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); activateTab(tabs[(idx - 1 + tabs.length) % tabs.length]); tabs[(idx - 1 + tabs.length) % tabs.length].focus(); }
+      if (e.key === 'Home') { e.preventDefault(); activateTab(tabs[0]); tabs[0].focus(); }
+      if (e.key === 'End')  { e.preventDefault(); activateTab(tabs[tabs.length - 1]); tabs[tabs.length - 1].focus(); }
+    });
+  });
+
+  // Topic filter chips
+  const filterBtns = Array.from(document.querySelectorAll('.wb-topic-filter'));
+  function applyTopicFilter(topic) {
+    const activePanel = panels.find(p => !p.hidden);
+    if (!activePanel) return;
+    activePanel.querySelectorAll('.wb-card').forEach(card => {
+      const cardTopic = card.dataset.topic || 'all';
+      const show = topic === 'all' || cardTopic === topic;
+      card.style.display = show ? '' : 'none';
+      if (show) card.classList.add('entered');
+    });
+  }
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      applyTopicFilter(btn.dataset.topic);
+    });
+  });
+
+  // Staggered card entrance on panel reveal
+  function enterCards(panel) {
+    const cardContainer = document.getElementById('wb-cards-root');
+    cardContainer.classList.add('js');
+    const cards = Array.from(panel.querySelectorAll('.wb-card'));
+    cards.forEach((c, i) => {
+      c.style.setProperty('--d', (i * 60) + 'ms');
+      // force reflow then add class
+      void c.offsetWidth;
+      setTimeout(() => c.classList.add('entered'), 10 + i * 60);
+    });
+  }
+
+  // Init
+  activateTab(tabs[0]);
+})();
+</script>
+
+<!-- [6] Featured card speaker stagger on scroll -->
+<script>
+(function () {
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const card = document.getElementById('wb-featured-card');
+  if (!card) return;
+  card.classList.add('wb-cards', 'js');
+
+  if (prefersReduce) {
+    card.classList.add('entered');
+    card.querySelectorAll('.wb-featured-speaker').forEach(s => s.classList.add('entered'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      card.classList.add('entered');
+      card.querySelectorAll('.wb-featured-speaker').forEach((s, i) => {
+        setTimeout(() => { s.style.opacity = '1'; s.style.transform = 'none'; }, i * 120);
+      });
+      io.disconnect();
+    }
+  }, { threshold: 0.25 });
+  io.observe(card);
+})();
+</script>
+
+<!-- [7] Newsletter form — real POST to /api/subscribe; success/error driven by response.ok -->
+<script>
+(function () {
+  const form    = document.getElementById('wb-subscribe-form');
+  const success = document.getElementById('wb-subscribe-success');
+  const input   = document.getElementById('wb-email-input');
+  const btn     = form ? form.querySelector('button[type="submit"]') : null;
+  if (!form || !success || !input || !btn) return;
+
+  // Inline status region reused for both success and error messages (aria-live="polite" already set on #wb-subscribe-success)
+  // We add a separate sibling error region so success state remains visually distinct.
+  const errRegion = document.createElement('p');
+  errRegion.id = 'wb-subscribe-error';
+  errRegion.setAttribute('role', 'alert');
+  errRegion.setAttribute('aria-live', 'assertive');
+  errRegion.style.cssText = 'font-size:13px;color:var(--error,#c0392b);margin-top:var(--space-2,8px);display:none;';
+  form.insertAdjacentElement('afterend', errRegion);
+
+  function showError(msg) {
+    errRegion.textContent = msg;
+    errRegion.style.display = 'block';
+    input.setAttribute('aria-describedby', 'wb-subscribe-error');
+    input.style.borderColor = 'var(--error, #c0392b)';
+    input.focus();
+  }
+
+  function clearError() {
+    errRegion.style.display = 'none';
+    errRegion.textContent = '';
+    input.removeAttribute('aria-describedby');
+    input.style.borderColor = '';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError();
+
+    const val = input.value.trim();
+    if (!val || !val.includes('@') || !val.includes('.')) {
+      showError('Please enter a valid email address.');
+      return;
+    }
+
+    // Disable while in-flight
+    btn.disabled = true;
+    const originalLabel = btn.textContent.trim();
+    btn.textContent = 'Subscribing…';
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: val, source: 'resources-webinars' })
+      });
+
+      if (res.ok) {
+        // Show success; keep form in DOM but hidden so screen readers see the status region
+        form.style.display = 'none';
+        success.classList.add('show');
+      } else {
+        let msg = 'Something went wrong. Please try again.';
+        try { const data = await res.json(); if (data && data.message) msg = data.message; } catch (_) {}
+        showError(msg);
+        btn.disabled = false;
+        btn.textContent = originalLabel;
+      }
+    } catch (_) {
+      showError('Could not reach the server. Please check your connection and try again.');
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+    }
+  });
+
+  input.addEventListener('input', clearError);
+})();
+</script>
+
+<!-- [8] Hero next-badge live dot pulse gate -->
+<script>
+(function () {
+  const dot = document.querySelector('.wb-next-label-dot');
+  if (!dot || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  dot.style.animation = 'wb-pulse 1.8s ease-in-out infinite';
+})();
+</script>
+
+</body>
+</html>

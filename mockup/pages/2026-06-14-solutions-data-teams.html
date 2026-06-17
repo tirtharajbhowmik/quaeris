@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/data-teams — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  /* native <details> stands in for Accordion.tsx (Radix) — do NOT port */
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* .reveal initial state is hidden (opacity:0/translateY) via globals.css; the IO in
+     globals fires to reveal. Remove force-visible shim so animations work. */
+</style>
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+
+<style id="port">
+/* ============================================================
+   PORT: dt- (Data Teams page) — move to globals.css at port time.
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — dt-hero-grid, dt-brief (Governed Query Panel)
+   ============================================================ */
+.dt-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 900px) { .dt-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+.dt-trust-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-5) var(--space-6);
+  margin-top: var(--space-7);
+}
+@media (max-width: 640px) { .dt-trust-strip { grid-template-columns: 1fr; gap: var(--space-4); } }
+.dt-trust-item { display: flex; align-items: flex-start; gap: var(--space-3); }
+.dt-trust-item svg { width: 18px; height: 18px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+.dt-trust-item strong { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.dt-trust-item span { display: block; font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+
+/* Governed Query Panel card */
+.dt-brief {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.dt-brief-head { display: flex; align-items: center; justify-content: space-between; }
+.dt-brief-dots { display: flex; gap: 6px; }
+.dt-brief-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+.dt-brief-bar {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px; color: var(--text-primary); font-weight: 500;
+  overflow: hidden;
+}
+.dt-brief-bar svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+.dt-brief-query { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
+.dt-brief-caret { display: inline-block; width: 1.5px; height: 1em; background: var(--brand-accent); margin-left: 2px; vertical-align: -2px; animation: dt-caret 1s steps(1) infinite; }
+.dt-brief-caret.hidden { display: none; }
+@keyframes dt-caret { 50% { opacity: 0; } }
+
+.dt-brief-loading { display: none; flex-direction: column; gap: var(--space-4); }
+.dt-brief-body.is-loading .dt-brief-loading { display: flex; }
+.dt-brief-body.is-loading .dt-brief-title,
+.dt-brief-body.is-loading .dt-brief-row { display: none; }
+
+.dt-brief-status { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.dt-brief-spinner { width: 14px; height: 14px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--brand-accent-soft); border-top-color: var(--brand-accent); animation: dt-spin .7s linear infinite; }
+@keyframes dt-spin { to { transform: rotate(360deg); } }
+
+.dt-skel-rows { display: flex; flex-direction: column; gap: var(--space-3); }
+.dt-skel-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-subtle); }
+.dt-skel { position: relative; overflow: hidden; height: 12px; border-radius: var(--radius-pill); background: var(--border-subtle); }
+.dt-skel::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: dt-shimmer 1.1s var(--ease-out) infinite; }
+.dt-skel-label { flex: 1; max-width: 55%; }
+.dt-skel-val { width: 70px; }
+@keyframes dt-shimmer { 100% { transform: translateX(100%); } }
+@keyframes dt-agent-think { from { opacity:.35; transform:scale(.8) } to { opacity:1; transform:scale(1.15) } }
+
+.dt-brief-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.dt-brief-row {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-2);
+  font-size: 14px; color: var(--text-secondary);
+  transition: color var(--dur-fast);
+}
+.dt-brief-row:last-child { border-bottom: none; padding-bottom: 0; }
+.dt-brief-row:hover { color: var(--text-primary); }
+.dt-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; border-radius: var(--radius-pill); padding: 2px 9px; }
+.dt-badge.ok { color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); }
+.dt-badge.warn { color: var(--error); background: color-mix(in srgb, var(--error) 10%, transparent); }
+.dt-badge svg { width: 12px; height: 12px; }
+
+.dt-brief-sources {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
+  font-size: 12px; color: var(--text-tertiary);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+.dt-brief-sources svg { width: 14px; height: 14px; color: var(--brand-accent); }
+.dt-brief-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.dt-brief-stat { text-align: center; }
+.dt-brief-stat b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.dt-brief-stat span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+.dt-brief-chrome { display: inline-flex; align-items: center; gap: var(--space-3); }
+.dt-brief-replay {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  color: var(--text-tertiary); padding: 3px 8px; border-radius: var(--radius-pill);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.dt-brief-replay svg { width: 13px; height: 13px; }
+.dt-brief-replay:hover { color: var(--brand-accent); background: var(--brand-accent-soft); }
+.dt-brief-replay:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+.dt-brief.js-anim { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dt-brief-caret, .dt-brief-spinner, .dt-skel::after { animation: none !important; }
+}
+
+/* ============================================================
+   [2] PROBLEM/SOLUTION CARDS — dt-ps-*
+   ============================================================ */
+.dt-ps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 980px) { .dt-ps-grid { grid-template-columns: 1fr; } }
+
+.dt-ps-grid > * { height: 100%; }
+.dt-ps-pair { display: flex; flex-direction: column; gap: var(--space-3); height: 100%; }
+.dt-ps-card {
+  flex: 1;
+  display: flex; flex-direction: column; gap: var(--space-3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  border: 1px solid var(--border-subtle);
+  transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.dt-ps-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); }
+.dt-ps-card.problem { background: var(--bg-canvas); }
+.dt-ps-card.solution { background: var(--brand-accent-soft); border-color: color-mix(in srgb, var(--brand-accent) 25%, transparent); }
+.dt-ps-card.solution:hover { border-color: var(--brand-accent); }
+.dt-ps-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.dt-ps-card.problem .dt-ps-eyebrow { color: var(--text-tertiary); }
+.dt-ps-card.solution .dt-ps-eyebrow { color: var(--brand-accent); }
+.dt-ps-card h3 { font-size: 16px; font-weight: 500; color: var(--text-primary); line-height: 1.35; margin: 0; }
+.dt-ps-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+.dt-ps-connector {
+  text-align: center;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--brand-accent);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.dt-ps-connector::before, .dt-ps-connector::after { content: ""; flex: 1; height: 1px; background: var(--border-subtle); }
+
+/* ============================================================
+   [3] STATS BAND — reuse stat-* from globals + dt-stat-band modifier
+   ============================================================ */
+.dt-stat-band {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+@media (max-width: 900px) { .dt-stat-band { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .dt-stat-band { grid-template-columns: 1fr; } }
+.dt-stat-item { text-align: center; }
+.dt-stat-num { display: block; font-family: var(--font-display); font-size: clamp(32px, 4vw, 48px); font-weight: 700; color: var(--brand-accent); line-height: 1; font-variant-numeric: tabular-nums; }
+.dt-stat-label { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); margin-top: var(--space-2); }
+.dt-stat-delta { display: block; font-size: 13px; color: var(--text-secondary); margin-top: var(--space-1); }
+
+/* ============================================================
+   [4] HOW IT WORKS — dt-steps (4-step icon grid)
+   ============================================================ */
+.dt-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+  counter-reset: dt-step;
+}
+@media (max-width: 900px) { .dt-steps-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .dt-steps-grid { grid-template-columns: 1fr; } }
+.dt-step-card {
+  position: relative;
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-6) var(--space-5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  counter-increment: dt-step;
+  transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.dt-step-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); transform: translateY(-2px); }
+.dt-step-num {
+  position: absolute; top: var(--space-4); right: var(--space-4);
+  font-size: 11px; font-weight: 700; color: var(--text-tertiary);
+  background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill); padding: 2px 8px;
+}
+.dt-step-num::before { content: counter(dt-step, decimal-leading-zero); }
+.dt-step-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; }
+.dt-step-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+.dt-step-card h3 { font-size: 17px; font-weight: 500; color: var(--text-primary); line-height: 1.35; margin: 0; }
+.dt-step-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+
+/* ============================================================
+   [5] FEATURE SPOTLIGHT ROWS — dt-feat-* (alternating layout)
+   ============================================================ */
+.dt-feat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-9);
+  align-items: center;
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.dt-feat-row:last-child { border-bottom: none; }
+.dt-feat-row.reverse { direction: rtl; }
+.dt-feat-row.reverse > * { direction: ltr; }
+@media (max-width: 900px) {
+  .dt-feat-row { grid-template-columns: 1fr; gap: var(--space-6); direction: ltr !important; }
+  .dt-feat-row > * { direction: ltr !important; }
+}
+.dt-feat-visual {
+  background: linear-gradient(155deg, var(--brand-accent-deep) 0%, var(--brand-accent) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  color: var(--text-on-dark);
+  box-shadow: 0 24px 60px -20px var(--brand-accent-glow);
+  min-height: 280px;
+  display: flex; flex-direction: column; gap: var(--space-4);
+  position: relative; overflow: hidden;
+}
+.dt-feat-visual-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+.dt-feat-visual-title { font-size: 15px; font-weight: 700; color: var(--text-on-dark); }
+.dt-feat-chip { font-size: 11px; font-weight: 600; color: var(--text-on-dark); background: rgba(255,255,255,0.16); border-radius: var(--radius-pill); padding: 3px 10px; display: inline-flex; align-items: center; gap: 4px; }
+.dt-feat-text h3 { font-size: 28px; font-weight: 400; color: var(--text-primary); line-height: 1.25; margin: var(--space-3) 0; }
+.dt-feat-text .eyebrow { margin-bottom: var(--space-2); }
+.dt-feat-text p { font-size: 17px; color: var(--text-secondary); line-height: 1.65; margin: var(--space-4) 0; }
+.dt-feat-link { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 15px; font-weight: 600; color: var(--brand-accent); text-decoration: none; }
+.dt-feat-link:hover { text-decoration: underline; }
+.dt-feat-link:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; border-radius: 3px; }
+.dt-feat-link svg { width: 16px; height: 16px; }
+
+/* Semantic layer viz */
+.dt-sl-items { display: flex; flex-direction: column; gap: var(--space-3); }
+.dt-sl-item {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+  transition: background var(--dur-fast);
+}
+.dt-sl-item:hover { background: rgba(255,255,255,0.20); }
+.dt-sl-item-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dt-sl-item-dot.certified { background: var(--success); }
+.dt-sl-item-dot.suggested { background: rgba(255,255,255,0.5); }
+.dt-sl-item-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text-on-dark); }
+.dt-sl-item-owner { font-size: 11px; color: rgba(255,255,255,0.6); }
+.dt-sl-approve-btn {
+  font-family: var(--font-body); font-size: 11px; font-weight: 700;
+  color: var(--text-on-dark); background: rgba(255,255,255,0.20);
+  border: 1px solid rgba(255,255,255,0.30); border-radius: var(--radius-pill);
+  padding: 4px 10px; cursor: pointer; min-height: 28px;
+  transition: background var(--dur-fast);
+}
+.dt-sl-approve-btn:hover { background: rgba(255,255,255,0.35); }
+.dt-sl-approve-btn:focus-visible { outline: 2px solid rgba(255,255,255,0.7); outline-offset: 2px; }
+.dt-sl-approve-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* Agent citation viz */
+.dt-agent-msg {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+  font-size: 13px; color: var(--text-on-dark); line-height: 1.55;
+}
+.dt-agent-msg.user { background: rgba(255,255,255,0.22); font-weight: 500; }
+.dt-agent-cite { display: flex; align-items: center; gap: var(--space-2); font-size: 11px; color: rgba(255,255,255,0.75); margin-top: var(--space-2); }
+.dt-agent-cite svg { width: 12px; height: 12px; }
+.dt-agent-cite a { color: rgba(255,255,255,0.9); text-decoration: underline dotted; }
+
+/* Role-scoped viz */
+.dt-role-toggle { display: flex; gap: 4px; background: rgba(255,255,255,0.12); border-radius: var(--radius-pill); padding: 3px; align-self: flex-start; }
+.dt-role-btn {
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,0.7); background: none; border: none;
+  border-radius: var(--radius-pill); padding: 5px 12px; min-height: 30px;
+  cursor: pointer; transition: color var(--dur-fast), background var(--dur-fast);
+}
+.dt-role-btn:hover { color: var(--text-on-dark); }
+.dt-role-btn[aria-pressed="true"] { color: var(--text-on-dark); background: rgba(255,255,255,0.22); }
+.dt-role-btn:focus-visible { outline: 2px solid rgba(255,255,255,0.7); outline-offset: 2px; }
+.dt-role-rows { display: flex; flex-direction: column; gap: var(--space-2); }
+.dt-role-row {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: rgba(255,255,255,0.10); border-radius: var(--radius-md); padding: var(--space-3);
+  font-size: 13px; color: var(--text-on-dark);
+}
+.dt-role-row .dt-role-label { flex: 1; font-weight: 500; }
+.dt-role-row .dt-role-val { font-variant-numeric: tabular-nums; font-weight: 700; }
+.dt-role-row.redacted .dt-role-val { color: rgba(255,255,255,0.35); letter-spacing: 0.18em; }
+.dt-role-row.redacted .dt-role-label { color: rgba(255,255,255,0.5); }
+
+/* ============================================================
+   [6] CASE STUDY CARDS — dt-case-*
+   ============================================================ */
+.dt-case-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 980px) { .dt-case-grid { grid-template-columns: 1fr; } }
+.dt-case-grid > * { height: 100%; }
+.dt-case-card {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  height: 100%;
+  transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.dt-case-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); transform: translateY(-2px); }
+.dt-case-industry { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--brand-accent); }
+.dt-case-card h3 { font-size: 18px; font-weight: 500; color: var(--text-primary); line-height: 1.35; margin: 0; }
+.dt-case-metrics { display: flex; flex-direction: column; gap: var(--space-2); }
+.dt-case-metric { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; color: var(--text-secondary); }
+.dt-case-metric svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; }
+.dt-case-metric b { color: var(--text-primary); }
+.dt-case-body { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+.dt-case-link { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 14px; font-weight: 600; color: var(--brand-accent); text-decoration: none; margin-top: auto; }
+.dt-case-link:hover { text-decoration: underline; }
+.dt-case-link:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; border-radius: 3px; }
+.dt-case-link svg { width: 15px; height: 15px; }
+
+/* ============================================================
+   [7] FAQ ACCORDION — reuse accordion-* from globals (details/summary)
+   ============================================================ */
+.dt-faq { max-width: 760px; margin: 0 auto; }
+
+/* ============================================================
+   [8] GOVERNANCE PILLARS — dt-pillar-*
+   ============================================================ */
+.dt-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 900px) { .dt-pillars-grid { grid-template-columns: 1fr; } }
+.dt-pillars-grid > * { height: 100%; }
+.dt-pillar {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  height: 100%;
+  transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.dt-pillar:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); }
+.dt-pillar h3 { font-size: 20px; font-weight: 400; color: var(--text-primary); margin: 0; }
+.dt-pillar p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+
+/* ============================================================
+   [9] COMPETITIVE COMPARISON — dt-compare-*
+   ============================================================ */
+.dt-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 800px) { .dt-compare-grid { grid-template-columns: 1fr; } }
+.dt-compare-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5);
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+.dt-compare-card:hover { box-shadow: var(--shadow-card-hover); }
+@media (max-width: 540px) { .dt-compare-card { grid-template-columns: 1fr; } }
+.dt-compare-half { display: flex; flex-direction: column; gap: var(--space-3); }
+.dt-compare-half + .dt-compare-half { border-left: 1px solid var(--border-subtle); padding-left: var(--space-5); }
+@media (max-width: 540px) { .dt-compare-half + .dt-compare-half { border-left: none; border-top: 1px solid var(--border-subtle); padding-left: 0; padding-top: var(--space-5); } }
+.dt-compare-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.dt-compare-half.alt .dt-compare-label { color: var(--text-tertiary); }
+.dt-compare-half.qai .dt-compare-label { color: var(--brand-accent); }
+.dt-compare-alt { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.dt-compare-problem { font-size: 14px; color: var(--text-secondary); line-height: 1.55; margin: 0; }
+.dt-compare-answer { font-size: 14px; color: var(--text-secondary); line-height: 1.55; margin: 0; }
+
+/* ============================================================
+   [10] CTA BAND — reuse fin-cta-card
+   ============================================================ */
+.fin-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.fin-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.fin-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.fin-cta-card .btn-on-light {
+  background: var(--bg-surface); color: var(--brand-accent-deep);
+  padding: 12px 28px; border-radius: var(--radius-cta); font-weight: 600; min-height: 44px;
+}
+.dt-cta-btns { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; }
+
+/* ============================================================
+   [11] NEWSLETTER BLOCK — dt-newsletter-*
+   ============================================================ */
+.dt-newsletter {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-5);
+  text-align: center;
+}
+.dt-newsletter h2 { color: var(--text-primary); margin: 0; }
+.dt-newsletter p { font-size: 17px; color: var(--text-secondary); max-width: 52ch; margin: 0; }
+.dt-newsletter-form { display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; width: 100%; max-width: 480px; }
+.dt-newsletter-form input[type="email"] {
+  flex: 1; min-width: 220px;
+  padding: 12px var(--space-4); border-radius: var(--radius-cta);
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-body); font-size: 15px; color: var(--text-primary);
+  background: var(--bg-canvas);
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.dt-newsletter-form input:focus { outline: none; border-color: var(--brand-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent) 18%, transparent); }
+.dt-newsletter-consent { font-size: 12px; color: var(--text-tertiary); }
+.dt-newsletter-consent a { color: var(--brand-accent); }
+
+/* ============================================================
+   [12] ACCENT-LINE — two-tone headline accent inside display-lg h2s
+   ============================================================ */
+.display-lg .accent-line { color: var(--brand-accent); }
+
+/* ============================================================
+   REDUCED MOTION — comprehensive override
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .dt-brief-caret, .dt-brief-spinner, .dt-skel::after, .dt-agent-think-dot { animation: none !important; }
+  .dt-step-card, .dt-case-card, .dt-ps-card, .dt-pillar, .dt-compare-card { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#hero)
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="dt-hero-grid">
+
+      <!-- LEFT — text column + trust pointers -->
+      <div class="hero-inner reveal">
+        <span class="eyebrow">For Data Teams</span>
+        <h1 id="hero-heading" class="hero-h1">Kill the ad-hoc<br><span class="accent-line">request queue.</span></h1>
+        <p class="subcopy body-lg">Business users ask their own questions. Your data team writes the rules, once. Quaeris handles the governance — so you can finally build instead of firefighting.</p>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+          <a href="/platform/semantic-layer" class="btn btn-secondary">See the semantic layer</a>
+        </div>
+        <ul class="dt-trust-strip" aria-label="Key capabilities">
+          <li class="dt-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <p><strong>Governed self-serve</strong><span>Business users explore; your rules hold</span></p>
+          </li>
+          <li class="dt-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            <p><strong>Warehouse-native</strong><span>Snowflake, BigQuery, Databricks, Redshift</span></p>
+          </li>
+          <li class="dt-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <p><strong>Instant answers</strong><span>14 min median time-to-insight from any question</span></p>
+          </li>
+          <li class="dt-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <p><strong>Access at query time</strong><span>Row-level enforcement — automatic, audited</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT — Governed Query Panel (all-UI, animated) -->
+      <div class="reveal">
+        <div class="dt-brief" data-placeholder>
+          <!-- decorative description for assistive tech on the non-interactive wrapper -->
+          <span role="img" aria-label="Governed Query Panel: a data team member asks 'Which teams are generating the most ad-hoc requests this week?' and receives a governed, source-cited breakdown with access control confirmed. Illustrative data." style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;" aria-hidden="false"></span>
+          <div class="dt-brief-head">
+            <span class="eyebrow" style="color: var(--text-tertiary);">Governed Query Panel</span>
+            <span class="dt-brief-chrome">
+              <button type="button" class="dt-brief-replay" aria-label="Re-run the query">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+                Re-run
+              </button>
+              <span class="dt-brief-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+          <div class="dt-brief-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="dt-brief-query" data-text='"Which teams generate the most ad-hoc requests?"'>"Which teams generate the most ad-hoc requests?"</span><span class="dt-brief-caret hidden" aria-hidden="true"></span>
+          </div>
+          <div class="dt-brief-body">
+            <div class="dt-brief-loading" aria-hidden="true">
+              <div class="dt-brief-status">
+                <span class="dt-brief-spinner"></span>
+                <span class="dt-brief-status-text">Querying semantic layer…</span>
+              </div>
+              <div class="dt-skel-rows">
+                <div class="dt-skel-row"><span class="dt-skel dt-skel-label"></span><span class="dt-skel dt-skel-val"></span></div>
+                <div class="dt-skel-row"><span class="dt-skel dt-skel-label"></span><span class="dt-skel dt-skel-val"></span></div>
+                <div class="dt-skel-row"><span class="dt-skel dt-skel-label"></span><span class="dt-skel dt-skel-val"></span></div>
+              </div>
+            </div>
+            <span class="dt-brief-title">Ad-Hoc Request Volume — This Week</span>
+            <div class="dt-brief-row"><span>Finance &amp; FP&amp;A</span><span class="dt-badge warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>48 tickets</span></div>
+            <div class="dt-brief-row"><span>Product &amp; Growth</span><span class="dt-badge warn">31 tickets</span></div>
+            <div class="dt-brief-row"><span>Sales Operations</span><span class="dt-badge ok">12 tickets</span></div>
+            <div class="dt-brief-row"><span>Marketing Analytics</span><span class="dt-badge ok">9 tickets</span></div>
+          </div>
+          <div class="dt-brief-sources">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><strong style="color: var(--text-secondary);">Access enforced:</strong> Role-scoped · Semantic layer v2.1 · Audit logged</span>
+          </div>
+          <div class="dt-brief-stats">
+            <div class="dt-brief-stat"><b>87%</b><span>Queue reduction</span></div>
+            <div class="dt-brief-stat"><b>14 min</b><span>To insight</span></div>
+            <div class="dt-brief-stat"><b>Zero</b><span>SQL required</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Core Capabilities (rolled out 2026-06-16) -->
+<section class="section-pad" style="background: var(--bg-surface);" aria-labelledby="solutions-data-teams-cap-h">
+    <div class="container">
+      <div class="section-header center reveal"><span class="eyebrow">Core Capabilities</span>
+        <h2 id="solutions-data-teams-cap-h" class="display-lg">Built for the team that<br><span class="accent-line">certifies the truth.</span></h2>
+        <p class="subcopy body-lg">One governed semantic layer. Certify a metric once, give the business governed self-serve, eliminate the repeat-request queue, and trace downstream impact before any definition changes.</p></div>
+      <div class="caps reveal"><div class="cap-tabs" role="tablist" aria-label="Core capabilities"><button class="cap-tab" role="tab" id="solutions-data-teams-tab-1" aria-controls="solutions-data-teams-panel-1" aria-selected="true" tabindex="0">Metric Certification<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="solutions-data-teams-tab-2" aria-controls="solutions-data-teams-panel-2" aria-selected="false" tabindex="-1">Governed Self-Serve<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="solutions-data-teams-tab-3" aria-controls="solutions-data-teams-panel-3" aria-selected="false" tabindex="-1">Request Queue Elimination<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="solutions-data-teams-tab-4" aria-controls="solutions-data-teams-panel-4" aria-selected="false" tabindex="-1">Lineage &amp; Impact<span class="cap-tab-bar" aria-hidden="true"></span></button></div><div class="cap-panel" role="tabpanel" id="solutions-data-teams-panel-1" aria-labelledby="solutions-data-teams-tab-1">
+      <div><h3 class="display-md">Certify once. Trusted everywhere.</h3><p class="body-md cap-panel-lead">Define the canonical logic for any metric, assign an owner, and version-lock it in the semantic layer. Every downstream question — from any surface, any role — draws from the same certified definition, preventing shadow metrics and conflicting numbers.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>SQL definition, owner, and version recorded at certification; no undocumented variants in circulation.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Any change triggers a new version — previous answers remain auditable against the definition that produced them.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Certified status surfaced inline on every answer card, so business users know without asking.</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Certification trace</span><span class="cap-viz-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>verified</span></div>
+      <div class="cap-lineage"><span class="cap-progress"></span><span class="cap-trace"></span><div class="cap-node" data-rise style="--d:80ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Question</span><span class="cap-node-v">"What was Q3 net revenue for APAC?"</span></div><div class="cap-node" data-rise style="--d:220ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Certified metric</span><span class="cap-node-v">net_revenue v3 · owner: FP&amp;A · certified 2026-04-12</span></div><div class="cap-node" data-rise style="--d:360ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Source</span><span class="cap-node-v">FINANCE_DW.fct_revenue · Snowflake · 0 rows copied</span></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:1200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Lineage traced in 0.8 s — audit entry #A-10293 written.</div></div></div><div class="cap-panel" role="tabpanel" id="solutions-data-teams-panel-2" aria-labelledby="solutions-data-teams-tab-2" hidden>
+      <div><h3 class="display-md">Self-serve that stays within bounds.</h3><p class="body-md cap-panel-lead">Business users get plain-language access to the metrics they are scoped to see — and only those metrics. Role-based access is enforced at query time, not at the dashboard-sharing step, so self-serve cannot leak data or bypass governance.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Row- and field-level access evaluated at query time; no governance workaround via exported reports.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Business users ask natural-language questions; the agent answers only with definitions the team has approved.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Access-denied events are logged with the same immutability as granted ones — full picture for auditors.</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Governed query routing</span><span class="cap-viz-metric"><b>3,000+</b></span></div><div class="cap-union">
+    <div class="cap-union-sources"><div class="cap-src from-l" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>Analyst · APAC scope</span><small>Granted · net_revenue · #A-10293</small></div><div class="cap-src from-t" style="--d:200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg><span>Finance Manager · Global</span><small>Granted · opex_variance · #A-10297</small></div><div class="cap-src from-r" style="--d:320ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg><span>Marketing user · no Finance scope</span><small>Denied at query time · #A-10294</small></div></div><div class="cap-union-merge"><svg viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+  <path class="cap-union-base" d="M50 4 C50 26 150 16 150 38" /><path class="cap-union-base" d="M150 4 L150 38" /><path class="cap-union-base" d="M250 4 C250 26 150 16 150 38" />
+  <path class="cap-flow" d="M50 4 C50 26 150 16 150 38" /><path class="cap-flow" d="M150 4 L150 38" /><path class="cap-flow" d="M250 4 C250 26 150 16 150 38" />
+</svg></div>
+    <div class="cap-core">Governed semantic layer<small>Every query routed through the Trust Engine — certified definitions only.</small></div></div></div></div><div class="cap-panel" role="tabpanel" id="solutions-data-teams-panel-3" aria-labelledby="solutions-data-teams-tab-3" hidden>
+      <div><h3 class="display-md">Stop answering the same question twice.</h3><p class="body-md cap-panel-lead">The repeat-request queue exists because the business cannot trust ad-hoc answers. When every metric is certified and self-serve is governed, the queue dissolves — your team shifts from running one-off reports to maintaining the definitions that power all of them.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Certified answers to recurring questions are reusable; the same governed result is returned without re-running ad-hoc SQL.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Time-from-question to certified answer benchmarks at 14 minutes median across deployed orgs — not 3-day ticket turnaround.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Data teams track which definitions are queried most, letting them prioritise certification work by actual business demand.</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Request-queue drivers · before governed self-serve</span><span class="cap-viz-metric"><b>87% reduction</b></span></div><div class="cap-bars"><div class="cap-bar-item" data-rise style="--d:80ms"><div class="cap-bar-top"><span>"What is our net revenue?" (variant definitions)</span><b>–91%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:91%; --d:120ms"></div></div></div><div class="cap-bar-item" data-rise style="--d:200ms"><div class="cap-bar-top"><span>"Is this number certified?" follow-up tickets</span><b>–85%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:85%; --d:240ms"></div></div></div><div class="cap-bar-item" data-rise style="--d:320ms"><div class="cap-bar-top"><span>"Can you re-run for a different region?" requests</span><b>–79%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:79%; --d:360ms"></div></div></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:520ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Illustrative data — for demonstration only. Certified metric: ad_hoc_request_volume v1.2 · owner: Data Platform.</div></div></div><div class="cap-panel" role="tabpanel" id="solutions-data-teams-panel-4" aria-labelledby="solutions-data-teams-tab-4" hidden>
+      <div><h3 class="display-md">See who breaks before you change a thing.</h3><p class="body-md cap-panel-lead">Before editing a metric definition, run downstream impact analysis to see every dashboard, agent, and report that references it. Governance is not just a record of the past — it is a blast-radius map for the future.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Full upstream-to-downstream graph surfaced on any certified metric: source tables on the left, consuming dashboards and agents on the right.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Impact count and owner list generated before any definition change is committed — no surprise breakage in board-level decks.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Audit log records the before-and-after definition for every version, giving regulators a complete change history.</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Metric definition stability over 90 days</span><span class="cap-viz-metric"><b>98.8%</b></span></div><div class="cap-chart-wrap"><svg class="cap-chart" viewBox="0 0 460 200" aria-hidden="true">
+  <path class="cap-chart-area" d="M 22 146 C 30 144 54 135 70 134 C 86 133 102 143.7 118 140 C 134 136.3 150 115.3 166 112 C 182 108.7 196.3 124.3 214 120 C 231.7 115.7 262.3 91.7 272 86 L 272 180 L 22 180 Z" />
+  <path class="cap-chart-line" d="M 22 146 C 30 144 54 135 70 134 C 86 133 102 143.7 118 140 C 134 136.3 150 115.3 166 112 C 182 108.7 196.3 124.3 214 120 C 231.7 115.7 262.3 91.7 272 86" />
+  <path class="cap-chart-fc" d="M 272 86 C 281.7 83 310.7 73.7 330 68 C 349.3 62.3 370 56.7 388 52 C 406 47.3 429.7 42 438 40" />
+  <circle class="cap-chart-dot" cx="166" cy="112" r="4" /><circle class="cap-chart-dot" cx="438" cy="40" r="4.5" />
+  <circle class="cap-chart-ping" cx="272" cy="86" r="6" /><circle class="cap-chart-dot" cx="272" cy="86" r="4.5" />
+</svg></div>
+      <div class="cap-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Alert: net_revenue downstream impact — 4 dashboards, 2 agents, 1 board report. Review before publishing v4.</div></div></div></div>
+    </div></section>
+
+
+
+<!-- ============================================================
+     [2] PROBLEM / SOLUTION CARDS (#problem)
+     Interactive: hover reveals solution card accent; pairs flip on small screens.
+     ============================================================ -->
+<section id="problem" class="section-pad" aria-labelledby="problem-heading" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The Data Team's Challenge</span>
+      <h2 id="problem-heading" class="display-lg">You built the pipeline.<br><span class="accent-line">Now you're the bottleneck.</span></h2>
+      <p class="subcopy body-lg">Three problems — and the governed self-serve answer to each.</p>
+    </div>
+
+    <div class="dt-ps-grid">
+
+      <!-- Pair 1: Request Backlog -->
+      <div class="dt-ps-pair reveal">
+        <article class="dt-ps-card problem">
+          <span class="dt-ps-eyebrow">Today</span>
+          <h3>Ad-hoc requests are drowning the team</h3>
+          <p>Every Tuesday it's the same: revenue questions, cohort analyses, ad-hoc forecasts. Your data team is a ticket-processing machine. Strategy? Infrastructure? Hiring? There's no time.</p>
+        </article>
+        <div class="dt-ps-connector" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          With Quaeris
+        </div>
+        <article class="dt-ps-card solution">
+          <span class="dt-ps-eyebrow">With Quaeris</span>
+          <h3>Self-serve analytics shrinks the queue</h3>
+          <p>Business users ask directly. The semantic layer gates the answers — no dangerous slicing, no mismatched metrics. Your team writes the rules once and scales from there.</p>
+        </article>
+      </div>
+
+      <!-- Pair 2: Metric Chaos -->
+      <div class="dt-ps-pair reveal">
+        <article class="dt-ps-card problem">
+          <span class="dt-ps-eyebrow">Today</span>
+          <h3>Every team calculates revenue differently</h3>
+          <p>Finance says one number, Product says another. Your data team has spent six months reconciling definitions across Tableau, Looker, and three homegrown dashboards. It's never consistent.</p>
+        </article>
+        <div class="dt-ps-connector" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          With Quaeris
+        </div>
+        <article class="dt-ps-card solution">
+          <span class="dt-ps-eyebrow">With Quaeris</span>
+          <h3>One semantic layer, one source of truth</h3>
+          <p>Define revenue once in the semantic layer. Every self-serve query uses the same definition. When the metric changes, it changes everywhere — audited and visible.</p>
+        </article>
+      </div>
+
+      <!-- Pair 3: Governance Risk -->
+      <div class="dt-ps-pair reveal">
+        <article class="dt-ps-card problem">
+          <span class="dt-ps-eyebrow">Today</span>
+          <h3>Self-serve means data leaks and wrong answers</h3>
+          <p>You can't give business users direct access to your warehouse. There's no row-level security, no audit trail, and when someone exports sensitive data, you find out after the breach.</p>
+        </article>
+        <div class="dt-ps-connector" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          With Quaeris
+        </div>
+        <article class="dt-ps-card solution">
+          <span class="dt-ps-eyebrow">With Quaeris</span>
+          <h3>Governance enforced at query time</h3>
+          <p>Role-based access controls are baked into the agent layer — users only see what they're permitted to see. Every query is logged. You maintain control while enabling access.</p>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [3] STATS BAND (#stats)
+     Interactive: count-up animation triggered on viewport entry (JS-gated).
+     ============================================================ -->
+<section id="stats" class="section-pad" aria-labelledby="stats-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Real outcomes across deployed orgs</span>
+      <h2 id="stats-heading" class="display-lg">Numbers that hold up<br><span class="accent-line">to audit scrutiny.</span></h2>
+    </div>
+
+    <div class="dt-stat-band reveal" id="stats-band">
+      <div class="dt-stat-item">
+        <b class="dt-stat-num" data-num="87" data-suffix="%" aria-label="87 percent">87%</b>
+        <span class="dt-stat-label">Reduction in ad-hoc requests</span>
+        <span class="dt-stat-delta">Median in first 90 days · across deployed orgs</span>
+      </div>
+      <div class="dt-stat-item">
+        <b class="dt-stat-num" data-num="14" data-suffix=" min" aria-label="14 minutes">14 min</b>
+        <span class="dt-stat-label">Time to first insight</span>
+        <span class="dt-stat-delta">From question to answer · vs. 2–3 day ticket queue</span>
+      </div>
+      <div class="dt-stat-item">
+        <b class="dt-stat-num" data-num="100" data-suffix="%" aria-label="100 percent">100%</b>
+        <span class="dt-stat-label">Metric definitions aligned</span>
+        <span class="dt-stat-delta">In the semantic layer · single source of truth</span>
+      </div>
+      <div class="dt-stat-item">
+        <!-- data-placeholder: stat is illustrative; validate final count with CS before launch -->
+        <b class="dt-stat-num" aria-label="600 plus">600+</b>
+        <span class="dt-stat-label">Self-serve users enabled</span>
+        <span class="dt-stat-delta">Across deployed orgs · median first 90 days</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [4] HOW IT WORKS (#how-it-works)
+     Interactive: staggered card entrance on scroll + hover lift.
+     ============================================================ -->
+<section id="how-it-works" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 id="how-heading" class="display-lg">Governed self-serve<br><span class="accent-line">in four steps.</span></h2>
+      <p class="subcopy body-lg">Your data team sets the boundaries. Business users explore within them. No requests, no bottlenecks, no chaos.</p>
+    </div>
+
+    <div class="dt-steps-grid" id="dt-steps">
+      <article class="dt-step-card reveal" style="--stagger:0ms">
+        <span class="dt-step-num" aria-hidden="true"></span>
+        <span class="dt-step-icon" aria-hidden="true">
+          <!-- lucide: lock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <h3>Write governance rules once</h3>
+        <p>Your data team defines the semantic layer: certified metrics, business logic, access policies. Role-based controls are baked in. When a metric changes, the whole organization sees the update.</p>
+      </article>
+
+      <article class="dt-step-card reveal" style="--stagger:80ms">
+        <span class="dt-step-num" aria-hidden="true"></span>
+        <span class="dt-step-icon" aria-hidden="true">
+          <!-- lucide: user-check -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+        </span>
+        <h3>Give business users direct access</h3>
+        <p>No more "send me a query." Business users open Quaeris and ask their questions in plain language. Agents reason over your governed semantic layer and return instant answers.</p>
+      </article>
+
+      <article class="dt-step-card reveal" style="--stagger:160ms">
+        <span class="dt-step-num" aria-hidden="true"></span>
+        <span class="dt-step-icon" aria-hidden="true">
+          <!-- lucide: search -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <h3>Every answer is auditable</h3>
+        <p>Users see the metric definitions and data lineage behind every answer. If the revenue number is wrong, you trace it back to the source in one click. Role-based access enforces permissions at query time.</p>
+      </article>
+
+      <article class="dt-step-card reveal" style="--stagger:240ms">
+        <span class="dt-step-num" aria-hidden="true"></span>
+        <span class="dt-step-icon" aria-hidden="true">
+          <!-- lucide: trending-up -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </span>
+        <h3>Your team scales without hiring</h3>
+        <p>Self-serve answers 80% of ad-hoc requests. Your data team shifts from ticket-processing to strategy: building forecasts, refining models, mentoring analysts. Finally, focus on the work that moves the business.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [5] FEATURE SPOTLIGHT (#features) — 3 alternating rows
+     Interactive:
+       Row 1 — Semantic layer: "Approve" buttons certify suggested metrics live.
+       Row 2 — Agent citations: typewriter re-run showing source trail.
+       Row 3 — Access control: role toggle shows/hides data fields.
+     ============================================================ -->
+<section id="features" class="section-pad" aria-labelledby="features-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Core capabilities</span>
+      <h2 id="features-heading" class="display-lg">Three things that make<br><span class="accent-line">governed self-serve real.</span></h2>
+    </div>
+
+    <!-- Feature 1: Semantic Layer — text left, visual right -->
+    <div class="dt-feat-row reveal">
+      <div class="dt-feat-text">
+        <span class="eyebrow">Core Capability 01</span>
+        <h3>The semantic layer learns as you use it.</h3>
+        <p>Quaeris watches how your team uses data. Business definitions, metric relationships, data lineage — the semantic layer auto-learns and surfaces suggestions. You don't have to pre-model everything in YAML. Your team approves, it learns.</p>
+        <a href="/platform/semantic-layer" class="dt-feat-link">
+          Explore the semantic layer
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="dt-feat-visual" aria-label="Semantic layer interface showing certified and suggested metric definitions with approve controls. Placeholder UI." data-placeholder>
+        <span class="dt-feat-visual-label">Semantic Layer</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)">
+          <span class="dt-feat-visual-title">Metric Registry</span>
+          <span class="dt-feat-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px"><path d="M20 6 9 17l-5-5"/></svg>
+            <span id="sl-cert-count">4</span> certified
+          </span>
+        </div>
+        <div class="dt-sl-items" id="sl-items">
+          <div class="dt-sl-item">
+            <span class="dt-sl-item-dot certified"></span>
+            <span class="dt-sl-item-name">revenue</span>
+            <span class="dt-sl-item-owner">Data Eng · v3.1</span>
+            <span class="dt-badge ok" style="font-size:10px;">Certified</span>
+          </div>
+          <div class="dt-sl-item">
+            <span class="dt-sl-item-dot certified"></span>
+            <span class="dt-sl-item-name">arr</span>
+            <span class="dt-sl-item-owner">Finance · v2.4</span>
+            <span class="dt-badge ok" style="font-size:10px;">Certified</span>
+          </div>
+          <div class="dt-sl-item">
+            <span class="dt-sl-item-dot certified"></span>
+            <span class="dt-sl-item-name">churn_rate</span>
+            <span class="dt-sl-item-owner">Analytics · v1.9</span>
+            <span class="dt-badge ok" style="font-size:10px;">Certified</span>
+          </div>
+          <div class="dt-sl-item">
+            <span class="dt-sl-item-dot certified"></span>
+            <span class="dt-sl-item-name">cac</span>
+            <span class="dt-sl-item-owner">Growth · v1.2</span>
+            <span class="dt-badge ok" style="font-size:10px;">Certified</span>
+          </div>
+          <div class="dt-sl-item" id="sl-suggest-1">
+            <span class="dt-sl-item-dot suggested"></span>
+            <span class="dt-sl-item-name">gross_margin</span>
+            <span class="dt-sl-item-owner">Suggested</span>
+            <button type="button" class="dt-sl-approve-btn" onclick="slApprove(this,'sl-suggest-1','gross_margin')" aria-label="Approve gross_margin metric">Approve</button>
+          </div>
+          <div class="dt-sl-item" id="sl-suggest-2">
+            <span class="dt-sl-item-dot suggested"></span>
+            <span class="dt-sl-item-name">nrr</span>
+            <span class="dt-sl-item-owner">Suggested</span>
+            <button type="button" class="dt-sl-approve-btn" onclick="slApprove(this,'sl-suggest-2','nrr')" aria-label="Approve nrr metric">Approve</button>
+          </div>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:auto;">Auto-discovered from your warehouse · approve to certify</div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Agent Citations — text right, visual left -->
+    <div class="dt-feat-row reverse reveal">
+      <div class="dt-feat-text">
+        <span class="eyebrow">Core Capability 02</span>
+        <h3>Agents that cite their sources.</h3>
+        <p>Business users ask natural-language questions. Agents translate to SQL, query the semantic layer, and return certified answers — not hallucinations. Every number shows its sources: which metric definition, which table, which business rule. Your team sleeps better.</p>
+        <a href="/contact" class="dt-feat-link">
+          See a live demo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="dt-feat-visual" aria-label="Agent conversation panel showing a business user question answered with metric citations and data lineage. Placeholder UI." data-placeholder>
+        <span class="dt-feat-visual-label">Agent Conversation</span>
+        <div class="dt-agent-msg user">"What was our NRR last quarter?"</div>
+        <div style="display:flex;align-items:center;gap:var(--space-2);font-size:12px;color:rgba(255,255,255,0.65);">
+          <span class="dt-agent-think-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);animation:dt-agent-think 1.2s ease-in-out infinite alternate;display:inline-block;" aria-hidden="true"></span>
+          Querying semantic layer…
+        </div>
+        <div class="dt-agent-msg">
+          Net Revenue Retention last quarter was <strong style="color:#fff;">108%</strong>. This is based on the certified <em>nrr</em> metric (v2.1), sourced from your CRM renewal data joined with billing records.
+          <div class="dt-agent-cite">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Metric: nrr v2.1 · Source: billing.renewals · Certified by: Analytics team
+          </div>
+        </div>
+        <div class="dt-agent-msg user">"Break it down by product line."</div>
+        <div class="dt-agent-msg" id="agent-breakdown">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:5px;"><span>Core Platform</span><b style="color:#fff;">114%</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:5px;"><span>Add-ons</span><b style="color:#fff;">103%</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;"><span>Professional Services</span><b style="color:#fff;">97%</b></div>
+          </div>
+          <div class="dt-agent-cite" style="margin-top:var(--space-3);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Role-scoped · same metric definition · zero hallucinations
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: Access Control — text left, visual right -->
+    <div class="dt-feat-row reveal">
+      <div class="dt-feat-text">
+        <span class="eyebrow">Core Capability 03</span>
+        <h3>Security enforced at the agent layer.</h3>
+        <p>Role-based access policies are applied when the agent runs — not as a dashboard filter. A sales rep asking about customer lifetime value sees only their region's data. A controller asking about expenses sees only company-owned spend. Enforcement is automatic, audited, and consistent.</p>
+        <a href="/blog/governed-analytics-blueprint" class="dt-feat-link" data-placeholder>
+          Read the governance blueprint
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="dt-feat-visual" aria-label="Role-scoped query results showing different data visibility for different user roles. Interactive toggle. Placeholder UI." data-placeholder>
+        <span class="dt-feat-visual-label">Role-Scoped Results</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)">
+          <span class="dt-feat-visual-title">Viewing as:</span>
+          <div class="dt-role-toggle" role="group" aria-label="Select user role to preview access">
+            <button type="button" class="dt-role-btn" aria-pressed="false" onclick="setRole('exec',this)" id="role-exec">Controller</button>
+            <button type="button" class="dt-role-btn" aria-pressed="true" onclick="setRole('regional',this)" id="role-regional">Regional VP</button>
+            <button type="button" class="dt-role-btn" aria-pressed="false" onclick="setRole('rep',this)" id="role-rep">Sales Rep</button>
+          </div>
+        </div>
+        <div class="dt-role-rows" id="role-rows">
+          <div class="dt-role-row" data-exec="show" data-regional="show" data-rep="redacted" id="rrow-revenue">
+            <span class="dt-role-label">Total Revenue</span>
+            <span class="dt-role-val" data-exec="$4.2M" data-regional="$1.1M" data-rep="••••••">$1.1M</span>
+          </div>
+          <div class="dt-role-row redacted" data-exec="show" data-regional="redacted" data-rep="redacted" id="rrow-margin">
+            <span class="dt-role-label">Company Gross Margin</span>
+            <span class="dt-role-val" data-exec="68.4%" data-regional="••••" data-rep="••••">••••</span>
+          </div>
+          <div class="dt-role-row" data-exec="show" data-regional="show" data-rep="show" id="rrow-deals">
+            <span class="dt-role-label">Closed Deals (Your Region)</span>
+            <span class="dt-role-val" data-exec="247" data-regional="63" data-rep="8">63</span>
+          </div>
+          <div class="dt-role-row redacted" data-exec="show" data-regional="redacted" data-rep="redacted" id="rrow-costs">
+            <span class="dt-role-label">Headcount Costs</span>
+            <span class="dt-role-val" data-exec="$2.1M" data-regional="••••••" data-rep="••••••">••••••</span>
+          </div>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:auto;display:flex;align-items:center;gap:6px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--success);display:inline-block;" aria-hidden="true"></span>
+          Enforcement is automatic · every query logged
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [6] CASE STUDY CARDS (#case-studies)
+     Interactive: hover lift + staggered reveal on scroll.
+     ============================================================ -->
+<section id="case-studies" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="cases-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Real data teams. Real outcomes.</span>
+      <h2 id="cases-heading" class="display-lg">What deploying Quaeris<br><span class="accent-line">looks like.</span></h2>
+      <p class="subcopy body-lg">Three teams, three verticals, three ways self-serve transformed how they work.</p>
+    </div>
+
+    <div class="dt-case-grid">
+
+      <!-- Case 1: Financial Services -->
+      <article class="dt-case-card reveal">
+        <span class="dt-case-industry">Financial Services</span>
+        <h3>Reduced ad-hoc requests by 84% while expanding self-serve to 600+ users</h3>
+        <div class="dt-case-metrics">
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>84%</b> fewer ad-hoc requests</span>
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>600+</b> self-serve users enabled</span>
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>90 days</b> to full rollout</span>
+        </div>
+        <p class="dt-case-body">The data team was processing 200+ requests per week from finance, product, and FP&amp;A. They connected Quaeris to their Snowflake warehouse, migrated 120 certified revenue and bookings metrics into the semantic layer, and opened the agent interface to the business. Within 90 days, the ad-hoc queue dropped by 84%. The team shifted from firefighting to building predictive models.</p>
+        <!-- data-placeholder: replace with attributed customer quote once interview is complete -->
+        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);">"We went from a 48-hour average ticket turnaround to answers in under 20 minutes. The data team can actually focus on strategy now."<br><span style="font-style:normal;font-weight:600;font-size:12px;">— Head of Data Engineering, Financial Services firm</span></p>
+        <a href="/case-studies/" class="dt-case-link">
+          Read the full story
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
+
+      <!-- Case 2: B2B SaaS -->
+      <article class="dt-case-card reveal">
+        <span class="dt-case-industry">B2B SaaS / Analytics</span>
+        <h3>Cut time-to-insight from 3 days to 20 minutes</h3>
+        <div class="dt-case-metrics">
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>20 min</b> average time-to-insight</span>
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>3×</b> faster than previous ticket workflow</span>
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>0</b> hallucinated numbers</span>
+        </div>
+        <p class="dt-case-body">Product and growth teams were waiting 2–3 days for cohort and retention analyses. Every question meant a ticket, a data analyst context switch, and a SQL query. The data team deployed Quaeris across their product and revenue metrics. Now, product managers ask directly and get instant, source-cited answers. The data team went from reactive to strategic.</p>
+        <!-- data-placeholder: replace with attributed customer quote once interview is complete -->
+        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);">"Product managers used to open a ticket for every cohort cut. Now they ask Quaeris directly — and the number they get matches what we'd produce."<br><span style="font-style:normal;font-weight:600;font-size:12px;">— Senior Analytics Engineer, B2B SaaS company</span></p>
+        <a href="/case-studies/" class="dt-case-link">
+          Read the full story
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
+
+      <!-- Case 3: Retail / CPG -->
+      <article class="dt-case-card reveal">
+        <span class="dt-case-industry">Retail / CPG</span>
+        <h3>Unified conflicting metrics across 6 regional teams</h3>
+        <div class="dt-case-metrics">
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>6</b> regional teams aligned</span>
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>1</b> metric definition per KPI</span>
+          <span class="dt-case-metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><b>11×</b> ROI on analytics time</span>
+        </div>
+        <p class="dt-case-body">The organization had six regional BI tools and three legacy data warehouses. Headquarters and regional teams calculated "revenue" and "margin" differently. The data team unified everything into a single Quaeris semantic layer with 80 certified definitions. Executives and regional leaders ask the same question and get the same answer. One team retired four conflicting dashboards.</p>
+        <!-- data-placeholder: replace with attributed customer quote once interview is complete -->
+        <p class="dt-case-body" style="font-size:13px;font-style:italic;color:var(--text-tertiary);">"For the first time, regional GMs and HQ finance saw the same revenue number. We retired four dashboards and stopped the weekly 'whose number is right?' call."<br><span style="font-style:normal;font-weight:600;font-size:12px;">— Chief Data Officer, Retail / CPG organization</span></p>
+        <a href="/case-studies/" class="dt-case-link">
+          Read the full story
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [7] FAQ ACCORDION (#faq)
+     Interactive: native <details> accordion with smooth open/close animation.
+     ============================================================ -->
+<section id="faq" class="section-pad" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Questions from data leaders</span>
+      <h2 id="faq-heading" class="display-lg">Answers that<br><span class="accent-line">actually help.</span></h2>
+      <p class="subcopy body-lg">If it's not here, book a demo — we'll walk through your specific setup.</p>
+    </div>
+
+    <div class="dt-faq reveal" role="list">
+
+      <details class="accordion-item" role="listitem">
+        <summary class="accordion-trigger" aria-label="How do we ensure business users don't create incorrect queries?">
+          <span class="accordion-question">How do we ensure business users don't create incorrect queries?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">
+          <p>The semantic layer is your guard rail. Users ask questions in plain language; agents translate those questions to SQL against the semantic layer — not raw tables. If a question can't be answered from certified metrics, the agent says so. The semantic layer enforces consistency; your team writes the definitions once.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary class="accordion-trigger" aria-label="Doesn't governed self-serve mean we lose control?">
+          <span class="accordion-question">Doesn't governed self-serve mean we lose control?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">
+          <p>The opposite. Role-based access policies are applied at query time — enforced by the agent, not just by dashboard filters. A regional manager sees only their region's data, automatically. Every query is logged. You have more visibility and control than you do today with ad-hoc ticket requests.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary class="accordion-trigger" aria-label="How long does it take to migrate our metrics into the semantic layer?">
+          <span class="accordion-question">How long does it take to migrate our metrics into the semantic layer?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">
+          <!-- data-placeholder: validate 1–2 week timeline against actual deployment data before launch -->
+          <p>Most teams migrate 100–200 certified metrics in 1–2 weeks. Quaeris auto-discovers metric patterns from your data warehouse and suggests definitions. Your team approves them into the semantic layer. Week one: warehouse connection + pattern discovery. Week two: metric curation and access policy setup. Then you're live.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary class="accordion-trigger" aria-label="What if our existing dashboards and reports contradict the semantic layer?">
+          <span class="accordion-question">What if our existing dashboards and reports contradict the semantic layer?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">
+          <p>That's actually common. Most organizations have metric inconsistencies buried across tools. Quaeris surfaces those inconsistencies; your team resolves them once in the semantic layer. Every tool — dashboards, reports, agents — then uses the same definition. You gain consistency while Quaeris is deployed.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary class="accordion-trigger" aria-label="Can we gradually roll out self-serve, or is it all-or-nothing?">
+          <span class="accordion-question">Can we gradually roll out self-serve, or is it all-or-nothing?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">
+          <p>Gradual rollout is standard. Start with one team or one department (e.g., marketing, finance) and a subset of metrics. Quaeris scales as your team adds users and metrics to the semantic layer. There's no flag day.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary class="accordion-trigger" aria-label="Do we need a new data warehouse?">
+          <span class="accordion-question">Do we need a new data warehouse?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">
+          <p>No. Quaeris connects to your existing warehouse — Snowflake, BigQuery, Databricks, Redshift, Synapse. No data migration. Your warehouse is the system of record. Quaeris is a governance and access layer on top.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary class="accordion-trigger" aria-label="What happens if the semantic layer definition is wrong?">
+          <span class="accordion-question">What happens if the semantic layer definition is wrong?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">
+          <p>Your team can update the definition any time. The semantic layer is versioned. When you change a metric definition, users see a notification that the metric has been updated. All future queries use the new definition. Historical queries are audited, so you can trace why a number changed.</p>
+        </div>
+      </details>
+
+      <details class="accordion-item" role="listitem">
+        <summary class="accordion-trigger" aria-label="Can business users still download data for external tools?">
+          <span class="accordion-question">Can business users still download data for external tools?</span>
+          <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="accordion-body">
+          <p>Yes — users can export results from Quaeris answers. Exports are tied to the user's role-based permissions; they can only export what they're allowed to see. Every export is logged. You control what gets exported and can audit it.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [8] GOVERNANCE PILLARS (#governance)
+     Interactive: hover accent + icon fill transition.
+     ============================================================ -->
+<section id="governance" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="gov-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Governed by design</span>
+      <h2 id="gov-heading" class="display-lg">How governance stays intact<br><span class="accent-line">as you scale self-serve.</span></h2>
+      <p class="subcopy body-lg">Self-serve doesn't mean lawless. Here's how Quaeris keeps governance front and center.</p>
+    </div>
+
+    <div class="dt-pillars-grid">
+
+      <article class="dt-pillar reveal">
+        <span class="icon-box" aria-hidden="true">
+          <!-- lucide: check-circle -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </span>
+        <h3>Certified metrics, not wild estimates</h3>
+        <p>Business users query your semantic layer — the definitions your data team has certified. No hallucinations, no model drift. Every agent answer is locked to a metric definition your team approved.</p>
+      </article>
+
+      <article class="dt-pillar reveal">
+        <span class="icon-box" aria-hidden="true">
+          <!-- lucide: eye -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+        <h3>Lineage visible in every answer</h3>
+        <p>Every answer shows the metric definition, the source table, the business rule that applied, and the user's access level. Your analysts can audit any result in one click. Compliance auditors get full traces.</p>
+      </article>
+
+      <article class="dt-pillar reveal">
+        <span class="icon-box" aria-hidden="true">
+          <!-- lucide: lock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <h3>Access enforced at runtime</h3>
+        <p>Role-based policies are applied when the agent runs. A user with finance permissions can't see product costs. A regional user can't see other regions' data. Enforcement is automatic and audited — no manual row-level filters required.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [9] COMPETITIVE COMPARISON (#compare)
+     Interactive: hover highlight on each card.
+     ============================================================ -->
+<section id="compare" class="section-pad" aria-labelledby="compare-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Why data teams choose Quaeris</span>
+      <h2 id="compare-heading" class="display-lg">Quaeris vs.<br><span class="accent-line">the alternatives.</span></h2>
+      <p class="subcopy body-lg">Not all self-serve solutions are created equal. Here's how Quaeris is different.</p>
+    </div>
+
+    <div class="dt-compare-grid">
+
+      <article class="dt-compare-card reveal">
+        <div class="dt-compare-half alt">
+          <span class="dt-compare-label">Self-serve BI dashboards</span>
+          <span class="dt-compare-alt">Tableau, Looker, Power BI</span>
+          <p class="dt-compare-problem">Beautiful dashboards don't answer ad-hoc questions. Every question still needs a ticket. You're back where you started.</p>
+        </div>
+        <div class="dt-compare-half qai">
+          <span class="dt-compare-label">Quaeris</span>
+          <p class="dt-compare-answer">Agents answer ad-hoc questions in seconds. Dashboards stay for scheduled reporting. Both coexist — no migration required.</p>
+        </div>
+      </article>
+
+      <article class="dt-compare-card reveal">
+        <div class="dt-compare-half alt">
+          <span class="dt-compare-label">Unmanaged SQL editors</span>
+          <span class="dt-compare-alt">DBeaver, notebooks, Jupyter</span>
+          <p class="dt-compare-problem">Users run arbitrary SQL. Metric chaos. Row-level security is manual. Ad-hoc queries break compliance and create inconsistency.</p>
+        </div>
+        <div class="dt-compare-half qai">
+          <span class="dt-compare-label">Quaeris</span>
+          <p class="dt-compare-answer">Users ask in plain language; agents translate to governed SQL. Semantic layer enforces consistency. Access is automatic and audited.</p>
+        </div>
+      </article>
+
+      <article class="dt-compare-card reveal">
+        <div class="dt-compare-half alt">
+          <span class="dt-compare-label">LLM chatbots on raw data</span>
+          <span class="dt-compare-alt">ChatGPT + your DB, basic prompt-engineering</span>
+          <p class="dt-compare-problem">Language models hallucinate numbers. No audit trail. No access control. Results are unreliable and unverifiable.</p>
+        </div>
+        <div class="dt-compare-half qai">
+          <span class="dt-compare-label">Quaeris</span>
+          <p class="dt-compare-answer">Agents query governed metrics, not raw tables. Every answer is certified. Full audit trail. Zero hallucinations.</p>
+        </div>
+      </article>
+
+      <article class="dt-compare-card reveal">
+        <div class="dt-compare-half alt">
+          <span class="dt-compare-label">Hyperscaler-native AI tools</span>
+          <span class="dt-compare-alt">Cortex Analyst, Genie, AWS Q</span>
+          <p class="dt-compare-problem">Locked to one warehouse vendor, one model. Governance is bolt-on. Migrating is painful and expensive.</p>
+        </div>
+        <div class="dt-compare-half qai">
+          <span class="dt-compare-label">Quaeris</span>
+          <p class="dt-compare-answer">Warehouse-portable. Model-portable (BYOM). Governance is baked in. Switch vendors without retraining your semantic layer.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     [10] CTA BAND (#cta)
+     ============================================================ -->
+<section id="cta" class="section-pad" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="fin-cta-card reveal">
+      <span class="eyebrow" style="color:rgba(255,255,255,0.75);">Ready to shrink the ad-hoc queue?</span>
+      <h2 id="cta-heading">Let your data team breathe.</h2>
+      <p>Book a 30-minute demo. We'll walk through your warehouse setup, show you the semantic layer in action, and show you governed answers — no slides, no fluff.</p>
+      <div class="dt-cta-btns">
+        <a href="/contact" class="btn btn-on-light" style="min-width:160px;">Book a Demo</a>
+        <a href="/case-studies" class="btn" style="background:rgba(255,255,255,0.15);color:var(--text-on-dark);border:1px solid rgba(255,255,255,0.3);padding:12px 28px;border-radius:var(--radius-cta);font-weight:600;min-height:44px;">See case studies</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [11] NEWSLETTER BLOCK (#newsletter)
+     Interactive: live form validation + success state.
+     ============================================================ -->
+<section id="newsletter" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="nl-heading">
+  <div class="container">
+    <div class="dt-newsletter reveal">
+      <span class="eyebrow">The Governed Analytics Brief</span>
+      <h2 id="nl-heading" class="display-md">Weekly insights for data leaders.</h2>
+      <p>No generic AI hype. One practical read on governed analytics, semantic layers, and scaling self-serve — every Thursday in your inbox.</p>
+      <form class="dt-newsletter-form" id="nl-form" novalidate aria-label="Newsletter subscription form">
+        <input type="email" name="email" id="nl-email" placeholder="your@company.com" autocomplete="email" required aria-required="true" aria-label="Work email address" />
+        <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Subscribe</button>
+      </form>
+      <p class="dt-newsletter-consent" id="nl-msg">No spam. Unsubscribe any time. We handle your data per our <a href="/privacy">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPTS — gated vanilla IIFEs; each reduced-motion safe.
+     ============================================================ -->
+
+<!-- Hero query panel: typewriter + replay -->
+<script>
+(function(){
+  var card = document.querySelector('.dt-brief');
+  if(!card) return;
+  var bar = card.querySelector('.dt-brief-query');
+  var caret = card.querySelector('.dt-brief-caret');
+  var body = card.querySelector('.dt-brief-body');
+  var full = bar ? (bar.dataset.text || bar.textContent.trim()) : '';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function showLoading(){ if(body){ body.classList.add('is-loading'); } }
+  function hideLoading(){ if(body){ body.classList.remove('is-loading'); } }
+
+  function typeQuery(cb){
+    if(reduced){ if(cb) cb(); return; }
+    if(!bar) return;
+    bar.textContent = '';
+    if(caret) caret.classList.remove('hidden');
+    var i = 0;
+    var t = setInterval(function(){
+      bar.textContent = full.slice(0, ++i);
+      if(i >= full.length){ clearInterval(t); if(caret) caret.classList.add('hidden'); if(cb) setTimeout(cb, 300); }
+    }, 38);
+  }
+
+  function runSequence(){
+    if(bar) bar.textContent = '';
+    setTimeout(function(){
+      typeQuery(function(){
+        showLoading();
+        setTimeout(function(){
+          hideLoading();
+        }, 1400);
+      });
+    }, 400);
+  }
+
+  var replay = card.querySelector('.dt-brief-replay');
+  if(replay) replay.addEventListener('click', runSequence);
+
+  // auto-start on entry
+  if(!reduced && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){ runSequence(); io.disconnect(); }
+    }, { threshold: 0.3 });
+    io.observe(card);
+  }
+})();
+</script>
+
+<!-- Stats count-up on scroll entry -->
+<script>
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var nums = document.querySelectorAll('.dt-stat-num[data-num]');
+  if(!nums.length || !('IntersectionObserver' in window)) return;
+  var done = false;
+  var io = new IntersectionObserver(function(entries){
+    if(done || !entries[0].isIntersecting) return;
+    done = true; io.disconnect();
+    nums.forEach(function(el){
+      var target = parseFloat(el.dataset.num);
+      var suffix = el.dataset.suffix || '';
+      var prefix = el.dataset.prefix || '';
+      var dur = 1200;
+      var start = performance.now();
+      function frame(now){
+        var p = Math.min((now - start) / dur, 1);
+        var ease = 1 - Math.pow(1 - p, 3);
+        var v = target * ease;
+        var disp = Number.isInteger(target) ? Math.round(v) : v.toFixed(1);
+        el.textContent = prefix + disp + suffix;
+        if(p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    });
+  }, { threshold: 0.4 });
+  var band = document.getElementById('stats-band');
+  if(band) io.observe(band);
+})();
+</script>
+
+<!-- Semantic layer approve buttons -->
+<script>
+function slApprove(btn, rowId, name){
+  var row = document.getElementById(rowId);
+  if(!row) return;
+  btn.disabled = true;
+  btn.textContent = 'Certifying…';
+  setTimeout(function(){
+    var dot = row.querySelector('.dt-sl-item-dot');
+    if(dot){ dot.classList.remove('suggested'); dot.classList.add('certified'); }
+    var owner = row.querySelector('.dt-sl-item-owner');
+    if(owner) owner.textContent = 'Data Eng · v1.0';
+    btn.parentNode.replaceChild(
+      Object.assign(document.createElement('span'), {
+        className: 'dt-badge ok',
+        style: 'font-size:10px;',
+        textContent: 'Certified'
+      }), btn
+    );
+    var countEl = document.getElementById('sl-cert-count');
+    if(countEl) countEl.textContent = parseInt(countEl.textContent, 10) + 1;
+  }, 800);
+}
+</script>
+
+<!-- Role toggle for access control section -->
+<script>
+(function(){
+  var roles = ['exec', 'regional', 'rep'];
+  var roleData = {
+    exec:     { revenue:'$4.2M', margin:'68.4%', deals:'247', costs:'$2.1M', show:['revenue','margin','deals','costs'] },
+    regional: { revenue:'$1.1M', margin:'••••',  deals:'63',  costs:'••••••',  show:['revenue','deals'] },
+    rep:      { revenue:'••••••',margin:'••••',  deals:'8',   costs:'••••••',  show:['deals'] }
+  };
+  var rowMap = { revenue:'rrow-revenue', margin:'rrow-margin', deals:'rrow-deals', costs:'rrow-costs' };
+
+  window.setRole = function(role, btn){
+    if(!roleData[role]) return;
+    // update button states
+    roles.forEach(function(r){
+      var b = document.getElementById('role-' + r);
+      if(b) b.setAttribute('aria-pressed', r === role ? 'true' : 'false');
+    });
+    // update rows
+    Object.keys(rowMap).forEach(function(key){
+      var row = document.getElementById(rowMap[key]);
+      if(!row) return;
+      var valEl = row.querySelector('.dt-role-val');
+      var data = roleData[role];
+      var visible = data.show.indexOf(key) > -1;
+      if(valEl){ valEl.textContent = data[key]; }
+      row.classList.toggle('redacted', !visible);
+    });
+  };
+})();
+</script>
+
+<!-- Newsletter form submit -->
+<script>
+(function(){
+  var form = document.getElementById('nl-form');
+  var msg = document.getElementById('nl-msg');
+  if(!form || !msg) return;
+
+  // aria-live region so screen readers announce status changes
+  msg.setAttribute('aria-live', 'polite');
+  msg.setAttribute('aria-atomic', 'true');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var emailEl = document.getElementById('nl-email');
+    if(!emailEl || !emailEl.validity.valid){
+      if(emailEl){ emailEl.setCustomValidity('Please enter a valid work email address.'); emailEl.reportValidity(); }
+      return;
+    }
+    emailEl.setCustomValidity('');
+    var emailVal = emailEl.value.trim();
+    var btn = form.querySelector('button[type=submit]');
+    if(btn){ btn.disabled = true; btn.textContent = 'Subscribing…'; }
+
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: emailVal, source: 'solutions-data-teams' })
+    })
+    .then(function(res){
+      if(res.ok){
+        form.style.display = 'none';
+        msg.textContent = 'You\'re subscribed. See you Thursday.';
+      } else {
+        if(btn){ btn.disabled = false; btn.textContent = 'Subscribe'; }
+        msg.textContent = 'Something went wrong — please try again in a moment.';
+      }
+    })
+    .catch(function(){
+      if(btn){ btn.disabled = false; btn.textContent = 'Subscribe'; }
+      msg.textContent = 'Could not reach the server — please check your connection and try again.';
+    });
+  });
+})();
+</script>
+
+<!-- Staggered scroll reveals -->
+<script>
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var items = document.querySelectorAll('.dt-step-card, .dt-case-card, .dt-pillar, .dt-compare-card, .dt-ps-pair');
+  items.forEach(function(el){ el.style.opacity = '0'; el.style.transform = 'translateY(16px)'; el.style.transition = 'opacity 0.5s ease, transform 0.5s ease'; });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(!entry.isIntersecting) return;
+      var delay = parseInt(entry.target.style.getPropertyValue('--stagger') || '0', 10) || 0;
+      setTimeout(function(){
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'none';
+      }, delay);
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+  items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+<!-- FAQPage JSON-LD schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How do we ensure business users don't create incorrect queries?","acceptedAnswer":{"@type":"Answer","text":"The semantic layer is your guard rail. Users ask questions in plain language; agents translate those questions to SQL against the semantic layer — not raw tables. If a question can't be answered from certified metrics, the agent says so."}},
+    {"@type":"Question","name":"Doesn't governed self-serve mean we lose control?","acceptedAnswer":{"@type":"Answer","text":"The opposite. Role-based access policies are applied at query time — enforced by the agent, not just by dashboard filters. Every query is logged."}},
+    {"@type":"Question","name":"Do we need a new data warehouse?","acceptedAnswer":{"@type":"Answer","text":"No. Quaeris connects to your existing warehouse — Snowflake, BigQuery, Databricks, Redshift, Synapse. No data migration required."}},
+    {"@type":"Question","name":"Can we gradually roll out self-serve, or is it all-or-nothing?","acceptedAnswer":{"@type":"Answer","text":"Gradual rollout is standard. Start with one team or one department and a subset of metrics. There's no flag day."}},
+    {"@type":"Question","name":"What happens if the semantic layer definition is wrong?","acceptedAnswer":{"@type":"Answer","text":"Your team can update the definition any time. The semantic layer is versioned. When you change a metric definition, all future queries use the new definition and historical queries are audited."}}
+  ]
+}
+</script>
+
+
+<script>/* caps-controller (shared, from cap-shared.js) */
+/* Core Capabilities — shared interactive controller (multi-instance: inits every .caps on the page) */
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function fmt(el, v) {
+    const dec = +(el.dataset.decimals || 0);
+    let n = dec ? (+v).toFixed(dec) : Math.round(v);
+    if (el.hasAttribute('data-comma')) n = Number(dec ? (+v).toFixed(dec) : Math.round(v)).toLocaleString('en-US');
+    return (el.dataset.prefix || '') + n + (el.dataset.suffix || '');
+  }
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = fmt(el, target); return; }
+    const start = performance.now();
+    el.textContent = fmt(el, 0);
+    (function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick); else el.textContent = fmt(el, target);
+    })(start);
+  }
+  function makeEaseInverter(x1, y1, x2, y2) {
+    const bz = (t, a, b) => { const c = 3 * a, d = 3 * (b - a) - c, e = 1 - c - d; return ((e * t + d) * t + c) * t; };
+    return function (out) {
+      if (out <= 0) return 0; if (out >= 1) return 1;
+      let lo = 0, hi = 1, t = out;
+      for (let k = 0; k < 24; k++) { t = (lo + hi) / 2; if (bz(t, y1, y2) < out) lo = t; else hi = t; }
+      return bz(t, x1, x2);
+    };
+  }
+  const lineageEaseInvert = makeEaseInverter(0.22, 1, 0.36, 1);
+  const LINEAGE_DUR = 1250, LINEAGE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+  function initCaps(caps) {
+    const tabs = Array.from(caps.querySelectorAll('.cap-tab'));
+    const panels = Array.from(caps.querySelectorAll('.cap-panel'));
+    if (!tabs.length || !panels.length) return;
+    caps.classList.add('js');
+
+    function playLineage(panel) {
+      const lineage = panel.querySelector('.cap-lineage');
+      if (!lineage) return;
+      const trace = lineage.querySelector('.cap-trace');
+      const progress = lineage.querySelector('.cap-progress');
+      const nodes = Array.from(lineage.querySelectorAll('.cap-node'));
+      if (!nodes.length) return;
+      const dots = nodes.map(n => n.querySelector('.cap-node-dot'));
+      if (trace && trace._anim) { trace._anim.cancel(); trace._anim = null; }
+      if (progress && progress._anim) { progress._anim.cancel(); progress._anim = null; }
+      if (lineage._timers) lineage._timers.forEach(clearTimeout);
+      lineage._timers = [];
+      nodes.forEach(n => n.classList.remove('lit'));
+      const waapi = typeof Element !== 'undefined' && typeof Element.prototype.animate === 'function';
+      const centerY = dots.map((dot, i) => nodes[i].offsetTop + dot.offsetTop + dot.offsetHeight / 2);
+      const firstY = centerY[0], lastY = centerY[centerY.length - 1];
+      const span = Math.max(1, lastY - firstY);
+      if (progress) { progress.style.top = firstY + 'px'; progress.style.height = span + 'px'; }
+      const dotHalf = (trace ? trace.offsetHeight : 16) / 2 || 8;
+      const startY = firstY - dotHalf, endY = lastY - dotHalf;
+      if (reduce || !waapi) {
+        if (trace) trace.style.opacity = '0';
+        if (progress) progress.style.transform = 'scaleY(1)';
+        nodes.forEach(n => n.classList.add('lit'));
+        return;
+      }
+      trace.style.top = '0px'; trace.style.opacity = '1';
+      const dotAnim = trace.animate(
+        [{ transform: `translateY(${startY}px)`, opacity: 1, offset: 0 },
+         { transform: `translateY(${endY}px)`, opacity: 1, offset: 0.9 },
+         { transform: `translateY(${endY}px)`, opacity: 0, offset: 1 }],
+        { duration: LINEAGE_DUR, easing: LINEAGE_EASE, fill: 'forwards' });
+      trace._anim = dotAnim;
+      if (progress) progress._anim = progress.animate(
+        [{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }],
+        { duration: LINEAGE_DUR, easing: LINEAGE_EASE, fill: 'forwards' });
+      centerY.forEach((y, i) => {
+        const distFrac = (y - firstY) / span;
+        const at = Math.max(0, Math.min(1, lineageEaseInvert(distFrac))) * LINEAGE_DUR;
+        lineage._timers.push(setTimeout(() => nodes[i].classList.add('lit'), at));
+      });
+      dotAnim.addEventListener('finish', () => nodes.forEach(n => n.classList.add('lit')), { once: true });
+    }
+
+    function activate(i, focus) {
+      tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+      panels.forEach((p, j) => { if (j === i) p.hidden = false; else { p.hidden = true; p.classList.remove('play'); } });
+      const panel = panels[i];
+      panel.classList.remove('play'); void panel.offsetWidth; panel.classList.add('play');
+      const bar = tabs[i].querySelector('.cap-tab-bar');
+      if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+      panel.querySelectorAll('[data-num]').forEach(el => countUp(el, parseFloat(el.dataset.num), 850));
+      if (panel.querySelector('.cap-lineage')) requestAnimationFrame(() => requestAnimationFrame(() => playLineage(panel)));
+      if (focus) tabs[i].focus();
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => activate(i, false));
+      tab.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          activate((i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length, true);
+        }
+      });
+      const bar = tab.querySelector('.cap-tab-bar');
+      if (bar) bar.addEventListener('animationend', () => {
+        if (tab.getAttribute('aria-selected') === 'true') activate((i + 1) % tabs.length, false);
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { activate(0, false); io.disconnect(); } }), { threshold: 0.3 });
+      io.observe(caps);
+    } else { activate(0, false); }
+  }
+
+  document.querySelectorAll('.caps').forEach(initCaps);
+})();
+
+</script>
+</body>
+</html>

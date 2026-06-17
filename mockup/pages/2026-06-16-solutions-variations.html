@@ -1,0 +1,4373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — Solutions section · 3 variations — Quaeris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+<style>
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  .reveal { opacity: 1; transform: none; }
+  body { background: #fff; }
+  /* comparison shell */
+  .cmp-block { border-top: 1px dashed color-mix(in srgb, var(--brand-accent) 30%, #ddd); }
+  .cmp-block:first-of-type { border-top: 0; }
+  .cmp-label { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: .75rem; padding: .6rem max(24px, 4vw); background: color-mix(in srgb, var(--brand-accent) 8%, #fff); border-bottom: 1px solid color-mix(in srgb, var(--brand-accent) 16%, #e7e2ee); backdrop-filter: saturate(1.4) blur(4px); }
+  .cmp-num { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--brand-accent); border-radius: 100px; padding: .25rem .7rem; }
+  .cmp-title { font-size: 13px; font-weight: 700; color: var(--text-primary, #1a1320); }
+</style>
+<noscript><style>* { opacity: 1 !important; transform: none !important; }</style></noscript>
+<style id="variations">
+
+/* ===== sv1 — Governed Pipeline — Animated Flow Diagram ===== */
+
+/* ============================================================
+   SV1 — Governed Pipeline  (prefix: sv1-)
+   All classes scoped to .sv1-section
+   ============================================================ */
+
+.sv1-section {
+  
+  
+  --brand-accent-light: color-mix(in srgb, var(--brand-accent) 12%, transparent);
+  --brand-accent-glow: color-mix(in srgb, var(--brand-accent) 22%, transparent);
+  --sv1-radius: 16px;
+  --sv1-track: var(--brand-accent);
+  --sv1-green: #16a34a;
+  --sv1-green-bg: rgba(22,163,74,.10);
+  --sv1-red: #b91c1c;
+  --sv1-red-bg: rgba(185,28,28,.10);
+  --sv1-surface: #faf8fc;
+  --sv1-card-bg: #ffffff;
+  --sv1-border: color-mix(in srgb, var(--brand-accent) 14%, transparent);
+  --sv1-text-muted: #6b6b80;
+  --sv1-shadow: 0 4px 28px -6px color-mix(in srgb, var(--brand-accent) 13%, transparent), 0 1px 4px rgba(0,0,0,.06);
+  position: relative;
+  overflow: hidden;
+  padding: 100px 24px 110px;
+  background: var(--sv1-surface);
+  font-family: 'Inter', 'Roboto', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* subtle dot grid */
+.sv1-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--brand-accent) 6%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+/* ambient top glow */
+.sv1-section::after {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 500px;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--brand-accent) 8%, transparent), transparent 68%);
+  pointer-events: none;
+}
+
+/* ---- Layout ---- */
+.sv1-inner {
+  position: relative;
+  max-width: 1080px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+/* ---- Header ---- */
+.sv1-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.sv1-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .32rem .9rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 28%, transparent);
+  background: color-mix(in srgb, var(--brand-accent) 6%, transparent);
+  color: var(--brand-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.sv1-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+}
+
+.sv1-headline {
+  font-family: 'Roboto', 'Inter', system-ui, sans-serif;
+  font-size: clamp(26px, 3.8vw, 44px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #1a1025;
+  margin: 0;
+}
+
+.sv1-headline .accent-line {
+  color: var(--brand-accent);
+}
+
+/* ---- Toggle ---- */
+.sv1-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.sv1-toggle {
+  display: inline-flex;
+  background: #fff;
+  border: 1.5px solid var(--sv1-border);
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--brand-accent) 8%, transparent);
+}
+
+.sv1-toggle-btn {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 6px 20px;
+  border-radius: 9999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--sv1-text-muted);
+  letter-spacing: .02em;
+  transition: background .22s, color .22s, box-shadow .22s;
+  white-space: nowrap;
+}
+
+.sv1-toggle-btn[aria-pressed="true"] {
+  background: var(--brand-accent);
+  color: #fff;
+  box-shadow: 0 3px 14px color-mix(in srgb, var(--brand-accent) 35%, transparent);
+}
+
+/* ---- Persona chips ---- */
+.sv1-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 52px;
+}
+
+.sv1-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 10px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--sv1-border);
+  background: #fff;
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, transform .18s, background .2s;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d1a3a;
+  box-shadow: 0 1px 6px rgba(0,0,0,.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.sv1-chip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--brand-accent);
+  opacity: 0;
+  transition: opacity .2s;
+  border-radius: inherit;
+}
+
+.sv1-chip[aria-pressed="true"] {
+  border-color: var(--brand-accent);
+  background: var(--brand-accent);
+  color: #fff;
+  box-shadow: 0 4px 18px color-mix(in srgb, var(--brand-accent) 32%, transparent);
+  transform: translateY(-2px);
+}
+
+.sv1-chip[aria-pressed="true"] .sv1-chip-icon {
+  background: rgba(255,255,255,.22);
+  color: #fff;
+}
+
+.sv1-chip:hover:not([aria-pressed="true"]) {
+  border-color: var(--brand-accent);
+  box-shadow: 0 3px 14px color-mix(in srgb, var(--brand-accent) 15%, transparent);
+  transform: translateY(-1px);
+}
+
+.sv1-chip-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--brand-accent-light);
+  color: var(--brand-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s, color .2s;
+}
+
+.sv1-chip-tags {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: .7;
+  letter-spacing: .02em;
+}
+
+/* ---- Pipeline container ---- */
+.sv1-pipeline-wrap {
+  position: relative;
+  margin-bottom: 40px;
+  overflow: visible;
+}
+
+/* SVG connector track */
+.sv1-track-svg {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 4px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+
+/* ---- Pipeline nodes row ---- */
+.sv1-pipeline {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+/* ---- Node ---- */
+.sv1-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.sv1-node-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: #fff;
+  border: 2px solid var(--sv1-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--sv1-shadow);
+  position: relative;
+  transition: border-color .3s, box-shadow .3s, transform .3s;
+  z-index: 2;
+}
+
+.sv1-node-icon-wrap svg {
+  color: var(--sv1-text-muted);
+  transition: color .3s;
+}
+
+/* active node styling */
+.sv1-node.sv1-node-active .sv1-node-icon-wrap {
+  border-color: var(--brand-accent);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--brand-accent) 12%, transparent), var(--sv1-shadow);
+  transform: translateY(-4px);
+}
+
+.sv1-node.sv1-node-active .sv1-node-icon-wrap svg {
+  color: var(--brand-accent);
+}
+
+.sv1-node.sv1-node-certified .sv1-node-icon-wrap {
+  border-color: var(--sv1-green);
+  box-shadow: 0 0 0 5px rgba(22,163,74,.12), var(--sv1-shadow);
+}
+
+.sv1-node.sv1-node-certified .sv1-node-icon-wrap svg {
+  color: var(--sv1-green);
+}
+
+.sv1-node-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #5a4a6a;
+  transition: color .3s;
+}
+
+.sv1-node.sv1-node-active .sv1-node-label {
+  color: var(--brand-accent);
+}
+
+.sv1-node.sv1-node-certified .sv1-node-label {
+  color: var(--sv1-green);
+}
+
+/* ---- Connector arrow ---- */
+.sv1-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 6px;
+  width: 80px;
+}
+
+.sv1-connector-svg {
+  width: 100%;
+  height: 20px;
+  overflow: visible;
+}
+
+.sv1-conn-track {
+  stroke: #e2d6f0;
+  stroke-width: 2;
+  fill: none;
+}
+
+.sv1-conn-fill {
+  stroke: var(--brand-accent);
+  stroke-width: 2.5;
+  fill: none;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  transition: stroke-dashoffset .55s ease;
+}
+
+.sv1-conn-fill.sv1-filled {
+  stroke-dashoffset: 0;
+}
+
+/* arrow head */
+.sv1-arrowhead {
+  fill: #e2d6f0;
+  transition: fill .3s;
+}
+
+.sv1-conn-fill.sv1-filled ~ .sv1-arrowhead,
+.sv1-connector.sv1-filled .sv1-arrowhead {
+  fill: var(--brand-accent);
+}
+
+/* ---- Query token ---- */
+.sv1-token {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  background: var(--brand-accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--brand-accent) 45%, transparent);
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: none; /* JS drives via transform directly */
+  letter-spacing: .01em;
+  will-change: transform, opacity;
+}
+
+/* ---- Govern rule panel ---- */
+.sv1-govern-panel {
+  position: absolute;
+  bottom: calc(100% + 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  background: #fff;
+  border: 1.5px solid var(--sv1-border);
+  border-radius: var(--sv1-radius);
+  padding: 14px 16px;
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--brand-accent) 16%, transparent);
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  transform: translateX(-50%) translateY(8px);
+  font-size: 12px;
+}
+
+.sv1-govern-panel.sv1-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.sv1-govern-panel::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-top-color: #fff;
+  filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--brand-accent) 10%, transparent));
+}
+
+.sv1-govern-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--brand-accent);
+  margin-bottom: 8px;
+}
+
+.sv1-govern-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: #2d1a3a;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+.sv1-govern-rule + .sv1-govern-rule {
+  margin-top: 5px;
+}
+
+.sv1-rule-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.sv1-rule-allow {
+  color: var(--sv1-green);
+}
+
+.sv1-rule-deny {
+  color: var(--sv1-red);
+}
+
+/* ---- Certify seal ---- */
+.sv1-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0) rotate(-20deg);
+  width: 52px;
+  height: 52px;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+  will-change: transform, opacity;
+}
+
+.sv1-seal.sv1-stamp {
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  opacity: 1;
+}
+
+/* ---- Deliver card ---- */
+.sv1-deliver-card {
+  position: absolute;
+  top: calc(100% + 24px);
+  right: -30px;
+  width: 230px;
+  background: #fff;
+  border-radius: var(--sv1-radius);
+  padding: 16px;
+  box-shadow: 0 8px 36px color-mix(in srgb, var(--brand-accent) 16%, transparent);
+  border: 1.5px solid var(--sv1-border);
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity .3s .05s, transform .35s cubic-bezier(.22,1,.36,1);
+  font-size: 12px;
+}
+
+.sv1-deliver-card.sv1-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.sv1-deliver-amount {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1025;
+  letter-spacing: -0.03em;
+  margin-bottom: 2px;
+}
+
+.sv1-deliver-metric {
+  font-size: 11px;
+  color: var(--sv1-text-muted);
+  margin-bottom: 10px;
+}
+
+.sv1-certified-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--sv1-green-bg);
+  color: var(--sv1-green);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  border: 1px solid rgba(22,163,74,.22);
+  margin-bottom: 8px;
+}
+
+.sv1-denied-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--sv1-red-bg);
+  color: var(--sv1-red);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  border: 1px solid rgba(185,28,28,.22);
+  margin-bottom: 8px;
+}
+
+.sv1-deliver-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5a4a6a;
+  font-size: 11px;
+  padding: 3px 0;
+  border-top: 1px solid #f0eaf8;
+}
+
+.sv1-deliver-row:first-of-type {
+  border-top: none;
+}
+
+.sv1-deliver-row-label {
+  font-weight: 600;
+  color: #2d1a3a;
+  min-width: 46px;
+}
+
+.sv1-audit-id {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 10.5px;
+  color: var(--brand-accent);
+  background: var(--brand-accent-light);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* ---- Caption / footnote ---- */
+.sv1-caption {
+  text-align: center;
+  font-size: 12px;
+  color: var(--sv1-text-muted);
+  margin-top: 32px;
+  letter-spacing: .01em;
+}
+
+/* ---- No-JS fallback ---- */
+.sv1-noscript-note {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--sv1-text-muted);
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .sv1-token,
+  .sv1-seal,
+  .sv1-govern-panel,
+  .sv1-deliver-card,
+  .sv1-conn-fill {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 700px) {
+  .sv1-section { padding: 64px 16px 72px; }
+
+  .sv1-pipeline {
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto auto;
+    row-gap: 32px;
+  }
+
+  .sv1-connector:nth-of-type(4),
+  .sv1-node:nth-of-type(7) {
+    grid-column: 1 / -1;
+  }
+
+  .sv1-node-icon-wrap { width: 60px; height: 60px; border-radius: 16px; }
+  .sv1-connector { width: 50px; }
+
+  .sv1-deliver-card {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  .sv1-deliver-card.sv1-visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .sv1-govern-panel { width: 190px; font-size: 11px; }
+}
+
+/* pulsing ring on active node */
+@keyframes sv1-nodeRing {
+  0% { transform: scale(1); opacity: .6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.sv1-node-pulse {
+  position: absolute;
+  inset: -3px;
+  border-radius: 22px;
+  border: 2px solid var(--brand-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sv1-node.sv1-node-active .sv1-node-pulse {
+  animation: sv1-nodeRing 1.2s ease-out infinite;
+}
+
+/* token trail glow */
+@keyframes sv1-tokenGlow {
+  0%, 100% { box-shadow: 0 4px 16px color-mix(in srgb, var(--brand-accent) 45%, transparent); }
+  50% { box-shadow: 0 4px 28px color-mix(in srgb, var(--brand-accent) 75%, transparent), 0 0 0 6px color-mix(in srgb, var(--brand-accent) 12%, transparent); }
+}
+
+
+/* ===== sv2 — Live Proof Stage — selector + morphing animation panel ===== */
+
+/* ============================================================
+   SV2 — Live Proof Stage  |  sv2-* namespace
+   ============================================================ */
+
+/* ---------- layout ---------- */
+.sv2-section {
+  padding: 96px 0 112px;
+  background: #faf9fc;
+  overflow: hidden;
+  position: relative;
+}
+.sv2-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 20%, color-mix(in srgb, var(--brand-accent) 6%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 10% 80%, color-mix(in srgb, var(--brand-accent) 4%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.sv2-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- header ---------- */
+.sv2-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.sv2-eyebrow {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  margin-bottom: 16px;
+}
+.sv2-headline {
+  font-family: 'Roboto', sans-serif;
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 700;
+  line-height: 1.18;
+  color: #0f0a1e;
+  margin: 0;
+}
+.sv2-headline .sv2-hl-accent {
+  color: var(--brand-accent);
+}
+
+/* ---------- two-column body ---------- */
+.sv2-body {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ---------- LEFT RAIL ---------- */
+.sv2-rail {
+  position: sticky;
+  top: 24px;
+}
+.sv2-group-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  padding: 0 12px;
+  margin: 0 0 8px;
+}
+.sv2-group-label:not(:first-child) {
+  margin-top: 20px;
+}
+.sv2-persona-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sv2-persona-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.18s, border-color 0.18s;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+}
+.sv2-persona-btn:hover {
+  background: color-mix(in srgb, var(--brand-accent) 5%, white);
+}
+.sv2-persona-btn[aria-pressed="true"],
+.sv2-persona-btn.sv2-active {
+  background: color-mix(in srgb, var(--brand-accent) 8%, white);
+  border-color: color-mix(in srgb, var(--brand-accent) 30%, transparent);
+}
+.sv2-persona-btn[aria-pressed="true"]::before {
+  content: '';
+  position: absolute;
+  left: -1.5px;
+  top: 20%;
+  height: 60%;
+  width: 3px;
+  background: var(--brand-accent);
+  border-radius: 0 3px 3px 0;
+}
+.sv2-persona-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--brand-accent) 12%, white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+.sv2-persona-btn[aria-pressed="true"] .sv2-persona-icon {
+  background: color-mix(in srgb, var(--brand-accent) 18%, white);
+}
+.sv2-persona-text {
+  flex: 1;
+  min-width: 0;
+}
+.sv2-persona-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e1035;
+  line-height: 1.3;
+}
+.sv2-persona-btn[aria-pressed="true"] .sv2-persona-name {
+  color: var(--brand-accent-deep, var(--brand-accent));
+}
+.sv2-persona-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 4px;
+}
+.sv2-reg-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--brand-accent) 10%, white);
+  color: var(--brand-accent-deep, var(--brand-accent));
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 20%, transparent);
+  white-space: nowrap;
+}
+
+/* ---------- RIGHT STAGE ---------- */
+.sv2-stage-wrap {
+  position: relative;
+}
+.sv2-stage {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1.5px solid #ede8f5;
+  box-shadow:
+    0 4px 6px -1px color-mix(in srgb, var(--brand-accent) 6%, transparent),
+    0 20px 40px -8px color-mix(in srgb, var(--brand-accent) 10%, transparent),
+    0 1px 0 0 rgba(255,255,255,0.8) inset;
+  min-height: 420px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ---------- panels (cross-fade) ---------- */
+.sv2-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 48px;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+.sv2-panel.sv2-panel-active {
+  opacity: 1;
+  position: relative;
+  pointer-events: auto;
+}
+
+/* panel header bar */
+.sv2-panel-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-accent), color-mix(in srgb, var(--brand-accent) 40%, #a78bfa));
+}
+
+/* caption + chip row */
+.sv2-panel-footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to top, rgba(255,255,255,0.98) 60%, transparent);
+  border-top: 1px solid #f0ebfa;
+}
+.sv2-panel-caption {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: 0.01em;
+}
+.sv2-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.sv2-chip-cert {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+.sv2-chip-deny {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+.sv2-chip-brand {
+  background: color-mix(in srgb, var(--brand-accent) 10%, white);
+  color: var(--brand-accent-deep, var(--brand-accent));
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 25%, transparent);
+}
+
+/* ============================================================
+   PANEL 1 — Finance: Board Slide
+   ============================================================ */
+.sv2-p1-slide {
+  width: 100%;
+  max-width: 520px;
+  background: #f8f7ff;
+  border: 1.5px solid #e8e0f8;
+  border-radius: 12px;
+  padding: 28px 32px 24px;
+  position: relative;
+  margin-bottom: 40px;
+}
+.sv2-p1-slide-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+.sv2-p1-big-num {
+  font-family: 'Roboto', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: #0f0a1e;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.sv2-p1-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 4px;
+}
+.sv2-p1-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: #15803d;
+  color: #fff;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 16px;
+  box-shadow: 0 2px 12px rgba(21, 128, 61, 0.35);
+  transform: scale(0) rotate(-8deg);
+  transform-origin: left center;
+  opacity: 0;
+}
+.sv2-panel-active .sv2-p1-badge {
+  animation: sv2-stamp-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards;
+}
+@keyframes sv2-stamp-in {
+  from { transform: scale(1.4) rotate(-8deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* sparkline */
+.sv2-sparkline-wrap {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+}
+.sv2-sparkline-path {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+}
+.sv2-panel-active .sv2-sparkline-path {
+  animation: sv2-draw-line 1.2s ease-out 0.5s forwards;
+}
+@keyframes sv2-draw-line {
+  to { stroke-dashoffset: 0; }
+}
+.sv2-sparkline-dot {
+  opacity: 0;
+}
+.sv2-panel-active .sv2-sparkline-dot {
+  animation: sv2-fade-in 0.3s ease 1.7s forwards;
+}
+@keyframes sv2-fade-in {
+  to { opacity: 1; }
+}
+
+/* qoq pill */
+.sv2-p1-qoq {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-top: 6px;
+  opacity: 0;
+}
+.sv2-panel-active .sv2-p1-qoq {
+  animation: sv2-fade-in 0.4s ease 0.9s forwards;
+}
+
+/* ============================================================
+   PANEL 2 — Data & Analytics: Request chip collapse
+   ============================================================ */
+.sv2-p2-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 44px;
+}
+.sv2-p2-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f0fd;
+  border: 1.5px solid #c7bff0;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  color: #3730a3;
+  font-weight: 500;
+  width: 100%;
+  transform: translateX(-60px);
+  opacity: 0;
+  transition: none;
+}
+.sv2-panel-active .sv2-p2-chip:nth-child(1) {
+  animation: sv2-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+.sv2-panel-active .sv2-p2-chip:nth-child(2) {
+  animation: sv2-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+}
+.sv2-panel-active .sv2-p2-chip:nth-child(3) {
+  animation: sv2-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+}
+@keyframes sv2-slide-in {
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.sv2-p2-arrow {
+  font-size: 18px;
+  color: var(--brand-accent);
+  opacity: 0;
+}
+.sv2-panel-active .sv2-p2-arrow {
+  animation: sv2-fade-in 0.3s ease 1.4s forwards;
+}
+
+.sv2-p2-certified-tile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f0fdf4;
+  border: 2px solid #86efac;
+  border-radius: 12px;
+  padding: 14px 20px;
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.92);
+}
+.sv2-panel-active .sv2-p2-certified-tile {
+  animation: sv2-pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 1.6s forwards;
+}
+@keyframes sv2-pop-in {
+  to { opacity: 1; transform: scale(1); }
+}
+.sv2-p2-tile-name {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #15803d;
+}
+.sv2-p2-tile-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* ============================================================
+   PANEL 3 — Compliance: Access gate
+   ============================================================ */
+.sv2-p3-scene {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 44px;
+}
+.sv2-p3-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 16px;
+  position: relative;
+  height: 72px;
+}
+.sv2-p3-token {
+  position: absolute;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f0fd;
+  border: 1.5px solid color-mix(in srgb, var(--brand-accent) 30%, transparent);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3730a3;
+  white-space: nowrap;
+  opacity: 0;
+}
+/* token 1 = allow */
+.sv2-p3-token-allow {
+  animation: none;
+}
+.sv2-panel-active .sv2-p3-token-allow {
+  animation:
+    sv2-fade-in 0.3s ease 0.2s forwards,
+    sv2-token-slide 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+}
+@keyframes sv2-token-slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(160px); }
+}
+/* gate */
+.sv2-p3-gate {
+  position: absolute;
+  left: 185px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sv2-p3-gate-bar {
+  width: 3px;
+  height: 44px;
+  border-radius: 3px;
+  transition: background 0.4s ease, height 0.4s ease;
+  background: #94a3b8;
+}
+.sv2-p3-gate-icon {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+/* gate opens */
+.sv2-panel-active .sv2-p3-gate-bar {
+  animation: sv2-gate-open 0.4s ease 1.7s forwards;
+}
+@keyframes sv2-gate-open {
+  0% { height: 44px; background: #94a3b8; }
+  100% { height: 8px; background: #15803d; }
+}
+
+/* result bubble */
+.sv2-p3-result {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #15803d;
+  opacity: 0;
+}
+.sv2-panel-active .sv2-p3-result-allow {
+  animation: sv2-fade-in 0.35s ease 2.1s forwards;
+}
+.sv2-p3-result-deny {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+.sv2-panel-active .sv2-p3-result-deny {
+  animation: sv2-fade-in 0.35s ease 4.5s forwards;
+}
+
+/* deny token */
+.sv2-p3-token-deny {
+  top: 28px;
+  animation: none;
+}
+.sv2-panel-active .sv2-p3-token-deny {
+  animation:
+    sv2-fade-in 0.3s ease 3.0s forwards,
+    sv2-token-slide 1.2s cubic-bezier(0.4, 0, 0.2, 1) 3.3s forwards;
+}
+
+/* gate re-closes */
+.sv2-panel-active .sv2-p3-gate-bar-2 {
+  animation: sv2-gate-shut 0.4s ease 3.0s forwards;
+}
+@keyframes sv2-gate-shut {
+  from { height: 8px; background: #15803d; }
+  to { height: 44px; background: #ef4444; }
+}
+
+/* audit lines */
+.sv2-p3-audit {
+  background: #0f0a1e;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 10px;
+  color: #94a3b8;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.sv2-p3-audit-line {
+  opacity: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+.sv2-panel-active .sv2-p3-audit-line-1 {
+  animation:
+    sv2-fade-in 0.1s ease 2.4s forwards,
+    sv2-type-line 0.8s ease 2.4s forwards;
+}
+.sv2-panel-active .sv2-p3-audit-line-2 {
+  animation:
+    sv2-fade-in 0.1s ease 4.8s forwards,
+    sv2-type-line 0.8s ease 4.8s forwards;
+}
+@keyframes sv2-type-line {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+.sv2-p3-audit-green { color: #4ade80; }
+.sv2-p3-audit-red   { color: #f87171; }
+.sv2-p3-audit-dim   { color: #475569; }
+
+/* ============================================================
+   PANEL 4 — Financial Services: Lineage chain
+   ============================================================ */
+.sv2-p4-chain {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 44px;
+  position: relative;
+}
+.sv2-p4-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.7);
+}
+.sv2-panel-active .sv2-p4-node:nth-child(1) { animation: sv2-node-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards; }
+.sv2-panel-active .sv2-p4-node:nth-child(3) { animation: sv2-node-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.9s forwards; }
+.sv2-panel-active .sv2-p4-node:nth-child(5) { animation: sv2-node-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) 1.5s forwards; }
+@keyframes sv2-node-pop {
+  to { opacity: 1; transform: scale(1); }
+}
+.sv2-p4-node-box {
+  width: 100px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  background: #f8f7ff;
+  border: 1.5px solid #d8d0f0;
+  text-align: center;
+}
+.sv2-p4-node-box.sv2-p4-node-final {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+.sv2-p4-node-icon { font-size: 20px; margin-bottom: 4px; }
+.sv2-p4-node-name {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: #1e1035;
+}
+.sv2-p4-node-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+.sv2-p4-connector {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, #d8d0f0, var(--brand-accent));
+  position: relative;
+  opacity: 0;
+}
+.sv2-p4-connector::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: var(--brand-accent);
+}
+.sv2-panel-active .sv2-p4-connector:nth-child(2) {
+  animation: sv2-fade-in 0.3s ease 0.6s forwards;
+}
+.sv2-panel-active .sv2-p4-connector:nth-child(4) {
+  animation: sv2-fade-in 0.3s ease 1.2s forwards;
+}
+.sv2-p4-cert-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  opacity: 0;
+}
+.sv2-panel-active .sv2-p4-cert-badge {
+  animation: sv2-pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1) 2.0s forwards;
+}
+.sv2-p4-cert-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: #64748b;
+}
+.sv2-p4-cert-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #15803d;
+}
+
+/* ============================================================
+   PANEL 5 — Healthcare: PHI masking table
+   ============================================================ */
+.sv2-p5-table-wrap {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid #e2dff5;
+  margin-bottom: 44px;
+}
+.sv2-p5-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 11px;
+}
+.sv2-p5-table th {
+  background: #f8f7ff;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+  border-bottom: 1px solid #e2dff5;
+}
+.sv2-p5-table th.sv2-p5-phi-col {
+  background: #fef9c3;
+  color: #854d0e;
+}
+.sv2-p5-table td {
+  padding: 7px 12px;
+  border-bottom: 1px solid #f1f0fa;
+  color: #1e1035;
+}
+.sv2-p5-table tr:last-child td { border-bottom: none; }
+.sv2-p5-phi-val {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+.sv2-p5-phi-mask {
+  color: #94a3b8;
+  letter-spacing: 0.2em;
+}
+.sv2-p5-phi-val {
+  display: inline-block;
+}
+/* masking animation: each cell replaces text with dots */
+.sv2-panel-active .sv2-p5-phi-val {
+  animation: sv2-phi-mask 0.3s ease forwards;
+  animation-delay: var(--sv2-mask-delay, 0.5s);
+}
+@keyframes sv2-phi-mask {
+  0%   { opacity: 1; }
+  40%  { opacity: 0; }
+  60%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+/* We swap text via JS; for no-JS we show the masked state */
+.sv2-p5-agg-col {
+  color: #15803d;
+  font-weight: 700;
+}
+.sv2-p5-hipaa-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef9c3;
+  border-top: 1.5px solid #fde68a;
+  padding: 8px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #854d0e;
+}
+
+/* ============================================================
+   PANEL 6 — Insurance: Reserve versioning
+   ============================================================ */
+.sv2-p6-reserve-card {
+  background: #f8f7ff;
+  border: 1.5px solid #d8d0f0;
+  border-radius: 14px;
+  padding: 24px 28px;
+  width: 100%;
+  max-width: 460px;
+  margin-bottom: 44px;
+  position: relative;
+}
+.sv2-p6-reserve-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+.sv2-p6-reserve-num {
+  font-family: 'Roboto', sans-serif;
+  font-size: 44px;
+  font-weight: 800;
+  color: #0f0a1e;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.sv2-p6-version-track {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+.sv2-p6-ver-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  background: #e2dff5;
+  color: #4c1d95;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
+}
+.sv2-p6-ver-chip.sv2-ver-active {
+  background: var(--brand-accent);
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--brand-accent) 40%, transparent);
+}
+.sv2-p6-arrow-r { color: #94a3b8; font-size: 12px; }
+
+.sv2-p6-signoff {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  opacity: 0;
+}
+.sv2-panel-active .sv2-p6-signoff {
+  animation: sv2-fade-in 0.4s ease 2.2s forwards;
+}
+.sv2-p6-signoff-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-accent), #a78bfa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+.sv2-p6-signoff-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #64748b;
+}
+.sv2-p6-signoff-text strong {
+  color: #1e1035;
+}
+.sv2-p6-check {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #15803d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+}
+
+/* version chip active animation */
+.sv2-panel-active .sv2-p6-ver-chip {
+  animation: sv2-ver-cycle 3s ease 0.5s infinite;
+}
+.sv2-panel-active .sv2-p6-ver-chip:nth-child(1) { animation-delay: 0.5s; }
+.sv2-panel-active .sv2-p6-ver-chip:nth-child(3) { animation-delay: 1.5s; }
+.sv2-panel-active .sv2-p6-ver-chip:nth-child(5) { animation-delay: 2.5s; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 800px) {
+  .sv2-body {
+    grid-template-columns: 1fr;
+  }
+  .sv2-rail {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .sv2-persona-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .sv2-persona-btn {
+    flex: 0 0 auto;
+  }
+  .sv2-panel {
+    padding: 28px 20px;
+  }
+  .sv2-p1-big-num { font-size: 36px; }
+  .sv2-p6-reserve-num { font-size: 34px; }
+}
+
+/* ============================================================
+   NO-JS: show Finance panel static  
+   ============================================================ */
+.no-js .sv2-panel { position: relative; opacity: 0; display: none; }
+.no-js .sv2-panel[data-persona="finance"] { display: flex; opacity: 1; }
+.no-js .sv2-p1-badge { transform: scale(1) rotate(0deg); opacity: 1; animation: none !important; }
+.no-js .sv2-p1-qoq { opacity: 1; animation: none !important; }
+.no-js .sv2-sparkline-path { stroke-dashoffset: 0; animation: none !important; }
+.no-js .sv2-sparkline-dot { opacity: 1; animation: none !important; }
+
+/* reduced-motion: kill animations, show end-states */
+@media (prefers-reduced-motion: reduce) {
+  .sv2-p1-badge { transform: scale(1) rotate(0) !important; opacity: 1 !important; animation: none !important; }
+  .sv2-p1-qoq { opacity: 1 !important; animation: none !important; }
+  .sv2-sparkline-path { stroke-dashoffset: 0 !important; animation: none !important; }
+  .sv2-sparkline-dot { opacity: 1 !important; animation: none !important; }
+  .sv2-p2-chip { transform: translateX(0) !important; opacity: 1 !important; animation: none !important; }
+  .sv2-p2-arrow { opacity: 1 !important; animation: none !important; }
+  .sv2-p2-certified-tile { opacity: 1 !important; transform: scale(1) !important; animation: none !important; }
+  .sv2-p3-token-allow, .sv2-p3-token-deny { opacity: 1 !important; transform: translateX(160px) !important; animation: none !important; }
+  .sv2-p3-result { opacity: 1 !important; animation: none !important; }
+  .sv2-p3-audit-line { opacity: 1 !important; width: 100% !important; animation: none !important; }
+  .sv2-p4-node { opacity: 1 !important; transform: scale(1) !important; animation: none !important; }
+  .sv2-p4-connector { opacity: 1 !important; animation: none !important; }
+  .sv2-p4-cert-badge { opacity: 1 !important; animation: none !important; }
+  .sv2-p5-phi-val { animation: none !important; }
+  .sv2-p6-signoff { opacity: 1 !important; animation: none !important; }
+  .sv2-p6-ver-chip { animation: none !important; }
+  .sv2-p6-ver-chip:last-child { background: var(--brand-accent) !important; color: #fff !important; }
+  .sv2-panel { transition: opacity 0.01s !important; }
+}
+
+
+/* ===== sv3 — Governance Map — Radial Trust Engine Infographic ===== */
+
+/* ===== SV3: Governance Map ===== */
+.sv3-section {
+  position: relative;
+  padding: 96px 0 112px;
+  background: #faf9fc;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.sv3-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, color-mix(in srgb, var(--brand-accent) 6%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 25% at 80% 90%, color-mix(in srgb, var(--brand-accent) 4%, transparent) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ── Header ── */
+.sv3-header {
+  text-align: center;
+  margin-bottom: 56px;
+  position: relative;
+  z-index: 1;
+}
+
+.sv3-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  margin-bottom: 14px;
+}
+
+.sv3-eyebrow::before,
+.sv3-eyebrow::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--brand-accent);
+  opacity: 0.5;
+}
+
+.sv3-headline {
+  font-family: 'Roboto', 'Inter', sans-serif;
+  font-size: clamp(26px, 3.5vw, 42px);
+  font-weight: 700;
+  line-height: 1.18;
+  color: #1a1025;
+  margin: 0 auto;
+  max-width: 620px;
+}
+
+.sv3-headline .sv3-accent-word {
+  color: var(--brand-accent);
+}
+
+.sv3-sub {
+  font-size: 15px;
+  color: #6b7280;
+  margin-top: 12px;
+  font-weight: 400;
+}
+
+/* ── Toggle ── */
+.sv3-toggle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.sv3-toggle-btn {
+  padding: 8px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid color-mix(in srgb, var(--brand-accent) 30%, transparent);
+  background: white;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  letter-spacing: 0.02em;
+}
+
+.sv3-toggle-btn:first-child {
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+}
+
+.sv3-toggle-btn:last-child {
+  border-radius: 0 8px 8px 0;
+  border-left: 1.5px solid color-mix(in srgb, var(--brand-accent) 30%, transparent);
+}
+
+.sv3-toggle-btn.sv3-active {
+  background: var(--brand-accent);
+  color: white;
+  border-color: var(--brand-accent);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--brand-accent) 28%, transparent);
+}
+
+.sv3-toggle-btn:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+/* ── Main diagram area ── */
+.sv3-diagram-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+/* ── SVG Radial Map ── */
+.sv3-radial-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Hub styles */
+.sv3-hub-ring-outer {
+  fill: none;
+  stroke: var(--brand-accent);
+  stroke-width: 1;
+  opacity: 0.15;
+}
+
+.sv3-hub-ring-pulse {
+  fill: none;
+  stroke: var(--brand-accent);
+  stroke-width: 1.5;
+  opacity: 0;
+  transform-origin: center;
+}
+
+@keyframes sv3-pulse-ring {
+  0%   { r: 46; opacity: 0.55; stroke-width: 1.5; }
+  100% { r: 68; opacity: 0;    stroke-width: 0.5; }
+}
+
+.sv3-hub-ring-pulse {
+  animation: sv3-pulse-ring 2.8s ease-out infinite;
+}
+
+.sv3-hub-ring-pulse-2 {
+  animation: sv3-pulse-ring 2.8s ease-out 1.4s infinite;
+}
+
+.sv3-hub-circle {
+  fill: white;
+  stroke: var(--brand-accent);
+  stroke-width: 2;
+  filter: drop-shadow(0 4px 18px color-mix(in srgb, var(--brand-accent) 22%, transparent));
+}
+
+/* Spoke / path */
+.sv3-spoke-path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--brand-accent) 18%, #e8e0f0);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease, stroke-width 0.3s ease;
+}
+
+.sv3-spoke-path.sv3-active-spoke {
+  stroke: color-mix(in srgb, var(--brand-accent) 55%, #c084fc);
+  stroke-width: 2.5;
+}
+
+/* Data-flow dot along spoke */
+.sv3-flow-dot {
+  r: 3.5;
+  fill: var(--brand-accent);
+  opacity: 0;
+}
+
+/* Node circles */
+.sv3-node-outer {
+  fill: white;
+  stroke: color-mix(in srgb, var(--brand-accent) 22%, #ddd);
+  stroke-width: 1.5;
+  transition: all 0.28s ease;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.06));
+}
+
+.sv3-node-outer:hover,
+.sv3-node-outer.sv3-active-node {
+  stroke: var(--brand-accent);
+  stroke-width: 2.5;
+  fill: color-mix(in srgb, var(--brand-accent) 5%, white);
+  filter: drop-shadow(0 4px 16px color-mix(in srgb, var(--brand-accent) 30%, transparent));
+}
+
+.sv3-node-label {
+  font-size: 11px;
+  font-weight: 700;
+  fill: #2d1a3a;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  letter-spacing: 0.01em;
+}
+
+.sv3-node-icon {
+  font-size: 18px;
+  dominant-baseline: middle;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.sv3-reg-tag {
+  font-size: 8px;
+  font-weight: 600;
+  fill: var(--brand-accent);
+  text-anchor: middle;
+  pointer-events: none;
+  opacity: 0.75;
+  letter-spacing: 0.04em;
+}
+
+/* Hub text */
+.sv3-hub-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  fill: var(--brand-accent);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.sv3-hub-sub {
+  font-size: 8.5px;
+  font-weight: 500;
+  fill: #7c3aed;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+/* ── Proof panel ── */
+.sv3-proof-area {
+  min-height: 168px;
+  position: relative;
+}
+
+.sv3-proof-panel {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(760px, 92vw);
+  background: white;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 14%, #e8e0f0);
+  box-shadow:
+    0 4px 24px color-mix(in srgb, var(--brand-accent) 10%, transparent),
+    0 1px 4px rgba(0,0,0,0.05);
+  padding: 20px 24px;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateX(-50%) translateY(6px);
+}
+
+.sv3-proof-panel.sv3-visible {
+  display: block;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.sv3-proof-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0eaf8;
+}
+
+.sv3-proof-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--brand-accent) 9%, white);
+  border: 1.5px solid color-mix(in srgb, var(--brand-accent) 22%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.sv3-proof-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #1a1025;
+}
+
+.sv3-proof-caption {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.sv3-proof-chip {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.sv3-chip-certified {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.sv3-chip-denied {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.sv3-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sv3-chip-certified .sv3-chip-dot { background: #16a34a; }
+.sv3-chip-denied .sv3-chip-dot { background: #dc2626; }
+
+/* Mini diagrams */
+.sv3-mini-diagram {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Finance seal */
+.sv3-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 3px solid #16a34a;
+  background: radial-gradient(circle at 50% 50%, #f0fdf4 60%, #dcfce7 100%);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.sv3-seal::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1.5px dashed #16a34a;
+  opacity: 0.4;
+}
+
+.sv3-seal-amount {
+  font-size: 15px;
+  font-weight: 800;
+  color: #15803d;
+  line-height: 1;
+}
+
+.sv3-seal-label {
+  font-size: 8px;
+  font-weight: 600;
+  color: #16a34a;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 3px;
+  text-align: center;
+}
+
+.sv3-seal-badge {
+  position: absolute;
+  bottom: 4px;
+  right: -6px;
+  background: #16a34a;
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+/* Metadata rows */
+.sv3-meta-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.sv3-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.sv3-meta-key {
+  color: #9ca3af;
+  font-weight: 500;
+  min-width: 58px;
+  flex-shrink: 0;
+}
+
+.sv3-meta-val {
+  color: #1a1025;
+  font-weight: 600;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10.5px;
+}
+
+.sv3-meta-val.sv3-green { color: #16a34a; }
+.sv3-meta-val.sv3-purple { color: var(--brand-accent); }
+
+/* Compliance gate */
+.sv3-gate-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.sv3-gate-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sv3-gate-allow {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+
+.sv3-gate-deny {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.sv3-gate-icon {
+  font-size: 13px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sv3-gate-detail {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-left: auto;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* PHI chip */
+.sv3-phi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #eff6ff;
+  border: 1.5px solid #93c5fd;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.sv3-phi-mask {
+  letter-spacing: 0.08em;
+  font-family: monospace;
+  color: #6b7280;
+}
+
+/* Version stamp */
+.sv3-version-stamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 18px;
+  background: #fdf4ff;
+  border: 2px solid color-mix(in srgb, var(--brand-accent) 28%, transparent);
+  border-radius: 10px;
+  gap: 3px;
+}
+
+.sv3-version-num {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--brand-accent);
+  line-height: 1;
+  font-family: 'Roboto', monospace;
+}
+
+.sv3-version-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--brand-accent-deep, #5b21b6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Lineage chain */
+.sv3-lineage {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 1;
+  min-width: 220px;
+  overflow: hidden;
+}
+
+.sv3-lineage-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+}
+
+.sv3-lineage-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--brand-accent);
+  background: color-mix(in srgb, var(--brand-accent) 8%, white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.sv3-lineage-lbl {
+  font-size: 9px;
+  color: #6b7280;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.sv3-lineage-arrow {
+  width: 28px;
+  flex-shrink: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--brand-accent), color-mix(in srgb, var(--brand-accent) 40%, #c084fc));
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.sv3-lineage-arrow::after {
+  content: '▶';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8px;
+  color: var(--brand-accent);
+}
+
+/* Certified reuse node */
+.sv3-reuse-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 10px;
+  flex: 1;
+}
+
+.sv3-reuse-num {
+  font-size: 26px;
+  font-weight: 900;
+  color: #16a34a;
+  line-height: 1;
+  font-family: 'Roboto', monospace;
+}
+
+.sv3-reuse-text {
+  font-size: 10.5px;
+  color: #15803d;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ── Legend ── */
+.sv3-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.sv3-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.sv3-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sv3-legend-line {
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .sv3-hub-ring-pulse,
+  .sv3-hub-ring-pulse-2,
+  .sv3-flow-dot {
+    animation: none !important;
+  }
+
+  .sv3-proof-panel {
+    transition: opacity 0.15s ease !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .sv3-section { padding: 64px 0 80px; }
+  .sv3-headline { font-size: 22px; }
+  .sv3-radial-svg { max-height: 400px; }
+}
+
+
+</style>
+</head>
+<body>
+<main>
+
+<div class="cmp-block">
+  <div class="cmp-label"><span class="cmp-num">Variation 1</span><span class="cmp-title">Governed Pipeline — Animated Flow Diagram</span></div>
+  
+<section class="sv1-section" id="sv1" aria-labelledby="sv1-heading">
+  <div class="sv1-inner">
+
+    <!-- Section header -->
+    <header class="sv1-header">
+      <div class="sv1-eyebrow" aria-label="Section label">
+        <span class="sv1-eyebrow-dot" aria-hidden="true"></span>
+        Who it's for
+      </div>
+      <h2 class="sv1-headline" id="sv1-heading">
+        Governed analytics,<br>
+        tuned to how you're <span class="accent-line">regulated.</span>
+      </h2>
+    </header>
+
+    <!-- Toggle: By Role / By Industry -->
+    <div class="sv1-toggle-wrap" role="group" aria-label="Filter personas by role or industry">
+      <div class="sv1-toggle">
+        <button class="sv1-toggle-btn" id="sv1-tab-role" aria-pressed="true" data-tab="role">By Role</button>
+        <button class="sv1-toggle-btn" id="sv1-tab-industry" aria-pressed="false" data-tab="industry">By Industry</button>
+      </div>
+    </div>
+
+    <!-- Persona chips -->
+    <div class="sv1-chips" role="listbox" aria-label="Select a persona to see how governance applies" id="sv1-chips">
+
+      <!-- BY ROLE (shown by default) -->
+      <button class="sv1-chip" role="option" aria-pressed="true" aria-selected="true"
+        data-tab="role"
+        data-persona="finance"
+        data-label="What's APAC Q3 net revenue?"
+        data-govern-title="Finance governance"
+        data-govern-rules='[{"type":"allow","text":"Certified metric: net_revenue · owner FP&A"},{"type":"allow","text":"Priya, Analyst · APAC scope ✓"}]'
+        data-deliver-amount="$48.2M"
+        data-deliver-delta="+6.1% QoQ"
+        data-deliver-metric="APAC Q3 Net Revenue"
+        data-deliver-certified="true"
+        data-deliver-rows='[{"label":"Source","val":"FINANCE_DW.fct_revenue"},{"label":"Owner","val":"FP&A · v3"},{"label":"Certified","val":"2026-04-12"},{"label":"Audit","val":"#A-10293","mono":true}]'
+      >
+        <span class="sv1-chip-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </span>
+        Finance Teams
+      </button>
+
+      <button class="sv1-chip" role="option" aria-pressed="false" aria-selected="false"
+        data-tab="role"
+        data-persona="data"
+        data-label="Re-run Q3 revenue slice?"
+        data-govern-title="Data governance"
+        data-govern-rules='[{"type":"allow","text":"Reuse certified: net_revenue · #A-10293"},{"type":"allow","text":"Deduplicated — 0 rows copied"}]'
+        data-deliver-amount="$48.2M"
+        data-deliver-delta="Reused · no re-compute"
+        data-deliver-metric="Certified query reused"
+        data-deliver-certified="true"
+        data-deliver-rows='[{"label":"Cache","val":"Hit — v3 result"},{"label":"Owner","val":"FP&A · certified"},{"label":"Audit","val":"#A-10293","mono":true}]'
+      >
+        <span class="sv1-chip-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </span>
+        Data &amp; Analytics
+      </button>
+
+      <button class="sv1-chip" role="option" aria-pressed="false" aria-selected="false"
+        data-tab="role"
+        data-persona="compliance"
+        data-label="Show APAC Q3 revenue (Marketing)"
+        data-govern-title="Access control"
+        data-govern-rules='[{"type":"deny","text":"Marketing · no Finance scope"},{"type":"allow","text":"Priya APAC → allowed · #A-10293"}]'
+        data-deliver-amount="Access denied"
+        data-deliver-delta="Role scope: Marketing"
+        data-deliver-metric="APAC Q3 Net Revenue"
+        data-deliver-certified="false"
+        data-deliver-rows='[{"label":"Reason","val":"No Finance scope"},{"label":"Audit","val":"#A-10294","mono":true}]'
+      >
+        <span class="sv1-chip-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </span>
+        Compliance &amp; Risk
+      </button>
+
+      <!-- BY INDUSTRY (hidden by default) -->
+      <button class="sv1-chip" role="option" aria-pressed="false" aria-selected="false" style="display:none"
+        data-tab="industry"
+        data-persona="finserv"
+        data-label="What's APAC Q3 net revenue?"
+        data-govern-title="SOX · SEC · GAAP"
+        data-govern-rules='[{"type":"allow","text":"Certified metric tied to SOX filing"},{"type":"allow","text":"GAAP basis · auditable lineage"}]'
+        data-deliver-amount="$48.2M"
+        data-deliver-delta="+6.1% QoQ · GAAP"
+        data-deliver-metric="APAC Q3 Net Revenue"
+        data-deliver-certified="true"
+        data-deliver-rows='[{"label":"Regulation","val":"SOX · SEC · GAAP"},{"label":"Owner","val":"FP&A · v3"},{"label":"Audit","val":"#A-10293","mono":true}]'
+      >
+        <span class="sv1-chip-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </span>
+        <span>Financial Services <span class="sv1-chip-tags">SOX · SEC</span></span>
+      </button>
+
+      <button class="sv1-chip" role="option" aria-pressed="false" aria-selected="false" style="display:none"
+        data-tab="industry"
+        data-persona="health"
+        data-label="Show patient revenue by region?"
+        data-govern-title="HIPAA · 21 CFR Part 11"
+        data-govern-rules='[{"type":"allow","text":"PHI fields masked · data minimised"},{"type":"allow","text":"HL7-scoped · audit logged"}]'
+        data-deliver-amount="$48.2M"
+        data-deliver-delta="PHI masked · APAC scope"
+        data-deliver-metric="Revenue (de-identified)"
+        data-deliver-certified="true"
+        data-deliver-rows='[{"label":"PHI","val":"Masked at query time"},{"label":"Regulation","val":"HIPAA · HL7"},{"label":"Audit","val":"#A-10293","mono":true}]'
+      >
+        <span class="sv1-chip-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </span>
+        <span>Healthcare <span class="sv1-chip-tags">HIPAA · HL7</span></span>
+      </button>
+
+      <button class="sv1-chip" role="option" aria-pressed="false" aria-selected="false" style="display:none"
+        data-tab="industry"
+        data-persona="insurance"
+        data-label="Current reserve for APAC Q3?"
+        data-govern-title="NAIC · Solvency II · IFRS 17"
+        data-govern-rules='[{"type":"allow","text":"Version stamp v3 · IFRS 17 basis"},{"type":"allow","text":"Reserve: $214.7M · regulator-ready"}]'
+        data-deliver-amount="$214.7M"
+        data-deliver-delta="Reserve · IFRS 17 · v3"
+        data-deliver-metric="APAC Q3 Reserve"
+        data-deliver-certified="true"
+        data-deliver-rows='[{"label":"Regulation","val":"Solvency II · IFRS 17"},{"label":"Stamp","val":"v3 · certified"},{"label":"Audit","val":"#A-10293","mono":true}]'
+      >
+        <span class="sv1-chip-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </span>
+        <span>Insurance <span class="sv1-chip-tags">Solvency II</span></span>
+      </button>
+
+    </div><!-- /sv1-chips -->
+
+    <!-- ===== PIPELINE DIAGRAM ===== -->
+    <div class="sv1-pipeline-wrap" id="sv1-pipeline-wrap">
+      <div class="sv1-pipeline" role="img" aria-label="Governed analytics pipeline: ASK then GOVERN then CERTIFY then DELIVER">
+
+        <!-- NODE 1: ASK -->
+        <div class="sv1-node sv1-node-active" id="sv1-node-ask" data-step="0">
+          <div class="sv1-node-icon-wrap">
+            <span class="sv1-node-pulse" aria-hidden="true"></span>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </div>
+          <span class="sv1-node-label">ASK</span>
+        </div>
+
+        <!-- CONNECTOR 1 -->
+        <div class="sv1-connector" id="sv1-conn-1" aria-hidden="true">
+          <svg class="sv1-connector-svg" viewBox="0 0 80 20" preserveAspectRatio="none" overflow="visible">
+            <line class="sv1-conn-track" x1="0" y1="10" x2="72" y2="10"/>
+            <line class="sv1-conn-fill" id="sv1-cf-1" x1="0" y1="10" x2="72" y2="10" stroke-dasharray="72" stroke-dashoffset="72"/>
+            <polygon class="sv1-arrowhead" id="sv1-ah-1" points="72,6 80,10 72,14"/>
+          </svg>
+        </div>
+
+        <!-- NODE 2: GOVERN -->
+        <div class="sv1-node" id="sv1-node-govern" data-step="1" style="position:relative;">
+          <div class="sv1-node-icon-wrap">
+            <span class="sv1-node-pulse" aria-hidden="true"></span>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span class="sv1-node-label">GOVERN</span>
+
+          <!-- Govern rule panel (pops above) -->
+          <div class="sv1-govern-panel" id="sv1-govern-panel" role="tooltip" aria-live="polite">
+            <div class="sv1-govern-title" id="sv1-govern-title">Finance governance</div>
+            <div id="sv1-govern-rules">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- CONNECTOR 2 -->
+        <div class="sv1-connector" id="sv1-conn-2" aria-hidden="true">
+          <svg class="sv1-connector-svg" viewBox="0 0 80 20" preserveAspectRatio="none" overflow="visible">
+            <line class="sv1-conn-track" x1="0" y1="10" x2="72" y2="10"/>
+            <line class="sv1-conn-fill" id="sv1-cf-2" x1="0" y1="10" x2="72" y2="10" stroke-dasharray="72" stroke-dashoffset="72"/>
+            <polygon class="sv1-arrowhead" id="sv1-ah-2" points="72,6 80,10 72,14"/>
+          </svg>
+        </div>
+
+        <!-- NODE 3: CERTIFY -->
+        <div class="sv1-node" id="sv1-node-certify" data-step="2" style="position:relative;">
+          <div class="sv1-node-icon-wrap">
+            <span class="sv1-node-pulse" aria-hidden="true"></span>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <span class="sv1-node-label">CERTIFY</span>
+
+          <!-- Seal stamp (appears on certify) -->
+          <div class="sv1-seal" id="sv1-seal" aria-hidden="true">
+            <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="26" cy="26" r="24" fill="#16a34a" fill-opacity=".12" stroke="#16a34a" stroke-width="2"/>
+              <circle cx="26" cy="26" r="19" fill="none" stroke="#16a34a" stroke-width="1.2" stroke-dasharray="3 3"/>
+              <polyline points="16,26 23,33 36,19" stroke="#16a34a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- CONNECTOR 3 -->
+        <div class="sv1-connector" id="sv1-conn-3" aria-hidden="true">
+          <svg class="sv1-connector-svg" viewBox="0 0 80 20" preserveAspectRatio="none" overflow="visible">
+            <line class="sv1-conn-track" x1="0" y1="10" x2="72" y2="10"/>
+            <line class="sv1-conn-fill" id="sv1-cf-3" x1="0" y1="10" x2="72" y2="10" stroke-dasharray="72" stroke-dashoffset="72"/>
+            <polygon class="sv1-arrowhead" id="sv1-ah-3" points="72,6 80,10 72,14"/>
+          </svg>
+        </div>
+
+        <!-- NODE 4: DELIVER -->
+        <div class="sv1-node" id="sv1-node-deliver" data-step="3" style="position:relative;">
+          <div class="sv1-node-icon-wrap">
+            <span class="sv1-node-pulse" aria-hidden="true"></span>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <span class="sv1-node-label">DELIVER</span>
+
+          <!-- Answer card -->
+          <div class="sv1-deliver-card" id="sv1-deliver-card" aria-live="polite">
+            <div id="sv1-deliver-chip"></div>
+            <div class="sv1-deliver-amount" id="sv1-deliver-amount">$48.2M</div>
+            <div class="sv1-deliver-metric" id="sv1-deliver-metric">APAC Q3 Net Revenue · +6.1% QoQ</div>
+            <div id="sv1-deliver-rows"></div>
+          </div>
+        </div>
+
+      </div><!-- /sv1-pipeline -->
+
+      <!-- Moving query token (JS positions this) -->
+      <div class="sv1-token" id="sv1-token" aria-hidden="true" id="sv1-query-token">
+        What's APAC Q3 net revenue?
+      </div>
+
+    </div><!-- /sv1-pipeline-wrap -->
+
+    <!-- Caption -->
+    <p class="sv1-caption" aria-label="Illustrative scenario note">
+      Illustrative · APAC Q3 2026 · Figures used for demonstration only
+    </p>
+
+  </div><!-- /sv1-inner -->
+</section>
+
+</div>
+<div class="cmp-block">
+  <div class="cmp-label"><span class="cmp-num">Variation 2</span><span class="cmp-title">Live Proof Stage — selector + morphing animation panel</span></div>
+  
+<section class="sv2-section" id="sv2" aria-labelledby="sv2-headline">
+
+  <div class="sv2-inner">
+
+    <!-- HEADER -->
+    <header class="sv2-header">
+      <span class="sv2-eyebrow" aria-label="Section: Who it's for">Who it's for</span>
+      <h2 class="sv2-headline" id="sv2-headline">
+        Governed analytics,<br>
+        <span class="sv2-hl-accent">tuned to how you're regulated.</span>
+      </h2>
+    </header>
+
+    <!-- TWO-COLUMN BODY -->
+    <div class="sv2-body">
+
+      <!-- LEFT RAIL — persona selector -->
+      <nav class="sv2-rail" aria-label="Persona selector">
+        <p class="sv2-group-label" id="sv2-grp-role">By role</p>
+        <ul class="sv2-persona-list" role="list" aria-labelledby="sv2-grp-role">
+
+          <li role="presentation">
+            <button
+              class="sv2-persona-btn sv2-active"
+              data-persona="finance"
+              aria-pressed="true"
+              aria-controls="sv2-stage"
+              type="button"
+            >
+              <span class="sv2-persona-icon" aria-hidden="true">📊</span>
+              <span class="sv2-persona-text">
+                <span class="sv2-persona-name">Finance teams</span>
+              </span>
+            </button>
+          </li>
+
+          <li role="presentation">
+            <button
+              class="sv2-persona-btn"
+              data-persona="data"
+              aria-pressed="false"
+              aria-controls="sv2-stage"
+              type="button"
+            >
+              <span class="sv2-persona-icon" aria-hidden="true">⚡</span>
+              <span class="sv2-persona-text">
+                <span class="sv2-persona-name">Data &amp; Analytics</span>
+              </span>
+            </button>
+          </li>
+
+          <li role="presentation">
+            <button
+              class="sv2-persona-btn"
+              data-persona="compliance"
+              aria-pressed="false"
+              aria-controls="sv2-stage"
+              type="button"
+            >
+              <span class="sv2-persona-icon" aria-hidden="true">🔒</span>
+              <span class="sv2-persona-text">
+                <span class="sv2-persona-name">Compliance &amp; Risk</span>
+              </span>
+            </button>
+          </li>
+
+        </ul>
+
+        <p class="sv2-group-label" id="sv2-grp-ind">By industry</p>
+        <ul class="sv2-persona-list" role="list" aria-labelledby="sv2-grp-ind">
+
+          <li role="presentation">
+            <button
+              class="sv2-persona-btn"
+              data-persona="finserv"
+              aria-pressed="false"
+              aria-controls="sv2-stage"
+              type="button"
+            >
+              <span class="sv2-persona-icon" aria-hidden="true">🏦</span>
+              <span class="sv2-persona-text">
+                <span class="sv2-persona-name">Financial Services</span>
+                <span class="sv2-persona-tags">
+                  <span class="sv2-reg-tag">SOX</span>
+                  <span class="sv2-reg-tag">SEC</span>
+                  <span class="sv2-reg-tag">GAAP</span>
+                </span>
+              </span>
+            </button>
+          </li>
+
+          <li role="presentation">
+            <button
+              class="sv2-persona-btn"
+              data-persona="healthcare"
+              aria-pressed="false"
+              aria-controls="sv2-stage"
+              type="button"
+            >
+              <span class="sv2-persona-icon" aria-hidden="true">🏥</span>
+              <span class="sv2-persona-text">
+                <span class="sv2-persona-name">Healthcare</span>
+                <span class="sv2-persona-tags">
+                  <span class="sv2-reg-tag">HIPAA</span>
+                  <span class="sv2-reg-tag">HL7</span>
+                  <span class="sv2-reg-tag">21 CFR</span>
+                </span>
+              </span>
+            </button>
+          </li>
+
+          <li role="presentation">
+            <button
+              class="sv2-persona-btn"
+              data-persona="insurance"
+              aria-pressed="false"
+              aria-controls="sv2-stage"
+              type="button"
+            >
+              <span class="sv2-persona-icon" aria-hidden="true">🛡️</span>
+              <span class="sv2-persona-text">
+                <span class="sv2-persona-name">Insurance</span>
+                <span class="sv2-persona-tags">
+                  <span class="sv2-reg-tag">NAIC</span>
+                  <span class="sv2-reg-tag">Sol. II</span>
+                  <span class="sv2-reg-tag">IFRS 17</span>
+                </span>
+              </span>
+            </button>
+          </li>
+
+        </ul>
+      </nav>
+
+      <!-- RIGHT STAGE -->
+      <div class="sv2-stage-wrap">
+        <div class="sv2-stage" id="sv2-stage" role="region" aria-live="polite" aria-label="Live proof stage">
+
+          <!-- ====== PANEL 1: Finance ====== -->
+          <div class="sv2-panel sv2-panel-active" data-persona="finance" id="sv2-panel-finance" aria-hidden="false">
+            <div class="sv2-panel-header" aria-hidden="true"></div>
+
+            <div class="sv2-p1-slide" role="img" aria-label="Board slide showing APAC Q3 net revenue $48.2M certified">
+              <div class="sv2-p1-slide-label">APAC · Q3 · Net Revenue</div>
+              <div class="sv2-p1-big-num">$48.2M</div>
+              <div class="sv2-p1-qoq" aria-label="plus 6.1 percent quarter over quarter">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                  <path d="M5 8V2M2 5l3-3 3 3" stroke="#15803d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                +6.1% QoQ
+              </div>
+              <div class="sv2-p1-badge" aria-label="Certified">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2 7l3.5 3.5L12 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                CERTIFIED · FP&amp;A · v3
+              </div>
+
+              <!-- sparkline -->
+              <div class="sv2-sparkline-wrap" aria-hidden="true">
+                <svg width="120" height="56" viewBox="0 0 120 56" fill="none">
+                  <path class="sv2-sparkline-path"
+                    d="M4 44 L24 38 L44 42 L64 30 L84 26 L104 14 L116 10"
+                    stroke="var(--brand-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                    fill="none"/>
+                  <path d="M4 44 L24 38 L44 42 L64 30 L84 26 L104 14 L116 10 L116 56 L4 56 Z"
+                    fill="url(#sv2-spark-fill)" opacity="0.15"/>
+                  <circle class="sv2-sparkline-dot" cx="116" cy="10" r="4" fill="var(--brand-accent)"/>
+                  <defs>
+                    <linearGradient id="sv2-spark-fill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--brand-accent)" stop-opacity="0.5"/>
+                      <stop offset="100%" stop-color="var(--brand-accent)" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </div>
+
+            <footer class="sv2-panel-footer">
+              <span class="sv2-panel-caption">Defensible numbers for board decks</span>
+              <span class="sv2-chip sv2-chip-cert">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                  <path d="M1.5 5l2.5 2.5L8.5 2.5" stroke="#15803d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Certified
+              </span>
+            </footer>
+          </div>
+
+          <!-- ====== PANEL 2: Data & Analytics ====== -->
+          <div class="sv2-panel" data-persona="data" id="sv2-panel-data" aria-hidden="true">
+            <div class="sv2-panel-header" aria-hidden="true"></div>
+
+            <div class="sv2-p2-wrap" role="img" aria-label="Three duplicate requests collapse into one certified net revenue metric">
+              <!-- incoming request chips -->
+              <div class="sv2-p2-chip">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <circle cx="7" cy="7" r="6" stroke="#3730a3" stroke-width="1.5"/>
+                  <path d="M5 7h4M7 5v4" stroke="#3730a3" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                "What is net revenue?"
+              </div>
+              <div class="sv2-p2-chip">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <circle cx="7" cy="7" r="6" stroke="#3730a3" stroke-width="1.5"/>
+                  <path d="M5 7h4M7 5v4" stroke="#3730a3" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                "Net revenue definition?"
+              </div>
+              <div class="sv2-p2-chip">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <circle cx="7" cy="7" r="6" stroke="#3730a3" stroke-width="1.5"/>
+                  <path d="M5 7h4M7 5v4" stroke="#3730a3" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                "How is net_revenue calc'd?"
+              </div>
+
+              <!-- collapse arrow -->
+              <div class="sv2-p2-arrow" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 5v14M5 12l7 7 7-7" stroke="var(--brand-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+
+              <!-- certified tile -->
+              <div class="sv2-p2-certified-tile" role="status">
+                <div>
+                  <div class="sv2-p2-tile-name">net_revenue ✓</div>
+                  <div class="sv2-p2-tile-meta">owner: FP&amp;A · v3 · certified 2026-04-12</div>
+                </div>
+                <span class="sv2-chip sv2-chip-cert" style="flex-shrink:0">Certified</span>
+              </div>
+            </div>
+
+            <footer class="sv2-panel-footer">
+              <span class="sv2-panel-caption">Certify once, stop re-answering</span>
+              <span class="sv2-chip sv2-chip-brand">1 source of truth</span>
+            </footer>
+          </div>
+
+          <!-- ====== PANEL 3: Compliance ====== -->
+          <div class="sv2-panel" data-persona="compliance" id="sv2-panel-compliance" aria-hidden="true">
+            <div class="sv2-panel-header" aria-hidden="true"></div>
+
+            <div class="sv2-p3-scene" role="img" aria-label="Access gate: Analyst with APAC scope approved, Marketing user denied, both written to audit log">
+
+              <!-- TRACK 1: Allowed -->
+              <div class="sv2-p3-track" aria-label="Analyst APAC request approved">
+                <div class="sv2-p3-token sv2-p3-token-allow">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <circle cx="6" cy="6" r="5" stroke="#3730a3" stroke-width="1.2"/>
+                    <circle cx="6" cy="6" r="2" fill="#3730a3"/>
+                  </svg>
+                  Analyst · APAC
+                </div>
+
+                <!-- gate (allow) -->
+                <div class="sv2-p3-gate" aria-hidden="true">
+                  <div class="sv2-p3-gate-icon">🔒</div>
+                  <div class="sv2-p3-gate-bar" style="background:#94a3b8;"></div>
+                </div>
+
+                <!-- result -->
+                <div class="sv2-p3-result sv2-p3-result-allow" style="right:0; top:50%; transform:translateY(-50%);">
+                  <span style="font-size:16px">✅</span> $48.2M
+                </div>
+              </div>
+
+              <!-- TRACK 2: Denied -->
+              <div class="sv2-p3-track" style="margin-top:8px;" aria-label="Marketing user without Finance scope denied">
+                <div class="sv2-p3-token sv2-p3-token-deny" style="top:unset; position:relative; left:unset; animation-delay:3.0s;">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <circle cx="6" cy="6" r="5" stroke="#b91c1c" stroke-width="1.2"/>
+                    <circle cx="6" cy="6" r="2" fill="#b91c1c"/>
+                  </svg>
+                  Marketing · no scope
+                </div>
+
+                <!-- gate (deny) -->
+                <div class="sv2-p3-gate" aria-hidden="true" style="left:185px;">
+                  <div class="sv2-p3-gate-icon">🔒</div>
+                  <div class="sv2-p3-gate-bar sv2-p3-gate-bar-2" style="background:#94a3b8;"></div>
+                </div>
+
+                <!-- denied result -->
+                <div class="sv2-p3-result sv2-p3-result-deny" style="right:0; top:50%; transform:translateY(-50%);">
+                  <span style="font-size:16px">❌</span> Denied
+                </div>
+              </div>
+
+              <!-- audit log -->
+              <div class="sv2-p3-audit" aria-label="Audit log">
+                <div class="sv2-p3-audit-line sv2-p3-audit-line-1">
+                  <span class="sv2-p3-audit-dim">A-10293</span> <span class="sv2-p3-audit-green">ALLOW</span> <span class="sv2-p3-audit-dim">Priya / APAC / net_revenue / $48.2M</span>
+                </div>
+                <div class="sv2-p3-audit-line sv2-p3-audit-line-2">
+                  <span class="sv2-p3-audit-dim">A-10294</span> <span class="sv2-p3-audit-red">DENY&nbsp;</span> <span class="sv2-p3-audit-dim">Marketing · Finance scope not granted</span>
+                </div>
+              </div>
+            </div>
+
+            <footer class="sv2-panel-footer">
+              <span class="sv2-panel-caption">Access enforced at query time</span>
+              <span class="sv2-chip sv2-chip-cert">Pre-audited</span>
+            </footer>
+          </div>
+
+          <!-- ====== PANEL 4: Financial Services ====== -->
+          <div class="sv2-panel" data-persona="finserv" id="sv2-panel-finserv" aria-hidden="true">
+            <div class="sv2-panel-header" aria-hidden="true"></div>
+
+            <div role="img" aria-label="Data lineage chain: SEC filing links to net revenue v3 links to fct_revenue source table" style="width:100%;max-width:520px;margin-bottom:44px;">
+              <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#94a3b8;margin-bottom:16px;text-align:center;">
+                Full audit lineage
+              </div>
+              <div class="sv2-p4-chain">
+                <!-- Node 1 -->
+                <div class="sv2-p4-node">
+                  <div class="sv2-p4-node-box">
+                    <div class="sv2-p4-node-icon">📄</div>
+                    <div class="sv2-p4-node-name">SEC filing</div>
+                    <div class="sv2-p4-node-sub">10-Q · APAC</div>
+                  </div>
+                </div>
+
+                <div class="sv2-p4-connector" aria-hidden="true"></div>
+
+                <!-- Node 2 -->
+                <div class="sv2-p4-node">
+                  <div class="sv2-p4-node-box">
+                    <div class="sv2-p4-node-icon">📐</div>
+                    <div class="sv2-p4-node-name">net_revenue</div>
+                    <div class="sv2-p4-node-sub">v3 · certified</div>
+                  </div>
+                </div>
+
+                <div class="sv2-p4-connector" aria-hidden="true"></div>
+
+                <!-- Node 3 -->
+                <div class="sv2-p4-node">
+                  <div class="sv2-p4-node-box sv2-p4-node-final">
+                    <div class="sv2-p4-node-icon">🗄️</div>
+                    <div class="sv2-p4-node-name">fct_revenue</div>
+                    <div class="sv2-p4-node-sub">FINANCE_DW</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- cert badge -->
+              <div class="sv2-p4-cert-badge">
+                <div class="sv2-p4-cert-row">
+                  <div class="sv2-p4-cert-dot"></div>
+                  <span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b;">0 rows copied · queried in-place · audit #A-10293</span>
+                </div>
+              </div>
+            </div>
+
+            <footer class="sv2-panel-footer">
+              <span class="sv2-panel-caption">Every disclosure tied to a certified metric</span>
+              <span class="sv2-chip sv2-chip-cert">SOX-ready</span>
+            </footer>
+          </div>
+
+          <!-- ====== PANEL 5: Healthcare ====== -->
+          <div class="sv2-panel" data-persona="healthcare" id="sv2-panel-healthcare" aria-hidden="true">
+            <div class="sv2-panel-header" aria-hidden="true"></div>
+
+            <div class="sv2-p5-table-wrap" role="img" aria-label="Patient data table with PATIENT_ID column masked to dots, aggregates remain visible">
+              <table class="sv2-p5-table" aria-label="PHI-scoped data view">
+                <thead>
+                  <tr>
+                    <th class="sv2-p5-phi-col">PATIENT_ID <span style="font-size:8px;font-weight:400;">⚠ PHI</span></th>
+                    <th>REGION</th>
+                    <th>CLAIM_AMT</th>
+                    <th>LOS_DAYS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="sv2-p5-phi-val" data-plain="P-00291-A" data-masked="••••••••" style="--sv2-mask-delay:0.6s">P-00291-A</span></td>
+                    <td>APAC</td>
+                    <td class="sv2-p5-agg-col">$8,420</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <td><span class="sv2-p5-phi-val" data-plain="P-00347-B" data-masked="••••••••" style="--sv2-mask-delay:0.85s">P-00347-B</span></td>
+                    <td>EMEA</td>
+                    <td class="sv2-p5-agg-col">$12,110</td>
+                    <td>6</td>
+                  </tr>
+                  <tr>
+                    <td><span class="sv2-p5-phi-val" data-plain="P-00512-C" data-masked="••••••••" style="--sv2-mask-delay:1.1s">P-00512-C</span></td>
+                    <td>APAC</td>
+                    <td class="sv2-p5-agg-col">$5,880</td>
+                    <td>3</td>
+                  </tr>
+                  <tr>
+                    <td><span class="sv2-p5-phi-val" data-plain="P-00618-D" data-masked="••••••••" style="--sv2-mask-delay:1.35s">P-00618-D</span></td>
+                    <td>EMEA</td>
+                    <td class="sv2-p5-agg-col">$9,750</td>
+                    <td>5</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="sv2-p5-hipaa-banner" role="status" aria-label="PHI masked, row-level minimisation active">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <circle cx="6" cy="6" r="5" stroke="#854d0e" stroke-width="1.2"/>
+                  <path d="M6 4v3M6 8.5v.5" stroke="#854d0e" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                PHI masked · row-level minimisation active
+              </div>
+            </div>
+
+            <footer class="sv2-panel-footer">
+              <span class="sv2-panel-caption">PHI-scoped, built-in data minimisation</span>
+              <span class="sv2-chip sv2-chip-cert">HIPAA-safe</span>
+            </footer>
+          </div>
+
+          <!-- ====== PANEL 6: Insurance ====== -->
+          <div class="sv2-panel" data-persona="insurance" id="sv2-panel-insurance" aria-hidden="true">
+            <div class="sv2-panel-header" aria-hidden="true"></div>
+
+            <div class="sv2-p6-reserve-card" role="img" aria-label="Reserve calculation $214.7M versioned from v1 to v3 with owner signoff">
+              <div class="sv2-p6-reserve-label">APAC · Reserve Calculation · Q3</div>
+              <div class="sv2-p6-reserve-num">$214.7M</div>
+
+              <div class="sv2-p6-version-track" aria-label="Version history v1 to v3">
+                <span class="sv2-p6-ver-chip" data-ver="v1" style="--sv2-ver-i:0">v1</span>
+                <span class="sv2-p6-arrow-r" aria-hidden="true">→</span>
+                <span class="sv2-p6-ver-chip" data-ver="v2" style="--sv2-ver-i:1">v2</span>
+                <span class="sv2-p6-arrow-r" aria-hidden="true">→</span>
+                <span class="sv2-p6-ver-chip sv2-ver-active" data-ver="v3" style="--sv2-ver-i:2">v3</span>
+                <span style="font-family:'Inter',sans-serif;font-size:10px;color:#94a3b8;margin-left:8px;">· current</span>
+              </div>
+
+              <div class="sv2-p6-signoff" role="status" aria-label="Approved by FP&A lead">
+                <div class="sv2-p6-signoff-avatar" aria-hidden="true">F</div>
+                <div class="sv2-p6-signoff-text">
+                  Signed off by <strong>FP&amp;A Lead</strong> · 2026-04-12
+                </div>
+                <div class="sv2-p6-check" aria-hidden="true">✓</div>
+              </div>
+            </div>
+
+            <footer class="sv2-panel-footer">
+              <span class="sv2-panel-caption">Reserve calculations regulators can follow</span>
+              <span class="sv2-chip sv2-chip-cert">IFRS 17</span>
+            </footer>
+          </div>
+
+        </div><!-- /.sv2-stage -->
+      </div><!-- /.sv2-stage-wrap -->
+
+    </div><!-- /.sv2-body -->
+  </div><!-- /.sv2-inner -->
+
+</section>
+
+</div>
+<div class="cmp-block">
+  <div class="cmp-label"><span class="cmp-num">Variation 3</span><span class="cmp-title">Governance Map — Radial Trust Engine Infographic</span></div>
+  
+<section class="sv3-section" id="sv3" aria-labelledby="sv3-headline">
+
+  <!-- Header -->
+  <div class="container">
+    <div class="sv3-header">
+      <div class="sv3-eyebrow" aria-hidden="true">Who it&rsquo;s for</div>
+      <h2 class="sv3-headline" id="sv3-headline">
+        Governed analytics, tuned to how<br>
+        you&rsquo;re <span class="sv3-accent-word">regulated.</span>
+      </h2>
+      <p class="sv3-sub">One Trust Engine — six domains. Click any node to see how governance maps to you.</p>
+    </div>
+
+    <!-- Toggle -->
+    <div class="sv3-toggle-wrap" role="group" aria-label="View by role or by industry">
+      <button class="sv3-toggle-btn sv3-active" data-sv3-toggle="role" aria-pressed="true">By Role</button>
+      <button class="sv3-toggle-btn" data-sv3-toggle="industry" aria-pressed="false">By Industry</button>
+    </div>
+
+    <!-- Diagram -->
+    <div class="sv3-diagram-wrap" aria-label="Radial governance map showing Trust Engine at center connecting to six governed personas">
+
+      <!-- Radial SVG -->
+      <svg
+        class="sv3-radial-svg"
+        viewBox="0 0 860 500"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Trust Engine radial map"
+        focusable="false"
+      >
+        <defs>
+          <!-- Gradient for spokes -->
+          <linearGradient id="sv3-spoke-grad-0" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="var(--brand-accent)" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="var(--brand-accent)" stop-opacity="0.15"/>
+          </linearGradient>
+          <linearGradient id="sv3-spoke-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="var(--brand-accent)" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="var(--brand-accent)" stop-opacity="0.15"/>
+          </linearGradient>
+          <!-- Hub radial gradient -->
+          <radialGradient id="sv3-hub-fill" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#f5f0ff"/>
+          </radialGradient>
+          <!-- Glow filter -->
+          <filter id="sv3-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <!-- Node hover filter -->
+          <filter id="sv3-node-glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <!-- Flow dot motion paths (one per spoke, computed by JS) -->
+          <marker id="sv3-arrow-tip" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <circle cx="3" cy="3" r="2" fill="var(--brand-accent)" opacity="0.5"/>
+          </marker>
+        </defs>
+
+        <!-- Background decorative ring -->
+        <circle cx="430" cy="252" r="190" fill="none" stroke="var(--brand-accent)" stroke-opacity="0.04" stroke-width="1.5" stroke-dasharray="6 10"/>
+        <circle cx="430" cy="252" r="155" fill="none" stroke="var(--brand-accent)" stroke-opacity="0.06" stroke-width="1" stroke-dasharray="3 8"/>
+
+        <!-- ═══ SPOKES (drawn by JS; these are placeholders) ═══ -->
+        <g id="sv3-spokes-layer" aria-hidden="true"></g>
+
+        <!-- ═══ FLOW DOTS (animated by JS) ═══ -->
+        <g id="sv3-dots-layer" aria-hidden="true"></g>
+
+        <!-- ═══ HUB ═══ -->
+        <g id="sv3-hub" aria-label="Trust Engine — governed semantic layer">
+          <!-- Pulse rings (behind hub) -->
+          <circle class="sv3-hub-ring-pulse" cx="430" cy="252" r="46" style=""/>
+          <circle class="sv3-hub-ring-pulse sv3-hub-ring-pulse-2" cx="430" cy="252" r="46"/>
+          <!-- Decorative dashes ring -->
+          <circle cx="430" cy="252" r="52" fill="none" stroke="var(--brand-accent)" stroke-opacity="0.12" stroke-width="1.5" stroke-dasharray="4 8"/>
+          <!-- Main hub -->
+          <circle class="sv3-hub-circle" cx="430" cy="252" r="44" fill="url(#sv3-hub-fill)"/>
+          <!-- Hub text -->
+          <text class="sv3-hub-title" x="430" y="246">TRUST</text>
+          <text class="sv3-hub-title" x="430" y="258">ENGINE</text>
+          <text class="sv3-hub-sub" x="430" y="270">Semantic Layer</text>
+        </g>
+
+        <!-- ═══ NODE GROUPS (positioned by JS) ═══ -->
+        <g id="sv3-nodes-layer"></g>
+
+      </svg>
+
+      <!-- Proof panel area -->
+      <div class="sv3-proof-area" id="sv3-proof-area" aria-live="polite" aria-atomic="true">
+
+        <!-- PANEL 0: Finance teams -->
+        <div class="sv3-proof-panel" id="sv3-panel-0" role="region" aria-label="Finance teams governance proof">
+          <div class="sv3-proof-header">
+            <div class="sv3-proof-icon-wrap" aria-hidden="true">💰</div>
+            <div>
+              <div class="sv3-proof-title">Finance Teams</div>
+              <div class="sv3-proof-caption">Defensible numbers for board decks &amp; filings</div>
+            </div>
+            <div class="sv3-proof-chip sv3-chip-certified" aria-label="Status: Certified">
+              <div class="sv3-chip-dot"></div>Certified · #A-10293
+            </div>
+          </div>
+          <div class="sv3-mini-diagram">
+            <div class="sv3-seal" aria-label="Certified amount: $48.2 million">
+              <span class="sv3-seal-amount">$48.2M</span>
+              <span class="sv3-seal-label">APAC Q3<br>Net Revenue</span>
+              <span class="sv3-seal-badge">v3</span>
+            </div>
+            <div class="sv3-meta-rows" aria-label="Metric metadata">
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Metric</span>
+                <span class="sv3-meta-val sv3-purple">net_revenue</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Owner</span>
+                <span class="sv3-meta-val">FP&amp;A</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Certified</span>
+                <span class="sv3-meta-val sv3-green">2026-04-12</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Source</span>
+                <span class="sv3-meta-val">FINANCE_DW.fct_revenue</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">QoQ</span>
+                <span class="sv3-meta-val sv3-green">+6.1%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 1: Data & Analytics -->
+        <div class="sv3-proof-panel" id="sv3-panel-1" role="region" aria-label="Data and Analytics teams governance proof">
+          <div class="sv3-proof-header">
+            <div class="sv3-proof-icon-wrap" aria-hidden="true">📊</div>
+            <div>
+              <div class="sv3-proof-title">Data &amp; Analytics Teams</div>
+              <div class="sv3-proof-caption">Certify once, stop re-answering the same question</div>
+            </div>
+            <div class="sv3-proof-chip sv3-chip-certified" aria-label="Status: Certified and reused">
+              <div class="sv3-chip-dot"></div>1 Certified · Reused
+            </div>
+          </div>
+          <div class="sv3-mini-diagram">
+            <div class="sv3-reuse-node" aria-label="One certified metric, reused many times">
+              <span class="sv3-reuse-num">1</span>
+              <div class="sv3-reuse-text">
+                Certified metric<br>
+                <span style="opacity:0.7">net_revenue · v3</span>
+              </div>
+            </div>
+            <div class="sv3-meta-rows">
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Queries</span>
+                <span class="sv3-meta-val sv3-green">Answered from cache</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Rows copied</span>
+                <span class="sv3-meta-val">0 — queried in place</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Audit trail</span>
+                <span class="sv3-meta-val sv3-purple">#A-10293 → reuse log</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Asker</span>
+                <span class="sv3-meta-val">Priya (Analyst · APAC)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: Compliance & Risk -->
+        <div class="sv3-proof-panel" id="sv3-panel-2" role="region" aria-label="Compliance and Risk governance proof">
+          <div class="sv3-proof-header">
+            <div class="sv3-proof-icon-wrap" aria-hidden="true">🔒</div>
+            <div>
+              <div class="sv3-proof-title">Compliance &amp; Risk</div>
+              <div class="sv3-proof-caption">Every answer pre-audited, access enforced at query time</div>
+            </div>
+            <div class="sv3-proof-chip sv3-chip-denied" aria-label="One request denied">
+              <div class="sv3-chip-dot"></div>Allow / Deny enforced
+            </div>
+          </div>
+          <div class="sv3-mini-diagram">
+            <div class="sv3-gate-wrap" aria-label="Access control gate">
+              <div class="sv3-gate-row sv3-gate-allow">
+                <span class="sv3-gate-icon">✅</span>
+                Priya — APAC scope — net_revenue
+                <span class="sv3-gate-detail">#A-10293</span>
+              </div>
+              <div class="sv3-gate-row sv3-gate-deny">
+                <span class="sv3-gate-icon">⛔</span>
+                Marketing user — no Finance scope — denied
+                <span class="sv3-gate-detail">#A-10294</span>
+              </div>
+            </div>
+            <div class="sv3-meta-rows">
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Policy</span>
+                <span class="sv3-meta-val sv3-purple">Scope: Finance</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Enforced</span>
+                <span class="sv3-meta-val sv3-green">At query time</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Log</span>
+                <span class="sv3-meta-val">Immutable audit</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 3: Financial Services -->
+        <div class="sv3-proof-panel" id="sv3-panel-3" role="region" aria-label="Financial Services industry governance proof">
+          <div class="sv3-proof-header">
+            <div class="sv3-proof-icon-wrap" aria-hidden="true">🏦</div>
+            <div>
+              <div class="sv3-proof-title">Financial Services <span style="font-size:10px;color:var(--brand-accent);font-weight:600;background:#fdf4ff;padding:1px 6px;border-radius:4px;margin-left:4px;">SOX · SEC · GAAP</span></div>
+              <div class="sv3-proof-caption">Every disclosure tied to a certified, auditable metric</div>
+            </div>
+            <div class="sv3-proof-chip sv3-chip-certified" aria-label="Status: Certified">
+              <div class="sv3-chip-dot"></div>Certified · v3
+            </div>
+          </div>
+          <div class="sv3-mini-diagram">
+            <div class="sv3-seal" aria-label="APAC Q3 net revenue 48.2 million, SOX certified">
+              <span class="sv3-seal-amount">$48.2M</span>
+              <span class="sv3-seal-label">APAC Q3<br>SOX-ready</span>
+              <span class="sv3-seal-badge">✓</span>
+            </div>
+            <div class="sv3-meta-rows">
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Disclosure</span>
+                <span class="sv3-meta-val">net_revenue · APAC Q3</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Standard</span>
+                <span class="sv3-meta-val sv3-purple">GAAP / SOX §302</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Auditor</span>
+                <span class="sv3-meta-val sv3-green">Audit #A-10293</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">EMEA</span>
+                <span class="sv3-meta-val">$61.7M · certified</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 4: Healthcare -->
+        <div class="sv3-proof-panel" id="sv3-panel-4" role="region" aria-label="Healthcare industry governance proof">
+          <div class="sv3-proof-header">
+            <div class="sv3-proof-icon-wrap" aria-hidden="true">🏥</div>
+            <div>
+              <div class="sv3-proof-title">Healthcare <span style="font-size:10px;color:var(--brand-accent);font-weight:600;background:#fdf4ff;padding:1px 6px;border-radius:4px;margin-left:4px;">HIPAA · HL7 · 21 CFR Pt 11</span></div>
+              <div class="sv3-proof-caption">PHI-scoped answers with built-in data minimisation</div>
+            </div>
+            <div class="sv3-proof-chip sv3-chip-certified" aria-label="PHI masked and minimised">
+              <div class="sv3-chip-dot"></div>PHI minimised
+            </div>
+          </div>
+          <div class="sv3-mini-diagram">
+            <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+              <div class="sv3-phi-chip" aria-label="PHI masked, patient ID redacted">
+                <span>PHI</span>
+                <span class="sv3-phi-mask">Patient: ████-████</span>
+                <span style="font-size:9px;background:#dbeafe;color:#1d4ed8;padding:2px 6px;border-radius:4px;">MASKED</span>
+              </div>
+              <div class="sv3-phi-chip" style="background:#f0fdf4;border-color:#86efac;color:#15803d;" aria-label="Minimum necessary data enforced">
+                <span>✅</span>
+                <span>Minimum necessary enforced</span>
+              </div>
+            </div>
+            <div class="sv3-meta-rows">
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Scope</span>
+                <span class="sv3-meta-val">PHI de-identified</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Rows copied</span>
+                <span class="sv3-meta-val sv3-green">0 — in place</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Regulation</span>
+                <span class="sv3-meta-val sv3-purple">HIPAA Safe Harbor</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Audit</span>
+                <span class="sv3-meta-val">21 CFR Part 11 log</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 5: Insurance -->
+        <div class="sv3-proof-panel" id="sv3-panel-5" role="region" aria-label="Insurance industry governance proof">
+          <div class="sv3-proof-header">
+            <div class="sv3-proof-icon-wrap" aria-hidden="true">🛡️</div>
+            <div>
+              <div class="sv3-proof-title">Insurance <span style="font-size:10px;color:var(--brand-accent);font-weight:600;background:#fdf4ff;padding:1px 6px;border-radius:4px;margin-left:4px;">NAIC · Solvency II · IFRS 17</span></div>
+              <div class="sv3-proof-caption">Reserve calculations regulators can follow, not just trust</div>
+            </div>
+            <div class="sv3-proof-chip sv3-chip-certified" aria-label="Version 3 certified">
+              <div class="sv3-chip-dot"></div>v3 · Certified
+            </div>
+          </div>
+          <div class="sv3-mini-diagram">
+            <div class="sv3-version-stamp" aria-label="Version 3 reserve calculation stamp">
+              <span class="sv3-version-num">v3</span>
+              <span class="sv3-version-label">Reserve Calc</span>
+              <span style="font-size:9px;color:#16a34a;font-weight:700;margin-top:4px;">IFRS 17 Ready</span>
+            </div>
+            <div class="sv3-meta-rows">
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Reserve</span>
+                <span class="sv3-meta-val sv3-green">$214.7M</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Model ver.</span>
+                <span class="sv3-meta-val sv3-purple">v3 · certified 2026-04-12</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Regulator</span>
+                <span class="sv3-meta-val">NAIC · Solvency II</span>
+              </div>
+              <div class="sv3-meta-row">
+                <span class="sv3-meta-key">Audit trail</span>
+                <span class="sv3-meta-val">Full lineage logged</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /proof-area -->
+
+      <!-- Legend -->
+      <div class="sv3-legend" aria-label="Map legend">
+        <div class="sv3-legend-item">
+          <div class="sv3-legend-dot" style="background:var(--brand-accent);"></div>
+          <span>Trust Engine (hub)</span>
+        </div>
+        <div class="sv3-legend-item">
+          <div class="sv3-legend-line" style="background:color-mix(in srgb,var(--brand-accent) 40%,#c084fc);"></div>
+          <span>Governed data path</span>
+        </div>
+        <div class="sv3-legend-item">
+          <div class="sv3-legend-dot" style="background:#16a34a;"></div>
+          <span>Certified answer</span>
+        </div>
+        <div class="sv3-legend-item">
+          <div class="sv3-legend-dot" style="background:#dc2626;"></div>
+          <span>Access denied</span>
+        </div>
+      </div>
+
+    </div><!-- /diagram-wrap -->
+  </div><!-- /container -->
+
+</section>
+
+</div>
+</main>
+<script>
+
+/* sv1 */
+(function(){try{
+(function () {
+  'use strict';
+
+  // feature guard
+  if (!document.querySelector('.sv1-section')) return;
+
+  // ── reduced-motion check ──
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── DOM refs ──
+  const section        = document.querySelector('.sv1-section');
+  const chips          = Array.from(section.querySelectorAll('.sv1-chip'));
+  const tabBtns        = Array.from(section.querySelectorAll('.sv1-toggle-btn'));
+  const tokenEl        = section.querySelector('#sv1-token');
+  const governPanel    = section.querySelector('#sv1-govern-panel');
+  const governTitle    = section.querySelector('#sv1-govern-title');
+  const governRules    = section.querySelector('#sv1-govern-rules');
+  const seal           = section.querySelector('#sv1-seal');
+  const deliverCard    = section.querySelector('#sv1-deliver-card');
+  const deliverChip    = section.querySelector('#sv1-deliver-chip');
+  const deliverAmount  = section.querySelector('#sv1-deliver-amount');
+  const deliverMetric  = section.querySelector('#sv1-deliver-metric');
+  const deliverRows    = section.querySelector('#sv1-deliver-rows');
+  const nodes          = [
+    section.querySelector('#sv1-node-ask'),
+    section.querySelector('#sv1-node-govern'),
+    section.querySelector('#sv1-node-certify'),
+    section.querySelector('#sv1-node-deliver'),
+  ];
+  const connFills = [
+    section.querySelector('#sv1-cf-1'),
+    section.querySelector('#sv1-cf-2'),
+    section.querySelector('#sv1-cf-3'),
+  ];
+  const arrowHeads = [
+    section.querySelector('#sv1-ah-1'),
+    section.querySelector('#sv1-ah-2'),
+    section.querySelector('#sv1-ah-3'),
+  ];
+  const pipelineWrap = section.querySelector('#sv1-pipeline-wrap');
+
+  // ── timing ──
+  const T = prefersReduced ? 0 : 1; // multiplier — 0 collapses all times
+  const STEP_MS = 620;   // time token spends moving between nodes
+  const PAUSE_MS = 480;  // pause at each node
+
+  // ── state ──
+  let activePersona = null;
+  let animTimer = null;
+
+  // ── helpers ──
+  function clearAnimation() {
+    if (animTimer) { clearTimeout(animTimer); animTimer = null; }
+    // reset all nodes
+    nodes.forEach(n => {
+      n.classList.remove('sv1-node-active', 'sv1-node-certified');
+    });
+    // reset connectors
+    connFills.forEach(cf => {
+      cf.style.transition = 'none';
+      cf.setAttribute('stroke-dashoffset', '72');
+      cf.classList.remove('sv1-filled');
+    });
+    arrowHeads.forEach(ah => { ah.style.fill = ''; });
+    // hide panels
+    governPanel.classList.remove('sv1-visible');
+    seal.classList.remove('sv1-stamp');
+    deliverCard.classList.remove('sv1-visible');
+    tokenEl.style.opacity = '0';
+    tokenEl.style.transition = 'none';
+    tokenEl.style.transform = 'translate(-50%, -50%)';
+  }
+
+  function getNodeCenter(nodeEl) {
+    const nRect = nodeEl.querySelector('.sv1-node-icon-wrap').getBoundingClientRect();
+    const wRect = pipelineWrap.getBoundingClientRect();
+    return {
+      x: nRect.left - wRect.left + nRect.width / 2,
+      y: nRect.top  - wRect.top  + nRect.height / 2,
+    };
+  }
+
+  function moveToken(fromNode, toNode, durationMs) {
+    return new Promise(resolve => {
+      if (prefersReduced) { resolve(); return; }
+      const from = getNodeCenter(fromNode);
+      const to   = getNodeCenter(toNode);
+      tokenEl.style.transition = 'none';
+      tokenEl.style.transform = `translate(calc(${from.x}px - 50%), calc(${from.y}px - 50%))`;
+      tokenEl.style.opacity = '1';
+      // force reflow
+      void tokenEl.offsetWidth;
+      tokenEl.style.transition = `transform ${durationMs}ms cubic-bezier(.4,0,.2,1), opacity 220ms`;
+      tokenEl.style.transform = `translate(calc(${to.x}px - 50%), calc(${to.y}px - 50%))`;
+      setTimeout(resolve, durationMs);
+    });
+  }
+
+  function fillConnector(idx, durationMs) {
+    return new Promise(resolve => {
+      const cf = connFills[idx];
+      const ah = arrowHeads[idx];
+      if (prefersReduced) {
+        cf.setAttribute('stroke-dashoffset', '0');
+        cf.classList.add('sv1-filled');
+        ah.style.fill = 'var(--brand-accent)';
+        resolve();
+        return;
+      }
+      // enable transition
+      cf.style.transition = `stroke-dashoffset ${durationMs * 0.8}ms ease`;
+      cf.setAttribute('stroke-dashoffset', '0');
+      cf.classList.add('sv1-filled');
+      setTimeout(() => {
+        ah.style.fill = 'var(--brand-accent)';
+        ah.style.transition = 'fill 200ms';
+        resolve();
+      }, durationMs * 0.8);
+    });
+  }
+
+  function populateGovern(persona) {
+    const title = persona.dataset.governTitle || '';
+    const rules = JSON.parse(persona.dataset.governRules || '[]');
+    governTitle.textContent = title;
+    governRules.innerHTML = rules.map(r => {
+      const cls = r.type === 'allow' ? 'sv1-rule-allow' : 'sv1-rule-deny';
+      const iconPath = r.type === 'allow'
+        ? '<polyline points="20 6 9 17 4 12"/>'
+        : '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+      return `<div class="sv1-govern-rule">
+        <svg class="sv1-rule-icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPath}</svg>
+        <span>${r.text}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function populateDeliver(persona) {
+    const certified = persona.dataset.deliverCertified === 'true';
+    const amount    = persona.dataset.deliverAmount || '';
+    const delta     = persona.dataset.deliverDelta || '';
+    const metric    = persona.dataset.deliverMetric || '';
+    const rows      = JSON.parse(persona.dataset.deliverRows || '[]');
+
+    deliverChip.innerHTML = certified
+      ? `<span class="sv1-certified-chip">
+           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+           Certified
+         </span>`
+      : `<span class="sv1-denied-chip">
+           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+           Denied
+         </span>`;
+
+    deliverAmount.textContent = amount;
+    deliverMetric.textContent = metric + (delta ? ' · ' + delta : '');
+
+    deliverRows.innerHTML = rows.map(r => `
+      <div class="sv1-deliver-row">
+        <span class="sv1-deliver-row-label">${r.label}</span>
+        ${r.mono
+          ? `<span class="sv1-audit-id">${r.val}</span>`
+          : `<span>${r.val}</span>`}
+      </div>`
+    ).join('');
+  }
+
+  function runAnimation(persona) {
+    clearAnimation();
+
+    const label = persona.dataset.label || 'Query';
+    tokenEl.textContent = label;
+    tokenEl.style.opacity = '0';
+
+    if (prefersReduced) {
+      // static fully-revealed state
+      nodes.forEach((n, i) => {
+        n.classList.add(i === 2 ? 'sv1-node-certified' : 'sv1-node-active');
+      });
+      connFills.forEach((cf, i) => {
+        cf.setAttribute('stroke-dashoffset', '0');
+        cf.classList.add('sv1-filled');
+        arrowHeads[i].style.fill = 'var(--brand-accent)';
+      });
+      populateGovern(persona);
+      populateDeliver(persona);
+      governPanel.classList.add('sv1-visible');
+      seal.classList.add('sv1-stamp');
+      deliverCard.classList.add('sv1-visible');
+      return;
+    }
+
+    // ── Step 0: Activate ASK, show token at ASK ──
+    const step0 = () => {
+      nodes[0].classList.add('sv1-node-active');
+      const p0 = getNodeCenter(nodes[0]);
+      tokenEl.style.transition = 'none';
+      tokenEl.style.transform = `translate(calc(${p0.x}px - 50%), calc(${p0.y}px - 50%))`;
+      tokenEl.style.opacity = '0';
+      void tokenEl.offsetWidth;
+      tokenEl.style.transition = 'opacity 300ms';
+      tokenEl.style.opacity = '1';
+
+      animTimer = setTimeout(step1, PAUSE_MS * T || 480);
+    };
+
+    // ── Step 1: Move token to GOVERN, fill connector 1, show govern panel ──
+    const step1 = () => {
+      fillConnector(0, STEP_MS * T || STEP_MS);
+      moveToken(nodes[0], nodes[1], STEP_MS * T || STEP_MS).then(() => {
+        nodes[0].classList.remove('sv1-node-active');
+        nodes[1].classList.add('sv1-node-active');
+        populateGovern(persona);
+        governPanel.classList.add('sv1-visible');
+        animTimer = setTimeout(step2, PAUSE_MS * 1.4 * T || 680);
+      });
+    };
+
+    // ── Step 2: Move token to CERTIFY, fill connector 2, hide govern, show seal ──
+    const step2 = () => {
+      governPanel.classList.remove('sv1-visible');
+      fillConnector(1, STEP_MS * T || STEP_MS);
+      moveToken(nodes[1], nodes[2], STEP_MS * T || STEP_MS).then(() => {
+        nodes[1].classList.remove('sv1-node-active');
+        nodes[2].classList.add('sv1-node-certified');
+        // stamp seal
+        setTimeout(() => { seal.classList.add('sv1-stamp'); }, 120);
+        animTimer = setTimeout(step3, PAUSE_MS * T || 480);
+      });
+    };
+
+    // ── Step 3: Move token to DELIVER, fill connector 3, show answer card ──
+    const step3 = () => {
+      fillConnector(2, STEP_MS * T || STEP_MS);
+      moveToken(nodes[2], nodes[3], STEP_MS * T || STEP_MS).then(() => {
+        nodes[3].classList.add('sv1-node-active');
+        tokenEl.style.transition = 'opacity 250ms';
+        tokenEl.style.opacity = '0';
+        populateDeliver(persona);
+        setTimeout(() => { deliverCard.classList.add('sv1-visible'); }, 80);
+      });
+    };
+
+    // kick off after short initial delay
+    animTimer = setTimeout(step0, 180);
+  }
+
+  // ── Tab switching ──
+  function switchTab(tab) {
+    tabBtns.forEach(b => {
+      b.setAttribute('aria-pressed', b.dataset.tab === tab ? 'true' : 'false');
+    });
+    chips.forEach(c => {
+      const show = c.dataset.tab === tab;
+      c.style.display = show ? '' : 'none';
+      if (!show && c.getAttribute('aria-pressed') === 'true') {
+        c.setAttribute('aria-pressed', 'false');
+        c.setAttribute('aria-selected', 'false');
+      }
+    });
+    // activate first chip in new tab
+    const first = chips.find(c => c.dataset.tab === tab);
+    if (first) activateChip(first);
+  }
+
+  function activateChip(chip) {
+    chips.forEach(c => {
+      c.setAttribute('aria-pressed', 'false');
+      c.setAttribute('aria-selected', 'false');
+    });
+    chip.setAttribute('aria-pressed', 'true');
+    chip.setAttribute('aria-selected', 'true');
+    activePersona = chip;
+    runAnimation(chip);
+  }
+
+  // ── Event listeners ──
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); switchTab(btn.dataset.tab); }
+    });
+  });
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => activateChip(chip));
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateChip(chip); }
+    });
+  });
+
+  // ── Intersection observer: trigger on enter ──
+  const firstChip = chips.find(c => c.dataset.tab === 'role');
+  if (firstChip) {
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            activateChip(firstChip);
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.25 });
+      io.observe(section);
+    } else {
+      // fallback: run immediately
+      activateChip(firstChip);
+    }
+  }
+
+  // ── Keyboard: arrow keys between chips in same tab ──
+  chips.forEach((chip, idx) => {
+    chip.addEventListener('keydown', e => {
+      const visibleChips = chips.filter(c => c.style.display !== 'none');
+      const vi = visibleChips.indexOf(chip);
+      let next = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        next = visibleChips[(vi + 1) % visibleChips.length];
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        next = visibleChips[(vi - 1 + visibleChips.length) % visibleChips.length];
+      }
+      if (next) { e.preventDefault(); next.focus(); activateChip(next); }
+    });
+  });
+
+})();
+}catch(e){console.error("[sv1]",e);}})();
+
+/* sv2 */
+(function(){try{
+(function () {
+  'use strict';
+
+  // ── feature detect ──────────────────────────────────────────────────────
+  if (typeof document === 'undefined') return;
+
+  var prefersReduced = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+
+  // ── helpers ─────────────────────────────────────────────────────────────
+  function qsa(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+  function qs(sel, ctx)  { return (ctx || document).querySelector(sel); }
+
+  // ── grab elements ────────────────────────────────────────────────────────
+  var section    = qs('#sv2');
+  if (!section) return;
+
+  var buttons    = qsa('.sv2-persona-btn', section);
+  var panels     = qsa('.sv2-panel', section);
+  var stage      = qs('#sv2-stage', section);
+
+  // We track the running animation restart timer per panel
+  var loopTimers = {};
+  var LOOP_MS = 7000; // loop interval for each persona animation
+
+  // ── PHI masking for healthcare panel ──────────────────────────────────
+  function maskPhiCells(panel, doMask) {
+    var cells = qsa('.sv2-p5-phi-val', panel);
+    cells.forEach(function (el) {
+      if (doMask) {
+        el.textContent = el.dataset.masked || '••••••••';
+      } else {
+        el.textContent = el.dataset.plain || el.textContent;
+      }
+    });
+  }
+
+  // ── version chip cycling for insurance panel ──────────────────────────
+  function cycleVersionChips(panel) {
+    var chips = qsa('.sv2-p6-ver-chip', panel);
+    if (!chips.length) return null;
+    var idx = 0;
+    function activate() {
+      chips.forEach(function (c, i) {
+        c.classList.toggle('sv2-ver-active', i === idx);
+        c.style.cssText = i === idx
+          ? 'background:var(--brand-accent);color:#fff;transform:scale(1.08);box-shadow:0 2px 12px color-mix(in srgb,var(--brand-accent) 40%,transparent);transition:background 0.3s,color 0.3s,transform 0.3s;'
+          : 'background:#e2dff5;color:#4c1d95;transform:scale(1);transition:background 0.3s,color 0.3s,transform 0.3s;';
+      });
+      idx = (idx + 1) % chips.length;
+    }
+    activate();
+    return setInterval(activate, 1000);
+  }
+
+  // ── compliance gate animation controller ─────────────────────────────
+  // Resets all animated children so the keyframe fires again on loop
+  function resetPanel(panel) {
+    // Collect all elements with animations
+    var animated = qsa('[class*="sv2-p"]', panel);
+    animated.forEach(function (el) {
+      el.style.animationName = 'none';
+      el.style.animationPlayState = '';
+    });
+    // Force reflow
+    void panel.offsetWidth;
+    // Restore
+    animated.forEach(function (el) {
+      el.style.animationName = '';
+    });
+    // PHI: reset to plain then re-mask
+    if (panel.dataset.persona === 'healthcare') {
+      maskPhiCells(panel, false);
+      // delay mask
+      setTimeout(function () { maskPhiCells(panel, true); }, 600);
+    }
+  }
+
+  // ── activate panel ──────────────────────────────────────────────────
+  var insuranceTimer = null;
+
+  function activatePanel(persona) {
+    // Clear insurance timer
+    if (insuranceTimer) { clearInterval(insuranceTimer); insuranceTimer = null; }
+
+    panels.forEach(function (p) {
+      var isTarget = p.dataset.persona === persona;
+      p.classList.toggle('sv2-panel-active', isTarget);
+      p.setAttribute('aria-hidden', isTarget ? 'false' : 'true');
+      if (isTarget) {
+        // reset & replay animations
+        if (!prefersReduced) {
+          resetPanel(p);
+          // Healthcare: start masked after delay
+          if (persona === 'healthcare') {
+            maskPhiCells(p, false);
+            setTimeout(function () { maskPhiCells(p, true); }, 600);
+          }
+          // Insurance: start version cycling
+          if (persona === 'insurance') {
+            insuranceTimer = cycleVersionChips(p);
+          }
+        } else {
+          // Reduced motion: show final state immediately
+          if (persona === 'healthcare') {
+            maskPhiCells(p, true);
+          }
+          if (persona === 'insurance') {
+            var chips = qsa('.sv2-p6-ver-chip', p);
+            chips.forEach(function (c, i) {
+              c.classList.toggle('sv2-ver-active', i === chips.length - 1);
+            });
+          }
+        }
+      }
+    });
+  }
+
+  // ── button interactions ─────────────────────────────────────────────
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var persona = btn.dataset.persona;
+      buttons.forEach(function (b) {
+        var active = b.dataset.persona === persona;
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+        b.classList.toggle('sv2-active', active);
+      });
+      activatePanel(persona);
+    });
+
+    // Keyboard: enter/space handled natively by button; also support arrow keys
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        var idx = buttons.indexOf(btn);
+        var next = buttons[(idx + 1) % buttons.length];
+        next.focus();
+        next.click();
+      }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        var idx = buttons.indexOf(btn);
+        var prev = buttons[(idx - 1 + buttons.length) % buttons.length];
+        prev.focus();
+        prev.click();
+      }
+    });
+  });
+
+  // ── loop animations on finance panel (default active) ────────────────
+  // Restart the initial Finance panel loop every LOOP_MS
+  var initialPanel = qs('.sv2-panel[data-persona="finance"]', section);
+  if (initialPanel && !prefersReduced) {
+    var loopFn = function () {
+      resetPanel(initialPanel);
+    };
+    setInterval(loopFn, LOOP_MS);
+  }
+
+  // ── init: ensure Finance panel is active and masked PHI in no-op ─────
+  activatePanel('finance');
+
+  // ── IntersectionObserver: only animate when in view ──────────────────
+  if (window.IntersectionObserver) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var activeBtn = qs('.sv2-persona-btn[aria-pressed="true"]', section);
+        var currentPersona = activeBtn ? activeBtn.dataset.persona : 'finance';
+        if (entry.isIntersecting) {
+          // re-trigger active panel
+          activatePanel(currentPersona);
+        }
+      });
+    }, { threshold: 0.3 });
+    io.observe(section);
+  }
+
+})();
+}catch(e){console.error("[sv2]",e);}})();
+
+/* sv3 */
+(function(){try{
+(function () {
+  'use strict';
+
+  /* ── Feature detect ── */
+  const root = document.getElementById('sv3');
+  if (!root) return;
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── Node data ── */
+  const NODES = [
+    {
+      id: 'finance',
+      icon: '💰',
+      name: 'Finance',
+      sub: 'Teams',
+      tags: null,
+      panelId: 'sv3-panel-0',
+      group: 'role',
+      angle: -90   // top
+    },
+    {
+      id: 'data',
+      icon: '📊',
+      name: 'Data &',
+      sub: 'Analytics',
+      tags: null,
+      panelId: 'sv3-panel-1',
+      group: 'role',
+      angle: -210  // bottom-left
+    },
+    {
+      id: 'compliance',
+      icon: '🔒',
+      name: 'Compliance',
+      sub: '& Risk',
+      tags: null,
+      panelId: 'sv3-panel-2',
+      group: 'role',
+      angle: -330  // bottom-right (=30)
+    },
+    {
+      id: 'finserv',
+      icon: '🏦',
+      name: 'Financial',
+      sub: 'Services',
+      tags: 'SOX · SEC',
+      panelId: 'sv3-panel-3',
+      group: 'industry',
+      angle: -30   // top-right
+    },
+    {
+      id: 'healthcare',
+      icon: '🏥',
+      name: 'Healthcare',
+      sub: '',
+      tags: 'HIPAA · HL7',
+      panelId: 'sv3-panel-4',
+      group: 'industry',
+      angle: -150  // top-left
+    },
+    {
+      id: 'insurance',
+      icon: '🛡️',
+      name: 'Insurance',
+      sub: '',
+      tags: 'IFRS 17',
+      panelId: 'sv3-panel-5',
+      group: 'industry',
+      angle: 90    // bottom
+    }
+  ];
+
+  const CX = 430, CY = 252;
+  const SPOKE_R = 175;   // hub-edge to node-center distance
+  const NODE_R  = 34;    // outer radius of each persona node
+
+  /* ── Helpers ── */
+  const rad = (deg) => (deg * Math.PI) / 180;
+
+  function nodeXY(angle) {
+    return {
+      x: CX + SPOKE_R * Math.cos(rad(angle)),
+      y: CY + SPOKE_R * Math.sin(rad(angle))
+    };
+  }
+
+  function hubeEdgeXY(angle) {
+    const HUB_R = 44;
+    return {
+      x: CX + HUB_R * Math.cos(rad(angle)),
+      y: CY + HUB_R * Math.sin(rad(angle))
+    };
+  }
+
+  function nodeEdgeXY(angle) {
+    const c = nodeXY(angle);
+    return {
+      x: c.x - NODE_R * Math.cos(rad(angle)),
+      y: c.y - NODE_R * Math.sin(rad(angle))
+    };
+  }
+
+  /* SVG ns */
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  function svgEl(tag, attrs) {
+    const el = document.createElementNS(SVG_NS, tag);
+    Object.entries(attrs || {}).forEach(([k, v]) => el.setAttribute(k, v));
+    return el;
+  }
+
+  /* ── Build spokes + nodes ── */
+  const spokesLayer = root.querySelector('#sv3-spokes-layer');
+  const nodesLayer  = root.querySelector('#sv3-nodes-layer');
+  const dotsLayer   = root.querySelector('#sv3-dots-layer');
+
+  const spokeEls = [];
+  const dotAnimations = [];  // {dot, pathLen, pathEl}
+
+  NODES.forEach((node, i) => {
+    const nPos = nodeXY(node.angle);
+    const hubEdge = hubeEdgeXY(node.angle);
+    const nodeEdge = nodeEdgeXY(node.angle);
+
+    /* ── Spoke path ── */
+    const path = svgEl('path', {
+      d: `M ${hubEdge.x} ${hubEdge.y} L ${nodeEdge.x} ${nodeEdge.y}`,
+      class: 'sv3-spoke-path',
+      'data-idx': i,
+      id: `sv3-spoke-${i}`
+    });
+    spokesLayer.appendChild(path);
+    spokeEls.push(path);
+
+    /* ── Flow dot ── */
+    const dot = svgEl('circle', {
+      class: 'sv3-flow-dot',
+      r: '3.5',
+      cx: hubEdge.x,
+      cy: hubEdge.y,
+      'data-idx': i,
+      'aria-hidden': 'true'
+    });
+    dotsLayer.appendChild(dot);
+    dotAnimations.push({ dot, hubEdge, nodeEdge, node, pathLen: 0 });
+
+    /* ── Node group ── */
+    const g = svgEl('g', {
+      class: 'sv3-node-g',
+      'data-idx': i,
+      'data-panel': node.panelId,
+      'data-group': node.group,
+      role: 'button',
+      tabindex: '0',
+      'aria-label': `${node.name} ${node.sub} — click for governance proof`,
+      'aria-pressed': i === 0 ? 'true' : 'false',
+      cursor: 'pointer'
+    });
+
+    /* outer ring (for hit area + style) */
+    const outerRing = svgEl('circle', {
+      class: 'sv3-node-outer',
+      cx: nPos.x,
+      cy: nPos.y,
+      r: NODE_R,
+      'data-idx': i
+    });
+    if (i === 0) outerRing.classList.add('sv3-active-node');
+    g.appendChild(outerRing);
+
+    /* icon */
+    const iconText = svgEl('text', {
+      class: 'sv3-node-icon',
+      x: nPos.x,
+      y: node.tags ? nPos.y - 10 : nPos.y - 5
+    });
+    iconText.textContent = node.icon;
+    g.appendChild(iconText);
+
+    /* name line 1 */
+    const nameText = svgEl('text', {
+      class: 'sv3-node-label',
+      x: nPos.x,
+      y: nPos.y + 12
+    });
+    nameText.textContent = node.name;
+    g.appendChild(nameText);
+
+    /* name line 2 (sub) */
+    if (node.sub) {
+      const subText = svgEl('text', {
+        class: 'sv3-node-label',
+        x: nPos.x,
+        y: nPos.y + 22,
+        'font-size': '9',
+        'fill-opacity': '0.65'
+      });
+      subText.textContent = node.sub;
+      g.appendChild(subText);
+    }
+
+    /* reg tags (for industry nodes) */
+    if (node.tags) {
+      const tagText = svgEl('text', {
+        class: 'sv3-reg-tag',
+        x: nPos.x,
+        y: nPos.y + 22 + (node.sub ? 10 : 0)
+      });
+      tagText.textContent = node.tags;
+      g.appendChild(tagText);
+    }
+
+    nodesLayer.appendChild(g);
+  });
+
+  /* ── State ── */
+  let activeIdx = 0;
+  let activeGroup = 'role';
+  let flowTimers = {};
+
+  /* ── Show/hide panels ── */
+  function showPanel(idx) {
+    document.querySelectorAll('.sv3-proof-panel').forEach((p, pi) => {
+      if (pi === idx) {
+        p.style.display = 'block';
+        requestAnimationFrame(() => p.classList.add('sv3-visible'));
+      } else {
+        p.classList.remove('sv3-visible');
+        setTimeout(() => { if (!p.classList.contains('sv3-visible')) p.style.display = 'none'; }, 300);
+      }
+    });
+  }
+
+  /* ── Activate node ── */
+  function activateNode(idx) {
+    if (idx === activeIdx) return;
+    activeIdx = idx;
+
+    /* Update node visuals */
+    nodesLayer.querySelectorAll('.sv3-node-g').forEach((g, gi) => {
+      const outer = g.querySelector('.sv3-node-outer');
+      const pressed = gi === idx;
+      outer.classList.toggle('sv3-active-node', pressed);
+      g.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    });
+
+    /* Update spokes */
+    spokeEls.forEach((sp, si) => {
+      sp.classList.toggle('sv3-active-spoke', si === idx);
+    });
+
+    /* Animate flow dot */
+    if (!prefersReduced) {
+      animateFlowDot(idx);
+    }
+
+    /* Show proof panel */
+    showPanel(idx);
+  }
+
+  /* ── Flow dot animation (WAAPI) ── */
+  function animateFlowDot(idx) {
+    const { dot, hubEdge, nodeEdge } = dotAnimations[idx];
+
+    /* Stop any previous animations */
+    if (dot._anim) dot._anim.cancel();
+
+    dot.setAttribute('opacity', '1');
+
+    const kf = [
+      { cx: hubEdge.x, cy: hubEdge.y, opacity: 0, r: 2 },
+      { cx: (hubEdge.x + nodeEdge.x) / 2, cy: (hubEdge.y + nodeEdge.y) / 2, opacity: 0.9, r: 3.5 },
+      { cx: nodeEdge.x, cy: nodeEdge.y, opacity: 0, r: 2 }
+    ];
+
+    // Use attribute animation since SVG cx/cy don't animate via WAAPI consistently
+    // Fall back to step-based rAF animation
+    let start = null;
+    const DUR = 900;
+    let raf;
+
+    function step(ts) {
+      if (!start) start = ts;
+      const t = Math.min((ts - start) / DUR, 1);
+      const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+      const cx = hubEdge.x + (nodeEdge.x - hubEdge.x) * ease;
+      const cy = hubEdge.y + (nodeEdge.y - hubEdge.y) * ease;
+      const op = t < 0.5 ? t * 2 : (1 - t) * 2;
+      const r  = 2 + 2 * Math.sin(Math.PI * t);
+
+      dot.setAttribute('cx', cx);
+      dot.setAttribute('cy', cy);
+      dot.setAttribute('opacity', op);
+      dot.setAttribute('r', r);
+
+      if (t < 1) {
+        raf = requestAnimationFrame(step);
+      } else {
+        dot.setAttribute('opacity', 0);
+        // Repeat with a small pause
+        dot._timer = setTimeout(() => {
+          if (activeIdx === idx) animateFlowDot(idx);
+        }, 1200);
+      }
+    }
+
+    if (dot._timer) clearTimeout(dot._timer);
+    dot._anim = { cancel: () => { cancelAnimationFrame(raf); clearTimeout(dot._timer); dot.setAttribute('opacity', 0); } };
+    requestAnimationFrame(step);
+  }
+
+  /* ── Draw-on spoke animation ── */
+  function animateSpoke(idx) {
+    if (prefersReduced) return;
+    const sp = spokeEls[idx];
+    const len = sp.getTotalLength ? sp.getTotalLength() : 130;
+    sp.style.strokeDasharray = len;
+    sp.style.strokeDashoffset = len;
+    sp.style.transition = 'none';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        sp.style.transition = 'stroke-dashoffset 0.55s cubic-bezier(0.4,0,0.2,1), stroke 0.3s ease, stroke-width 0.3s ease';
+        sp.style.strokeDashoffset = '0';
+      });
+    });
+  }
+
+  /* ── Toggle (role vs industry) ── */
+  const toggleBtns = root.querySelectorAll('[data-sv3-toggle]');
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.sv3Toggle;
+      if (group === activeGroup) return;
+      activeGroup = group;
+
+      toggleBtns.forEach(b => {
+        const isActive = b.dataset.sv3Toggle === group;
+        b.classList.toggle('sv3-active', isActive);
+        b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      /* Fade-toggle nodes */
+      nodesLayer.querySelectorAll('.sv3-node-g').forEach((g, gi) => {
+        const nodeGroup = NODES[gi].group;
+        const visible = nodeGroup === group;
+        g.style.transition = 'opacity 0.3s ease';
+        g.style.opacity = visible ? '1' : '0.18';
+        g.style.pointerEvents = visible ? 'auto' : 'none';
+      });
+
+      spokeEls.forEach((sp, si) => {
+        const visible = NODES[si].group === group;
+        sp.style.transition = 'opacity 0.3s ease, stroke 0.3s ease';
+        sp.style.opacity = visible ? '1' : '0.15';
+      });
+
+      /* Activate first of this group */
+      const firstOfGroup = NODES.findIndex(n => n.group === group);
+      if (firstOfGroup !== -1) {
+        activeIdx = -1; // force re-activation
+        activateNode(firstOfGroup);
+        animateSpoke(firstOfGroup);
+      }
+    });
+  });
+
+  /* ── Node click / keydown ── */
+  function handleNodeActivate(idx) {
+    animateSpoke(idx);
+    activateNode(idx);
+  }
+
+  nodesLayer.querySelectorAll('.sv3-node-g').forEach((g, gi) => {
+    g.addEventListener('click', () => handleNodeActivate(gi));
+    g.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleNodeActivate(gi);
+      }
+    });
+  });
+
+  /* ── Initial state ── */
+  // Show Finance (idx 0) as default
+  (() => {
+    // Make sure role nodes are visible, industry nodes dimmed
+    nodesLayer.querySelectorAll('.sv3-node-g').forEach((g, gi) => {
+      const nodeGroup = NODES[gi].group;
+      g.style.opacity = nodeGroup === 'role' ? '1' : '0.18';
+      g.style.pointerEvents = nodeGroup === 'role' ? 'auto' : 'none';
+    });
+
+    spokeEls.forEach((sp, si) => {
+      sp.style.opacity = NODES[si].group === 'role' ? '1' : '0.15';
+    });
+
+    spokeEls[0].classList.add('sv3-active-spoke');
+    showPanel(0);
+
+    if (!prefersReduced) {
+      // Staggered draw-on for all role spokes
+      [0, 1, 2].forEach((i, order) => {
+        setTimeout(() => {
+          const sp = spokeEls[i];
+          const len = sp.getTotalLength ? sp.getTotalLength() : 130;
+          sp.style.strokeDasharray = len;
+          sp.style.strokeDashoffset = len;
+          sp.style.transition = 'none';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              sp.style.transition = 'stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1)';
+              sp.style.strokeDashoffset = '0';
+            });
+          });
+        }, 300 + order * 150);
+      });
+
+      // Start flow dot for active node after spokes draw
+      setTimeout(() => animateFlowDot(0), 800);
+    }
+  })();
+
+})();
+}catch(e){console.error("[sv3]",e);}})();
+
+</script>
+</body>
+</html>

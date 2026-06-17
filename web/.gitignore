@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Generated brand selection (scripts/select-brand.mjs)
 src/brand-active/
+
+# Captured demo-request leads (POST /api/contact)
+.data/

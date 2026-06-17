@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /solutions/product — Quaeris</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- REAL design system — same files the Next.js app uses. -->
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  /* native <details> stands in for Accordion.tsx (Radix) — do NOT port */
+  details.accordion-item > summary { list-style: none; }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item[open] summary .accordion-icon { transform: rotate(180deg); }
+  /* Static sections are visible without animation */
+  .reveal { opacity: 1; transform: none; }
+</style>
+
+<style id="port">
+/* ============================================================
+   PORT: prod- prefix — move to globals.css at port time.
+   /solutions/product page — product analytics role page.
+   ============================================================ */
+
+/* ============================================================
+   [1] HERO — hero grid, trust strip, agent brief card
+   ============================================================ */
+
+.prod-hero-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: var(--space-8);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 900px) { .prod-hero-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+.prod-trust-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-5) var(--space-6);
+  margin-top: var(--space-7);
+}
+@media (max-width: 640px) { .prod-trust-strip { grid-template-columns: 1fr; gap: var(--space-4); } }
+.prod-trust-item { display: flex; align-items: flex-start; gap: var(--space-3); }
+.prod-trust-item svg { width: 18px; height: 18px; color: var(--text-primary); flex-shrink: 0; margin-top: 2px; }
+.prod-trust-item strong { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.prod-trust-item span { display: block; font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+
+/* --- Product Agent Brief card (right column) --- */
+.prod-brief {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.prod-brief-head { display: flex; align-items: center; justify-content: space-between; }
+.prod-brief-dots { display: flex; gap: 6px; }
+.prod-brief-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); display: block; }
+.prod-brief-bar {
+  display: flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px; color: var(--text-primary); font-weight: 500;
+  overflow: hidden;
+}
+.prod-brief-bar svg { width: 16px; height: 16px; color: var(--brand-accent); flex-shrink: 0; }
+.prod-brief-query { white-space: pre; }
+.prod-brief-caret { display: inline-block; width: 1.5px; height: 1em; background: var(--brand-accent); margin-left: 2px; vertical-align: -2px; animation: prod-caret 1s steps(1) infinite; }
+.prod-brief-caret.hidden { display: none; }
+@keyframes prod-caret { 50% { opacity: 0; } }
+
+.prod-brief-analysis { display: flex; flex-direction: column; gap: var(--space-3); }
+.prod-brief-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.prod-brief-row {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-2);
+  font-size: 14px; color: var(--text-secondary);
+  transition: color var(--dur-fast);
+}
+.prod-brief-row:last-child { border-bottom: none; padding-bottom: 0; }
+.prod-brief-row:hover { color: var(--text-primary); }
+.prod-brief-val { font-weight: 700; font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 4px; }
+.prod-brief-val.up { color: var(--success); }
+.prod-brief-val.down { color: var(--error); }
+
+.prod-brief-sources {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
+  font-size: 12px; color: var(--text-tertiary);
+  background: var(--brand-accent-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+.prod-brief-sources svg { width: 14px; height: 14px; color: var(--brand-accent); }
+.prod-brief-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.prod-brief-stat { text-align: center; }
+.prod-brief-stat b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.prod-brief-stat span { display: block; font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+.prod-brief-replay {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  color: var(--text-tertiary); padding: 3px 8px; border-radius: var(--radius-pill);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.prod-brief-replay svg { width: 13px; height: 13px; }
+.prod-brief-replay:hover { color: var(--brand-accent); background: var(--brand-accent-soft); }
+.prod-brief-replay:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+/* Loading skeleton */
+.prod-brief-loading { display: none; flex-direction: column; gap: var(--space-4); }
+.prod-brief-analysis.is-loading .prod-brief-loading { display: flex; }
+.prod-brief-analysis.is-loading .prod-brief-title,
+.prod-brief-analysis.is-loading .prod-brief-row { display: none; }
+.prod-brief-status { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.prod-brief-spinner {
+  width: 14px; height: 14px; flex-shrink: 0; border-radius: 50%;
+  border: 2px solid var(--brand-accent-soft); border-top-color: var(--brand-accent);
+  animation: prod-spin .7s linear infinite;
+}
+@keyframes prod-spin { to { transform: rotate(360deg); } }
+.prod-brief-skel-rows { display: flex; flex-direction: column; gap: var(--space-3); }
+.prod-skel-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-subtle); }
+.prod-skel { position: relative; overflow: hidden; height: 12px; border-radius: var(--radius-pill); background: var(--border-subtle); }
+.prod-skel::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: prod-shimmer 1.1s var(--ease-out) infinite; }
+.prod-skel-label { flex: 1; max-width: 55%; }
+.prod-skel-val { width: 70px; }
+@keyframes prod-shimmer { 100% { transform: translateX(100%); } }
+
+/* JS-driven initial hidden state */
+.prod-brief.js-anim { opacity: 0; }
+.prod-brief.js-anim .prod-brief-title,
+.prod-brief.js-anim .prod-brief-row,
+.prod-brief.js-anim .prod-brief-sources,
+.prod-brief.js-anim .prod-brief-stat { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .prod-brief-caret, .prod-brief-spinner, .prod-skel::after { animation: none !important; }
+}
+
+/* ============================================================
+   [2] PROBLEM/SOLUTION — 3 toggle cards (flip between prob/sol)
+   ============================================================ */
+
+.prob-sol-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+@media (max-width: 960px) { .prob-sol-grid { grid-template-columns: 1fr; } }
+
+.prob-sol-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.prob-sol-card:hover, .prob-sol-card:focus-within {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--brand-accent);
+}
+
+.prob-sol-tabs { display: flex; border-bottom: 1px solid var(--border-subtle); }
+.prob-sol-tab {
+  flex: 1; background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  padding: var(--space-3) var(--space-4);
+  color: var(--text-tertiary);
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+  min-height: 44px;
+}
+.prob-sol-tab:hover { color: var(--text-primary); }
+.prob-sol-tab[aria-selected="true"] { color: var(--brand-accent); border-bottom-color: var(--brand-accent); background: var(--brand-accent-soft); }
+.prob-sol-tab:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: -2px; }
+
+.prob-sol-panel { padding: var(--space-5); display: none; }
+.prob-sol-panel.active { display: flex; flex-direction: column; gap: var(--space-4); }
+.prob-sol-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.prob-sol-icon svg { width: 20px; height: 20px; color: var(--brand-accent); }
+.prob-sol-icon.problem-icon { background: color-mix(in srgb, var(--error) 10%, transparent); }
+.prob-sol-icon.problem-icon svg { color: var(--error); }
+.prob-sol-panel h3 { color: var(--text-primary); font-size: 16px; font-weight: 600; line-height: 1.35; }
+.prob-sol-panel p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+
+/* ============================================================
+   [3] HOW IT WORKS — 4-step numbered flow
+   ============================================================ */
+
+.prod-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+  position: relative;
+}
+@media (max-width: 1080px) { .prod-steps-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .prod-steps-grid { grid-template-columns: 1fr; } }
+
+/* Connector line between steps on desktop */
+.prod-steps-grid::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: calc(12.5% + 20px);
+  right: calc(12.5% + 20px);
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand-accent), var(--brand-accent-deep));
+  opacity: 0.25;
+  pointer-events: none;
+}
+@media (max-width: 1080px) { .prod-steps-grid::before { display: none; } }
+
+.prod-step {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.prod-step:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); transform: translateY(-2px); }
+.prod-step-num {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--brand-accent);
+  color: var(--text-on-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700;
+  flex-shrink: 0;
+}
+.prod-step h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.prod-step p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.prod-step-placeholder { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-top: auto; padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); }
+
+/* ============================================================
+   [4] USE CASES — 4-card filter-tab segmented layout
+   ============================================================ */
+
+.prod-uc-filters {
+  display: flex; flex-wrap: wrap; gap: var(--space-3);
+  margin-top: var(--space-6); margin-bottom: var(--space-6);
+  justify-content: center;
+}
+.prod-uc-filter {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill); padding: var(--space-2) var(--space-5);
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  color: var(--text-secondary); cursor: pointer; min-height: 44px;
+  transition: color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast);
+}
+.prod-uc-filter:hover { color: var(--text-primary); border-color: var(--brand-accent); }
+.prod-uc-filter[aria-pressed="true"] { background: var(--brand-accent); color: var(--text-on-dark); border-color: var(--brand-accent); }
+.prod-uc-filter:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+.prod-uc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+}
+@media (max-width: 700px) { .prod-uc-grid { grid-template-columns: 1fr; } }
+
+.prod-uc-grid > * { height: 100%; }
+.prod-uc-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: var(--space-4); height: 100%;
+  transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.prod-uc-card .prod-uc-answer { margin-top: auto; }
+.prod-uc-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); transform: translateY(-2px); }
+.prod-uc-card[hidden] { display: none; }
+
+.prod-uc-header { display: flex; align-items: center; gap: var(--space-3); }
+.prod-uc-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.prod-uc-icon svg { width: 20px; height: 20px; color: var(--brand-accent); }
+.prod-uc-subtitle { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--brand-accent); }
+.prod-uc-metric { font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 0; line-height: 1.4; }
+.prod-uc-questions { display: flex; flex-direction: column; gap: var(--space-2); }
+.prod-uc-q { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.prod-uc-q svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+.prod-uc-answer {
+  background: var(--brand-accent-soft); border-radius: var(--radius-md);
+  padding: var(--space-3); font-size: 13px; color: var(--brand-accent-deep); line-height: 1.5;
+  display: flex; align-items: flex-start; gap: var(--space-2);
+}
+.prod-uc-answer svg { width: 14px; height: 14px; color: var(--brand-accent); flex-shrink: 0; margin-top: 2px; }
+
+/* ============================================================
+   [5] CASE STUDIES — proof section with staggered entrance
+   ============================================================ */
+
+.prod-case-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+@media (max-width: 800px) { .prod-case-grid { grid-template-columns: 1fr; } }
+
+.prod-case-grid > * { height: 100%; }
+.prod-case-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: var(--space-5); height: 100%;
+}
+.prod-case-card .prod-case-quote { margin-top: auto; }
+.prod-case-tag { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--brand-accent); background: var(--brand-accent-soft); border-radius: var(--radius-pill); padding: 4px 12px; align-self: flex-start; }
+.prod-case-h { font-size: 17px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+.prod-case-body { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+.prod-case-outcomes { display: flex; flex-direction: column; gap: var(--space-2); }
+.prod-case-outcome { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 14px; color: var(--text-primary); font-weight: 500; }
+.prod-case-outcome svg { width: 16px; height: 16px; color: var(--success); flex-shrink: 0; margin-top: 2px; }
+.prod-case-quote {
+  border-left: 3px solid var(--brand-accent);
+  padding-left: var(--space-4);
+  font-size: 14px; color: var(--text-secondary); line-height: 1.65;
+  font-style: italic;
+}
+.prod-case-attr { font-size: 12px; color: var(--text-secondary); margin-top: var(--space-2); font-style: normal; font-weight: 600; }
+
+/* ============================================================
+   [6] GOVERNANCE SPOTLIGHT — dark section value props + metric tiles
+   ============================================================ */
+
+.prod-gov-section { background: var(--bg-ink); }
+.prod-gov-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-10);
+  align-items: start;
+}
+@media (max-width: 860px) { .prod-gov-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+.prod-gov-props { display: flex; flex-direction: column; gap: var(--space-6); }
+.prod-gov-prop { display: flex; align-items: flex-start; gap: var(--space-4); }
+.prod-gov-prop-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.10);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--dur-base) var(--ease-out);
+}
+.prod-gov-prop-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+.prod-gov-prop:hover .prod-gov-prop-icon { background: rgba(255,255,255,0.18); }
+.prod-gov-prop-num { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brand-accent); }
+.prod-gov-prop h3 { font-size: 17px; font-weight: 600; color: var(--text-on-dark); margin-top: var(--space-1); margin-bottom: var(--space-2); }
+.prod-gov-prop p { font-size: 14px; color: var(--text-on-dark-dim); line-height: 1.65; }
+
+/* Metric tiles grid (right side) */
+.prod-gov-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+.prod-gov-tile {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex; flex-direction: column; gap: var(--space-2);
+  transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.prod-gov-tile:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+.prod-gov-tile-num {
+  font-size: clamp(28px, 3vw, 36px); font-weight: 700;
+  color: var(--text-on-dark); line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.prod-gov-tile-label { font-size: 13px; color: var(--text-on-dark-dim); line-height: 1.4; }
+.prod-gov-tile-chip {
+  margin-top: auto; font-size: 11px; font-weight: 600;
+  color: var(--success);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.prod-gov-tile-chip svg { width: 12px; height: 12px; }
+
+/* ============================================================
+   [7] COMPARISON TABLE — vs legacy BI / ad-hoc SQL
+   ============================================================ */
+
+.prod-compare-wrap { overflow-x: auto; margin-top: var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); }
+.prod-compare-table { width: 100%; border-collapse: collapse; min-width: 680px; }
+.prod-compare-table th, .prod-compare-table td { padding: var(--space-4) var(--space-5); text-align: left; border-bottom: 1px solid var(--border-subtle); font-size: 14px; }
+.prod-compare-table th { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; background: var(--bg-canvas); color: var(--text-tertiary); }
+.prod-compare-table th:nth-child(4) { color: var(--text-on-dark); background: var(--brand-accent); }
+.prod-compare-table td:first-child { font-weight: 600; color: var(--text-primary); }
+.prod-compare-table td:nth-child(2), .prod-compare-table td:nth-child(3) { color: var(--text-secondary); }
+.prod-compare-table td:nth-child(4) { background: var(--brand-accent-soft); color: var(--brand-accent-deep); font-weight: 600; }
+.prod-compare-table tr:last-child td { border-bottom: none; }
+.prod-compare-table tr:hover td { background: var(--bg-canvas); }
+.prod-compare-table tr:hover td:nth-child(4) { background: color-mix(in srgb, var(--brand-accent) 12%, transparent); }
+
+/* ============================================================
+   [8] WAREHOUSE COMPATIBILITY — icon grid with animated connectors
+   ============================================================ */
+
+.prod-wh-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-6);
+}
+@media (max-width: 900px) { .prod-wh-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 460px) { .prod-wh-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.prod-wh-tile {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-4);
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.prod-wh-tile:hover { box-shadow: var(--shadow-card-hover); border-color: var(--brand-accent); transform: translateY(-2px); }
+.prod-wh-tile-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--brand-accent-soft); display: flex; align-items: center; justify-content: center; }
+.prod-wh-tile-icon svg { width: 22px; height: 22px; color: var(--brand-accent); }
+.prod-wh-tile-name { font-size: 12px; font-weight: 600; color: var(--text-primary); text-align: center; line-height: 1.3; }
+
+.prod-wh-note { text-align: center; font-size: 15px; color: var(--text-secondary); line-height: 1.65; max-width: 72ch; margin: 0 auto; }
+
+/* Accent-line two-tone headline (mirrors finance-v3 pattern) */
+.display-lg .accent-line { color: var(--brand-accent); }
+
+/* ============================================================
+   [9] FAQ — centered single column accordion
+   ============================================================ */
+.prod-faq { max-width: 760px; margin: 0 auto; }
+
+/* ============================================================
+   [10] CTA BAND + NEWSLETTER
+   ============================================================ */
+
+.prod-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+}
+.prod-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); }
+.prod-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); }
+.prod-cta-card .btn-on-light {
+  background: var(--bg-surface); color: var(--brand-accent-deep);
+  padding: 12px 28px; border-radius: var(--radius-cta); font-weight: 600; min-height: 44px;
+}
+
+.prod-newsletter {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-7);
+  box-shadow: var(--shadow-card);
+  max-width: 600px; margin: 0 auto;
+  text-align: center;
+}
+.prod-newsletter h3 { color: var(--text-primary); margin-bottom: var(--space-3); }
+.prod-newsletter p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: var(--space-5); }
+.prod-newsletter-form { display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; }
+.prod-newsletter-form input[type="email"] {
+  flex: 1; min-width: 220px;
+  background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill); padding: 10px 18px;
+  font-family: var(--font-body); font-size: 15px; color: var(--text-primary);
+  transition: border-color var(--dur-fast);
+}
+.prod-newsletter-form input[type="email"]:focus { outline: none; border-color: var(--brand-accent); }
+.prod-newsletter-privacy { font-size: 12px; color: var(--text-secondary); margin-top: var(--space-3); }
+
+/* Staggered enter for gov tiles + step cards — initial hide scoped to .js so no-JS users see content */
+.js .prod-gov-tile { opacity: 0; transform: translateY(12px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out), background var(--dur-base) var(--ease-out); }
+.prod-gov-tile.entered { opacity: 1; transform: none; }
+.js .prod-step { opacity: 0; transform: translateY(12px); transition: opacity var(--dur-slow) var(--ease-out) var(--d, 0ms), transform var(--dur-slow) var(--ease-out) var(--d, 0ms), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out); }
+.prod-step.entered { opacity: 1; transform: none; }
+.prod-uc-card { transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .prod-gov-tile, .prod-step { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+</style>
+</head>
+<body>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] HERO (#hero)
+     Interactive: typewriter query animation + skeleton loading
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container section-pad">
+    <div class="prod-hero-grid">
+
+      <!-- LEFT — text column + 4 trust pointers -->
+      <div class="hero-inner reveal">
+        <span class="eyebrow">Product Analytics</span>
+        <h1 id="hero-heading" class="hero-h1">Understand your users. <span class="accent-line">Without writing SQL.</span></h1>
+        <p class="subcopy body-lg">Quaeris gives product teams instant access to engagement, retention, and cohort metrics—grounded in your governed semantic layer. Ask anything. Get sources cited.</p>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">Book a Demo</a>
+          <a href="/contact" class="btn btn-secondary">See analytics in action</a>
+        </div>
+        <ul class="prod-trust-strip">
+          <li class="prod-trust-item">
+            <!-- lucide: zap -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <p><strong>14-min median insight</strong> <span>From question to certified answer, not days</span></p>
+          </li>
+          <li class="prod-trust-item">
+            <!-- lucide: check-circle -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <p><strong>Zero hallucinations</strong> <span>Agents query your semantic layer, not guesswork</span></p>
+          </li>
+          <li class="prod-trust-item">
+            <!-- lucide: shield -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <p><strong>Role-based access</strong> <span>PM in NA sees NA data only, enforced at query time</span></p>
+          </li>
+          <li class="prod-trust-item">
+            <!-- lucide: git-branch -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+            <p><strong>Full audit lineage</strong> <span>Question to source in one click, every time</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT — Product Agent Brief card -->
+      <div class="reveal">
+        <div class="prod-brief" data-placeholder>
+          <!-- decorative summary for screen readers (no interactive children, safe to label) -->
+          <div aria-label="Product Analytics Brief: the question 'What is day-30 retention for Q1 2026 cohort?' answered with a cohort retention breakdown, verified sources, and traceability stats. Illustrative data." aria-hidden="true" style="display:none"></div>
+          <div class="prod-brief-head">
+            <span class="eyebrow" style="color: var(--text-tertiary);">Product Analytics Brief</span>
+            <span style="display: inline-flex; align-items: center; gap: var(--space-3);">
+              <button type="button" class="prod-brief-replay" aria-label="Re-run the query">
+                <!-- lucide: refresh-cw -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+                Re-run
+              </button>
+              <span class="prod-brief-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+          <div class="prod-brief-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="prod-brief-query" data-text='"What is day-30 retention for Q1 2026 cohort?"'>"What is day-30 retention for Q1 2026 cohort?"</span><span class="prod-brief-caret hidden" aria-hidden="true"></span>
+          </div>
+          <div class="prod-brief-analysis">
+            <div class="prod-brief-loading" aria-hidden="true">
+              <div class="prod-brief-status">
+                <span class="prod-brief-spinner"></span>
+                <span class="prod-brief-status-text">Interpreting question…</span>
+              </div>
+              <div class="prod-brief-skel-rows">
+                <div class="prod-skel-row"><span class="prod-skel prod-skel-label"></span><span class="prod-skel prod-skel-val"></span></div>
+                <div class="prod-skel-row"><span class="prod-skel prod-skel-label"></span><span class="prod-skel prod-skel-val"></span></div>
+                <div class="prod-skel-row"><span class="prod-skel prod-skel-label"></span><span class="prod-skel prod-skel-val"></span></div>
+              </div>
+            </div>
+            <span class="prod-brief-title">Day-30 Retention · Q1 2026 Cohort Breakdown</span>
+            <div class="prod-brief-row"><span>Mobile — iOS users</span><span class="prod-brief-val up" data-prefix="" data-num="42" data-suffix="% retained">42% retained</span></div>
+            <div class="prod-brief-row"><span>Web users</span><span class="prod-brief-val up" data-prefix="" data-num="38" data-suffix="% retained">38% retained</span></div>
+            <div class="prod-brief-row"><span>Mobile — Android</span><span class="prod-brief-val down" data-prefix="" data-num="29" data-suffix="% retained">29% retained</span></div>
+            <div class="prod-brief-row"><span>API / Embedded</span><span class="prod-brief-val up" data-prefix="" data-num="61" data-suffix="% retained">61% retained</span></div>
+          </div>
+          <div class="prod-brief-sources">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><strong style="color: var(--text-secondary);">Sources verified:</strong> User Events · Subscription Facts · Cohort Definitions</span>
+          </div>
+          <div class="prod-brief-stats">
+            <div class="prod-brief-stat"><b data-num="100" data-suffix="%">100%</b><span>Traceable</span></div>
+            <div class="prod-brief-stat"><b>14s</b><span>To answer</span></div>
+            <div class="prod-brief-stat"><b>Zero</b><span>SQL required</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Core Capabilities (rolled out 2026-06-16) -->
+<section class="section-pad" style="background: var(--bg-surface);" aria-labelledby="solutions-product-cap-h">
+    <div class="container">
+      <div class="section-header center reveal"><span class="eyebrow">Core Capabilities</span>
+        <h2 id="solutions-product-cap-h" class="display-lg">Analytics Built for<br><span class="accent-line">Product Teams Who Can't Wait on Data.</span></h2>
+        <p class="subcopy body-lg">Engagement, retention, funnel, and feature-impact answers — governed, auditable, and ready in seconds without writing a single line of SQL.</p></div>
+      <div class="caps reveal"><div class="cap-tabs" role="tablist" aria-label="Core capabilities"><button class="cap-tab" role="tab" id="solutions-product-tab-1" aria-controls="solutions-product-panel-1" aria-selected="true" tabindex="0">Engagement<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="solutions-product-tab-2" aria-controls="solutions-product-panel-2" aria-selected="false" tabindex="-1">Retention &amp; Cohorts<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="solutions-product-tab-3" aria-controls="solutions-product-panel-3" aria-selected="false" tabindex="-1">Funnel &amp; Feature Impact<span class="cap-tab-bar" aria-hidden="true"></span></button><button class="cap-tab" role="tab" id="solutions-product-tab-4" aria-controls="solutions-product-panel-4" aria-selected="false" tabindex="-1">Governed Metrics<span class="cap-tab-bar" aria-hidden="true"></span></button></div><div class="cap-panel" role="tabpanel" id="solutions-product-panel-1" aria-labelledby="solutions-product-tab-1">
+      <div><h3 class="display-md">Know What Drives Users Back — Every Single Day.</h3><p class="body-md cap-panel-lead">Quaeris surfaces engagement drivers across every feature, segment, and time window in plain language. PMs get ranked answers, not raw tables, with every metric certified against a single governed definition.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Compare DAU/WAU/MAU across cohorts and releases without touching a dashboard config</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Drill from aggregate engagement to the exact feature cluster pulling users back</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Every figure stamped with its certified metric definition — no internal debates</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Top Engagement Drivers — Last 30 Days</span><span class="cap-viz-metric"><b>+18.4% DAU</b></span></div><div class="cap-bars"><div class="cap-bar-item" data-rise style="--d:80ms"><div class="cap-bar-top"><span>Collaborative Workspaces</span><b>+18.4%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:100%; --d:120ms"></div></div></div><div class="cap-bar-item" data-rise style="--d:200ms"><div class="cap-bar-top"><span>In-app Notifications</span><b>+12.1%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:66%; --d:240ms"></div></div></div><div class="cap-bar-item" data-rise style="--d:320ms"><div class="cap-bar-top"><span>Saved Report Shortcuts</span><b>+8.7%</b></div><div class="cap-bar-track"><div class="cap-bar-fill" style="--w:47%; --d:360ms"></div></div></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:520ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Certified metric: DAU · source: event_warehouse.prod</div></div></div><div class="cap-panel" role="tabpanel" id="solutions-product-panel-2" aria-labelledby="solutions-product-tab-2" hidden>
+      <div><h3 class="display-md">Spot Churn Before It Becomes a Number on a Slide.</h3><p class="body-md cap-panel-lead">Cohort retention curves update automatically as new events land in your warehouse. Quaeris alerts your team the moment a week-over-week retention delta crosses a governance-defined threshold — no analyst dependency.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Week-1 and Week-4 retention by signup cohort, release version, or plan tier — just ask</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Automated alerts fire when retention drops beyond a certified tolerance band</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Audit trail shows exactly which events and joins produced each cohort curve</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Week-4 Retention — Rolling 12-Week Cohorts</span><span class="cap-viz-metric"><b>74.2% W4</b></span></div><div class="cap-chart-wrap"><svg class="cap-chart" viewBox="0 0 460 200" aria-hidden="true">
+  <path class="cap-chart-area" d="M 22 146 C 30 144 54 135 70 134 C 86 133 102 143.7 118 140 C 134 136.3 150 115.3 166 112 C 182 108.7 196.3 124.3 214 120 C 231.7 115.7 262.3 91.7 272 86 L 272 180 L 22 180 Z" />
+  <path class="cap-chart-line" d="M 22 146 C 30 144 54 135 70 134 C 86 133 102 143.7 118 140 C 134 136.3 150 115.3 166 112 C 182 108.7 196.3 124.3 214 120 C 231.7 115.7 262.3 91.7 272 86" />
+  <path class="cap-chart-fc" d="M 272 86 C 281.7 83 310.7 73.7 330 68 C 349.3 62.3 370 56.7 388 52 C 406 47.3 429.7 42 438 40" />
+  <circle class="cap-chart-dot" cx="166" cy="112" r="4" /><circle class="cap-chart-dot" cx="438" cy="40" r="4.5" />
+  <circle class="cap-chart-ping" cx="272" cy="86" r="6" /><circle class="cap-chart-dot" cx="272" cy="86" r="4.5" />
+</svg></div>
+      <div class="cap-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Alert: W4 retention dropped 3.1 pp vs prior cohort — governance threshold breached</div></div></div><div class="cap-panel" role="tabpanel" id="solutions-product-panel-3" aria-labelledby="solutions-product-tab-3" hidden>
+      <div><h3 class="display-md">Connect Feature Launches to Pipeline — Not Just Clicks.</h3><p class="body-md cap-panel-lead">Quaeris unifies product events, CRM signals, and warehouse data into a single governed funnel so PMs can prove which features move the needle on activation, conversion, and expansion revenue.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Build funnel views across activation, trial conversion, and upsell without custom SQL joins</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Attribute feature adoption directly to downstream conversion lift using warehouse-native lineage</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Share fully governed funnel snapshots with GTM and finance — one number everyone trusts</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Governed Funnel — Sources Unified</span><span class="cap-viz-metric"><b>4 Sources</b></span></div><div class="cap-union">
+    <div class="cap-union-sources"><div class="cap-src from-l" style="--d:80ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>Product Events</span><small>Snowflake · raw.events</small></div><div class="cap-src from-t" style="--d:200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg><span>CRM Signals</span><small>Salesforce · opp_stage</small></div><div class="cap-src from-r" style="--d:320ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg><span>Revenue Data</span><small>Stripe · subscription_mrr</small></div></div><div class="cap-union-merge"><svg viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+  <path class="cap-union-base" d="M50 4 C50 26 150 16 150 38" /><path class="cap-union-base" d="M150 4 L150 38" /><path class="cap-union-base" d="M250 4 C250 26 150 16 150 38" />
+  <path class="cap-flow" d="M50 4 C50 26 150 16 150 38" /><path class="cap-flow" d="M150 4 L150 38" /><path class="cap-flow" d="M250 4 C250 26 150 16 150 38" />
+</svg></div>
+    <div class="cap-core">Governed semantic layer<small>Certified Funnel Core — governed, deduplicated, audit-ready</small></div></div></div></div><div class="cap-panel" role="tabpanel" id="solutions-product-panel-4" aria-labelledby="solutions-product-tab-4" hidden>
+      <div><h3 class="display-md">One Definition. Every Answer. Zero Ambiguity.</h3><p class="body-md cap-panel-lead">Every number product teams see in Quaeris is traceable back to its certified source — from the natural-language question, through the approved metric definition, down to the exact warehouse table and join logic.</p>
+        <ul class="cap-bullets"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Metric definitions locked in a governed catalog — no PM, analyst, or exec can override silently</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Full lineage on every answer: question → metric → transformation → source table</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Compliance-ready audit log ships with every export, screenshot, or scheduled report</span></li></ul></div><div class="cap-visual" aria-hidden="true"><div class="cap-viz-head"><span class="cap-viz-title">Answer Lineage — Traced in Real Time</span><span class="cap-viz-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>verified</span></div>
+      <div class="cap-lineage"><span class="cap-progress"></span><span class="cap-trace"></span><div class="cap-node" data-rise style="--d:80ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Question</span><span class="cap-node-v">"What was 30-day retention for the Jan cohort?"</span></div><div class="cap-node" data-rise style="--d:220ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Certified Metric</span><span class="cap-node-v">retention_30d · approved 2026-03-11 · owner: Data Governance</span></div><div class="cap-node" data-rise style="--d:360ms"><span class="cap-node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="cap-node-k">Source</span><span class="cap-node-v">analytics.cohort_events · Snowflake prod · row-level audit on</span></div></div>
+      <div class="cap-viz-foot" data-rise style="--d:1200ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Lineage traced in 0.6 s — audit log written automatically</div></div></div></div>
+    </div></section>
+
+
+<!-- ============================================================
+     [2] PROBLEM / SOLUTION (#challenge)
+     Interactive: 3 flip-tab cards (Problem ↔ Solution toggle per card)
+     ============================================================ -->
+<section id="challenge" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="challenge-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">The Product Analytics Challenge</span>
+      <h2 id="challenge-heading" class="display-lg">You have the data.<br><span class="accent-line">You're still waiting for answers.</span></h2>
+      <p class="subcopy body-lg">Product teams lose momentum when analytics latency outpaces decision velocity. Here's what's slowing you down—and how Quaeris fixes it.</p>
+    </div>
+
+    <div class="prob-sol-grid">
+
+      <!-- Card 01 -->
+      <div class="prob-sol-card" data-card="0">
+        <div class="prob-sol-tabs" role="tablist" aria-label="Problem vs Solution 1">
+          <button class="prob-sol-tab" role="tab" aria-selected="true" aria-controls="ps-panel-0-prob" id="ps-tab-0-prob" tabindex="0">Problem</button>
+          <button class="prob-sol-tab" role="tab" aria-selected="false" aria-controls="ps-panel-0-sol" id="ps-tab-0-sol" tabindex="-1">Solution</button>
+        </div>
+        <div class="prob-sol-panel active" id="ps-panel-0-prob" role="tabpanel" aria-labelledby="ps-tab-0-prob">
+          <span class="prob-sol-icon problem-icon" aria-hidden="true">
+            <!-- lucide: clock -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <h3>Time-to-insight kills momentum</h3>
+          <p>You ask a retention question on Monday. Your data team builds it Friday. By then, the window has passed and you're on to the next issue. Product velocity gets crushed by analytics latency.</p>
+        </div>
+        <div class="prob-sol-panel" id="ps-panel-0-sol" role="tabpanel" aria-labelledby="ps-tab-0-sol">
+          <span class="prob-sol-icon" aria-hidden="true">
+            <!-- lucide: zap -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </span>
+          <h3>14-minute time-to-insight, not multi-day builds</h3>
+          <p>Type your question once. Quaeris agents interpret it, query your semantic layer, and return a certified answer with sources cited—with a median time to first insight of 14 minutes, not days.</p>
+        </div>
+      </div>
+
+      <!-- Card 02 -->
+      <div class="prob-sol-card" data-card="1">
+        <div class="prob-sol-tabs" role="tablist" aria-label="Problem vs Solution 2">
+          <button class="prob-sol-tab" role="tab" aria-selected="true" aria-controls="ps-panel-1-prob" id="ps-tab-1-prob" tabindex="0">Problem</button>
+          <button class="prob-sol-tab" role="tab" aria-selected="false" aria-controls="ps-panel-1-sol" id="ps-tab-1-sol" tabindex="-1">Solution</button>
+        </div>
+        <div class="prob-sol-panel active" id="ps-panel-1-prob" role="tabpanel" aria-labelledby="ps-tab-1-prob">
+          <span class="prob-sol-icon problem-icon" aria-hidden="true">
+            <!-- lucide: alert-triangle -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          </span>
+          <h3>Conflicting definitions cause wrong calls</h3>
+          <p>One team's "active user" is another's "paid user." Your CEO's board presentation uses different retention math than your product spec. These inconsistencies compound into misaligned decisions.</p>
+        </div>
+        <div class="prob-sol-panel" id="ps-panel-1-sol" role="tabpanel" aria-labelledby="ps-tab-1-sol">
+          <span class="prob-sol-icon" aria-hidden="true">
+            <!-- lucide: check-circle -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <h3>One definition per metric, always</h3>
+          <p>Your data team owns the semantic layer. Every agent answer is locked to certified metric definitions—revenue, activation, churn, cohort size. Same definition, every time, every team.</p>
+        </div>
+      </div>
+
+      <!-- Card 03 -->
+      <div class="prob-sol-card" data-card="2">
+        <div class="prob-sol-tabs" role="tablist" aria-label="Problem vs Solution 3">
+          <button class="prob-sol-tab" role="tab" aria-selected="true" aria-controls="ps-panel-2-prob" id="ps-tab-2-prob" tabindex="0">Problem</button>
+          <button class="prob-sol-tab" role="tab" aria-selected="false" aria-controls="ps-panel-2-sol" id="ps-tab-2-sol" tabindex="-1">Solution</button>
+        </div>
+        <div class="prob-sol-panel active" id="ps-panel-2-prob" role="tabpanel" aria-labelledby="ps-tab-2-prob">
+          <span class="prob-sol-icon problem-icon" aria-hidden="true">
+            <!-- lucide: lock -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          <h3>Governance and speed feel like a tradeoff</h3>
+          <p>Self-serve BI gives you speed but breaks compliance. Asking analysts gives you audit trails but kills productivity. You're stuck choosing between velocity and control.</p>
+        </div>
+        <div class="prob-sol-panel" id="ps-panel-2-sol" role="tabpanel" aria-labelledby="ps-tab-2-sol">
+          <span class="prob-sol-icon" aria-hidden="true">
+            <!-- lucide: shield -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </span>
+          <h3>Governed speed. Role-based access enforced.</h3>
+          <p>Quaeris is governance-first by design. Role-based access is enforced at the agent level, not at the dashboard filter. Every query and answer is audited. Speed and compliance, not either-or.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [3] HOW PRODUCT TEAMS USE QUAERIS (#how-it-works)
+     Interactive: staggered entrance animation on scroll (4 numbered steps)
+     ============================================================ -->
+<section id="how-it-works" class="section-pad" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Four-Step Flow</span>
+      <h2 id="how-heading" class="display-lg">How Product Teams Get<br><span class="accent-line">Governed Answers</span></h2>
+      <p class="subcopy body-lg">From warehouse connection to certified insight in minutes. No SQL tickets. No analyst bottleneck.</p>
+    </div>
+
+    <div class="prod-steps-grid">
+
+      <div class="prod-step" style="--d:0ms">
+        <div class="prod-step-num" aria-hidden="true">1</div>
+        <span class="icon-box" aria-hidden="true">
+          <!-- lucide: database -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+        </span>
+        <h3>Connect your warehouse</h3>
+        <p>Link Quaeris to Snowflake, BigQuery, Databricks, or Redshift. Your event data, user tables, and subscription facts become queryable through one governed semantic layer.</p>
+        <span class="prod-step-placeholder" data-placeholder>Warehouse connection diagram</span>
+      </div>
+
+      <div class="prod-step" style="--d:100ms">
+        <div class="prod-step-num" aria-hidden="true">2</div>
+        <span class="icon-box" aria-hidden="true">
+          <!-- lucide: layers -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        </span>
+        <h3>Define product metrics once</h3>
+        <p>Your data team defines activated-users, retention-rate, churn-definition, cohort-window. These live in the semantic layer. Every agent answer locks to these definitions—no drift, no ambiguity.</p>
+        <span class="prod-step-placeholder" data-placeholder>Semantic layer edit UI</span>
+      </div>
+
+      <div class="prod-step" style="--d:200ms">
+        <div class="prod-step-num" aria-hidden="true">3</div>
+        <span class="icon-box" aria-hidden="true">
+          <!-- lucide: message-square -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        <h3>Ask in plain language</h3>
+        <p>Type: "What is retention for users acquired in Q1 2026?" or "Cohort sizes by acquisition channel?" Quaeris interprets the question and queries the semantic layer—no SQL needed.</p>
+        <span class="prod-step-placeholder" data-placeholder>Agent chat interface</span>
+      </div>
+
+      <div class="prod-step" style="--d:300ms">
+        <div class="prod-step-num" aria-hidden="true">4</div>
+        <span class="icon-box" aria-hidden="true">
+          <!-- lucide: check-circle-2 -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <h3>Get governed answers, every time</h3>
+        <p>The answer shows engagement, retention, or cohort breakdown—plus the metric definitions and data lineage behind it. Role-based access means your product managers only see data they're allowed to see.</p>
+        <span class="prod-step-placeholder" data-placeholder>Answer card with sources cited</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] PRODUCT QUESTIONS QUAERIS ANSWERS (#use-cases)
+     Interactive: filter-tab buttons show/hide use-case cards
+     ============================================================ -->
+<section id="use-cases" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="uc-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Common Questions from Product Teams</span>
+      <h2 id="uc-heading" class="display-lg">Product Questions<br><span class="accent-line">Quaeris Answers</span></h2>
+      <p class="subcopy body-lg">From activation rates to LTV correlations—ask in plain English, get governed answers in seconds.</p>
+    </div>
+
+    <div class="prod-uc-filters" role="group" aria-label="Filter by question type">
+      <button class="prod-uc-filter" type="button" aria-pressed="true" data-filter="all">All Questions</button>
+      <button class="prod-uc-filter" type="button" aria-pressed="false" data-filter="engagement">Engagement</button>
+      <button class="prod-uc-filter" type="button" aria-pressed="false" data-filter="retention">Retention</button>
+      <button class="prod-uc-filter" type="button" aria-pressed="false" data-filter="cohort">Cohorts</button>
+      <button class="prod-uc-filter" type="button" aria-pressed="false" data-filter="revenue">Revenue</button>
+    </div>
+
+    <div class="prod-uc-grid" aria-live="polite">
+
+      <!-- Card 01 — Engagement & Activation -->
+      <article class="prod-uc-card" data-category="engagement">
+        <div class="prod-uc-header">
+          <span class="prod-uc-icon" aria-hidden="true">
+            <!-- lucide: trending-up -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </span>
+          <div>
+            <span class="prod-uc-subtitle">Activation &amp; Engagement</span>
+            <p class="prod-uc-metric">What is day-1, day-7, day-30 activation by cohort?</p>
+          </div>
+        </div>
+        <ul class="prod-uc-questions" aria-label="Example questions">
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "How many users activated within 24 hours of signup?"
+          </li>
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "Which onboarding path drives fastest feature adoption?"
+          </li>
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "What's the engagement curve for mobile vs. web users?"
+          </li>
+        </ul>
+        <div class="prod-uc-answer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Quaeris returns activation rates by cohort, with the metric definitions and the warehouse tables queried—all audited.
+        </div>
+      </article>
+
+      <!-- Card 02 — Retention & Churn -->
+      <article class="prod-uc-card" data-category="retention">
+        <div class="prod-uc-header">
+          <span class="prod-uc-icon" aria-hidden="true">
+            <!-- lucide: user-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+          </span>
+          <div>
+            <span class="prod-uc-subtitle">Retention &amp; Churn Analysis</span>
+            <p class="prod-uc-metric">What is day-30 retention for high-value cohorts?</p>
+          </div>
+        </div>
+        <ul class="prod-uc-questions" aria-label="Example questions">
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "What's our retention curve for power users in Q2 2026?"
+          </li>
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "Which features correlate with staying vs. churning?"
+          </li>
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "How does retention differ by subscription tier?"
+          </li>
+        </ul>
+        <div class="prod-uc-answer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Quaeris surfaces retention by segment with lineage back to the churn definition your team certified.
+        </div>
+      </article>
+
+      <!-- Card 03 — Cohort & Funnels -->
+      <article class="prod-uc-card" data-category="cohort">
+        <div class="prod-uc-header">
+          <span class="prod-uc-icon" aria-hidden="true">
+            <!-- lucide: filter -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          </span>
+          <div>
+            <span class="prod-uc-subtitle">Cohort &amp; Conversion Funnels</span>
+            <p class="prod-uc-metric">How many users progress through signup → activation → paid?</p>
+          </div>
+        </div>
+        <ul class="prod-uc-questions" aria-label="Example questions">
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "What's the conversion rate from trial signup to first paid month?"
+          </li>
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "How do acquisition cohorts progress through our product?"
+          </li>
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "What's the step-off point in our onboarding funnel?"
+          </li>
+        </ul>
+        <div class="prod-uc-answer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Quaeris builds funnels from your event schema and returns drop-off rates per step—all certified.
+        </div>
+      </article>
+
+      <!-- Card 04 — Revenue Impact -->
+      <article class="prod-uc-card" data-category="revenue">
+        <div class="prod-uc-header">
+          <span class="prod-uc-icon" aria-hidden="true">
+            <!-- lucide: dollar-sign -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </span>
+          <div>
+            <span class="prod-uc-subtitle">Product-Driven Revenue Metrics</span>
+            <p class="prod-uc-metric">Does feature adoption correlate with lifetime value?</p>
+          </div>
+        </div>
+        <ul class="prod-uc-questions" aria-label="Example questions">
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "What's the LTV for users who adopted feature X in their first week?"
+          </li>
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "How does churn rate vary by usage intensity?"
+          </li>
+          <li class="prod-uc-q">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            "Which segments are expanding vs. contracting?"
+          </li>
+        </ul>
+        <div class="prod-uc-answer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          Quaeris correlates usage with ARR, churn, and expansion revenue—all audited, all linked to certified definitions.
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] PROOF: REAL PRODUCT TEAM OUTCOMES (#case-studies)
+     Interactive: hover-reveal quote on case study cards
+     ============================================================ -->
+<section id="case-studies" class="section-pad" aria-labelledby="cs-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Real Deployments</span>
+      <h2 id="cs-heading" class="display-lg">Product Teams<br><span class="accent-line">Moving Faster</span></h2>
+      <p class="subcopy body-lg">Two deployments that show how governed analytics changes the product org's relationship with data.</p>
+    </div>
+
+    <div class="prod-case-grid">
+
+      <!-- Case Study 01 — B2B SaaS -->
+      <article class="prod-case-card reveal" data-placeholder>
+        <span class="prod-case-tag">
+          <!-- lucide: briefcase -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="14" height="14"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <!-- data-placeholder: anonymized until legal sign-off -->
+          B2B SaaS · <em>Mid-Market Software Co.</em>
+        </span>
+        <h3 class="prod-case-h">Product team unblocked 12 feature launches in a single quarter</h3>
+        <p class="prod-case-body"><strong>Challenge:</strong> Product team was writing 5–10 analytics requests per week. Each took 2–3 days. Team velocity on features plummeted because half the time went to waiting for data.</p>
+        <p class="prod-case-body"><strong>Solution:</strong> Deployed Quaeris with a 120-metric semantic layer linked to Snowflake. Gave product team read-access to the agent interface.</p>
+        <div class="prod-case-outcomes" aria-label="Key outcomes">
+          <div class="prod-case-outcome">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            80% of analytics requests answered in minutes, not days
+          </div>
+          <div class="prod-case-outcome">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Product team unblocked 12 feature launches in Q2
+          </div>
+          <div class="prod-case-outcome">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            One definition of "active user" across dashboards, decks, and conversations
+          </div>
+        </div>
+        <blockquote class="prod-case-quote" data-placeholder>
+          "Before Quaeris, we were our own bottleneck. Now I ask a question and get a cited answer in 10 minutes. Everything we ship is grounded in the same metric."
+          <!-- data-placeholder: anonymized attribution -->
+          <cite class="prod-case-attr">— Head of Product, B2B SaaS (Mid-Market)</cite>
+        </blockquote>
+      </article>
+
+      <!-- Case Study 02 — Retail / eCommerce -->
+      <article class="prod-case-card reveal" data-placeholder>
+        <span class="prod-case-tag">
+          <!-- lucide: shopping-cart -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="14" height="14"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <!-- data-placeholder: anonymized until legal sign-off -->
+          Retail / eCommerce · <em>Multi-Channel Retail Group</em>
+        </span>
+        <h3 class="prod-case-h">Board consensus on metrics: first time in three years</h3>
+        <p class="prod-case-body"><strong>Challenge:</strong> Mobile, web, and in-store teams each had their own definition of "purchase" and "repeat customer." Board meetings were debates about methodology, not insights.</p>
+        <p class="prod-case-body"><strong>Solution:</strong> Federated all event definitions into a Quaeris semantic layer. Taught product teams to ask cohort and retention questions in plain language.</p>
+        <div class="prod-case-outcomes" aria-label="Key outcomes">
+          <div class="prod-case-outcome">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            One definition per KPI across all channels
+          </div>
+          <div class="prod-case-outcome">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Board consensus on metrics: first time in three years
+          </div>
+          <div class="prod-case-outcome">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Product team runs own engagement analysis; no longer waiting on analytics
+          </div>
+        </div>
+        <blockquote class="prod-case-quote" data-placeholder>
+          "Quaeris solved a problem we didn't know how to name: the audit trail of who asked what and why the numbers matter."
+          <!-- data-placeholder: anonymized attribution -->
+          <cite class="prod-case-attr">— VP Product, Retail / eCommerce</cite>
+        </blockquote>
+      </article>
+
+    </div>
+
+    <div class="section-header center" style="margin-top: var(--space-8);">
+      <a href="/case-studies" class="btn btn-ghost">See all case studies</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [6] GOVERNANCE SPOTLIGHT (#governance)
+     Interactive: count-up metric tiles animate on scroll entry
+     ============================================================ -->
+<section id="governance" class="section-pad prod-gov-section" aria-labelledby="gov-heading">
+  <div class="container">
+    <div class="section-header center reveal" style="margin-bottom: var(--space-10);">
+      <span class="eyebrow" style="color: var(--brand-accent);">Governance Built In, Not Bolted On</span>
+      <h2 id="gov-heading" class="display-lg" style="color: var(--text-on-dark);">Why Product Teams<br><span class="accent-line">Trust Quaeris</span></h2>
+      <p class="subcopy body-lg" style="color: var(--text-on-dark-dim);">Three principles that make Quaeris the only analytics platform safe for product teams at scale.</p>
+    </div>
+
+    <div class="prod-gov-grid">
+
+      <!-- Left: value props -->
+      <div class="prod-gov-props">
+
+        <div class="prod-gov-prop reveal">
+          <div class="prod-gov-prop-icon" aria-hidden="true">
+            <!-- lucide: square-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div>
+            <span class="prod-gov-prop-num">01</span>
+            <h3>Certified Metrics, Not Model Outputs</h3>
+            <p>Quaeris agents query your semantic layer—they don't generate numbers. Your data team owns the definitions. Every engagement metric, every retention curve, every cohort breakdown is locked to definitions your team certifies.</p>
+          </div>
+        </div>
+
+        <div class="prod-gov-prop reveal">
+          <div class="prod-gov-prop-icon" aria-hidden="true">
+            <!-- lucide: git-branch -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+          </div>
+          <div>
+            <span class="prod-gov-prop-num">02</span>
+            <h3>Full Lineage: Question to Source</h3>
+            <p>Click any answer and trace it back: which metric definition was used, which warehouse table it queried, which business rule applied. Product managers can audit any number in one click. Executives see sources, not hunches.</p>
+          </div>
+        </div>
+
+        <div class="prod-gov-prop reveal">
+          <div class="prod-gov-prop-icon" aria-hidden="true">
+            <!-- lucide: shield -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </div>
+          <div>
+            <span class="prod-gov-prop-num">03</span>
+            <h3>Role-Based Access, Enforced at Query Time</h3>
+            <p>Access policies aren't dashboard filters—they're enforced when the agent runs. Product managers in North America see US data only. Product managers in EMEA see EMEA data only. Nothing more. Every query is logged for audit.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: metric tile dashboard mock -->
+      <div>
+        <div class="prod-gov-tiles" role="region" aria-label="Product analytics governance dashboard — placeholder metrics" data-placeholder>
+
+          <div class="prod-gov-tile" data-tile="0">
+            <span class="prod-gov-tile-num" data-count="142" data-suffix="">142</span>
+            <span class="prod-gov-tile-label">Engagement questions answered this month</span>
+            <span class="prod-gov-tile-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              All certified
+            </span>
+          </div>
+
+          <div class="prod-gov-tile" data-tile="1">
+            <span class="prod-gov-tile-num" data-count="14" data-suffix="s">14s</span>
+            <span class="prod-gov-tile-label">Avg answer time to first insight</span>
+            <span class="prod-gov-tile-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              vs. days before
+            </span>
+          </div>
+
+          <div class="prod-gov-tile" data-tile="2">
+            <span class="prod-gov-tile-num" data-count="87" data-suffix="">87</span>
+            <span class="prod-gov-tile-label">Product metrics certified in semantic layer</span>
+            <span class="prod-gov-tile-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+              Data team owned
+            </span>
+          </div>
+
+          <div class="prod-gov-tile" data-tile="3">
+            <span class="prod-gov-tile-num" data-count="0" data-suffix="">0</span>
+            <span class="prod-gov-tile-label">Access violations caught &amp; blocked</span>
+            <span class="prod-gov-tile-chip" style="color: var(--brand-accent);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+              Enforced at query time
+            </span>
+          </div>
+
+        </div>
+        <!-- data-placeholder: replace tile values with real customer metrics before launch -->
+        <p style="font-size: 12px; color: var(--text-on-dark-dim); text-align: center; margin-top: var(--space-4);">Illustrative. Actual values vary by team size and deployment scope.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [7] COMPETITIVE CONTEXT (#compare)
+     Interactive: row highlight on hover; accessible scrollable table
+     ============================================================ -->
+<section id="compare" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="compare-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Why Choose Quaeris</span>
+      <h2 id="compare-heading" class="display-lg">Why Product Teams Choose Quaeris<br><span class="accent-line">Over Legacy Tools</span></h2>
+      <p class="subcopy body-lg">See how Quaeris compares to legacy BI dashboards and ad-hoc SQL workflows on the dimensions that matter to product teams.</p>
+    </div>
+
+    <div class="prod-compare-wrap reveal">
+      <table class="prod-compare-table" aria-label="Quaeris vs legacy analytics tools comparison">
+        <thead>
+          <tr>
+            <th scope="col">Dimension</th>
+            <th scope="col">Legacy BI Dashboard</th>
+            <th scope="col">Ad-Hoc SQL / Analyst</th>
+            <th scope="col">Quaeris</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Speed to insight</td>
+            <td>Weeks to deploy, days to query</td>
+            <td>2–5 days per request</td>
+            <td>10–20 minutes, self-serve</td>
+          </tr>
+          <tr>
+            <td>Metric consistency</td>
+            <td>Different definitions per dashboard</td>
+            <td>Definitions live in analysts' heads</td>
+            <td>One semantic layer, always certified</td>
+          </tr>
+          <tr>
+            <td>Governance</td>
+            <td>Dashboard filters only; not enforced</td>
+            <td>Ad-hoc access; hard to audit</td>
+            <td>Query-time access control; fully audited</td>
+          </tr>
+          <tr>
+            <td>Who can ask questions</td>
+            <td>"Dashboard builders" only</td>
+            <td>Analysts and data engineers</td>
+            <td>Any product person; no SQL needed</td>
+          </tr>
+          <tr>
+            <td>Audit trail</td>
+            <td>"What dashboard was viewed"</td>
+            <td>Which analyst ran what; hard to trace</td>
+            <td>Every question, answer, and source metric logged</td>
+          </tr>
+          <tr>
+            <td>Compliance readiness</td>
+            <td>Weak; data may escape to Excel</td>
+            <td>Manual audit logs</td>
+            <td>Built-in lineage; EU AI Act ready</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-header center" style="margin-top: var(--space-7);">
+      <a href="/compare" class="btn btn-ghost">Compare Quaeris vs. your current tool</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [8] WAREHOUSE COMPATIBILITY (#integrations)
+     Interactive: hover-lift tiles; each tile pulses border on hover
+     ============================================================ -->
+<section id="integrations" class="section-pad" aria-labelledby="integrations-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Connect in Minutes</span>
+      <h2 id="integrations-heading" class="display-lg">Works with<br><span class="accent-line">Your Warehouse</span></h2>
+    </div>
+
+    <div class="prod-wh-grid" role="list" aria-label="Supported data warehouses">
+
+      <div class="prod-wh-tile" role="listitem">
+        <span class="prod-wh-tile-icon" aria-hidden="true">
+          <!-- Snowflake — stylized hexagon/snowflake shape -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93 4.93 19.07"/></svg>
+        </span>
+        <span class="prod-wh-tile-name">Snowflake</span>
+      </div>
+
+      <div class="prod-wh-tile" role="listitem">
+        <span class="prod-wh-tile-icon" aria-hidden="true">
+          <!-- BigQuery — magnifying-glass search icon (query/analytics identity) -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+        </span>
+        <span class="prod-wh-tile-name">BigQuery</span>
+      </div>
+
+      <div class="prod-wh-tile" role="listitem">
+        <span class="prod-wh-tile-icon" aria-hidden="true">
+          <!-- Databricks — diamond/rhombus cluster (lakehouse identity) -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12 12 2l10 10-10 10L2 12z"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+        </span>
+        <span class="prod-wh-tile-name">Databricks</span>
+      </div>
+
+      <div class="prod-wh-tile" role="listitem">
+        <span class="prod-wh-tile-icon" aria-hidden="true">
+          <!-- Redshift — shift/arrow shape -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+        <span class="prod-wh-tile-name">Redshift</span>
+      </div>
+
+      <div class="prod-wh-tile" role="listitem">
+        <span class="prod-wh-tile-icon" aria-hidden="true">
+          <!-- Azure Synapse — cloud shape -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+        </span>
+        <span class="prod-wh-tile-name">Azure Synapse</span>
+      </div>
+
+      <div class="prod-wh-tile" role="listitem">
+        <span class="prod-wh-tile-icon" aria-hidden="true">
+          <!-- SharePoint / Google Drive — document shape -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        </span>
+        <span class="prod-wh-tile-name">SharePoint &amp; Drive</span>
+      </div>
+
+    </div>
+
+    <p class="prod-wh-note reveal">Quaeris connects directly to your warehouse. No data migration. No ETL pipeline rebuilds. Your data stays exactly where it is—we query in place, enforce role-based access, and log every query.</p>
+
+    <div class="section-header center" style="margin-top: var(--space-6);">
+      <a href="/platform/warehouse" class="btn btn-ghost">Learn about warehouse-native deployment</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [9] FAQ (#faq)
+     Interactive: native <details> accordion (Radix-ready at port)
+     ============================================================ -->
+<section id="faq" class="section-pad" style="background: var(--bg-warm);" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="eyebrow">Common Questions from Product Leaders</span>
+      <h2 id="faq-heading" class="display-lg">Product Questions<br><span class="accent-line">About Quaeris</span></h2>
+    </div>
+
+    <div class="accordion prod-faq reveal" style="margin-top: var(--space-7);">
+
+      <details class="accordion-item" open>
+        <summary class="accordion-trigger">
+          <span class="accordion-question">Do we need to remodel our data to use Quaeris?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">No. Quaeris works with your existing event and fact tables. Your data team defines the semantic layer (the certified metrics) on top of your warehouse schema. No new tables needed, no data remodeling required.</p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">Can we ask time-series questions—like "How does retention trend month-over-month?"</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Yes. Quaeris agents can build trend analysis, cohort tracking, and time-series forecasts directly from your semantic layer. Ask "What is our cohort retention trend for the last 6 months?" and the agent retrieves and visualizes the data automatically.</p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">What if a metric isn't in our semantic layer yet?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Your data team can add new metric definitions to the semantic layer in a single session. Once defined, the agent can query it immediately. This usually takes minutes, not days or weeks.</p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">How do we avoid different teams asking the same question in different ways?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">The semantic layer is the source of truth. Every agent answer is locked to the same certified definitions. Over time, your team converges on the same language and methodology. Quaeris also surfaces how similar questions were answered before.</p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">Can our external partners or consultants ask questions safely?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Yes, with role-based access control. You can grant partner accounts read-access to specific metrics and cohorts. Access is enforced at query time. Every partner query is logged. You maintain full audit control.</p></div>
+      </details>
+
+      <details class="accordion-item">
+        <summary class="accordion-trigger">
+          <span class="accordion-question">What about data residency and compliance?</span>
+          <span class="accordion-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </summary>
+        <div class="accordion-content"><p class="body-md" style="color: var(--text-secondary); padding-bottom: var(--space-5); max-width: 70ch;">Quaeris is warehouse-native—your data never leaves your environment. GDPR is supported. Our SOC 2 Type II audit is in progress. HIPAA controls are on our roadmap. EU AI Act readiness is in progress. Quaeris's audit trail and role-based access help you meet regulatory requirements—see our <a href="/trust" style="color: var(--brand-accent);">Trust page</a> for current certification status.</p></div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [10] CTA BAND (#cta)
+     Interactive: gradient card with dual CTA buttons
+     ============================================================ -->
+<section id="cta" class="section-pad" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="prod-cta-card reveal">
+      <span class="eyebrow" style="color: rgba(255,255,255,0.75); display:block; margin-bottom: var(--space-3);">Ready to Unblock Your Product Team?</span>
+      <h2 id="cta-heading" class="display-lg">Stop waiting for analysts.<br>Start asking Quaeris.</h2>
+      <p class="body-lg">Book a 30-minute demo. We'll show you how to connect your warehouse, define metrics once, and unlock self-serve analytics for your entire product org.</p>
+      <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+        <a href="/contact" class="btn btn-on-light">Book a Demo</a>
+        <a href="/contact" class="btn" style="background: rgba(255,255,255,0.15); color: var(--text-on-dark); border: 1px solid rgba(255,255,255,0.3); padding: 12px 28px; border-radius: var(--radius-cta); font-weight: 600; min-height: 44px;">Watch a 5-minute walkthrough</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [11] NEWSLETTER (#newsletter)
+     Interactive: email form with client-side validation feedback
+     ============================================================ -->
+<section id="newsletter" class="section-pad" style="background: var(--bg-surface);" aria-labelledby="newsletter-heading">
+  <div class="container">
+    <div class="prod-newsletter reveal">
+      <span class="eyebrow" style="display:block; margin-bottom: var(--space-3);">The Governed Analytics Brief</span>
+      <h3 id="newsletter-heading">Weekly insights for product leaders and analytics engineers.</h3>
+      <p>One practical read on retention metrics, engagement analysis, and product-driven growth—every Thursday. No hype. No sales emails. Just insights.</p>
+      <form class="prod-newsletter-form" novalidate aria-label="Newsletter signup">
+        <label for="nl-email" class="sr-only">Email address</label>
+        <input type="email" id="nl-email" name="email" placeholder="your@email.com" autocomplete="email" required aria-required="true" />
+        <button type="submit" class="btn btn-primary" style="min-height: 44px;">Subscribe</button>
+      </form>
+      <p class="prod-newsletter-privacy">No spam. Unsubscribe any time. We handle your data per our <a href="/privacy" style="color: var(--brand-accent);">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPTS — gated JS IIFEs; each targets disjoint selectors.
+     ============================================================ -->
+
+<!-- JS-capability flag: adds .js to <html> so CSS opacity:0 guards are active only when JS runs -->
+<script>document.documentElement.classList.add('js');</script>
+
+<!-- [1] HERO — Product Agent Brief loader (Motion One) -->
+<script type="module">
+(async () => {
+  const card = document.querySelector('.prod-brief');
+  if (!card) return;
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let animate, inView;
+  if (!prefersReduce) {
+    try {
+      const m = await import('https://cdn.jsdelivr.net/npm/motion@11/+esm');
+      animate = m.animate; inView = m.inView;
+    } catch (_) {
+      /* CDN unavailable — reveal all animated elements so content is never invisible */
+      card.classList.remove('js-anim');
+      card.querySelectorAll('.prod-brief-title, .prod-brief-row, .prod-brief-sources, .prod-brief-stat').forEach(el => {
+        el.style.opacity = '1'; el.style.transform = 'none';
+      });
+      card.style.opacity = '1'; card.style.transform = 'none';
+      return;
+    }
+  }
+  if (!animate) {
+    /* prefersReduce path — ensure card is visible */
+    card.classList.remove('js-anim');
+    return;
+  }
+
+  const $ = s => card.querySelector(s);
+  const $$ = s => Array.from(card.querySelectorAll(s));
+  const query = $('.prod-brief-query');
+  const caret = $('.prod-brief-caret');
+  const analysis = $('.prod-brief-analysis');
+  const statusText = $('.prod-brief-status-text');
+  const title = $('.prod-brief-title');
+  const rows = $$('.prod-brief-row');
+  const sources = $('.prod-brief-sources');
+  const stats = $$('.prod-brief-stat');
+  const replay = $('.prod-brief-replay');
+  const LOAD_STEPS = ['Interpreting question…', 'Querying the semantic layer…', 'Verifying cohort definitions…'];
+
+  card.classList.add('js-anim');
+
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  function show(el, from, to) {
+    return animate(el, { opacity: [0, 1], transform: [from, to] }, { duration: 0.4 }).finished
+      .then(() => { el.style.opacity = 1; el.style.transform = 'none'; });
+  }
+  function typeQuery() {
+    return new Promise(res => {
+      const text = query.dataset.text;
+      query.textContent = ''; caret.classList.remove('hidden');
+      let i = 0;
+      const iv = setInterval(() => {
+        query.textContent = text.slice(0, ++i);
+        if (i >= text.length) { clearInterval(iv); res(); }
+      }, 24);
+    });
+  }
+  function runLoading() {
+    return new Promise(res => {
+      analysis.classList.add('is-loading');
+      card.setAttribute('aria-busy', 'true');
+      let i = 0; statusText.textContent = LOAD_STEPS[0];
+      const iv = setInterval(() => { if (++i < LOAD_STEPS.length) statusText.textContent = LOAD_STEPS[i]; }, 480);
+      setTimeout(() => { clearInterval(iv); analysis.classList.remove('is-loading'); card.removeAttribute('aria-busy'); res(); }, 1500);
+    });
+  }
+  function finalize() {
+    card.classList.remove('js-anim');
+    analysis.classList.remove('is-loading');
+    card.removeAttribute('aria-busy');
+    [card, title, sources, ...rows, ...stats].forEach(el => { el.style.opacity = ''; el.style.transform = ''; });
+    query.textContent = query.dataset.text; caret.classList.add('hidden');
+    running = false;
+  }
+  function reset() {
+    [card, title, sources, ...rows, ...stats].forEach(el => { el.style.opacity = ''; el.style.transform = ''; });
+    card.classList.add('js-anim');
+    analysis.classList.remove('is-loading');
+    query.textContent = ''; caret.classList.add('hidden');
+  }
+
+  let running = false;
+  async function run() {
+    if (running) return;
+    running = true;
+    try {
+      reset();
+      await show(card, 'translateY(16px)', 'translateY(0)');
+      await wait(120);
+      await typeQuery();
+      caret.classList.add('hidden');
+      await wait(180);
+      await runLoading();
+      await show(title, 'translateY(6px)', 'translateY(0)');
+      rows.forEach((r, i) => setTimeout(() => show(r, 'translateX(-8px)', 'translateX(0)'), i * 90));
+      await wait(rows.length * 90 + 380);
+      await show(sources, 'scale(0.96)', 'scale(1)');
+      stats.forEach((s, i) => setTimeout(() => show(s, 'translateY(6px)', 'translateY(0)'), i * 80));
+      await wait(460);
+      running = false;
+    } catch (_) { finalize(); }
+  }
+
+  if (replay) replay.addEventListener('click', () => run());
+  inView(card, () => run(), { amount: 0.35 });
+  setTimeout(() => { if (!running && card.classList.contains('js-anim') && card.style.opacity === '') run(); }, 600);
+})();
+</script>
+
+<!-- [2] PROBLEM/SOLUTION — flip-tab cards IIFE -->
+<script>
+(function () {
+  const cards = Array.from(document.querySelectorAll('.prob-sol-card'));
+  if (!cards.length) return;
+  cards.forEach(card => {
+    const tabs = Array.from(card.querySelectorAll('.prob-sol-tab'));
+    const panels = Array.from(card.querySelectorAll('.prob-sol-panel'));
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t, j) => {
+          const sel = j === i;
+          t.setAttribute('aria-selected', sel);
+          t.setAttribute('tabindex', sel ? '0' : '-1');
+          panels[j].classList.toggle('active', sel);
+        });
+      });
+      // Arrow key navigation
+      tab.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+          tabs[next].click();
+          tabs[next].focus();
+        }
+      });
+    });
+  });
+})();
+</script>
+
+<!-- [3] HOW-IT-WORKS — staggered step entrance IIFE -->
+<script>
+(function () {
+  const steps = Array.from(document.querySelectorAll('.prod-step'));
+  if (!steps.length) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    steps.forEach(s => s.classList.add('entered'));
+    return;
+  }
+  if (!('IntersectionObserver' in window)) { steps.forEach(s => s.classList.add('entered')); return; }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('entered'); obs.unobserve(e.target); } });
+  }, { threshold: 0.2 });
+  steps.forEach(s => obs.observe(s));
+})();
+</script>
+
+<!-- [4] USE CASES — filter button IIFE -->
+<script>
+(function () {
+  const filters = Array.from(document.querySelectorAll('.prod-uc-filter'));
+  const cards = Array.from(document.querySelectorAll('.prod-uc-card'));
+  if (!filters.length || !cards.length) return;
+  filters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.filter;
+      filters.forEach(b => b.setAttribute('aria-pressed', b === btn));
+      cards.forEach(card => {
+        const match = cat === 'all' || card.dataset.category === cat;
+        if (match) {
+          card.removeAttribute('hidden');
+          card.style.opacity = '0'; card.style.transform = 'translateY(8px)';
+          requestAnimationFrame(() => {
+            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            card.style.opacity = '1'; card.style.transform = 'none';
+          });
+        } else {
+          card.setAttribute('hidden', '');
+          card.style.opacity = '';
+          card.style.transform = '';
+          card.style.transition = '';
+        }
+      });
+    });
+  });
+})();
+</script>
+
+<!-- [5] GOVERNANCE TILES — count-up on scroll IIFE -->
+<script>
+(function () {
+  const tiles = Array.from(document.querySelectorAll('.prod-gov-tile'));
+  if (!tiles.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { tiles.forEach((t, i) => { t.classList.add('entered'); }); return; }
+  if (!('IntersectionObserver' in window)) { tiles.forEach(t => t.classList.add('entered')); return; }
+
+  function countUp(el, target, dur) {
+    const start = performance.now();
+    const suffix = el.dataset.suffix || '';
+    (function tick(now) {
+      const t2 = Math.min(1, (now - start) / dur);
+      const v = Math.round(target * (1 - Math.pow(1 - t2, 3)));
+      el.textContent = v + suffix;
+      if (t2 < 1) requestAnimationFrame(tick); else el.textContent = target + suffix;
+    })(start);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, idx) => {
+      if (e.isIntersecting) {
+        const tile = e.target;
+        const i = tiles.indexOf(tile);
+        setTimeout(() => {
+          tile.classList.add('entered');
+          const num = tile.querySelector('[data-count]');
+          if (num) countUp(num, +num.dataset.count, 900);
+        }, i * 120);
+        obs.unobserve(tile);
+      }
+    });
+  }, { threshold: 0.3 });
+  tiles.forEach(t => obs.observe(t));
+})();
+</script>
+
+<!-- [6] NEWSLETTER — email validation + real subscribe fetch -->
+<script>
+(function () {
+  const form = document.querySelector('.prod-newsletter-form');
+  if (!form) return;
+
+  /* Accessible live region for status announcements */
+  let statusEl = form.parentElement.querySelector('.nl-status');
+  if (!statusEl) {
+    statusEl = document.createElement('p');
+    statusEl.className = 'nl-status prod-newsletter-privacy';
+    statusEl.setAttribute('aria-live', 'polite');
+    statusEl.setAttribute('aria-atomic', 'true');
+    form.insertAdjacentElement('afterend', statusEl);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const input = form.querySelector('input[type="email"]');
+    const btn = form.querySelector('button[type="submit"]');
+
+    if (!input.validity.valid) {
+      input.focus();
+      input.style.borderColor = 'var(--error)';
+      statusEl.textContent = 'Please enter a valid email address.';
+      return;
+    }
+    input.style.borderColor = '';
+    statusEl.textContent = '';
+
+    const email = input.value.trim();
+    btn.disabled = true;
+    input.disabled = true;
+    btn.textContent = 'Subscribing…';
+
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: email, source: 'solutions-product' })
+    })
+      .then(function (res) {
+        if (res.ok) {
+          btn.textContent = 'Subscribed!';
+          statusEl.textContent = 'You’re on the list. Check your inbox for a confirmation.';
+        } else {
+          btn.textContent = 'Subscribe';
+          btn.disabled = false;
+          input.disabled = false;
+          statusEl.textContent = 'Something went wrong. Please try again in a moment.';
+        }
+      })
+      .catch(function () {
+        btn.textContent = 'Subscribe';
+        btn.disabled = false;
+        input.disabled = false;
+        statusEl.textContent = 'Could not connect. Please check your connection and try again.';
+      });
+  });
+})();
+</script>
+
+
+<script>/* caps-controller (shared, from cap-shared.js) */
+/* Core Capabilities — shared interactive controller (multi-instance: inits every .caps on the page) */
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function fmt(el, v) {
+    const dec = +(el.dataset.decimals || 0);
+    let n = dec ? (+v).toFixed(dec) : Math.round(v);
+    if (el.hasAttribute('data-comma')) n = Number(dec ? (+v).toFixed(dec) : Math.round(v)).toLocaleString('en-US');
+    return (el.dataset.prefix || '') + n + (el.dataset.suffix || '');
+  }
+  function countUp(el, target, dur) {
+    if (reduce) { el.textContent = fmt(el, target); return; }
+    const start = performance.now();
+    el.textContent = fmt(el, 0);
+    (function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      el.textContent = fmt(el, target * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) requestAnimationFrame(tick); else el.textContent = fmt(el, target);
+    })(start);
+  }
+  function makeEaseInverter(x1, y1, x2, y2) {
+    const bz = (t, a, b) => { const c = 3 * a, d = 3 * (b - a) - c, e = 1 - c - d; return ((e * t + d) * t + c) * t; };
+    return function (out) {
+      if (out <= 0) return 0; if (out >= 1) return 1;
+      let lo = 0, hi = 1, t = out;
+      for (let k = 0; k < 24; k++) { t = (lo + hi) / 2; if (bz(t, y1, y2) < out) lo = t; else hi = t; }
+      return bz(t, x1, x2);
+    };
+  }
+  const lineageEaseInvert = makeEaseInverter(0.22, 1, 0.36, 1);
+  const LINEAGE_DUR = 1250, LINEAGE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+  function initCaps(caps) {
+    const tabs = Array.from(caps.querySelectorAll('.cap-tab'));
+    const panels = Array.from(caps.querySelectorAll('.cap-panel'));
+    if (!tabs.length || !panels.length) return;
+    caps.classList.add('js');
+
+    function playLineage(panel) {
+      const lineage = panel.querySelector('.cap-lineage');
+      if (!lineage) return;
+      const trace = lineage.querySelector('.cap-trace');
+      const progress = lineage.querySelector('.cap-progress');
+      const nodes = Array.from(lineage.querySelectorAll('.cap-node'));
+      if (!nodes.length) return;
+      const dots = nodes.map(n => n.querySelector('.cap-node-dot'));
+      if (trace && trace._anim) { trace._anim.cancel(); trace._anim = null; }
+      if (progress && progress._anim) { progress._anim.cancel(); progress._anim = null; }
+      if (lineage._timers) lineage._timers.forEach(clearTimeout);
+      lineage._timers = [];
+      nodes.forEach(n => n.classList.remove('lit'));
+      const waapi = typeof Element !== 'undefined' && typeof Element.prototype.animate === 'function';
+      const centerY = dots.map((dot, i) => nodes[i].offsetTop + dot.offsetTop + dot.offsetHeight / 2);
+      const firstY = centerY[0], lastY = centerY[centerY.length - 1];
+      const span = Math.max(1, lastY - firstY);
+      if (progress) { progress.style.top = firstY + 'px'; progress.style.height = span + 'px'; }
+      const dotHalf = (trace ? trace.offsetHeight : 16) / 2 || 8;
+      const startY = firstY - dotHalf, endY = lastY - dotHalf;
+      if (reduce || !waapi) {
+        if (trace) trace.style.opacity = '0';
+        if (progress) progress.style.transform = 'scaleY(1)';
+        nodes.forEach(n => n.classList.add('lit'));
+        return;
+      }
+      trace.style.top = '0px'; trace.style.opacity = '1';
+      const dotAnim = trace.animate(
+        [{ transform: `translateY(${startY}px)`, opacity: 1, offset: 0 },
+         { transform: `translateY(${endY}px)`, opacity: 1, offset: 0.9 },
+         { transform: `translateY(${endY}px)`, opacity: 0, offset: 1 }],
+        { duration: LINEAGE_DUR, easing: LINEAGE_EASE, fill: 'forwards' });
+      trace._anim = dotAnim;
+      if (progress) progress._anim = progress.animate(
+        [{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }],
+        { duration: LINEAGE_DUR, easing: LINEAGE_EASE, fill: 'forwards' });
+      centerY.forEach((y, i) => {
+        const distFrac = (y - firstY) / span;
+        const at = Math.max(0, Math.min(1, lineageEaseInvert(distFrac))) * LINEAGE_DUR;
+        lineage._timers.push(setTimeout(() => nodes[i].classList.add('lit'), at));
+      });
+      dotAnim.addEventListener('finish', () => nodes.forEach(n => n.classList.add('lit')), { once: true });
+    }
+
+    function activate(i, focus) {
+      tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); t.tabIndex = j === i ? 0 : -1; });
+      panels.forEach((p, j) => { if (j === i) p.hidden = false; else { p.hidden = true; p.classList.remove('play'); } });
+      const panel = panels[i];
+      panel.classList.remove('play'); void panel.offsetWidth; panel.classList.add('play');
+      const bar = tabs[i].querySelector('.cap-tab-bar');
+      if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+      panel.querySelectorAll('[data-num]').forEach(el => countUp(el, parseFloat(el.dataset.num), 850));
+      if (panel.querySelector('.cap-lineage')) requestAnimationFrame(() => requestAnimationFrame(() => playLineage(panel)));
+      if (focus) tabs[i].focus();
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => activate(i, false));
+      tab.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          activate((i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length, true);
+        }
+      });
+      const bar = tab.querySelector('.cap-tab-bar');
+      if (bar) bar.addEventListener('animationend', () => {
+        if (tab.getAttribute('aria-selected') === 'true') activate((i + 1) % tabs.length, false);
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { activate(0, false); io.disconnect(); } }), { threshold: 0.3 });
+      io.observe(caps);
+    } else { activate(0, false); }
+  }
+
+  document.querySelectorAll('.caps').forEach(initCaps);
+})();
+
+</script>
+</body>
+</html>

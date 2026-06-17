@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MOCKUP — /blog/[post] — Quaeris</title>
+
+<!--
+  PORT NOTE: Emit the following JSON-LD blocks in <head> at port time:
+
+  1. Article schema:
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "[post title]",
+    "author": { "@type": "Person", "name": "[author name]", "jobTitle": "[author role]" },
+    "publisher": { "@type": "Organization", "name": "Quaeris" },
+    "datePublished": "[ISO date]",
+    "description": "[meta description]"
+  }
+  </script>
+
+  2. FAQPage schema (using the TL;DR key takeaways as Q&A pairs):
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is a governed semantic layer?", "acceptedAnswer": { "@type": "Answer", "text": "..." } },
+      { "@type": "Question", "name": "Why does metric consistency matter for enterprise analytics?", "acceptedAnswer": { "@type": "Answer", "text": "..." } }
+    ]
+  }
+  </script>
+
+  Site header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../web/src/brands/quaeris/tokens.css" />
+<link rel="stylesheet" href="../../web/src/app/globals.css" />
+
+<style>
+  /* Mockup-only shims (replaced by the framework at port time). */
+  :root { --font-roboto: "Roboto"; --font-fraunces: "Fraunces"; --font-inter: "Inter"; }
+  /* NOTE: .reveal{opacity:1} shim intentionally removed — it killed all IO-driven
+     entrance animations. The globals hidden→visible transition fires via
+     IntersectionObserver. The noscript block below handles the no-JS final state. */
+</style>
+<noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+
+<style id="port">
+/* ============================================================
+   PORT: ba- (Blog Article) — move to globals.css at port time.
+   ============================================================ */
+
+/* ============================================================
+   [1] ARTICLE HERO
+   ============================================================ */
+
+.ba-hero {
+  background: var(--bg-surface);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-9) 0 var(--space-7);
+}
+
+.ba-hero-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 60% -10%, var(--brand-accent-soft) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ba-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+}
+
+.ba-category {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+  border-radius: var(--radius-pill);
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-4);
+  text-decoration: none;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.ba-category:hover { background: var(--brand-accent); color: var(--text-on-dark); }
+.ba-category:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+.ba-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: var(--weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--text-primary);
+  margin-bottom: var(--space-5);
+}
+
+.ba-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  margin-top: var(--space-5);
+}
+
+.ba-author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ba-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  flex-shrink: 0;
+  /* Animated border ring on hover */
+  box-shadow: 0 0 0 0 var(--brand-accent-glow);
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+.ba-avatar:hover { box-shadow: 0 0 0 4px var(--brand-accent-glow); }
+
+.ba-author-info { display: flex; flex-direction: column; }
+.ba-author-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.ba-author-role { font-size: 12px; color: var(--text-secondary); } /* darkened from --text-tertiary for WCAG AA */
+
+.ba-meta-divider { width: 1px; height: 20px; background: var(--border-strong); }
+
+.ba-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary); /* darkened from --text-tertiary for WCAG AA */
+}
+.ba-meta-item svg { width: 14px; height: 14px; }
+
+/* Reading progress bar — fills as user scrolls article body */
+.ba-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  z-index: 200;
+  transition: width 80ms linear;
+  pointer-events: none;
+}
+
+/* ============================================================
+   [2] TL;DR / KEY TAKEAWAYS CALLOUT
+   ============================================================ */
+
+.ba-tldr {
+  background: var(--brand-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 25%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin: var(--space-7) 0;
+}
+
+.ba-tldr-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.ba-tldr-head svg { width: 20px; height: 20px; color: var(--brand-accent); flex-shrink: 0; }
+.ba-tldr-head strong { font-size: 14px; font-weight: 700; color: var(--brand-accent); letter-spacing: 0.5px; text-transform: uppercase; }
+
+.ba-tldr-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.ba-tldr-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  opacity: 1;
+  transform: none;
+  /* JS animates these in staggered — see ba-tldr-item data-d */
+}
+
+.ba-tldr-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+/* JS stagger entrance */
+.ba-tldr.js .ba-tldr-item {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.ba-tldr.js.revealed .ba-tldr-item { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ba-tldr.js .ba-tldr-item { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [3] ARTICLE BODY + STICKY TOC LAYOUT
+   ============================================================ */
+
+.ba-layout {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: var(--space-9);
+  align-items: start;
+  margin-top: var(--space-7);
+}
+
+@media (max-width: 1024px) {
+  .ba-layout { grid-template-columns: 1fr; }
+}
+
+/* --- Article prose --- */
+.ba-prose {
+  min-width: 0;
+}
+
+.ba-prose h2 {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 30px);
+  font-weight: var(--weight-display);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-4);
+  scroll-margin-top: 96px;
+}
+
+.ba-prose h3 {
+  font-family: var(--font-body);
+  font-size: clamp(17px, 1.5vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-3);
+  scroll-margin-top: 96px;
+}
+
+.ba-prose p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+.ba-prose ul, .ba-prose ol {
+  margin: var(--space-4) 0 var(--space-5) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ba-prose ul { list-style: none; padding-left: 0; margin-left: 0; }
+
+.ba-prose ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.ba-prose ul li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  flex-shrink: 0;
+  margin-top: 9px;
+}
+
+.ba-prose ol { list-style: decimal; }
+.ba-prose ol li { font-size: 16px; line-height: 1.65; color: var(--text-secondary); }
+
+/* --- Pull quote --- */
+.ba-pullquote {
+  border-left: 3px solid var(--brand-accent);
+  margin: var(--space-7) 0;
+  padding: var(--space-5) var(--space-6);
+  background: var(--bg-canvas);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  position: relative;
+}
+
+.ba-pullquote-mark {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-5);
+  font-family: var(--font-display);
+  font-size: 64px;
+  line-height: 1;
+  color: var(--brand-accent-soft);
+  color: color-mix(in srgb, var(--brand-accent) 18%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+.ba-pullquote blockquote {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: var(--weight-display);
+  line-height: 1.4;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  font-style: normal;
+}
+
+.ba-pullquote cite {
+  display: block;
+  margin-top: var(--space-3);
+  font-style: normal;
+  font-size: 13px;
+  color: var(--text-secondary); /* darkened from --text-tertiary for WCAG AA */
+}
+
+/* --- Note / callout box --- */
+.ba-note {
+  display: flex;
+  gap: var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin: var(--space-6) 0;
+  box-shadow: var(--shadow-card);
+}
+
+.ba-note-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ba-note-icon svg { width: 18px; height: 18px; color: var(--brand-accent); }
+
+.ba-note-body { min-width: 0; }
+.ba-note-label { font-size: 11px; font-weight: 700; color: var(--brand-accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: var(--space-2); }
+.ba-note-text { font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+.ba-note-text strong { color: var(--text-primary); }
+
+/* --- Code block --- */
+.ba-code-wrap {
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.ba-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-ink);
+  border-bottom: 1px solid var(--border-on-dark);
+}
+
+.ba-code-lang {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+}
+
+.ba-code-dots { display: flex; gap: 6px; }
+.ba-code-dots i {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  display: block;
+}
+.ba-code-dots i:nth-child(1) { background: var(--win-dot-red); }
+.ba-code-dots i:nth-child(2) { background: var(--win-dot-amber); }
+.ba-code-dots i:nth-child(3) { background: var(--win-dot-green); }
+
+.ba-code-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-on-dark-dim);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  min-height: 32px;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.ba-code-copy:hover { color: var(--text-on-dark); background: rgba(255,255,255,0.08); }
+.ba-code-copy:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.ba-code-copy svg { width: 12px; height: 12px; }
+
+.ba-code-copy.copied { color: var(--success); }
+
+pre.ba-pre {
+  background: var(--bg-ink-elevated);
+  padding: var(--space-5) var(--space-5);
+  margin: 0;
+  overflow-x: auto;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--code-base);
+  tab-size: 2;
+}
+
+/* Syntax tints (CSS-only; no lib) */
+.tok-kw  { color: var(--code-tok-kw); }  /* keyword */
+.tok-fn  { color: var(--code-tok-fn); }  /* function / identifier */
+.tok-str { color: var(--code-tok-str); } /* string */
+.tok-cm  { color: var(--code-tok-cm); font-style: italic; } /* comment */
+.tok-nu  { color: var(--code-tok-nu); }  /* number */
+.tok-op  { color: var(--code-base); opacity: 0.6; }          /* operator */
+
+/* ============================================================
+   [4] STICKY TABLE OF CONTENTS — scroll-spy active highlighting
+   ============================================================ */
+
+.ba-toc {
+  position: sticky;
+  top: 96px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding-right: var(--space-2);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+@media (max-width: 1024px) {
+  /* On mobile, TOC collapses to a <details> toggle above the article */
+  .ba-toc { position: static; max-height: none; top: auto; }
+}
+
+.ba-toc-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.ba-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+}
+
+.ba-toc-link {
+  display: block;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-secondary); /* darkened from --text-tertiary for WCAG AA ~5.6:1 */
+  padding: 5px var(--space-3);
+  border-left: 2px solid transparent;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+  text-decoration: none;
+}
+.ba-toc-link:hover { color: var(--text-primary); background: var(--bg-canvas); }
+.ba-toc-link:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.ba-toc-link.active {
+  color: var(--brand-accent);
+  border-left-color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  font-weight: 600;
+}
+
+.ba-toc-link.level-3 { padding-left: calc(var(--space-3) + 12px); font-size: 12px; }
+
+/* Active indicator bar entrance */
+@media (prefers-reduced-motion: no-preference) {
+  .ba-toc-link { transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out); }
+}
+
+/* Mobile TOC toggle */
+.ba-toc-toggle {
+  display: none;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-card);
+}
+.ba-toc-toggle summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-height: 44px;
+}
+.ba-toc-toggle summary::-webkit-details-marker { display: none; }
+.ba-toc-toggle summary .toc-chevron {
+  width: 18px; height: 18px;
+  color: var(--text-secondary); /* darkened from --text-tertiary */
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.ba-toc-toggle[open] summary .toc-chevron { transform: rotate(180deg); }
+.ba-toc-toggle .ba-toc-list { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); }
+
+@media (max-width: 1024px) {
+  .ba-toc-toggle { display: block; }
+  .ba-toc.desktop-only { display: none; }
+}
+
+/* ============================================================
+   [5] RELATED POSTS 3-CARD ROW
+   ============================================================ */
+
+.ba-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+@media (max-width: 900px) { .ba-related-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 580px) { .ba-related-grid { grid-template-columns: 1fr; } }
+
+.ba-related-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-decoration: none;
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+.ba-related-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-3px);
+  border-color: var(--brand-accent);
+}
+.ba-related-card:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+
+/* Coloured top accent stripe */
+.ba-related-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-accent-deep), var(--brand-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.ba-related-card:hover::before { transform: scaleX(1); }
+
+.ba-related-cat {
+  display: inline-flex;
+  align-items: center;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.ba-related-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.ba-related-excerpt {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ba-related-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12px;
+  color: var(--text-secondary); /* darkened from --text-tertiary for WCAG AA */
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-3);
+  margin-top: auto;
+}
+.ba-related-foot svg { width: 13px; height: 13px; }
+
+/* Staggered entrance */
+.ba-related.js .ba-related-card {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.ba-related.js.revealed .ba-related-card { opacity: 1; transform: none; }
+.ba-related.js.revealed .ba-related-card:hover { transform: translateY(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ba-related.js .ba-related-card { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   [6] NEWSLETTER SECTION
+   ============================================================ */
+
+.ba-newsletter {
+  background: var(--bg-ink);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7) var(--space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.ba-newsletter-glow {
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 50%;
+  height: 200%;
+  background: radial-gradient(circle, var(--brand-accent-deep) 0%, transparent 65%);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.ba-newsletter-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-7);
+  align-items: center;
+}
+@media (max-width: 720px) { .ba-newsletter-inner { grid-template-columns: 1fr; } }
+
+.ba-newsletter-text .eyebrow { color: var(--brand-accent); margin-bottom: var(--space-3); display: block; }
+.ba-newsletter-text h3 { color: var(--text-on-dark); font-family: var(--font-display); font-size: clamp(20px, 2.5vw, 28px); font-weight: var(--weight-display); line-height: 1.2; margin-bottom: var(--space-3); }
+.ba-newsletter-text p { color: var(--text-on-dark-dim); font-size: 15px; line-height: 1.6; }
+
+.ba-newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ba-form-row {
+  display: flex;
+  gap: var(--space-3);
+}
+@media (max-width: 500px) { .ba-form-row { flex-direction: column; } }
+
+.ba-form-input {
+  flex: 1;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-cta);
+  padding: 11px var(--space-4);
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-on-dark);
+  min-height: 44px;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+}
+.ba-form-input::placeholder { color: rgba(255,255,255,0.38); }
+.ba-form-input:focus { outline: none; border-color: var(--brand-accent); background: rgba(255,255,255,0.12); }
+.ba-form-input:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+
+.ba-form-submit {
+  background: var(--cta-bg);
+  color: var(--text-on-dark);
+  border: none;
+  border-radius: var(--radius-cta);
+  padding: 11px var(--space-5);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  min-height: 44px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.ba-form-submit:hover { background: var(--cta-bg-hover); transform: translateY(-1px); }
+.ba-form-submit:focus-visible { outline: 2px solid var(--text-on-dark); outline-offset: 3px; }
+
+.ba-form-fine {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.5;
+}
+
+/* Newsletter success state */
+.ba-newsletter-success {
+  display: none;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--success) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--success) 30%, transparent);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--success);
+}
+.ba-newsletter-success svg { width: 18px; height: 18px; flex-shrink: 0; }
+.ba-newsletter-success.show { display: flex; }
+
+/* ============================================================
+   [7] CLOSING CTA
+   ============================================================ */
+
+.ba-cta-card {
+  background: linear-gradient(150deg, var(--brand-accent-deep), var(--brand-accent));
+  border-radius: var(--radius-lg);
+  padding: var(--space-9) var(--space-7);
+  text-align: center;
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.ba-cta-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+.ba-cta-ring-1 { width: 300px; height: 300px; top: -80px; right: -60px; }
+.ba-cta-ring-2 { width: 200px; height: 200px; top: -30px; right: -10px; }
+
+.ba-cta-card h2 { color: var(--text-on-dark); margin-bottom: var(--space-4); position: relative; }
+.ba-cta-card p { color: rgba(255,255,255,0.85); max-width: 56ch; margin: 0 auto var(--space-6); position: relative; }
+.ba-cta-btns { display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap; position: relative; }
+
+/* ============================================================
+   [8] ARTICLE SECTION WRAPPER
+   ============================================================ */
+
+.ba-section {
+  padding: var(--section-pad-y) 0;
+}
+
+.ba-section-tight {
+  padding: var(--space-7) 0;
+}
+
+/* Inline share row */
+.ba-share {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  margin: var(--space-7) 0;
+  flex-wrap: wrap;
+}
+
+.ba-share-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+
+.ba-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  min-height: 36px;
+  cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+}
+.ba-share-btn:hover { color: var(--brand-accent); border-color: var(--brand-accent); background: var(--brand-accent-soft); }
+.ba-share-btn:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.ba-share-btn svg { width: 15px; height: 15px; }
+
+.ba-share-copied-msg {
+  font-size: 12px;
+  color: var(--success);
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+.ba-share-copied-msg.show { opacity: 1; }
+
+/* Author bio footer card */
+.ba-author-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+  box-shadow: var(--shadow-card);
+  margin-top: var(--space-7);
+}
+@media (max-width: 560px) { .ba-author-card { flex-direction: column; } }
+
+.ba-author-card-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--brand-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  flex-shrink: 0;
+}
+
+.ba-author-card-body { min-width: 0; }
+.ba-author-card-name { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+.ba-author-card-role { font-size: 13px; color: var(--text-secondary); margin-bottom: var(--space-3); } /* darkened for WCAG AA */
+.ba-author-card-bio { font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+
+/* Hero purple wash (from finance-v3) */
+.hero-purple-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 65% -10%, var(--brand-accent-soft) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Reading progress bar (JS driven) -->
+<div class="ba-progress-bar" id="ba-progress" aria-hidden="true"></div>
+
+<main id="main">
+<!-- Header/footer intentionally omitted — injected by SiteHeader / SiteFooter at port time. -->
+
+<!-- ============================================================
+     [1] ARTICLE HERO
+     Interactivity: animated reading-progress bar (fills on scroll);
+     hero entrance reveal + avatar pulse ring on hover
+     ============================================================ -->
+<section id="article-hero" class="ba-hero" aria-labelledby="article-title">
+  <div class="hero-purple-wash" aria-hidden="true"></div>
+  <div class="container">
+    <div class="ba-hero-inner reveal">
+      <a href="/blog?category=data-architecture" class="ba-category" data-placeholder>
+        <!-- lucide: layers -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        Data Architecture
+      </a>
+
+      <h1 id="article-title" class="ba-title">What Is a Governed Semantic Layer — and Why Does Every Enterprise Analytics Stack Need One?</h1>
+
+      <p class="body-lg" style="color: var(--text-secondary); max-width: 60ch; margin-bottom: var(--space-6);">A single misaligned metric definition can cost a finance team days of reconciliation work — and a board presentation's credibility. Here's what a governed semantic layer actually does, and why warehouse-native deployments change the calculus entirely.</p>
+
+      <div class="ba-meta">
+        <div class="ba-author">
+          <div class="ba-avatar" title="Author avatar placeholder" data-placeholder aria-label="Author initials: QA">QA</div>
+          <div class="ba-author-info">
+            <!-- data-placeholder: author name — replace at port time with real author -->
+            <span class="ba-author-name">Jordan Mehta</span>
+            <span class="ba-author-role">Principal Solutions Architect, Quaeris</span>
+          </div>
+        </div>
+
+        <div class="ba-meta-divider" aria-hidden="true"></div>
+
+        <span class="ba-meta-item">
+          <!-- lucide: calendar -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          <time datetime="2026-06-14" data-placeholder>June 14, 2026</time>
+        </span>
+
+        <div class="ba-meta-divider" aria-hidden="true"></div>
+
+        <span class="ba-meta-item">
+          <!-- lucide: clock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          12 min read
+        </span>
+
+        <div class="ba-meta-divider" aria-hidden="true"></div>
+
+        <span class="ba-meta-item">
+          <!-- lucide: eye -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <!-- data-placeholder: view count — update at port time with live CMS value -->
+          2,400 views
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [2] ARTICLE BODY + STICKY TOC
+     ============================================================ -->
+<section class="ba-section" aria-label="Article content">
+  <div class="container">
+
+    <!-- Mobile TOC (collapsible, above prose) -->
+    <details class="ba-toc-toggle" aria-label="Table of contents">
+      <summary>
+        <span>In this article</span>
+        <!-- lucide: chevron-down -->
+        <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <nav aria-label="Table of contents (mobile)">
+        <ul class="ba-toc-list">
+          <li><a href="#section-what-is" class="ba-toc-link" data-target="section-what-is">What Is a Semantic Layer?</a></li>
+          <li><a href="#section-governed" class="ba-toc-link" data-target="section-governed">The Governance Gap</a></li>
+          <li><a href="#section-wn" class="ba-toc-link" data-target="section-wn">Warehouse-Native Advantage</a></li>
+          <li><a href="#section-mcp" class="ba-toc-link level-3" data-target="section-mcp">MCP and Agentic Queries</a></li>
+          <li><a href="#section-lineage" class="ba-toc-link level-3" data-target="section-lineage">Audit Lineage in Practice</a></li>
+          <li><a href="#section-sql" class="ba-toc-link" data-target="section-sql">A Concrete SQL Example</a></li>
+          <li><a href="#section-checklist" class="ba-toc-link" data-target="section-checklist">Evaluation Checklist</a></li>
+          <li><a href="#section-conclusion" class="ba-toc-link" data-target="section-conclusion">Conclusion</a></li>
+        </ul>
+      </nav>
+    </details>
+
+    <div class="ba-layout">
+
+      <!-- ── MAIN PROSE ── -->
+      <article class="ba-prose" id="article-body">
+
+        <!-- TL;DR callout -->
+        <div class="ba-tldr" id="ba-tldr-block" role="note" aria-label="Key takeaways">
+          <div class="ba-tldr-head">
+            <!-- lucide: zap -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <strong>TL;DR — Key Takeaways</strong>
+          </div>
+          <ul class="ba-tldr-list" role="list">
+            <li class="ba-tldr-item" style="--d:0ms"><span class="ba-tldr-dot" aria-hidden="true"></span><span>A semantic layer sits between raw warehouse tables and end-user questions, translating business terminology into certified metric definitions.</span></li>
+            <li class="ba-tldr-item" style="--d:80ms"><span class="ba-tldr-dot" aria-hidden="true"></span><span><strong>Governance</strong> means each metric has a single owner, a defined SQL expression, row-level access rules, and a versioned change log — not just a friendly name.</span></li>
+            <li class="ba-tldr-item" style="--d:160ms"><span class="ba-tldr-dot" aria-hidden="true"></span><span>Warehouse-native deployment eliminates the data-movement layer, so lineage traces back to the source column, not a cached copy.</span></li>
+            <li class="ba-tldr-item" style="--d:240ms"><span class="ba-tldr-dot" aria-hidden="true"></span><span>MCP (Model Context Protocol) exposes semantic definitions to AI agents so natural-language queries always resolve to governed metrics — no hallucinated numbers.</span></li>
+            <li class="ba-tldr-item" style="--d:320ms"><span class="ba-tldr-dot" aria-hidden="true"></span><span>Audit lineage is the final piece: every answer must link back to the exact source row, transformation, and access-policy checkpoint that produced it.</span></li>
+          </ul>
+        </div>
+
+        <!-- H2 §1 -->
+        <h2 id="section-what-is">What Is a Semantic Layer?</h2>
+
+        <p>Every enterprise analytics stack faces the same foundational problem: the same concept — say, <em>"monthly recurring revenue"</em> — means subtly different things in Salesforce, the billing system, and the CFO's spreadsheet. Each team calculates it slightly differently, and the resulting discrepancy surfaces at the worst possible moment: a board presentation where two charts show different MRR for the same quarter.</p>
+
+        <p>A <strong>semantic layer</strong> is an abstraction that sits between your raw warehouse tables and the questions your business users ask. It translates business terminology — "revenue," "active user," "budget variance" — into deterministic SQL expressions that run against your source-of-truth data. The key word is <em>deterministic</em>: given the same parameters and access context, the semantic layer returns the same number every time, regardless of which tool, dashboard, or AI agent is asking.</p>
+
+        <div class="ba-note" role="note">
+          <div class="ba-note-icon" aria-hidden="true">
+            <!-- lucide: info -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </div>
+          <div class="ba-note-body">
+            <p class="ba-note-label">Definition</p>
+            <p class="ba-note-text">In Quaeris, the semantic layer is warehouse-native: metric definitions live inside your Snowflake or BigQuery environment as versioned objects, not in a separate cache. <strong>Your data never leaves your cloud.</strong></p>
+          </div>
+        </div>
+
+        <p>Traditional BI tools attempted to solve this with "business layers" inside report-authoring tools. The problem: those layers were owned by the BI team, siloed per tool, and impossible to audit from the outside. The modern semantic layer must be <em>centralised, governed, and accessible by every surface</em> — including AI agents.</p>
+
+        <!-- H2 §2 -->
+        <h2 id="section-governed">The Governance Gap</h2>
+
+        <p>Having a semantic layer is not the same as having a <em>governed</em> semantic layer. Governance is the difference between a shared dictionary and a certified metric registry. In a governed semantic layer, every metric has:</p>
+
+        <ul>
+          <li>A <strong>canonical SQL expression</strong> that is version-controlled and peer-reviewed before promotion to production</li>
+          <li>A <strong>designated owner</strong> (a named person or team) who approves changes</li>
+          <li>Explicit <strong>row- and column-level security rules</strong> that are enforced at query time, not filtered post-hoc</li>
+          <li>A <strong>full change log</strong>: who changed the definition, when, and why</li>
+          <li>Downstream <strong>impact analysis</strong>: which dashboards, reports, and AI queries depend on this metric</li>
+        </ul>
+
+        <!-- Pull quote -->
+        <div class="ba-pullquote" aria-label="Pull quote">
+          <span class="ba-pullquote-mark" aria-hidden="true">"</span>
+          <blockquote>
+            "A metric definition without an owner is a liability. The moment two teams fork it silently, you've created the conditions for a financial restatement."
+          </blockquote>
+          <!-- data-placeholder: attribute cite to real author at port time -->
+          <cite>— Jordan Mehta, Quaeris Solutions Architecture</cite>
+        </div>
+
+        <p>The governance gap is where most analytics initiatives stall. Teams invest heavily in data pipelines and dashboards, only to discover that the business doesn't trust the numbers. Rebuilding that trust requires not just clean data, but a <em>demonstrable, auditable chain of custody</em> from raw source to reported figure.</p>
+
+        <!-- H2 §3 -->
+        <h2 id="section-wn">The Warehouse-Native Advantage</h2>
+
+        <p>Earlier semantic layers required a separate compute engine — a "semantic cache" that maintained its own copies of aggregated data. This created a secondary data movement problem: now you had to ensure the cache was fresh, reconcile lineage across two systems, and maintain two sets of access controls. Warehouse-native architectures eliminate this entirely.</p>
+
+        <p>When metric definitions are stored and executed <em>inside</em> the warehouse (Snowflake, BigQuery, Databricks, Redshift), every query runs against the live source with the warehouse's own access controls, query optimiser, and audit log. There is no cache to invalidate, no secondary system to secure, and no lineage gap to bridge.</p>
+
+        <!-- H3 §3.1 -->
+        <h3 id="section-mcp">MCP and Agentic Queries</h3>
+
+        <p>The emergence of AI agents that can answer business questions in natural language makes the governed semantic layer even more critical. Without one, an LLM asked "What was last quarter's EBITDA?" must either guess at the SQL or use a pre-baked static context window — both of which can produce hallucinated or stale figures.</p>
+
+        <p>Quaeris implements the <strong>Model Context Protocol (MCP)</strong> to expose the semantic layer to AI agents as a structured, queryable context. When an agent needs to answer a finance question, it fetches the certified metric definition from the semantic layer, generates the warehouse-native SQL, executes it, and returns the result — with a full lineage trail attached. The metric is always computed from live data, using the definition the business has approved.</p>
+
+        <div class="ba-note" role="note">
+          <div class="ba-note-icon" aria-hidden="true">
+            <!-- lucide: shield-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div class="ba-note-body">
+            <p class="ba-note-label">Quaeris fact</p>
+            <p class="ba-note-text">The Quaeris MCP server surfaces metric definitions, their SQL expressions, and row-level security context to AI agents at query time. <strong>Agents cannot use a metric definition that has not been approved in the semantic registry.</strong></p>
+          </div>
+        </div>
+
+        <!-- H3 §3.2 -->
+        <h3 id="section-lineage">Audit Lineage in Practice</h3>
+
+        <p>Audit lineage is the chain of evidence that links a reported number back to its source data. In a governed, warehouse-native semantic layer, every query execution produces a lineage record that includes:</p>
+
+        <ul>
+          <li>The metric name and version of its definition that was used</li>
+          <li>The user or agent that requested the query, and the access policy applied</li>
+          <li>The exact SQL that was generated and the warehouse job ID that ran it</li>
+          <li>The source tables, schemas, and row-level filters that were in scope</li>
+          <li>A timestamp and immutable hash of the result</li>
+        </ul>
+
+        <p>This lineage record is not stored in the BI layer — it is written to a dedicated audit table inside the warehouse itself, making it as tamper-evident as the data it describes. Finance and compliance teams can pull a full lineage report for any number that appeared in any report, including AI-generated answers, in a single query.</p>
+
+        <!-- H2 §4 SQL example -->
+        <h2 id="section-sql">A Concrete SQL Example</h2>
+
+        <p>To make this concrete, consider how a governed semantic layer might define <code>net_revenue_mtd</code> in a warehouse-native environment. Instead of embedding the calculation in every dashboard, it is declared once:</p>
+
+        <div class="ba-code-wrap">
+          <div class="ba-code-header">
+            <div class="ba-code-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+            <span class="ba-code-lang">SQL — Metric Definition (Semantic Registry)</span>
+            <button type="button" class="ba-code-copy" aria-label="Copy code to clipboard" id="copy-btn-1">
+              <!-- lucide: copy -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              Copy
+            </button>
+          </div>
+<pre class="ba-pre" aria-label="SQL metric definition example"><code><span class="tok-cm">-- Governed metric: net_revenue_mtd</span>
+<span class="tok-cm">-- Owner: finance-analytics@example.com</span>
+<span class="tok-cm">-- Version: 2.4.1  Last approved: 2026-06-01</span>
+<span class="tok-cm">-- Access: role IN ('finance_read', 'exec_dashboard')</span>
+
+<span class="tok-kw">CREATE OR REPLACE</span> <span class="tok-fn">SECURE VIEW</span> analytics.semantic.net_revenue_mtd <span class="tok-kw">AS</span>
+<span class="tok-kw">SELECT</span>
+    t.fiscal_month_key,
+    t.region_code,
+    <span class="tok-fn">SUM</span>(
+        <span class="tok-cm">/* Include only invoiced, collected revenue; exclude credits and refunds */</span>
+        <span class="tok-kw">CASE</span>
+            <span class="tok-kw">WHEN</span> t.transaction_type <span class="tok-op">IN</span> (<span class="tok-str">'INVOICE'</span>, <span class="tok-str">'PAYMENT'</span>)
+             <span class="tok-kw">AND</span> t.status <span class="tok-op">=</span> <span class="tok-str">'SETTLED'</span>
+             <span class="tok-kw">AND</span> t.posting_date <span class="tok-op">&gt;=</span> <span class="tok-fn">DATE_TRUNC</span>(<span class="tok-str">'month'</span>, <span class="tok-fn">CURRENT_DATE</span>())
+            <span class="tok-kw">THEN</span> t.amount_usd
+            <span class="tok-kw">ELSE</span> <span class="tok-nu">0</span>
+        <span class="tok-kw">END</span>
+    ) <span class="tok-kw">AS</span> net_revenue_mtd_usd
+<span class="tok-kw">FROM</span> finance.transactions t
+<span class="tok-cm">/* Row-level security: restrict to regions the current user's role covers */</span>
+<span class="tok-kw">INNER JOIN</span> governance.user_region_access ura
+    <span class="tok-kw">ON</span> t.region_code <span class="tok-op">=</span> ura.region_code
+   <span class="tok-kw">AND</span> ura.user_email <span class="tok-op">=</span> <span class="tok-fn">CURRENT_USER</span>()
+<span class="tok-kw">GROUP BY</span> <span class="tok-nu">1</span>, <span class="tok-nu">2</span>;</code></pre>
+        </div>
+
+        <p>Any agent, dashboard, or direct query that references <code>analytics.semantic.net_revenue_mtd</code> gets exactly this logic — with the row-level security join enforced automatically by the warehouse engine. There is no way to bypass the governance layer; it is the SQL itself.</p>
+
+        <!-- H2 §5 -->
+        <h2 id="section-checklist">Evaluation Checklist: Is Your Semantic Layer Actually Governed?</h2>
+
+        <p>When evaluating whether a semantic layer delivers genuine governance, ask these questions of any vendor or in-house implementation:</p>
+
+        <ul>
+          <li>Can you name the owner of every metric, and view when the definition last changed?</li>
+          <li>Is row-level security enforced at the semantic layer or post-query in the BI tool?</li>
+          <li>Does an AI agent or natural-language tool use the same metric definitions as your dashboards?</li>
+          <li>Can you trace any number in any report back to a specific source row and the exact SQL that produced it?</li>
+          <li>Does the semantic layer have a versioned change log with approval records, accessible to auditors without access to engineering systems?</li>
+          <li>What happens when a metric definition changes — are downstream consumers notified, and can you see which reports are affected before you promote the change?</li>
+        </ul>
+
+        <!-- H2 §6 -->
+        <h2 id="section-conclusion">Conclusion</h2>
+
+        <p>The governed semantic layer is not a dashboard feature or an analytics convenience — it is infrastructure. It is the contract between the data team and the business that says: <em>"When you see a number here, it was computed this way, by this definition, subject to these rules, and we can prove it."</em></p>
+
+        <p>Warehouse-native deployment raises the standard further: the semantic layer lives in the same system as the data, subject to the same access controls and audit mechanisms. And when MCP connects AI agents to that semantic layer, natural-language analytics becomes as trustworthy as a certified financial statement.</p>
+
+        <p>The enterprise analytics stacks that will win the next decade are the ones that treat metric definitions as first-class, governed objects — not spreadsheet columns passed around in email.</p>
+
+        <!-- Share row -->
+        <div class="ba-share" role="toolbar" aria-label="Share article">
+          <span class="ba-share-label">Share:</span>
+          <button type="button" class="ba-share-btn" aria-label="Share on LinkedIn">
+            <!-- LinkedIn icon (SVG inline, brand-neutral outline) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </button>
+          <button type="button" class="ba-share-btn" aria-label="Share on X / Twitter">
+            <!-- X icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M4 20 20 4"/></svg>
+            X
+          </button>
+          <button type="button" class="ba-share-btn" id="copy-url-btn" aria-label="Copy link to clipboard">
+            <!-- lucide: link -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Copy link
+          </button>
+          <span class="ba-share-copied-msg" id="copied-msg" aria-live="polite">Copied!</span>
+        </div>
+
+        <!-- Author bio card -->
+        <div class="ba-author-card" role="complementary" aria-label="About the author">
+          <div class="ba-author-card-avatar" data-placeholder aria-label="Author avatar placeholder">QA</div>
+          <div class="ba-author-card-body">
+            <!-- data-placeholder: author name, role, and bio — replace at port time with real author details -->
+            <p class="ba-author-card-name">Jordan Mehta</p>
+            <p class="ba-author-card-role">Principal Solutions Architect · Quaeris</p>
+            <p class="ba-author-card-bio">Jordan designs governed semantic layer implementations for enterprise analytics teams, specialising in warehouse-native architectures on Snowflake and BigQuery. With over a decade in data platform engineering, he focuses on bridging the gap between raw data systems and auditable, AI-ready business metrics.</p>
+          </div>
+        </div>
+
+      </article>
+
+      <!-- ── STICKY DESKTOP TOC ── -->
+      <aside class="ba-toc desktop-only" aria-label="Table of contents">
+        <p class="ba-toc-label">On this page</p>
+        <nav aria-label="Table of contents">
+          <ul class="ba-toc-list" role="list">
+            <li><a href="#section-what-is" class="ba-toc-link" data-target="section-what-is">What Is a Semantic Layer?</a></li>
+            <li><a href="#section-governed" class="ba-toc-link" data-target="section-governed">The Governance Gap</a></li>
+            <li><a href="#section-wn" class="ba-toc-link" data-target="section-wn">Warehouse-Native Advantage</a></li>
+            <li><a href="#section-mcp" class="ba-toc-link level-3" data-target="section-mcp">MCP and Agentic Queries</a></li>
+            <li><a href="#section-lineage" class="ba-toc-link level-3" data-target="section-lineage">Audit Lineage in Practice</a></li>
+            <li><a href="#section-sql" class="ba-toc-link" data-target="section-sql">A Concrete SQL Example</a></li>
+            <li><a href="#section-checklist" class="ba-toc-link" data-target="section-checklist">Evaluation Checklist</a></li>
+            <li><a href="#section-conclusion" class="ba-toc-link" data-target="section-conclusion">Conclusion</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+    </div><!-- /.ba-layout -->
+  </div><!-- /.container -->
+</section>
+
+<!-- ============================================================
+     [3] RELATED POSTS 3-CARD ROW
+     Interactivity: staggered entrance reveal on scroll (IntersectionObserver)
+     + hover stripe-draw animation on each card
+     ============================================================ -->
+<section class="ba-section-tight section-pad" aria-labelledby="related-heading" id="related-posts">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Continue Reading</span>
+      <h2 id="related-heading" class="display-md">Related Articles</h2>
+    </div>
+
+    <div class="ba-related ba-related-grid" role="list" aria-label="Related articles">
+
+      <a href="/blog/semantic-layer-vs-bi-tool-metrics" class="ba-related-card" role="listitem" style="--d:0ms" data-placeholder>
+        <span class="ba-related-cat">Comparison</span>
+        <p class="ba-related-title">Semantic Layer vs. BI-Tool Metrics: Which Governs Better?</p>
+        <p class="ba-related-excerpt">BI tool metric layers offer convenience, but they fragment governance across tools. Here is how a centralised semantic layer changes the trade-off for enterprise teams managing dozens of definitions.</p>
+        <div class="ba-related-foot">
+          <!-- lucide: clock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          8 min read
+        </div>
+      </a>
+
+      <a href="/blog/audit-lineage-enterprise-analytics" class="ba-related-card" role="listitem" style="--d:100ms" data-placeholder>
+        <span class="ba-related-cat">Governance</span>
+        <p class="ba-related-title">Audit Lineage Is Not Optional: What Every Data Leader Needs to Know</p>
+        <p class="ba-related-excerpt">Regulatory and board-level scrutiny of analytics outputs is increasing. This piece breaks down what constitutes a legally defensible audit trail for data-driven decisions.</p>
+        <div class="ba-related-foot">
+          <!-- lucide: clock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          10 min read
+        </div>
+      </a>
+
+      <a href="/blog/warehouse-native-analytics-architecture" class="ba-related-card" role="listitem" style="--d:200ms" data-placeholder>
+        <span class="ba-related-cat">Architecture</span>
+        <p class="ba-related-title">The Case for Warehouse-Native Analytics Architecture in 2026</p>
+        <p class="ba-related-excerpt">Moving compute to where the data lives — rather than the reverse — eliminates an entire class of data-freshness, security, and lineage problems. A walkthrough of the key architectural shifts.</p>
+        <div class="ba-related-foot">
+          <!-- lucide: clock -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          9 min read
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [4] NEWSLETTER
+     Interactivity: email input with inline success state swap (no page reload)
+     ============================================================ -->
+<section class="ba-section-tight section-pad" aria-labelledby="newsletter-heading" id="newsletter">
+  <div class="container">
+    <div class="ba-newsletter">
+      <div class="ba-newsletter-glow" aria-hidden="true"></div>
+      <div class="ba-newsletter-inner">
+
+        <div class="ba-newsletter-text">
+          <span class="eyebrow">The Quaeris Brief</span>
+          <h3 id="newsletter-heading">Governed analytics insights, every other week</h3>
+          <p>Practical takes on semantic layers, warehouse-native architecture, agentic analytics, and data governance — from practitioners building real enterprise systems.</p>
+        </div>
+
+        <div>
+          <form class="ba-newsletter-form" id="newsletter-form" novalidate aria-label="Newsletter sign-up">
+            <div class="ba-form-row">
+              <input
+                type="email"
+                class="ba-form-input"
+                id="newsletter-email"
+                name="email"
+                placeholder="you@company.com"
+                autocomplete="email"
+                required
+                aria-label="Work email address"
+                aria-describedby="newsletter-fine"
+              />
+              <button type="submit" class="ba-form-submit">Subscribe</button>
+            </div>
+            <!-- data-placeholder: add /privacy link at port time -->
+            <p class="ba-form-fine" id="newsletter-fine">No spam. Unsubscribe any time. We do not share your email. See our privacy policy.</p>
+          </form>
+          <div class="ba-newsletter-success" id="newsletter-success" role="status" aria-live="polite">
+            <!-- lucide: check-circle -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            You're subscribed — welcome to the Quaeris Brief.
+          </div>
+          <div class="ba-newsletter-error" id="newsletter-error" role="alert" aria-live="assertive" style="display:none;align-items:center;gap:var(--space-3);padding:var(--space-4);background:color-mix(in srgb,var(--error,#c0392b) 12%,transparent);border:1px solid color-mix(in srgb,var(--error,#c0392b) 28%,transparent);border-radius:var(--radius-md);font-size:14px;font-weight:600;color:var(--error,#c0392b);margin-top:var(--space-3);">
+            <!-- lucide: alert-circle -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:18px;height:18px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+            <span id="newsletter-error-msg">Something went wrong — please try again.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     [5] CLOSING CTA
+     Interactivity: pulsing ring decorations + hover lift on buttons
+     ============================================================ -->
+<section class="section-pad" aria-labelledby="cta-heading" id="article-cta">
+  <div class="container">
+    <div class="ba-cta-card reveal">
+      <div class="ba-cta-ring ba-cta-ring-1" aria-hidden="true"></div>
+      <div class="ba-cta-ring ba-cta-ring-2" aria-hidden="true"></div>
+      <div class="cta-inner">
+        <span class="eyebrow" style="color: rgba(255,255,255,0.7);">Ready to Govern Your Metrics?</span>
+        <h2 id="cta-heading" class="display-lg">See a governed semantic layer in action</h2>
+        <p class="body-lg">Ask Quaeris a business question. Watch it resolve to a certified metric, run warehouse-native SQL, and return a lineage-traced answer — in under a minute.</p>
+        <div class="ba-cta-btns">
+          <a href="/contact" class="btn btn-on-dark">Book a Demo</a>
+          <a href="/platform" class="btn btn-secondary-dark">Explore the Platform</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPTS
+     Gated behind JS availability checks. All motion reduced-motion safe.
+     All sections degrade gracefully without JS (final visible state).
+     ============================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── 1. Reading progress bar ── */
+  (function initProgress() {
+    var bar = document.getElementById('ba-progress');
+    var article = document.getElementById('article-body');
+    if (!bar || !article) return;
+
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    /* Under reduced-motion keep the bar as a position indicator but strip the
+       animated transition, so it updates instantly without motion. */
+    if (mq.matches) { bar.style.transition = 'none'; }
+
+    function update() {
+      var rect = article.getBoundingClientRect();
+      var total = article.offsetHeight - window.innerHeight;
+      if (total <= 0) { bar.style.width = '100%'; return; }
+      var scrolled = Math.max(0, -rect.top);
+      bar.style.width = Math.min(100, (scrolled / total) * 100) + '%';
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }());
+
+  /* ── 2. TL;DR staggered entrance ── */
+  (function initTldr() {
+    var block = document.getElementById('ba-tldr-block');
+    if (!block) return;
+    block.classList.add('js');
+
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) return;
+
+    var io = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        block.classList.add('revealed');
+        io.disconnect();
+      }
+    }, { threshold: 0.2 });
+    io.observe(block);
+  }());
+
+  /* ── 3. Sticky TOC scroll-spy ── */
+  (function initTocSpy() {
+    var links = Array.from(document.querySelectorAll('.ba-toc-link[data-target]'));
+    if (!links.length) return;
+
+    var headings = links.map(function(l) {
+      return document.getElementById(l.dataset.target);
+    }).filter(Boolean);
+
+    var active = null;
+
+    function setActive(id) {
+      if (active === id) return;
+      active = id;
+      links.forEach(function(l) {
+        if (l.dataset.target === id) {
+          l.classList.add('active');
+          l.setAttribute('aria-current', 'true');
+        } else {
+          l.classList.remove('active');
+          l.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function onScroll() {
+      /* Bottom-of-page guard: if the user has scrolled to the very end,
+         force-activate the last heading regardless of viewport geometry */
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) {
+        setActive(headings[headings.length - 1].id);
+        return;
+      }
+
+      var offset = 110; /* header height buffer */
+      var scrollY = window.scrollY;
+      var current = null;
+
+      headings.forEach(function(h) {
+        if (h && h.getBoundingClientRect().top - offset <= 0) {
+          current = h.id;
+        }
+      });
+
+      if (current) setActive(current);
+      else if (scrollY < 100) setActive(headings[0] ? headings[0].id : null);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }());
+
+  /* ── 4. Related posts staggered entrance ── */
+  (function initRelated() {
+    var section = document.querySelector('.ba-related');
+    if (!section) return;
+    section.classList.add('js');
+
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) return;
+
+    var io = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        section.classList.add('revealed');
+        io.disconnect();
+      }
+    }, { threshold: 0.15 });
+    io.observe(section);
+  }());
+
+  /* ── 5. Newsletter subscribe — real API POST ── */
+  (function initNewsletter() {
+    var form    = document.getElementById('newsletter-form');
+    var success = document.getElementById('newsletter-success');
+    var errBox  = document.getElementById('newsletter-error');
+    var errMsg  = document.getElementById('newsletter-error-msg');
+    if (!form || !success) return;
+
+    /* Reduced-motion: strip submit-button micro-animation */
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var emailInput = form.querySelector('input[type="email"]');
+      var email = emailInput ? emailInput.value.trim() : '';
+      if (!email || !email.includes('@')) {
+        if (emailInput) { emailInput.focus(); }
+        return;
+      }
+
+      /* Optimistic UI: disable while in-flight */
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Subscribing…'; }
+      if (errBox) { errBox.style.display = 'none'; }
+
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: email, source: 'blog-article' })
+      })
+      .then(function(res) {
+        if (res.ok) {
+          /* Success: swap form for confirmation */
+          form.style.display = 'none';
+          success.classList.add('show');
+        } else {
+          /* Server-side error: surface a human-readable message */
+          return res.json().catch(function() { return {}; }).then(function(body) {
+            var msg = (body && body.message) ? body.message : 'Something went wrong — please try again.';
+            if (errMsg) { errMsg.textContent = msg; }
+            if (errBox) { errBox.style.display = 'flex'; }
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Subscribe'; }
+          });
+        }
+      })
+      .catch(function() {
+        /* Network error */
+        if (errMsg) { errMsg.textContent = 'Could not reach the server — check your connection and try again.'; }
+        if (errBox) { errBox.style.display = 'flex'; }
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Subscribe'; }
+      });
+    });
+  }());
+
+  /* ── 6. Copy URL button ── */
+  (function initCopyUrl() {
+    var btn = document.getElementById('copy-url-btn');
+    var msg = document.getElementById('copied-msg');
+    if (!btn || !msg) return;
+
+    btn.addEventListener('click', function() {
+      var url = window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function() {
+          msg.classList.add('show');
+          setTimeout(function() { msg.classList.remove('show'); }, 2200);
+        });
+      } else {
+        /* Fallback for older browsers */
+        var ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        msg.classList.add('show');
+        setTimeout(function() { msg.classList.remove('show'); }, 2200);
+      }
+    });
+  }());
+
+  /* ── 7. Code block copy button ── */
+  (function initCodeCopy() {
+    var btn = document.getElementById('copy-btn-1');
+    if (!btn) return;
+    var pre = btn.closest('.ba-code-wrap').querySelector('pre');
+
+    btn.addEventListener('click', function() {
+      var text = pre ? pre.innerText : '';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function() {
+          btn.classList.add('copied');
+          btn.querySelector('svg').style.display = 'none';
+          btn.childNodes[btn.childNodes.length - 1].nodeValue = ' Copied!';
+          setTimeout(function() {
+            btn.classList.remove('copied');
+            btn.querySelector('svg').style.display = '';
+            btn.childNodes[btn.childNodes.length - 1].nodeValue = ' Copy';
+          }, 2000);
+        });
+      }
+    });
+  }());
+
+  /* ── 8. Scroll reveals for bare .reveal elements ── */
+  (function initReveal() {
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) return;
+
+    var els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    els.forEach(function(el) { io.observe(el); });
+  }());
+
+}());
+</script>
+
+</body>
+</html>
